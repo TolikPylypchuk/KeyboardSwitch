@@ -1,0 +1,28 @@
+﻿<Window x:Class="KeyboardSwitch.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KeyboardSwitch"
+        mc:Ignorable="d" Height="170" Width="275" ResizeMode="NoResize"
+        Title="About" WindowStartupLocation="CenterOwner">
+    <Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="1*"/>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+
+		<TextBlock x:Name="textBlock" Grid.Row="0" Margin="20,10"
+				   VerticalAlignment="Center"/>
+
+		<Button Grid.Row="1" Content="OK" Click="Button_Click" IsTabStop="False"
+				VerticalAlignment="Center" HorizontalAlignment="Right"
+				Padding="30,5" Margin="20,10" IsDefault="True" IsCancel="True"/>
+
+		<TextBlock Grid.Row="1" Margin="20,20,140,20" TextDecorations="Underline"
+				   Cursor="Hand" Foreground="Blue" MouseLeftButtonUp="TextBlock_MouseLeftButtonUp"
+				   VerticalAlignment="Center" HorizontalAlignment="Left">
+			More info
+		</TextBlock>
+	</Grid>
+</Window>
