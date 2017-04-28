@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -10,71 +9,85 @@ using System.Windows.Input;
 
 namespace KeyboardSwitch
 {
-	static class FileManager
+	public static class FileManager
 	{
 		public static readonly string SettingsLocation =
-			Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
-			"mappings");
+			Path.Combine(
+				Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)
+					?? Environment.CurrentDirectory,
+				"mappings");
 
-		public static Dictionary<CultureInfo, StringBuilder> Read(out bool success,
+		public static bool TryRead(
+			out Dictionary<CultureInfo, StringBuilder> dict,
 			bool all = false)
 		{
-			var retVal = new Dictionary<CultureInfo, StringBuilder>();
+			dict = null;
+
+			var langs = InputLanguageManager.Current.AvailableInputLanguages
+				?.Cast<CultureInfo>()
+				.ToList();
+
+			bool result = false;
+
+			if (langs == null)
+			{
+				return false;
+			}
+
+			dict = new Dictionary<CultureInfo, StringBuilder>();
 
 			try
 			{
-				using (StreamReader reader =
-					new StreamReader(SettingsLocation, Encoding.UTF8))
+				using (var reader = new StreamReader(
+					SettingsLocation, Encoding.UTF8))
 				{
 					while (!reader.EndOfStream)
 					{
 						string line = reader.ReadLine();
-						if (line.Equals(string.Empty))
+						
+						if (line?.Equals(String.Empty) != false)
 						{
 							continue;
 						}
-						string[] strs = line.Split('\t');
+
+						var tokens = line.Split('\t');
 						CultureInfo lang = null;
+
 						try
 						{
-							lang = new CultureInfo(strs[0]);
+							lang = new CultureInfo(tokens[0]);
 						} catch
 						{
 							continue;
 						}
+
 						if (!all)
 						{
-							if ((InputLanguageManager.Current.AvailableInputLanguages
-								as ArrayList).Contains(lang))
+							if (langs.Contains(lang))
 							{
-								retVal.Add(lang, new StringBuilder(strs[1]));
+								dict.Add(lang, new StringBuilder(tokens[1]));
 							}
 						} else
 						{
-							retVal.Add(lang, new StringBuilder(strs[1]));
+							dict.Add(lang, new StringBuilder(tokens[1]));
 						}
 					}
 
-					foreach (var lang in InputLanguageManager.Current.
-						AvailableInputLanguages)
+					foreach (var lang in langs)
 					{
-						CultureInfo info = lang as CultureInfo;
-						if (!retVal.ContainsKey(info))
+						if (!dict.ContainsKey(lang))
 						{
-							retVal.Add(info, new StringBuilder());
+							dict.Add(lang, new StringBuilder());
 						}
 					}
 
-					int maxLength = 0;
-					foreach (var str in retVal.Values)
-					{
-						if (str.Length > maxLength)
-						{
-							maxLength = str.Length;
-						}
-					}
+					int maxLength =
+						dict.Values
+							  .Select(str => str.Length)
+							  .Concat(new[] { 0 })
+							  .Max();
 
-					foreach (var str in retVal.Values)
+					foreach (var str in dict.Values)
 					{
 						while (str.Length < maxLength)
 						{
@@ -82,50 +95,54 @@ namespace KeyboardSwitch
 						}
 					}
 				}
-				success = true;
+
+				result = true;
 			} catch
 			{
-				retVal = new Dictionary<CultureInfo, StringBuilder>();
-				foreach (var lang in InputLanguageManager.Current.
-					AvailableInputLanguages)
-				{
-					retVal.Add(lang as CultureInfo, new StringBuilder(" "));
-				}
-				success = false;
+				dict = langs.ToDictionary(
+					lang => lang, lang => new StringBuilder(" "));
+				result = false;
 			}
 
-			return retVal;
+			return result;
 		}
 
-		public static void Write(Dictionary<CultureInfo, StringBuilder> dict,
-			out bool success)
+		public static bool TryWrite(
+			Dictionary<CultureInfo, StringBuilder> dict)
 		{
-			bool successRead = false;
-			Dictionary<CultureInfo, StringBuilder> fullDict = Read(out successRead, true);
+			bool result = TryRead(out var fullDict, true);
+
+			if (!result)
+			{
+				return false;
+			}
 
 			try
 			{
-				using (StreamWriter writer =
-					new StreamWriter(SettingsLocation, false, Encoding.UTF8))
+				using (var writer = new StreamWriter(
+					SettingsLocation, false, Encoding.UTF8))
 				{
 					foreach (var pair in fullDict)
 					{
 						if (dict.ContainsKey(pair.Key))
 						{
-							writer.Write(pair.Key.ToString() + "\t");
+							writer.Write($"{pair.Key}\t");
 							writer.WriteLine(dict[pair.Key]);
 						} else
 						{
-							writer.Write(pair.Key.ToString() + "\t");
+							writer.Write($"{pair.Key}\t");
 							writer.WriteLine(pair.Value);
 						}
 					}
 				}
-				success = true;
+
+				result = true;
 			} catch
 			{
-				success = false;
+				result = false;
 			}
+
+			return result;
 		}
 	}
 }

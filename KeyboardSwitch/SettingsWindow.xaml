@@ -1,113 +1,127 @@
 ﻿<Window x:Class="KeyboardSwitch.SettingsWindow"
-		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:local="clr-namespace:KeyboardSwitch"
-		xmlns:properties="clr-namespace:KeyboardSwitch.Properties"
-		xmlns:tb="clr-namespace:Hardcodet.Wpf.TaskbarNotification"
-		mc:Ignorable="d" ResizeMode="CanResize"
-		WindowStartupLocation="CenterScreen"
-		Title="Keyboard Layout Switch Settings" Height="200" Width="380"
-		Closing="Window_Closing" Closed="Window_Closed"
-		MinHeight="200" MinWidth="380" PreviewMouseWheel="Window_PreviewMouseWheel"
-		PreviewKeyDown="Window_PreviewKeyDown" FocusManager.FocusedElement="{Binding
-			RelativeSource={x:Static RelativeSource.Self}, Mode=OneTime}">
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KeyboardSwitch"
+        xmlns:properties="clr-namespace:KeyboardSwitch.Properties"
+        xmlns:tb="clr-namespace:Hardcodet.Wpf.TaskbarNotification"
+        mc:Ignorable="d" ResizeMode="CanResize" Height="200" Width="380"
+        WindowStartupLocation="CenterScreen" Closing="Window_Closing"
+        Title="Keyboard Layout Switch Settings" Closed="Window_Closed"
+        MinHeight="200" MinWidth="380" PreviewKeyDown="Window_PreviewKeyDown"
+		PreviewMouseWheel="Window_PreviewMouseWheel"
+		FocusManager.FocusedElement="{Binding
+          RelativeSource={x:Static RelativeSource.Self}, Mode=OneTime}">
 	<Window.Resources>
 		<Style TargetType="{x:Type local:LetterBox}">
-			<Setter Property="HorizontalAlignment" Value="Center"/>
-			<Setter Property="VerticalAlignment" Value="Center"/>
-			<Setter Property="Width" Value="18"/>
+			<Setter Property="HorizontalAlignment" Value="Center" />
+			<Setter Property="VerticalAlignment" Value="Center" />
+			<Setter Property="Width" Value="18" />
 		</Style>
 
 		<Style TargetType="{x:Type Border}">
-			<Setter Property="Background" Value="Transparent"/>
-			<Setter Property="IsHitTestVisible" Value="True"/>
+			<Setter Property="Background" Value="Transparent" />
+			<Setter Property="IsHitTestVisible" Value="True" />
 		</Style>
 
 		<Style TargetType="{x:Type ColumnDefinition}">
-			<Setter Property="Width" Value="28"/>
+			<Setter Property="Width" Value="28" />
 		</Style>
 
 		<Style TargetType="{x:Type RowDefinition}">
-			<Setter Property="Height" Value="28"/>
+			<Setter Property="Height" Value="28" />
 		</Style>
 	</Window.Resources>
 
 	<Window.CommandBindings>
-		<CommandBinding Command="New" Executed="New_Executed"/>
+		<CommandBinding Command="New" Executed="New_Executed" />
 		<CommandBinding Command="Save" Executed="Save_Executed"
-						CanExecute="Save_CanExecute"/>
+		                CanExecute="Save_CanExecute" />
 		<CommandBinding Command="local:SwitchCommands.Forward"
-						Executed="SwitchForward_Executed"
-						CanExecute="Switch_CanExecute"/>
+		                Executed="SwitchForward_Executed"
+		                CanExecute="Switch_CanExecute" />
 		<CommandBinding Command="local:SwitchCommands.Backward"
-						Executed="SwitchBackward_Executed"
-						CanExecute="Switch_CanExecute"/>
+		                Executed="SwitchBackward_Executed"
+		                CanExecute="Switch_CanExecute" />
 		<CommandBinding Command="local:SwitchCommands.Delete"
-						Executed="Delete_Executed"
-						CanExecute="Delete_CanExecute"/>
+		                Executed="Delete_Executed"
+		                CanExecute="Delete_CanExecute" />
 		<CommandBinding Command="local:SwitchCommands.Show"
-						Executed="Show_Executed"/>
+		                Executed="Show_Executed" />
 	</Window.CommandBindings>
-
+	
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="20"/>
-			<RowDefinition Height="*"/>
+			<RowDefinition Height="20" />
+			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 
 		<tb:TaskbarIcon x:Name="tbIcon" IconSource="Text.ico"
-						ToolTipText="Keyboard Layout Switch"
-						MenuActivation="RightClick"
-						LeftClickCommand="local:SwitchCommands.Show">
+		                ToolTipText="Keyboard Layout Switch"
+		                MenuActivation="RightClick"
+		                LeftClickCommand="local:SwitchCommands.Show">
 			<tb:TaskbarIcon.ContextMenu>
 				<ContextMenu x:Name="contextMenu">
-					<MenuItem Header="Show settings" Click="ShowWindow_Click"/>
-					<MenuItem Header="Switch forward" Click="SwitchForward_Click"/>
-					<MenuItem Header="Switch backward" Click="SwitchBackward_Click"/>
-					<Separator/>
-					<MenuItem Header="Exit" Click="Exit_Click"/>
+					<MenuItem Header="Show settings"
+					          Click="ShowWindow_Click" />
+					<MenuItem Header="Switch forward"
+					          Click="SwitchForward_Click" />
+					<MenuItem Header="Switch backward"
+					          Click="SwitchBackward_Click" />
+					<Separator />
+					<MenuItem Header="Exit" Click="Exit_Click" />
 				</ContextMenu>
 			</tb:TaskbarIcon.ContextMenu>
 		</tb:TaskbarIcon>
 
 		<Menu Grid.Row="0">
 			<MenuItem Header="_Program">
-				<MenuItem Header="_New mapping" Command="New"/>
-				<MenuItem Header="_Save" Command="Save"/>
-				<Separator/>
-				<MenuItem Header="_About" Click="About_Click"/>
-				<Separator/>
-				<MenuItem Header="_Exit" Click="Exit_Click"/>
+				<MenuItem Header="_New mapping" Command="New" />
+				<MenuItem Header="_Save" Command="Save" />
+				<Separator />
+				<MenuItem Header="_About" Click="About_Click" />
+				<Separator />
+				<MenuItem Header="_Exit" Click="Exit_Click" />
 			</MenuItem>
 			<MenuItem Header="_Switch">
-				<MenuItem Header="_Forward" Command="local:SwitchCommands.Forward"/>
-				<MenuItem Header="_Backward" Command="local:SwitchCommands.Backward"/>
+				<MenuItem Header="_Forward"
+				          Command="local:SwitchCommands.Forward" />
+				<MenuItem Header="_Backward"
+				          Command="local:SwitchCommands.Backward" />
 			</MenuItem>
 			<MenuItem Header="P_references">
-				<MenuItem x:Name="systemStartupMenuItem" Header="_Run on system startup"
-						  Checked="SystemStartup_Changed" Unchecked="SystemStartup_Changed"
-						  IsCheckable="True" IsChecked="{Binding
-							Source={x:Static properties:Settings.Default}, Path=RunOnStartup}"/>
-				<MenuItem x:Name="startMenuMenuItem" Header="_Create start menu icon"
-						  Checked="StartMenuIcon_Changed" Unchecked="StartMenuIcon_Changed"
-						  IsCheckable="True" IsChecked="{Binding
-							Source={x:Static properties:Settings.Default}, Path=StartMenuIcon}"/>
+				<MenuItem x:Name="systemStartupMenuItem"
+				          Header="_Run on system startup"
+				          Checked="SystemStartup_Changed"
+				          Unchecked="SystemStartup_Changed"
+				          IsCheckable="True" IsChecked="{Binding
+				            Source={x:Static properties:Settings.Default},
+				            Path=RunOnStartup}" />
+				<MenuItem x:Name="startMenuMenuItem"
+				          Header="_Create start menu icon"
+				          Checked="StartMenuIcon_Changed"
+				          Unchecked="StartMenuIcon_Changed"
+				          IsCheckable="True" IsChecked="{Binding
+				            Source={x:Static properties:Settings.Default},
+				            Path=StartMenuIcon}" />
 				<Separator/>
-				<MenuItem Click="SetHotKeys_Click" Header="_Set hot keys"/>
+				<MenuItem Click="SetHotKeys_Click" Header="_Set hot keys" />
 			</MenuItem>
 		</Menu>
 
-		<ScrollViewer x:Name="scrollViewer" Grid.Row="1" Background="Transparent"
-					  VerticalScrollBarVisibility="Auto" FocusVisualStyle="{x:Null}"
-					  HorizontalScrollBarVisibility="Auto" PanningMode="Both">
+		<ScrollViewer x:Name="scrollViewer" Grid.Row="1"
+		              Background="Transparent"
+		              VerticalScrollBarVisibility="Auto"
+		              FocusVisualStyle="{x:Null}"
+		              HorizontalScrollBarVisibility="Auto"
+		              PanningMode="Both">
 			<StackPanel Orientation="Vertical" Background="Transparent"
-						MouseLeftButtonDown="StackPanel_MouseLeftButtonDown">
+			            MouseLeftButtonDown="StackPanel_MouseLeftButtonDown">
 				<TextBlock Margin="10,5">Character mappings:</TextBlock>
 				<StackPanel Orientation="Horizontal">
-					<Grid x:Name="nameGrid"/>
-					<Grid x:Name="langGrid"/>
+					<Grid x:Name="nameGrid" />
+					<Grid x:Name="langGrid" />
 				</StackPanel>
 			</StackPanel>
 		</ScrollViewer>

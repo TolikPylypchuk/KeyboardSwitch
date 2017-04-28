@@ -6,23 +6,25 @@ namespace KeyboardSwitch
 	{
 		public ErrorWindow()
 		{
-			InitializeComponent();
+			this.InitializeComponent();
 		}
 
 		public ErrorWindow(Window owner, string text)
+			: this()
 		{
-			InitializeComponent();
-			Owner = owner;
+			this.Owner = owner;
+
 			if (owner != null)
 			{
-				WindowStartupLocation = WindowStartupLocation.CenterOwner;
+				this.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 			}
-			textBlock.Text = text;
+
+			this.textBlock.Text = text;
 		}
 
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
-			Close();
+			this.Close();
 		}
 	}
 }

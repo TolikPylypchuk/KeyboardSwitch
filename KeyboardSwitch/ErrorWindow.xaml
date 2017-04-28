@@ -3,22 +3,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:KeyboardSwitch"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-		ResizeMode="NoResize" Height="140" Width="280"
+        ResizeMode="NoResize" Height="140" Width="280"
         Title="Keyboard Switch - Error">
     <Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="1*"/>
-			<RowDefinition/>
+			<RowDefinition Height="1*" />
+			<RowDefinition />
 		</Grid.RowDefinitions>
-		
-        <TextBlock x:Name="textBlock" Grid.Row="0"
-				   VerticalAlignment="Center"
-				   Margin="20,10"/>
+
+		<TextBlock x:Name="textBlock" Grid.Row="0" Margin="20,10"
+		           VerticalAlignment="Center" />
 		
 		<Button Grid.Row="1" Content="OK" Click="Button_Click"
-				VerticalAlignment="Center" HorizontalAlignment="Right"
-				Padding="30,5" Margin="20,10" IsDefault="True" IsCancel="True"/>
+		        VerticalAlignment="Center" HorizontalAlignment="Right"
+		        Padding="30,5" Margin="20,10"
+		        IsDefault="True" IsCancel="True" />
     </Grid>
 </Window>

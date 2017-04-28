@@ -3,6 +3,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
+using KeyboardSwitch.Properties;
+
 namespace KeyboardSwitch
 {
 	public partial class HotKeyWindow : Window
@@ -18,153 +20,171 @@ namespace KeyboardSwitch
 
         public HotKeyWindow()
 		{
-			InitializeComponent();
+			this.InitializeComponent();
 		}
 
 		public HotKeyWindow(Window owner)
+			: this()
 		{
-			InitializeComponent();
-			Owner = owner;
-			letterBoxForward.Char = Properties.Settings.Default.HotKeyForward;
-			letterBoxBackward.Char = Properties.Settings.Default.HotKeyBackward;
+			this.Owner = owner;
 
-			charF = Properties.Settings.Default.HotKeyForward;
-			charB = Properties.Settings.Default.HotKeyBackward;
+			this.letterBoxForward.Char = Settings.Default.HotKeyForward;
+			this.letterBoxBackward.Char = Settings.Default.HotKeyBackward;
 
-			keyF = App.GetKey(charF);
-			keyB = App.GetKey(charB);
+			this.charF = Settings.Default.HotKeyForward;
+			this.charB = Settings.Default.HotKeyBackward;
 
-			switch (Properties.Settings.Default.KeyModifiers)
+			this.keyF = App.GetKey(charF);
+			this.keyB = App.GetKey(charB);
+
+			switch (Settings.Default.KeyModifiers)
 			{
 				case "CS":
-					checkBox.SelectedIndex = 1;
+					this.checkBox.SelectedIndex = 1;
 					break;
 				case "AS":
-					checkBox.SelectedIndex = 2;
+					this.checkBox.SelectedIndex = 2;
 					break;
 			}
 
-			index = checkBox.SelectedIndex;
+			this.index = checkBox.SelectedIndex;
 		}
 
-		private void btnOK_Click(object sender, RoutedEventArgs e)
+		private void BtnOK_Click(object sender, RoutedEventArgs e)
 		{
-			if (letterBoxBackward.Text.Length != 0 && letterBoxBackward.Text.Length != 0)
+			if (this.letterBoxBackward.Text.Length != 0 &&
+				this.letterBoxBackward.Text.Length != 0)
 			{
-				KeyModifier modifiers = App.GetKeyModifiers();
+				var modifiers = App.GetKeyModifiers();
 				bool modifiersChanged = false;
 
-				if (checkBox.SelectedIndex != index)
+				if (this.checkBox.SelectedIndex != index)
 				{
 					modifiersChanged = true;
-					switch (checkBox.SelectedIndex)
+					switch (this.checkBox.SelectedIndex)
 					{
 						case 0:
 							modifiers = KeyModifier.Ctrl | KeyModifier.Alt;
-							Properties.Settings.Default.KeyModifiers = "CA";
+							Settings.Default.KeyModifiers = "CA";
 							break;
 						case 1:
 							modifiers = KeyModifier.Ctrl | KeyModifier.Shift;
-							Properties.Settings.Default.KeyModifiers = "CS";
+							Settings.Default.KeyModifiers = "CS";
 							break;
 						case 2:
 							modifiers = KeyModifier.Alt | KeyModifier.Shift;
-							Properties.Settings.Default.KeyModifiers = "AS";
+							Settings.Default.KeyModifiers = "AS";
 							break;
 					}
 				}
 
-				if (modifiersChanged || keyF != currentApp.HotKeyForward.Key)
+				if (modifiersChanged ||
+					keyF != this.currentApp.HotKeyForward.Key)
 				{
-					currentApp.HotKeyForward.Dispose();
-					currentApp.HotKeyForward = new HotKey(keyF, modifiers,
-						currentApp.HotKeyPressed);
+					this.currentApp.HotKeyForward.Dispose();
+					this.currentApp.HotKeyForward = new HotKey(
+						keyF, modifiers, this.currentApp.HotKeyPressed);
 
-					Properties.Settings.Default.HotKeyForward = letterBoxForward.Char;
+					Settings.Default.HotKeyForward =
+						this.letterBoxForward.Char;
 				}
 
-				if (modifiersChanged || keyB != currentApp.HotKeyBackward.Key)
+				if (modifiersChanged ||
+					keyB != this.currentApp.HotKeyBackward.Key)
 				{
-					currentApp.HotKeyBackward.Dispose();
-					currentApp.HotKeyBackward = new HotKey(keyB, modifiers,
-						currentApp.HotKeyPressed);
+					this.currentApp.HotKeyBackward.Dispose();
+					this.currentApp.HotKeyBackward = new HotKey(
+						keyB, modifiers, this.currentApp.HotKeyPressed);
 
-					Properties.Settings.Default.HotKeyBackward = letterBoxBackward.Char;
+					Settings.Default.HotKeyBackward =
+						this.letterBoxBackward.Char;
 				}
 
-				Properties.Settings.Default.Save();
+				Settings.Default.Save();
 			}
 
-			Close();
+			this.Close();
 		}
 
-		private void btnCancel_Click(object sender, RoutedEventArgs e)
+		private void BtnCancel_Click(object sender, RoutedEventArgs e)
 		{
-			Close();
+			this.Close();
 		}
 		
-		public void letterBoxForward_TextChanged(object sender, TextChangedEventArgs e)
+		public void LetterBoxForward_TextChanged(
+			object sender,
+			TextChangedEventArgs e)
 		{
-			if (letterBoxForward.Text.Length != 0)
+			if (this.letterBoxForward.Text.Length != 0)
 			{
 				try
 				{
-					if (letterBoxBackward.Text.Length > 0 &&
-						letterBoxForward.Char == letterBoxBackward.Char)
+					if (this.letterBoxBackward.Text.Length > 0 &&
+					    this.letterBoxForward.Char == letterBoxBackward.Char)
 					{
-						new ErrorWindow(this, "This letter is already set as the\n" + 
-							"backward hot key.").ShowDialog();
-						letterBoxForward.Char = charF;
+						new ErrorWindow(
+							this,
+							"This letter is already set as the\n" + 
+							"backward hot key.")
+							.ShowDialog();
+
+						this.letterBoxForward.Char = this.charF;
 						return;
 					}
-					keyF = App.GetKey(letterBoxForward.Char);
+
+					this.keyF = App.GetKey(this.letterBoxForward.Char);
 				} catch (ArgumentOutOfRangeException exp)
 				{
 					new ErrorWindow(this, exp.ParamName).ShowDialog();
-					letterBoxForward.Char = Properties.Settings.Default.HotKeyForward;
+					this.letterBoxForward.Char =
+						Settings.Default.HotKeyForward;
 				}
 
-				charF = letterBoxForward.Char;
+				this.charF = this.letterBoxForward.Char;
 			}
 		}
 
-		public void letterBoxBackward_TextChanged(object sender, TextChangedEventArgs e)
+		public void LetterBoxBackward_TextChanged(
+			object sender,
+			TextChangedEventArgs e)
 		{
-			if (letterBoxBackward.Text.Length != 0)
+			if (this.letterBoxBackward.Text.Length != 0)
 			{
 				try
 				{
-					if (letterBoxForward.Text.Length > 0 &&
-						letterBoxBackward.Char == letterBoxForward.Char)
+					if (this.letterBoxForward.Text.Length > 0 &&
+					    this.letterBoxBackward.Char == letterBoxForward.Char)
 					{
-						new ErrorWindow(this, "This letter is already set as the\n" +
-							"forward hot key.").ShowDialog();
-						letterBoxBackward.Char = charB;
+						new ErrorWindow(
+							this,
+							"This letter is already set as the\n" +
+							"forward hot key.")
+							.ShowDialog();
+						this.letterBoxBackward.Char = this.charB;
 						return;
 					}
-					keyB = App.GetKey(letterBoxBackward.Char);
+
+					this.keyB = App.GetKey(this.letterBoxBackward.Char);
 				} catch (ArgumentOutOfRangeException exp)
 				{
 					new ErrorWindow(this, exp.ParamName).ShowDialog();
-					letterBoxBackward.Char = Properties.Settings.Default.HotKeyBackward;
+					this.letterBoxBackward.Char =
+						Settings.Default.HotKeyBackward;
 				}
 
-				charB = letterBoxBackward.Char;
+				this.charB = this.letterBoxBackward.Char;
             }
 		}
 
 		private void SelectAddress(object sender, RoutedEventArgs e)
 		{
-			TextBox tb = (sender as TextBox);
-			if (tb != null)
-			{
-				tb.SelectAll();
-			}
+			(sender as TextBox)?.SelectAll();
 		}
 
 		private void IgnoreMouseButton(object sender, MouseButtonEventArgs e)
 		{
-			TextBox tb = (sender as TextBox);
+			var tb = sender as TextBox;
+
 			if (tb != null)
 			{
 				if (!tb.IsKeyboardFocusWithin)
