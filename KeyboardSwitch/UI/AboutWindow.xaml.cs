@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 
-namespace KeyboardSwitch
+namespace KeyboardSwitch.UI
 {
 	public partial class AboutWindow : Window
 	{

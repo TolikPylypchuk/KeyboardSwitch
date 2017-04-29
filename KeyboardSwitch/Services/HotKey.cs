@@ -3,19 +3,10 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using System.Windows.Interop;
 
-namespace KeyboardSwitch
-{
-	[Flags]
-	public enum KeyModifier
-	{
-		None = 0x0000,
-		Alt = 0x0001,
-		Ctrl = 0x0002,
-		NoRepeat = 0x4000,
-		Shift = 0x0004,
-		Win = 0x0008
-	}
+using KeyboardSwitch.Infrastructure;
 
+namespace KeyboardSwitch.Services
+{
 	public class HotKey : IDisposable
 	{
 		private static Dictionary<int, HotKey> dictHotKeyToCallBackProc;

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace KeyboardSwitch
+namespace KeyboardSwitch.UI
 {
 	public class CharChangedEventArgs : RoutedEventArgs
 	{

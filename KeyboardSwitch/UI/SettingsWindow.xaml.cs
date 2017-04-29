@@ -9,8 +9,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 
 using KeyboardSwitch.Properties;
+using KeyboardSwitch.Services;
 
-namespace KeyboardSwitch
+namespace KeyboardSwitch.UI
 {
 	public partial class SettingsWindow : Window
 	{

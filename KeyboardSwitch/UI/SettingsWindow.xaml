@@ -1,9 +1,9 @@
-﻿<Window x:Class="KeyboardSwitch.SettingsWindow"
+﻿<Window x:Class="KeyboardSwitch.UI.SettingsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:KeyboardSwitch"
+        xmlns:local="clr-namespace:KeyboardSwitch.UI"
         xmlns:properties="clr-namespace:KeyboardSwitch.Properties"
         xmlns:tb="clr-namespace:Hardcodet.Wpf.TaskbarNotification"
         mc:Ignorable="d" ResizeMode="CanResize" Height="200" Width="380"
@@ -57,7 +57,7 @@
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
 
-		<tb:TaskbarIcon x:Name="tbIcon" IconSource="Text.ico"
+		<tb:TaskbarIcon x:Name="tbIcon" IconSource="../Text.ico"
 		                ToolTipText="Keyboard Layout Switch"
 		                MenuActivation="RightClick"
 		                LeftClickCommand="local:SwitchCommands.Show">

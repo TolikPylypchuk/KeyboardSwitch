@@ -1,9 +1,9 @@
-﻿<Window x:Class="KeyboardSwitch.HotKeyWindow"
+﻿<Window x:Class="KeyboardSwitch.UI.HotKeyWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:KeyboardSwitch"
+        xmlns:local="clr-namespace:KeyboardSwitch.UI"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize" Title="Hot Keys" Height="180" Width="235">
 	<Window.Resources>

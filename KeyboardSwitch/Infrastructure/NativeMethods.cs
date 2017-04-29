@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace KeyboardSwitch
+namespace KeyboardSwitch.Infrastructure
 {
 	internal class NativeMethods
 	{

@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Input;
 
-namespace KeyboardSwitch
+namespace KeyboardSwitch.Services
 {
 	public static class FileManager
 	{

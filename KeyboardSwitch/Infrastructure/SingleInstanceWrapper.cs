@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualBasic.ApplicationServices;
 
-namespace KeyboardSwitch
+namespace KeyboardSwitch.Infrastructure
 {
 	internal class SingleInstanceWrapper : WindowsFormsApplicationBase
 	{

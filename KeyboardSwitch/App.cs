@@ -14,7 +14,10 @@ using System.Windows.Input;
 
 using IWshRuntimeLibrary;
 
+using KeyboardSwitch.Infrastructure;
 using KeyboardSwitch.Properties;
+using KeyboardSwitch.Services;
+using KeyboardSwitch.UI;
 
 namespace KeyboardSwitch
 {

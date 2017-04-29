@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace KeyboardSwitch
+namespace KeyboardSwitch.UI
 {
 	static class SwitchCommands
 	{

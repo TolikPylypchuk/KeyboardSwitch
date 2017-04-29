@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace KeyboardSwitch
+namespace KeyboardSwitch.UI
 {
 	public class LetterBox : TextBox
 	{

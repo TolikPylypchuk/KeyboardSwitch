@@ -83,17 +83,18 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutWindow.xaml.cs">
+    <Compile Include="Services\KeyModifier.cs" />
+    <Compile Include="UI\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CharChangedEventArgs.cs" />
-    <Compile Include="CharChangedEventHandler.cs" />
-    <Compile Include="ErrorWindow.xaml.cs">
+    <Compile Include="UI\CharChangedEventArgs.cs" />
+    <Compile Include="UI\CharChangedEventHandler.cs" />
+    <Compile Include="UI\ErrorWindow.xaml.cs">
       <DependentUpon>ErrorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FileManager.cs" />
+    <Compile Include="Services\FileManager.cs" />
     <Compile Include="App.cs" />
-    <Compile Include="NativeMethods.cs" />
+    <Compile Include="Infrastructure\NativeMethods.cs" />
     <Compile Include="NotifyIcon\BalloonIcon.cs" />
     <Compile Include="NotifyIcon\Interop\BalloonFlags.cs" />
     <Compile Include="NotifyIcon\Interop\IconDataMembers.cs" />
@@ -112,30 +113,30 @@
     <Compile Include="NotifyIcon\TaskbarIcon.cs" />
     <Compile Include="NotifyIcon\TaskbarIcon.Declarations.cs" />
     <Compile Include="NotifyIcon\Util.cs" />
-    <Compile Include="SingleInstanceWrapper.cs" />
-    <Compile Include="SwitchCommands.cs" />
-    <Page Include="AboutWindow.xaml">
+    <Compile Include="Infrastructure\SingleInstanceWrapper.cs" />
+    <Compile Include="UI\SwitchCommands.cs" />
+    <Page Include="UI\AboutWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ErrorWindow.xaml">
+    <Page Include="UI\ErrorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="HotKeyWindow.xaml">
+    <Page Include="UI\HotKeyWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SettingsWindow.xaml">
+    <Page Include="UI\SettingsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="HotKey.cs" />
-    <Compile Include="HotKeyWindow.xaml.cs">
+    <Compile Include="Services\HotKey.cs" />
+    <Compile Include="UI\HotKeyWindow.xaml.cs">
       <DependentUpon>HotKeyWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LetterBox.cs" />
-    <Compile Include="SettingsWindow.xaml.cs">
+    <Compile Include="UI\LetterBox.cs" />
+    <Compile Include="UI\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -194,6 +195,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

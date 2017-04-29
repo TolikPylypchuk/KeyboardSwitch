@@ -4,8 +4,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using KeyboardSwitch.Properties;
+using KeyboardSwitch.Services;
 
-namespace KeyboardSwitch
+namespace KeyboardSwitch.UI
 {
 	public partial class HotKeyWindow : Window
 	{
@@ -183,9 +184,7 @@ namespace KeyboardSwitch
 
 		private void IgnoreMouseButton(object sender, MouseButtonEventArgs e)
 		{
-			var tb = sender as TextBox;
-
-			if (tb != null)
+			if (sender is TextBox tb)
 			{
 				if (!tb.IsKeyboardFocusWithin)
 				{
