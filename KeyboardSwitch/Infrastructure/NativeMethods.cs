@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text;
 
 namespace KeyboardSwitch.Infrastructure
 {
+	[ExcludeFromCodeCoverage]
 	internal class NativeMethods
 	{
 		[DllImport("user32.dll")]

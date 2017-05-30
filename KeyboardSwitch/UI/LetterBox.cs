@@ -15,7 +15,7 @@ namespace KeyboardSwitch.UI
 			set => this.SetValue(CharProperty, value);
 		}
 
-		public event CharChangedEventHandler CharChanged
+		public event EventHandler<CharChangedEventArgs> CharChanged
 		{
 			add => this.AddHandler(CharChangedEvent, value);
 			remove => this.RemoveHandler(CharChangedEvent, value);
@@ -32,7 +32,7 @@ namespace KeyboardSwitch.UI
 			CharChangedEvent = EventManager.RegisterRoutedEvent(
 				nameof(CharChanged),
 				RoutingStrategy.Direct,
-				typeof(CharChangedEventHandler),
+				typeof(EventHandler<CharChangedEventArgs>),
 				typeof(LetterBox));
 		}
 
@@ -50,8 +50,8 @@ namespace KeyboardSwitch.UI
 			this.Char = ch;
 			this.Text = ch.ToString();
 
-			this.MouseDoubleClick += this.SelectAddress;
-			this.GotKeyboardFocus += this.SelectAddress;
+			this.MouseDoubleClick += this.SelectAllText;
+			this.GotKeyboardFocus += this.SelectAllText;
 
 			this.PreviewMouseLeftButtonDown += (sender, e) =>
 			{
@@ -91,7 +91,7 @@ namespace KeyboardSwitch.UI
 			this.RaiseEvent(e);
 		}
 
-		private void SelectAddress(object sender, RoutedEventArgs e)
+		private void SelectAllText(object sender, RoutedEventArgs e)
 		{
 			(sender as TextBox)?.SelectAll();
 		}
@@ -100,11 +100,13 @@ namespace KeyboardSwitch.UI
 			DependencyObject sender,
 			DependencyPropertyChangedEventArgs e)
 		{
-			var letterBox = sender as LetterBox;
-			var args = new CharChangedEventArgs(
-				(char)e.OldValue, (char)e.NewValue);
+			if (sender is LetterBox letterBox)
+			{
+				var args = new CharChangedEventArgs(
+					(char)e.OldValue, (char)e.NewValue);
 
-            letterBox?.OnCharChanged(args);
+				letterBox.OnCharChanged(args);
+			}
 		}
 	}
 }

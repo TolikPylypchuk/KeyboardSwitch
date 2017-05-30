@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using System.Windows.Interop;
 
@@ -7,6 +8,7 @@ using KeyboardSwitch.Infrastructure;
 
 namespace KeyboardSwitch.Services
 {
+	[ExcludeFromCodeCoverage]
 	public class HotKey : IDisposable
 	{
 		private static Dictionary<int, HotKey> dictHotKeyToCallBackProc;

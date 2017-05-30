@@ -36,72 +36,73 @@ namespace KeyboardSwitch.Services
 
 			dict = new Dictionary<CultureInfo, StringBuilder>();
 
+			StreamReader reader = null;
+
 			try
 			{
-				using (var reader = new StreamReader(
-					SettingsLocation, Encoding.UTF8))
+				reader = new StreamReader(SettingsLocation, Encoding.UTF8);
+
+				while (!reader.EndOfStream)
 				{
-					while (!reader.EndOfStream)
+					string line = reader.ReadLine();
+
+					if (String.IsNullOrEmpty(line))
 					{
-						string line = reader.ReadLine();
-						
-						if (line?.Equals(String.Empty) != false)
-						{
-							continue;
-						}
+						continue;
+					}
 
-						var tokens = line.Split('\t');
-						CultureInfo lang = null;
+					var tokens = line.Split('\t');
+					CultureInfo lang = null;
 
-						try
-						{
-							lang = new CultureInfo(tokens[0]);
-						} catch
-						{
-							continue;
-						}
+					try
+					{
+						lang = new CultureInfo(tokens[0]);
+					} catch
+					{
+						continue;
+					}
 
-						if (!all)
-						{
-							if (langs.Contains(lang))
-							{
-								dict.Add(lang, new StringBuilder(tokens[1]));
-							}
-						} else
+					if (!all)
+					{
+						if (langs.Contains(lang))
 						{
 							dict.Add(lang, new StringBuilder(tokens[1]));
 						}
-					}
-
-					foreach (var lang in langs)
+					} else
 					{
-						if (!dict.ContainsKey(lang))
-						{
-							dict.Add(lang, new StringBuilder());
-						}
+						dict.Add(lang, new StringBuilder(tokens[1]));
 					}
-
-					int maxLength =
-						dict.Values
-							  .Select(str => str.Length)
-							  .Concat(new[] { 0 })
-							  .Max();
-
-					foreach (var str in dict.Values)
+				}
+				
+				foreach (var lang in langs)
+				{
+					if (!dict.ContainsKey(lang))
 					{
-						while (str.Length < maxLength)
-						{
-							str.Append(' ');
-						}
+						dict.Add(lang, new StringBuilder());
 					}
+				}
+
+				int maxLength =
+					dict.Values
+						.Select(str => str.Length)
+						.Concat(new[] { 0 })
+						.Max();
+
+				foreach (var str in dict.Values)
+				{
+					str.Append(new String(' ', maxLength - str.Length));
 				}
 
 				result = true;
 			} catch
 			{
 				dict = langs.ToDictionary(
-					lang => lang, lang => new StringBuilder(" "));
+					lang => lang,
+					lang => new StringBuilder(" "));
 				result = false;
+			} finally
+			{
+				reader?.Close();
 			}
 
 			return result;
@@ -117,29 +118,30 @@ namespace KeyboardSwitch.Services
 				return false;
 			}
 
+			StreamWriter writer = null;
+
 			try
 			{
-				using (var writer = new StreamWriter(
-					SettingsLocation, false, Encoding.UTF8))
+				writer = new StreamWriter(
+					SettingsLocation,
+					false,
+					Encoding.UTF8);
+
+				foreach (var pair in fullDict)
 				{
-					foreach (var pair in fullDict)
-					{
-						if (dict.ContainsKey(pair.Key))
-						{
-							writer.Write($"{pair.Key}\t");
-							writer.WriteLine(dict[pair.Key]);
-						} else
-						{
-							writer.Write($"{pair.Key}\t");
-							writer.WriteLine(pair.Value);
-						}
-					}
+					writer.WriteLine(
+						dict.ContainsKey(pair.Key)
+							? $"{pair.Key}\t{dict[pair.Key]}"
+							: $"{pair.Key}\t{pair.Value}");
 				}
 
 				result = true;
 			} catch
 			{
 				result = false;
+			} finally
+			{
+				writer?.Close();
 			}
 
 			return result;

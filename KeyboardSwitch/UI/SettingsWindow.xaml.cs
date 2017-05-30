@@ -17,7 +17,7 @@ namespace KeyboardSwitch.UI
 	{
 		private App currentApp = Application.Current as App;
 		private bool canSave;
-		private bool canClose ;
+		private bool canClose;
 		private bool isBorderClicked;
 		private Border focusedBorder;
 
