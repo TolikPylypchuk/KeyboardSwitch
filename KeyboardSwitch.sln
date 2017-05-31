@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardSwitch", "KeyboardSwitch\KeyboardSwitch.csproj", "{8C7343C8-1986-4D78-84A0-1D229590583F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardSwitch.Tests", "KeyboardSwitch.Tests\KeyboardSwitch.Tests.csproj", "{F2EFF84C-19DD-4320-A9D7-3D0BF06827DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{8C7343C8-1986-4D78-84A0-1D229590583F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C7343C8-1986-4D78-84A0-1D229590583F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C7343C8-1986-4D78-84A0-1D229590583F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2EFF84C-19DD-4320-A9D7-3D0BF06827DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2EFF84C-19DD-4320-A9D7-3D0BF06827DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2EFF84C-19DD-4320-A9D7-3D0BF06827DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2EFF84C-19DD-4320-A9D7-3D0BF06827DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

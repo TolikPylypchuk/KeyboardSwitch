@@ -7,7 +7,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Keyboard Layout Switch")]
-[assembly: AssemblyCopyright("No copyright")]
+[assembly: AssemblyCopyright("Copyright © Tolik Pylypchuk 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
