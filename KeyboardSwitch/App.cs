@@ -3,16 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-
-using IWshRuntimeLibrary;
 
 using KeyboardSwitch.Infrastructure;
 using KeyboardSwitch.Properties;
@@ -25,13 +21,6 @@ namespace KeyboardSwitch
 	[SuppressMessage("ReSharper", "FunctionNeverReturns")]
 	public class App : Application
 	{
-		[STAThread]
-		static void Main(string[] args)
-		{
-			var wrapper = new SingleInstanceWrapper();
-			wrapper.Run(args);
-		}
-
 		public HotKey HotKeyForward { get; set; }
 		public HotKey HotKeyBackward { get; set; }
 
@@ -47,8 +36,8 @@ namespace KeyboardSwitch
 
 		public static Key GetKey(char value)
 		{
-			value = char.ToUpper(value);
-			if ("ABCDEFGHIJKLMNOPQRSTUVWXYZ".IndexOf(value) != -1)
+			value = Char.ToUpper(value);
+			if ("ABCDEFGHIJKLMNOPQRSTUVWXYZ".Contains(value))
 			{
 				return (Key)(value - 'A' + (int)Key.A);
 			}
@@ -96,26 +85,7 @@ namespace KeyboardSwitch
 				BringWindowToForeground(MainWindow);
 			}
 		}
-
-		public void SetStartMenuShortcut(bool add)
-		{
-			string shortcutLocation = Path.Combine(
-				Environment.GetFolderPath(Environment.SpecialFolder.StartMenu),
-				"Programs",
-				"Keyboard Layout Switch.lnk");
-
-			SetShortcut(shortcutLocation, add, false);
-		}
-
-		public void SetStartupShortcut(bool add)
-		{
-			string shortcutLocation = Path.Combine(
-				Environment.GetFolderPath(Environment.SpecialFolder.Startup),
-				"Keyboard Layout Switch.lnk");
-
-            SetShortcut(shortcutLocation, add, true);
-		}
-
+		
 		public void HotKeyPressed(HotKey key)
 		{
 			lock (SyncRoot)
@@ -245,10 +215,7 @@ namespace KeyboardSwitch
 				GetKey(Settings.Default.HotKeyBackward),
 				modifiers,
 				this.HotKeyPressed);
-
-			this.SetStartupShortcut(Settings.Default.RunOnStartup);
-            this.SetStartMenuShortcut(Settings.Default.StartMenuIcon);
-
+			
 			this.MainWindow = new SettingsWindow();
 			this.MainWindow.Show();
 
@@ -267,37 +234,7 @@ namespace KeyboardSwitch
 			this.HotKeyBackward.Dispose();
 			base.OnExit(e);
 		}
-
-		private static void SetShortcut(
-			string shortcutLocation,
-			bool add,
-			bool nowindow)
-		{
-			bool fileExists = System.IO.File.Exists(shortcutLocation);
-
-			if (add && !fileExists)
-			{
-				string pathToExe = Assembly.GetEntryAssembly().Location;
-
-				var shell = new WshShell();
-				var shortcut = (IWshShortcut)shell.CreateShortcut(
-					shortcutLocation);
-
-				shortcut.Description = "Keyboard Layout Switch";
-				shortcut.TargetPath = pathToExe;
-
-				if (nowindow)
-				{
-					shortcut.Arguments = "--nowindow";
-				}
-
-				shortcut.Save();
-			} else if (!add && fileExists)
-			{
-				System.IO.File.Delete(shortcutLocation);
-			}
-		}
-
+		
 		private void HandleCurrentLanguage()
 		{
 			lock (this.SyncRoot)

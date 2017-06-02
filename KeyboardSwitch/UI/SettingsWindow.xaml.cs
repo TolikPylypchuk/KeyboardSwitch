@@ -464,21 +464,7 @@ namespace KeyboardSwitch.UI
 		{
 			new AboutWindow(this).ShowDialog();
 		}
-
-		private void SystemStartup_Changed(object sender, RoutedEventArgs e)
-		{
-			Settings.Default.Save();
-			this.currentApp.SetStartupShortcut(
-				this.systemStartupMenuItem.IsChecked);
-		}
-
-		private void StartMenuIcon_Changed(object sender, RoutedEventArgs e)
-		{
-			Settings.Default.Save();
-			currentApp.SetStartMenuShortcut(
-				this.startMenuMenuItem.IsChecked);
-		}
-
+		
 		private void ShowWindow_Click(object sender, RoutedEventArgs e)
 		{
 			this.BringToForeground();

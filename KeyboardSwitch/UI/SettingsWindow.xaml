@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KeyboardSwitch.UI"
-        xmlns:properties="clr-namespace:KeyboardSwitch.Properties"
         xmlns:tb="clr-namespace:Hardcodet.Wpf.TaskbarNotification"
         mc:Ignorable="d" ResizeMode="CanResize" Height="200" Width="380"
         WindowStartupLocation="CenterScreen" Closing="Window_Closing"
@@ -91,21 +90,6 @@
 				          Command="local:SwitchCommands.Backward" />
 			</MenuItem>
 			<MenuItem Header="P_references">
-				<MenuItem x:Name="systemStartupMenuItem"
-				          Header="_Run on system startup"
-				          Checked="SystemStartup_Changed"
-				          Unchecked="SystemStartup_Changed"
-				          IsCheckable="True" IsChecked="{Binding
-				            Source={x:Static properties:Settings.Default},
-				            Path=RunOnStartup}" />
-				<MenuItem x:Name="startMenuMenuItem"
-				          Header="_Create start menu icon"
-				          Checked="StartMenuIcon_Changed"
-				          Unchecked="StartMenuIcon_Changed"
-				          IsCheckable="True" IsChecked="{Binding
-				            Source={x:Static properties:Settings.Default},
-				            Path=StartMenuIcon}" />
-				<Separator/>
 				<MenuItem Click="SetHotKeys_Click" Header="_Set hot keys" />
 			</MenuItem>
 		</Menu>

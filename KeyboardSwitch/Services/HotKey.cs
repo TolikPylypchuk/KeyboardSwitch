@@ -36,32 +36,37 @@ namespace KeyboardSwitch.Services
 			}
 		}
 
+		~HotKey() => this.Dispose(false);
+
 		public bool Register()
 		{
 			int virtualKeyCode = KeyInterop.VirtualKeyFromKey(Key);
-			this.Id = virtualKeyCode + ((int)KeyModifiers * 0x10000);
+			this.Id = virtualKeyCode + ((int)this.KeyModifiers * 0x10000);
 
 			bool result = NativeMethods.RegisterHotKey(
-				IntPtr.Zero, Id, (uint)KeyModifiers, (uint)virtualKeyCode);
+				IntPtr.Zero,
+				this.Id,
+				(uint)this.KeyModifiers,
+				(uint)virtualKeyCode);
 
 			if (dictHotKeyToCallBackProc == null)
 			{
 				dictHotKeyToCallBackProc = new Dictionary<int, HotKey>();
 				ComponentDispatcher.ThreadFilterMessage +=
-						ComponentDispatcherThreadFilterMessage;
+					ComponentDispatcherThreadFilterMessage;
 			}
 
-			dictHotKeyToCallBackProc.Add(Id, this);
+			dictHotKeyToCallBackProc.Add(this.Id, this);
 
 			return result;
 		}
 
 		public void Unregister()
 		{
-			if (dictHotKeyToCallBackProc.TryGetValue(Id, out HotKey _))
+			if (dictHotKeyToCallBackProc.ContainsKey(this.Id))
 			{
-				NativeMethods.UnregisterHotKey(IntPtr.Zero, Id);
-				dictHotKeyToCallBackProc.Remove(Id);
+				NativeMethods.UnregisterHotKey(IntPtr.Zero, this.Id);
+				dictHotKeyToCallBackProc.Remove(this.Id);
 			}
 		}
 

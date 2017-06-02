@@ -8,14 +8,8 @@
     <Setting Name="HotKeyBackward" Type="System.Char" Scope="User">
       <Value Profile="(Default)">Z</Value>
     </Setting>
-    <Setting Name="RunOnStartup" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
     <Setting Name="KeyModifiers" Type="System.String" Scope="User">
       <Value Profile="(Default)">CA</Value>
-    </Setting>
-    <Setting Name="StartMenuIcon" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

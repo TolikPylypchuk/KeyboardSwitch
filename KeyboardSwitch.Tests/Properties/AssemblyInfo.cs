@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("KeyboardSwitch.Tests")]
 [assembly: AssemblyDescription("Keyboard Layout Switch Tests")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Tolik Pylypchuk")]
 [assembly: AssemblyProduct("Keyboard Layout Switch Tests")]
 [assembly: AssemblyCopyright("Copyright © Tolik Pylypchuk 2017")]
 [assembly: AssemblyTrademark("")]

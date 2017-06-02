@@ -5,7 +5,7 @@ using System.Windows;
 [assembly: AssemblyTitle("KeyboardSwitch")]
 [assembly: AssemblyDescription("Keyboard Layout Switch")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Tolik Pylypchuk")]
 [assembly: AssemblyProduct("Keyboard Layout Switch")]
 [assembly: AssemblyCopyright("Copyright © Tolik Pylypchuk 2017")]
 [assembly: AssemblyTrademark("")]
@@ -17,5 +17,5 @@ using System.Windows;
 	ResourceDictionaryLocation.None,
 	ResourceDictionaryLocation.SourceAssembly)]
 
-[assembly: AssemblyVersion("1.1.0.0")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
+[assembly: AssemblyVersion("2.0.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]
