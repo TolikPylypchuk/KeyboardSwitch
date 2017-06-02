@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -76,18 +78,41 @@ namespace KeyboardSwitch
 
 			this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
-			var langs = FileManager.Read();
-			this.LanguageManager.Languages = langs;
+			this.SetLanguages();
+			this.SetHotKeys();
 
-			if (langs == null)
+			await this.CreateMainWindow();
+			await this.HandleLanguageLoopAsync();
+		}
+
+		protected override void OnExit(ExitEventArgs e)
+		{
+			this.HotKeyForward.Dispose();
+			this.HotKeyBackward.Dispose();
+			base.OnExit(e);
+		}
+
+		private void SetLanguages()
+		{
+			this.LanguageManager.Languages = this.FileManager.Read();
+
+			if (this.LanguageManager.Languages == null)
 			{
 				new ErrorWindow(
-					null,
-					"Cannot read character mappings.\n" +
-					"You have to define them yourself.")
+						null,
+						"Cannot read character mappings.\n" +
+						"You have to define them yourself.")
 					.ShowDialog();
+
+				this.LanguageManager.Languages =
+					InputLanguageManager.Current.AvailableInputLanguages
+						?.Cast<CultureInfo>()
+						.ToDictionary(lang => lang, _ => new StringBuilder(" "));
 			}
-			
+		}
+
+		private void SetHotKeys()
+		{
 			var modifiers = Settings.Default.KeyModifiers;
 
 			this.HotKeyForward = new HotKey(
@@ -99,26 +124,20 @@ namespace KeyboardSwitch
 				GetKey(Settings.Default.HotKeyBackward),
 				modifiers,
 				this.HotKeyPressed);
-			
+		}
+
+		private async Task CreateMainWindow()
+		{
 			this.MainWindow = new SettingsWindow();
 			this.MainWindow.Show();
 
 			if (Array.Exists(
-					Environment.GetCommandLineArgs(),
-					s => s.Equals("--nowindow")))
+				Environment.GetCommandLineArgs(),
+				s => s.Equals("--nowindow")))
 			{
 				await Task.Delay(500);
 				this.MainWindow.Hide();
 			}
-
-			await this.HandleLanguageLoopAsync();
-		}
-
-		protected override void OnExit(ExitEventArgs e)
-		{
-			this.HotKeyForward.Dispose();
-			this.HotKeyBackward.Dispose();
-			base.OnExit(e);
 		}
 
 		[SuppressMessage("ReSharper", "FunctionNeverReturns")]
