@@ -4,14 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KeyboardSwitch.UI"
-        xmlns:tb="clr-namespace:Hardcodet.Wpf.TaskbarNotification"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
         mc:Ignorable="d" ResizeMode="CanResize" Height="200" Width="380"
         WindowStartupLocation="CenterScreen" Closing="Window_Closing"
         Title="Keyboard Layout Switch Settings" Closed="Window_Closed"
         MinHeight="200" MinWidth="380" PreviewKeyDown="Window_PreviewKeyDown"
-		PreviewMouseWheel="Window_PreviewMouseWheel"
-		FocusManager.FocusedElement="{Binding
-          RelativeSource={x:Static RelativeSource.Self}, Mode=OneTime}">
+        PreviewMouseWheel="Window_PreviewMouseWheel"
+        FocusManager.FocusedElement="{Binding RelativeSource={x:Static RelativeSource.Self}, Mode=OneTime}">
 	<Window.Resources>
 		<Style TargetType="{x:Type local:LetterBox}">
 			<Setter Property="HorizontalAlignment" Value="Center" />
@@ -111,3 +110,4 @@
 		</ScrollViewer>
 	</Grid>
 </Window>
+

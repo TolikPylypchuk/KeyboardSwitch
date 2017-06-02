@@ -64,6 +64,9 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.8\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -98,24 +101,6 @@
     <Compile Include="Services\FileManager.cs" />
     <Compile Include="App.cs" />
     <Compile Include="Infrastructure\NativeFunctions.cs" />
-    <Compile Include="NotifyIcon\BalloonIcon.cs" />
-    <Compile Include="NotifyIcon\Interop\BalloonFlags.cs" />
-    <Compile Include="NotifyIcon\Interop\IconDataMembers.cs" />
-    <Compile Include="NotifyIcon\Interop\IconState.cs" />
-    <Compile Include="NotifyIcon\Interop\MouseEvent.cs" />
-    <Compile Include="NotifyIcon\Interop\NotifyCommand.cs" />
-    <Compile Include="NotifyIcon\Interop\NotifyIconData.cs" />
-    <Compile Include="NotifyIcon\Interop\NotifyIconVersion.cs" />
-    <Compile Include="NotifyIcon\Interop\Point.cs" />
-    <Compile Include="NotifyIcon\Interop\TrayInfo.cs" />
-    <Compile Include="NotifyIcon\Interop\WinApi.cs" />
-    <Compile Include="NotifyIcon\Interop\WindowClass.cs" />
-    <Compile Include="NotifyIcon\Interop\WindowMessageSink.cs" />
-    <Compile Include="NotifyIcon\PopupActivationMode.cs" />
-    <Compile Include="NotifyIcon\RoutedEventHelper.cs" />
-    <Compile Include="NotifyIcon\TaskbarIcon.cs" />
-    <Compile Include="NotifyIcon\TaskbarIcon.Declarations.cs" />
-    <Compile Include="NotifyIcon\Util.cs" />
     <Compile Include="Infrastructure\SingleInstanceWrapper.cs" />
     <Compile Include="UI\SwitchCommands.cs" />
     <Page Include="UI\AboutWindow.xaml">
@@ -162,6 +147,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
