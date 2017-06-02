@@ -45,7 +45,7 @@ namespace KeyboardSwitch.UI
 				this.nameGrid.RowDefinitions.Add(new RowDefinition());
 			}
 			
-			int length = currentApp.Languages.Values.First().Length;
+			int length = currentApp.LanguageManager.Languages.Values.First().Length;
 
 			for (int i = 0; i < length; i++)
 			{
@@ -57,7 +57,7 @@ namespace KeyboardSwitch.UI
 				Width = new GridLength(55)
 			});
 			
-			int langCount = currentApp.Languages.Count;
+			int langCount = currentApp.LanguageManager.Languages.Count;
 			int row = 0;
 
 			foreach (var lang in langs)
@@ -95,7 +95,7 @@ namespace KeyboardSwitch.UI
 
 				int col = 0;
 				string languageStr =
-					this.currentApp.Languages[lang].ToString();
+					this.currentApp.LanguageManager.Languages[lang].ToString();
 
 				foreach (char ch in languageStr)
 				{
@@ -161,7 +161,7 @@ namespace KeyboardSwitch.UI
 							}
 
 							foreach (var builder in
-								currentApp.Languages.Values)
+								currentApp.LanguageManager.Languages.Values)
 							{
 								char swap = builder[col];
 								builder[col] = builder[col + 1];
@@ -187,7 +187,7 @@ namespace KeyboardSwitch.UI
 								Grid.SetColumn(item, col);
 							}
 
-							foreach (var builder in currentApp.Languages.Values)
+							foreach (var builder in currentApp.LanguageManager.Languages.Values)
 							{
 								char swap = builder[col];
 								builder[col] = builder[col - 1];
@@ -220,7 +220,7 @@ namespace KeyboardSwitch.UI
 
 			this.Hide();
 
-			for (int i = 0; i < this.currentApp.Languages.Count; i++)
+			for (int i = 0; i < this.currentApp.LanguageManager.Languages.Count; i++)
 			{
 				var itemsInRow = this.GetItemsInRow(i);
 				int j = 0;
@@ -231,7 +231,7 @@ namespace KeyboardSwitch.UI
 
 					if (letterBox?.Text.Length == 0)
 					{
-						letterBox.Char = this.currentApp.Languages[
+						letterBox.Char = this.currentApp.LanguageManager.Languages[
 							this.GetLanguage(i)][j];
 					}
 
@@ -374,7 +374,7 @@ namespace KeyboardSwitch.UI
 		{
 			if (border != null)
 			{
-				int count = this.currentApp.Languages.Keys.Count;
+				int count = this.currentApp.LanguageManager.Languages.Keys.Count;
 				for (int i = 0; i < count; i++)
 				{
 					var itemsInRow = this.GetItemsInRow(i);
@@ -441,7 +441,7 @@ namespace KeyboardSwitch.UI
 
 				if (isUnique)
 				{
-					this.currentApp.Languages[
+					this.currentApp.LanguageManager.Languages[
 						this.GetLanguage(Grid.GetRow(border))][
 							Grid.GetColumn(border)] = letterBox.Char;
 				}
@@ -488,7 +488,7 @@ namespace KeyboardSwitch.UI
 
 		private void Save_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			for (int i = 0; i < this.currentApp.Languages.Count; i++)
+			for (int i = 0; i < this.currentApp.LanguageManager.Languages.Count; i++)
 			{
 				var itemsInRow = this.GetItemsInRow(i);
 				int j = 0;
@@ -499,14 +499,14 @@ namespace KeyboardSwitch.UI
 						letterBox.Text.Length == 0)
 					{
 						letterBox.Char =
-							this.currentApp.Languages[GetLanguage(i)][j];
+							this.currentApp.LanguageManager.Languages[GetLanguage(i)][j];
 					}
 
 					j++;
 				}
 			}
 			
-			if (!FileManager.TryWrite(this.currentApp.Languages))
+			if (!FileManager.TryWrite(this.currentApp.LanguageManager.Languages))
 			{
 				new ErrorWindow(
 					this,
@@ -553,14 +553,14 @@ namespace KeyboardSwitch.UI
 		{
 			this.langGrid.ColumnDefinitions.Add(new ColumnDefinition());
 
-			for (int i = 0; i < this.currentApp.Languages.Count; i++)
+			for (int i = 0; i < this.currentApp.LanguageManager.Languages.Count; i++)
 			{
 				this.AddNewBorder(
 					i,
 					this.langGrid.ColumnDefinitions.Count - 1, ' ',
 					this.langGrid.Children.Count);
 
-				this.currentApp.Languages[this.GetLanguage(i)].Append(' ');
+				this.currentApp.LanguageManager.Languages[this.GetLanguage(i)].Append(' ');
 			}
 
 			this.scrollViewer.ScrollToRightEnd();
@@ -602,7 +602,7 @@ namespace KeyboardSwitch.UI
 
 				this.langGrid.Children.Remove(borderToDelete);
 
-				this.currentApp.Languages[this.GetLanguage(i)]
+				this.currentApp.LanguageManager.Languages[this.GetLanguage(i)]
 					.Remove(
 						borderToDelete != null
 							? Grid.GetColumn(borderToDelete)

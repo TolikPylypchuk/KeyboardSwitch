@@ -40,10 +40,10 @@ namespace KeyboardSwitch.UI
 
 			switch (Settings.Default.KeyModifiers)
 			{
-				case "CS":
+				case KeyModifier.Ctrl | KeyModifier.Shift:
 					this.checkBox.SelectedIndex = 1;
 					break;
-				case "AS":
+				case KeyModifier.Alt | KeyModifier.Shift:
 					this.checkBox.SelectedIndex = 2;
 					break;
 			}
@@ -56,7 +56,7 @@ namespace KeyboardSwitch.UI
 			if (this.letterBoxBackward.Text.Length != 0 &&
 				this.letterBoxBackward.Text.Length != 0)
 			{
-				var modifiers = App.GetKeyModifiers();
+				var modifiers = Settings.Default.KeyModifiers;
 				bool modifiersChanged = false;
 
 				if (this.checkBox.SelectedIndex != index)
@@ -65,16 +65,16 @@ namespace KeyboardSwitch.UI
 					switch (this.checkBox.SelectedIndex)
 					{
 						case 0:
-							modifiers = KeyModifier.Ctrl | KeyModifier.Alt;
-							Settings.Default.KeyModifiers = "CA";
+							Settings.Default.KeyModifiers = modifiers =
+								KeyModifier.Alt | KeyModifier.Ctrl;
 							break;
 						case 1:
-							modifiers = KeyModifier.Ctrl | KeyModifier.Shift;
-							Settings.Default.KeyModifiers = "CS";
+							Settings.Default.KeyModifiers = modifiers =
+								KeyModifier.Ctrl | KeyModifier.Shift;
 							break;
 						case 2:
-							modifiers = KeyModifier.Alt | KeyModifier.Shift;
-							Settings.Default.KeyModifiers = "AS";
+							Settings.Default.KeyModifiers = modifiers =
+								KeyModifier.Alt | KeyModifier.Shift;
 							break;
 					}
 				}

@@ -49,10 +49,10 @@ namespace KeyboardSwitch.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("CA")]
-        public string KeyModifiers {
+        [global::System.Configuration.DefaultSettingValueAttribute("Alt, Ctrl")]
+        public global::KeyboardSwitch.Services.KeyModifier KeyModifiers {
             get {
-                return ((string)(this["KeyModifiers"]));
+                return ((global::KeyboardSwitch.Services.KeyModifier)(this["KeyModifiers"]));
             }
             set {
                 this["KeyModifiers"] = value;

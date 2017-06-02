@@ -86,6 +86,7 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Services\KeyModifier.cs" />
+    <Compile Include="Services\LanguageManager.cs" />
     <Compile Include="UI\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
