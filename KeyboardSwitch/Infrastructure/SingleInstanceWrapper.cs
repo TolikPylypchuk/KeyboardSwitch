@@ -18,7 +18,9 @@ namespace KeyboardSwitch.Infrastructure
 
 		protected override bool OnStartup(StartupEventArgs e)
 		{
-			this.app = new App(new LanguageManager());
+			this.app = new App(
+				FileManager.Current,
+				LanguageManager.Current);
 			this.app.Run();
 
 			return false;

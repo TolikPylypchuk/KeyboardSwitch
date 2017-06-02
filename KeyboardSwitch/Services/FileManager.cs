@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -9,38 +10,45 @@ using System.Windows.Input;
 
 namespace KeyboardSwitch.Services
 {
-	public static class FileManager
+	public class FileManager
 	{
-		public static readonly string SettingsLocation =
-			Path.Combine(
-				Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)
-					?? Environment.CurrentDirectory,
-				"mappings");
-
-		public static bool TryRead(
-			out Dictionary<CultureInfo, StringBuilder> dict,
-			bool all = false)
+		static FileManager()
 		{
-			dict = null;
+			Current = new FileManager
+			{
+				MappingsLocation =
+					Path.Combine(
+						Path.GetDirectoryName(
+							Assembly.GetEntryAssembly().Location)
+							?? Environment.CurrentDirectory,
+						ConfigurationManager.AppSettings["MappingsLocation"])
+			};
+		}
 
+		private FileManager() { }
+
+		public static FileManager Current { get; }
+
+		public string MappingsLocation { get; private set; }
+
+		public Dictionary<CultureInfo, StringBuilder> Read(bool all = false)
+		{
 			var langs = InputLanguageManager.Current.AvailableInputLanguages
 				?.Cast<CultureInfo>()
 				.ToList();
-
-			bool result = false;
-
+			
 			if (langs == null)
 			{
-				return false;
+				return null;
 			}
 
-			dict = new Dictionary<CultureInfo, StringBuilder>();
+			var result = new Dictionary<CultureInfo, StringBuilder>();
 
 			StreamReader reader = null;
 
 			try
 			{
-				reader = new StreamReader(SettingsLocation, Encoding.UTF8);
+				reader = new StreamReader(this.MappingsLocation, Encoding.UTF8);
 
 				while (!reader.EndOfStream)
 				{
@@ -66,40 +74,38 @@ namespace KeyboardSwitch.Services
 					{
 						if (langs.Contains(lang))
 						{
-							dict.Add(lang, new StringBuilder(tokens[1]));
+							result.Add(lang, new StringBuilder(tokens[1]));
 						}
 					} else
 					{
-						dict.Add(lang, new StringBuilder(tokens[1]));
+						result.Add(lang, new StringBuilder(tokens[1]));
 					}
 				}
 				
 				foreach (var lang in langs)
 				{
-					if (!dict.ContainsKey(lang))
+					if (!result.ContainsKey(lang))
 					{
-						dict.Add(lang, new StringBuilder());
+						result.Add(lang, new StringBuilder());
 					}
 				}
 
 				int maxLength =
-					dict.Values
+					result.Values
 						.Select(str => str.Length)
 						.Concat(new[] { 0 })
 						.Max();
 
-				foreach (var str in dict.Values)
+				foreach (var str in result.Values)
 				{
-					str.Append(new String(' ', maxLength - str.Length));
+					if (str.Length != maxLength)
+					{
+						str.Append(new String(' ', maxLength - str.Length));
+					}
 				}
-
-				result = true;
 			} catch
 			{
-				dict = langs.ToDictionary(
-					lang => lang,
-					lang => new StringBuilder(" "));
-				result = false;
+				result = null;
 			} finally
 			{
 				reader?.Close();
@@ -108,22 +114,22 @@ namespace KeyboardSwitch.Services
 			return result;
 		}
 
-		public static bool TryWrite(
-			Dictionary<CultureInfo, StringBuilder> dict)
+		public bool Write(Dictionary<CultureInfo, StringBuilder> dict)
 		{
-			bool result = TryRead(out var fullDict, true);
+			var fullDict = this.Read(true);
 
-			if (!result)
+			if (fullDict == null)
 			{
 				return false;
 			}
 
 			StreamWriter writer = null;
+			bool result = true;
 
 			try
 			{
 				writer = new StreamWriter(
-					SettingsLocation,
+					this.MappingsLocation,
 					false,
 					Encoding.UTF8);
 
@@ -134,10 +140,9 @@ namespace KeyboardSwitch.Services
 							? $"{pair.Key}\t{dict[pair.Key]}"
 							: $"{pair.Key}\t{pair.Value}");
 				}
-
-				result = true;
 			} catch
 			{
+				fullDict = null;
 				result = false;
 			} finally
 			{

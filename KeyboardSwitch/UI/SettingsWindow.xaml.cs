@@ -9,7 +9,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 
 using KeyboardSwitch.Properties;
-using KeyboardSwitch.Services;
 
 namespace KeyboardSwitch.UI
 {
@@ -160,12 +159,12 @@ namespace KeyboardSwitch.UI
 								Grid.SetColumn(item, col);
 							}
 
-							foreach (var builder in
+							foreach (var str in
 								currentApp.LanguageManager.Languages.Values)
 							{
-								char swap = builder[col];
-								builder[col] = builder[col + 1];
-								builder[col + 1] = swap;
+								char swap = str[col];
+								str[col] = str[col + 1];
+								str[col + 1] = swap;
 							}
 						}
 						break;
@@ -506,7 +505,8 @@ namespace KeyboardSwitch.UI
 				}
 			}
 			
-			if (!FileManager.TryWrite(this.currentApp.LanguageManager.Languages))
+			if (!this.currentApp.FileManager.Write(
+				this.currentApp.LanguageManager.Languages))
 			{
 				new ErrorWindow(
 					this,

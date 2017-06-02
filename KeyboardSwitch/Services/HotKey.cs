@@ -43,7 +43,7 @@ namespace KeyboardSwitch.Services
 			int virtualKeyCode = KeyInterop.VirtualKeyFromKey(Key);
 			this.Id = virtualKeyCode + ((int)this.KeyModifiers * 0x10000);
 
-			bool result = NativeMethods.RegisterHotKey(
+			bool result = NativeFunctions.RegisterHotKey(
 				IntPtr.Zero,
 				this.Id,
 				(uint)this.KeyModifiers,
@@ -65,7 +65,7 @@ namespace KeyboardSwitch.Services
 		{
 			if (dictHotKeyToCallBackProc.ContainsKey(this.Id))
 			{
-				NativeMethods.UnregisterHotKey(IntPtr.Zero, this.Id);
+				NativeFunctions.UnregisterHotKey(IntPtr.Zero, this.Id);
 				dictHotKeyToCallBackProc.Remove(this.Id);
 			}
 		}

@@ -11,15 +11,16 @@ using KeyboardSwitch.UI;
 
 namespace KeyboardSwitch
 {
-	[SuppressMessage("ReSharper", "UnusedVariable")]
-	[SuppressMessage("ReSharper", "FunctionNeverReturns")]
+	[ExcludeFromCodeCoverage]
 	public class App : Application
 	{
-		public App(LanguageManager manager)
+		public App(FileManager fileManager, LanguageManager languageManager)
 		{
-			this.LanguageManager = manager;
+			this.FileManager = fileManager;
+			this.LanguageManager = languageManager;
 		}
 
+		public FileManager FileManager { get; private set; }
 		public LanguageManager LanguageManager { get; private set; }
 
 		public HotKey HotKeyForward { get; set; }
@@ -75,19 +76,10 @@ namespace KeyboardSwitch
 
 			this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
-			var task = Task.Factory.StartNew(async () =>
-			{
-				while (true)
-				{
-					this.LanguageManager.HandleCurrentLanguage();
-					await Task.Delay(100);
-				}
-			});
-
-			bool success = FileManager.TryRead(out var langs);
+			var langs = FileManager.Read();
 			this.LanguageManager.Languages = langs;
 
-			if (!success)
+			if (langs == null)
 			{
 				new ErrorWindow(
 					null,
@@ -118,6 +110,8 @@ namespace KeyboardSwitch
 				await Task.Delay(500);
 				this.MainWindow.Hide();
 			}
+
+			await this.HandleLanguageLoopAsync();
 		}
 
 		protected override void OnExit(ExitEventArgs e)
@@ -125,6 +119,16 @@ namespace KeyboardSwitch
 			this.HotKeyForward.Dispose();
 			this.HotKeyBackward.Dispose();
 			base.OnExit(e);
+		}
+
+		[SuppressMessage("ReSharper", "FunctionNeverReturns")]
+		private async Task HandleLanguageLoopAsync()
+		{
+			while (true)
+			{
+				this.LanguageManager.HandleCurrentLanguage();
+				await Task.Delay(100);
+			}
 		}
 	}
 }

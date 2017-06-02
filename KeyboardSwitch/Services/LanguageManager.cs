@@ -14,6 +14,10 @@ namespace KeyboardSwitch.Services
 {
 	public class LanguageManager
 	{
+		private LanguageManager() { }
+
+		public static LanguageManager Current { get; } = new LanguageManager();
+
 		public CultureInfo CurrentLanguage { get; private set; }
 		public Dictionary<CultureInfo, StringBuilder> Languages { get; set; }
 
@@ -23,9 +27,9 @@ namespace KeyboardSwitch.Services
 		{
 			lock (this.SyncRoot)
 			{
-				var layout = NativeMethods.GetKeyboardLayout(
-					NativeMethods.GetWindowThreadProcessId(
-						NativeMethods.GetForegroundWindow(), IntPtr.Zero));
+				var layout = NativeFunctions.GetKeyboardLayout(
+					NativeFunctions.GetWindowThreadProcessId(
+						NativeFunctions.GetForegroundWindow(), IntPtr.Zero));
 
 				var currentCulture = new CultureInfo((short)layout.ToInt64());
 
@@ -49,16 +53,16 @@ namespace KeyboardSwitch.Services
 			InputLanguageManager.Current.CurrentInputLanguage = this.CurrentLanguage;
 
 			var input = new StringBuilder(9);
-			NativeMethods.GetKeyboardLayout(
+			NativeFunctions.GetKeyboardLayout(
 				(uint)Process.GetCurrentProcess().Id);
 
-			NativeMethods.GetKeyboardLayoutName(input);
+			NativeFunctions.GetKeyboardLayoutName(input);
 
-			NativeMethods.PostMessage(
-				NativeMethods.GetForegroundWindow(),
+			NativeFunctions.PostMessage(
+				NativeFunctions.GetForegroundWindow(),
 				0x0050,
 				IntPtr.Zero,
-				NativeMethods.LoadKeyboardLayout(input.ToString(), 1));
+				NativeFunctions.LoadKeyboardLayout(input.ToString(), 1));
 
 			InputLanguageManager.Current.CurrentInputLanguage = lang;
 		}
@@ -112,7 +116,6 @@ namespace KeyboardSwitch.Services
 				{
 					string oldString =
 						this.Languages[this.CurrentLanguage].ToString();
-
 					string newString = this.Languages[toLang].ToString();
 
 					string text = Clipboard.GetText();
