@@ -16,15 +16,6 @@ namespace KeyboardSwitch
 	[ExcludeFromCodeCoverage]
 	public class App : Application
 	{
-		public App(FileManager fileManager, LanguageManager languageManager)
-		{
-			this.FileManager = fileManager;
-			this.LanguageManager = languageManager;
-		}
-
-		public FileManager FileManager { get; private set; }
-		public LanguageManager LanguageManager { get; private set; }
-
 		public HotKey HotKeyForward { get; set; }
 		public HotKey HotKeyBackward { get; set; }
 		
@@ -69,7 +60,7 @@ namespace KeyboardSwitch
 		
 		public void HotKeyPressed(HotKey key)
 		{
-			this.LanguageManager.SwitchText(key == this.HotKeyForward);
+			LanguageManager.Current.SwitchText(key == this.HotKeyForward);
 		}
 
 		protected override async void OnStartup(StartupEventArgs e)
@@ -94,9 +85,9 @@ namespace KeyboardSwitch
 
 		private void SetLanguages()
 		{
-			this.LanguageManager.Languages = this.FileManager.Read();
+			LanguageManager.Current.Languages = FileManager.Current.Read();
 
-			if (this.LanguageManager.Languages == null)
+			if (LanguageManager.Current.Languages == null)
 			{
 				new ErrorWindow(
 						null,
@@ -104,7 +95,7 @@ namespace KeyboardSwitch
 						"You have to define them yourself.")
 					.ShowDialog();
 
-				this.LanguageManager.Languages =
+				LanguageManager.Current.Languages =
 					InputLanguageManager.Current.AvailableInputLanguages
 						?.Cast<CultureInfo>()
 						.ToDictionary(lang => lang, _ => new StringBuilder(" "));
@@ -145,7 +136,7 @@ namespace KeyboardSwitch
 		{
 			while (true)
 			{
-				this.LanguageManager.HandleCurrentLanguage();
+				LanguageManager.Current.SetCurrentLanguage();
 				await Task.Delay(100);
 			}
 		}

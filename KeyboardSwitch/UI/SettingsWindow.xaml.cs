@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 
 using KeyboardSwitch.Properties;
+using KeyboardSwitch.Services;
 
 namespace KeyboardSwitch.UI
 {
@@ -44,7 +45,7 @@ namespace KeyboardSwitch.UI
 				this.nameGrid.RowDefinitions.Add(new RowDefinition());
 			}
 			
-			int length = currentApp.LanguageManager.Languages.Values.First().Length;
+			int length = LanguageManager.Current.Languages.Values.First().Length;
 
 			for (int i = 0; i < length; i++)
 			{
@@ -56,7 +57,7 @@ namespace KeyboardSwitch.UI
 				Width = new GridLength(55)
 			});
 			
-			int langCount = currentApp.LanguageManager.Languages.Count;
+			int langCount = LanguageManager.Current.Languages.Count;
 			int row = 0;
 
 			foreach (var lang in langs)
@@ -94,7 +95,7 @@ namespace KeyboardSwitch.UI
 
 				int col = 0;
 				string languageStr =
-					this.currentApp.LanguageManager.Languages[lang].ToString();
+					LanguageManager.Current.Languages[lang].ToString();
 
 				foreach (char ch in languageStr)
 				{
@@ -160,7 +161,7 @@ namespace KeyboardSwitch.UI
 							}
 
 							foreach (var str in
-								currentApp.LanguageManager.Languages.Values)
+								LanguageManager.Current.Languages.Values)
 							{
 								char swap = str[col];
 								str[col] = str[col + 1];
@@ -186,7 +187,7 @@ namespace KeyboardSwitch.UI
 								Grid.SetColumn(item, col);
 							}
 
-							foreach (var builder in currentApp.LanguageManager.Languages.Values)
+							foreach (var builder in LanguageManager.Current.Languages.Values)
 							{
 								char swap = builder[col];
 								builder[col] = builder[col - 1];
@@ -219,7 +220,7 @@ namespace KeyboardSwitch.UI
 
 			this.Hide();
 
-			for (int i = 0; i < this.currentApp.LanguageManager.Languages.Count; i++)
+			for (int i = 0; i < LanguageManager.Current.Languages.Count; i++)
 			{
 				var itemsInRow = this.GetItemsInRow(i);
 				int j = 0;
@@ -230,7 +231,7 @@ namespace KeyboardSwitch.UI
 
 					if (letterBox?.Text.Length == 0)
 					{
-						letterBox.Char = this.currentApp.LanguageManager.Languages[
+						letterBox.Char = LanguageManager.Current.Languages[
 							this.GetLanguage(i)][j];
 					}
 
@@ -373,7 +374,7 @@ namespace KeyboardSwitch.UI
 		{
 			if (border != null)
 			{
-				int count = this.currentApp.LanguageManager.Languages.Keys.Count;
+				int count = LanguageManager.Current.Languages.Keys.Count;
 				for (int i = 0; i < count; i++)
 				{
 					var itemsInRow = this.GetItemsInRow(i);
@@ -440,7 +441,7 @@ namespace KeyboardSwitch.UI
 
 				if (isUnique)
 				{
-					this.currentApp.LanguageManager.Languages[
+					LanguageManager.Current.Languages[
 						this.GetLanguage(Grid.GetRow(border))][
 							Grid.GetColumn(border)] = letterBox.Char;
 				}
@@ -487,7 +488,7 @@ namespace KeyboardSwitch.UI
 
 		private void Save_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			for (int i = 0; i < this.currentApp.LanguageManager.Languages.Count; i++)
+			for (int i = 0; i < LanguageManager.Current.Languages.Count; i++)
 			{
 				var itemsInRow = this.GetItemsInRow(i);
 				int j = 0;
@@ -498,15 +499,15 @@ namespace KeyboardSwitch.UI
 						letterBox.Text.Length == 0)
 					{
 						letterBox.Char =
-							this.currentApp.LanguageManager.Languages[GetLanguage(i)][j];
+							LanguageManager.Current.Languages[GetLanguage(i)][j];
 					}
 
 					j++;
 				}
 			}
 			
-			if (!this.currentApp.FileManager.Write(
-				this.currentApp.LanguageManager.Languages))
+			if (!FileManager.Current.Write(
+				LanguageManager.Current.Languages))
 			{
 				new ErrorWindow(
 					this,
@@ -553,14 +554,14 @@ namespace KeyboardSwitch.UI
 		{
 			this.langGrid.ColumnDefinitions.Add(new ColumnDefinition());
 
-			for (int i = 0; i < this.currentApp.LanguageManager.Languages.Count; i++)
+			for (int i = 0; i < LanguageManager.Current.Languages.Count; i++)
 			{
 				this.AddNewBorder(
 					i,
 					this.langGrid.ColumnDefinitions.Count - 1, ' ',
 					this.langGrid.Children.Count);
 
-				this.currentApp.LanguageManager.Languages[this.GetLanguage(i)].Append(' ');
+				LanguageManager.Current.Languages[this.GetLanguage(i)].Append(' ');
 			}
 
 			this.scrollViewer.ScrollToRightEnd();
@@ -602,7 +603,7 @@ namespace KeyboardSwitch.UI
 
 				this.langGrid.Children.Remove(borderToDelete);
 
-				this.currentApp.LanguageManager.Languages[this.GetLanguage(i)]
+				LanguageManager.Current.Languages[this.GetLanguage(i)]
 					.Remove(
 						borderToDelete != null
 							? Grid.GetColumn(borderToDelete)

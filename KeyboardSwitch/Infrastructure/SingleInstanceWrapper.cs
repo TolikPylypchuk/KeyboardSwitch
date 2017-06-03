@@ -2,8 +2,6 @@
 
 using Microsoft.VisualBasic.ApplicationServices;
 
-using KeyboardSwitch.Services;
-
 namespace KeyboardSwitch.Infrastructure
 {
 	[ExcludeFromCodeCoverage]
@@ -18,9 +16,7 @@ namespace KeyboardSwitch.Infrastructure
 
 		protected override bool OnStartup(StartupEventArgs e)
 		{
-			this.app = new App(
-				FileManager.Current,
-				LanguageManager.Current);
+			this.app = new App();
 			this.app.Run();
 
 			return false;

@@ -7,8 +7,9 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
-using KeyboardSwitch.Infrastructure;
 using KeyboardSwitch.UI;
+
+using static KeyboardSwitch.Infrastructure.NativeFunctions;
 
 namespace KeyboardSwitch.Services
 {
@@ -23,13 +24,13 @@ namespace KeyboardSwitch.Services
 
 		private object SyncRoot { get; } = new Object();
 
-		public void HandleCurrentLanguage()
+		public void SetCurrentLanguage()
 		{
 			lock (this.SyncRoot)
 			{
-				var layout = NativeFunctions.GetKeyboardLayout(
-					NativeFunctions.GetWindowThreadProcessId(
-						NativeFunctions.GetForegroundWindow(), IntPtr.Zero));
+				var layout = GetKeyboardLayout(
+					GetWindowThreadProcessId(
+						GetForegroundWindow(), IntPtr.Zero));
 
 				var currentCulture = new CultureInfo((short)layout.ToInt64());
 
@@ -53,16 +54,15 @@ namespace KeyboardSwitch.Services
 			InputLanguageManager.Current.CurrentInputLanguage = this.CurrentLanguage;
 
 			var input = new StringBuilder(9);
-			NativeFunctions.GetKeyboardLayout(
-				(uint)Process.GetCurrentProcess().Id);
+			GetKeyboardLayout((uint)Process.GetCurrentProcess().Id);
 
-			NativeFunctions.GetKeyboardLayoutName(input);
+			GetKeyboardLayoutName(input);
 
-			NativeFunctions.PostMessage(
-				NativeFunctions.GetForegroundWindow(),
+			PostMessage(
+				GetForegroundWindow(),
 				0x0050,
 				IntPtr.Zero,
-				NativeFunctions.LoadKeyboardLayout(input.ToString(), 1));
+				LoadKeyboardLayout(input.ToString(), 1));
 
 			InputLanguageManager.Current.CurrentInputLanguage = lang;
 		}
