@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -39,7 +40,7 @@ namespace KeyboardSwitch.UI
 					Path.GetDirectoryName(
 						Assembly.GetEntryAssembly().Location) ??
 							Environment.CurrentDirectory,
-					"readme.txt"));
+					ConfigurationManager.AppSettings["ReadmeLocation"]));
 		}
 	}
 }
