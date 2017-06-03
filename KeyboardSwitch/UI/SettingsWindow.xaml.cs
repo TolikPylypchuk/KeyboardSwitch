@@ -428,9 +428,11 @@ namespace KeyboardSwitch.UI
 									letterBox != currentBox &&
 									letterBox.Char == currentBox?.Char))
 					{
-						new ErrorWindow(
-							this, "This character is already occupied.")
-							.ShowDialog();
+						MessageBox.Show(
+							"This character is already occupied.",
+							"Error",
+							MessageBoxButton.OK,
+							MessageBoxImage.Error);
 
 						isUnique = false;
 						letterBox.Text = string.Empty;
@@ -509,10 +511,11 @@ namespace KeyboardSwitch.UI
 			if (!FileManager.Current.Write(
 				LanguageManager.Current.Languages))
 			{
-				new ErrorWindow(
-					this,
-					"Couldn't write new info into the file.")
-					.ShowDialog();
+				MessageBox.Show(
+					"Couldn't write new info into the file.",
+					"Error",
+					MessageBoxButton.OK,
+					MessageBoxImage.Error);
 			}
 
 			Settings.Default.Save();

@@ -7,8 +7,6 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
-using KeyboardSwitch.UI;
-
 using static KeyboardSwitch.Infrastructure.NativeFunctions;
 
 namespace KeyboardSwitch.Services
@@ -93,8 +91,7 @@ namespace KeyboardSwitch.Services
 					{
 						finished = lang.Equals(
 							this.CurrentLanguage);
-					}
-					else
+					} else
 					{
 						toLang = lang;
 						finished = false;
@@ -126,23 +123,23 @@ namespace KeyboardSwitch.Services
 						if (Char.IsWhiteSpace(ch) || Char.IsControl(ch))
 						{
 							result.Append(ch);
-						}
-						else
+						} else
 						{
 							try
 							{
 								char newCh = newString[oldString.IndexOf(ch)];
 								result.Append(newCh);
-							}
-							catch (OutOfMemoryException)
+							} catch (OutOfMemoryException)
 							{
-								new ErrorWindow(
-									null, "Out of memory.\n").ShowDialog();
+								MessageBox.Show(
+									"Out of memory.",
+									"Keyboard Layout Switch - Error",
+									MessageBoxButton.OK,
+									MessageBoxImage.Error);
 								result = null;
 								GC.Collect();
 								return;
-							}
-							catch
+							} catch
 							{
 								result.Append(ch);
 							}

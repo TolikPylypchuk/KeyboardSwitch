@@ -123,11 +123,12 @@ namespace KeyboardSwitch.UI
 					if (this.letterBoxBackward.Text.Length > 0 &&
 					    this.letterBoxForward.Char == letterBoxBackward.Char)
 					{
-						new ErrorWindow(
-							this,
+						MessageBox.Show(
 							"This letter is already set as the\n" + 
-							"backward hot key.")
-							.ShowDialog();
+							"backward hot key.",
+							"Error",
+							MessageBoxButton.OK,
+							MessageBoxImage.Error);
 
 						this.letterBoxForward.Char = this.charF;
 						return;
@@ -136,7 +137,11 @@ namespace KeyboardSwitch.UI
 					this.keyF = App.GetKey(this.letterBoxForward.Char);
 				} catch (ArgumentOutOfRangeException exp)
 				{
-					new ErrorWindow(this, exp.ParamName).ShowDialog();
+					MessageBox.Show(
+						exp.Message,
+						"Error",
+						MessageBoxButton.OK,
+						MessageBoxImage.Error);
 					this.letterBoxForward.Char =
 						Settings.Default.HotKeyForward;
 				}
@@ -156,11 +161,12 @@ namespace KeyboardSwitch.UI
 					if (this.letterBoxForward.Text.Length > 0 &&
 					    this.letterBoxBackward.Char == letterBoxForward.Char)
 					{
-						new ErrorWindow(
-							this,
+						MessageBox.Show(
 							"This letter is already set as the\n" +
-							"forward hot key.")
-							.ShowDialog();
+							"forward hot key.",
+							"Error",
+							MessageBoxButton.OK,
+							MessageBoxImage.Error);
 						this.letterBoxBackward.Char = this.charB;
 						return;
 					}
@@ -168,7 +174,11 @@ namespace KeyboardSwitch.UI
 					this.keyB = App.GetKey(this.letterBoxBackward.Char);
 				} catch (ArgumentOutOfRangeException exp)
 				{
-					new ErrorWindow(this, exp.ParamName).ShowDialog();
+					MessageBox.Show(
+						exp.Message,
+						"Error",
+						MessageBoxButton.OK,
+						MessageBoxImage.Error);
 					this.letterBoxBackward.Char =
 						Settings.Default.HotKeyBackward;
 				}

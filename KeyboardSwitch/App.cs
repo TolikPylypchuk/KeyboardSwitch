@@ -89,11 +89,12 @@ namespace KeyboardSwitch
 
 			if (LanguageManager.Current.Languages == null)
 			{
-				new ErrorWindow(
-						null,
-						"Cannot read character mappings.\n" +
-						"You have to define them yourself.")
-					.ShowDialog();
+				MessageBox.Show(
+					"Cannot read character mappings.\n" +
+					"You have to define them yourself.",
+					"Keyboard Layout Switch - Error",
+					MessageBoxButton.OK,
+					MessageBoxImage.Error);
 
 				LanguageManager.Current.Languages =
 					InputLanguageManager.Current.AvailableInputLanguages
