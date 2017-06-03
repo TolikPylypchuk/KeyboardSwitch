@@ -13,19 +13,14 @@ namespace KeyboardSwitch.UI
 		public AboutWindow()
 		{
 			this.InitializeComponent();
-		}
 
-		public AboutWindow(Window owner)
-			: this()
-		{
-			this.Owner = owner;
 			var version = Assembly.GetExecutingAssembly().GetName().Version;
 
 			this.textBlock.Text = "Keyboard Layout Switch\n" +
-				$"Version {version.Major}.{version.Minor}\n" +
-				"Created by Tolik Pylypchuk";
+			                      $"Version {version.Major}.{version.Minor}\n" +
+			                      "Created by Tolik Pylypchuk";
 		}
-
+		
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
 			this.Close();
@@ -35,7 +30,7 @@ namespace KeyboardSwitch.UI
 			object sender, MouseButtonEventArgs e)
 		{
 			Process.Start(
-				"notepad.exe",
+				ConfigurationManager.AppSettings["ReadmeApp"],
 				Path.Combine(
 					Path.GetDirectoryName(
 						Assembly.GetEntryAssembly().Location) ??

@@ -11,6 +11,10 @@
         MinHeight="200" MinWidth="380" PreviewKeyDown="Window_PreviewKeyDown"
         PreviewMouseWheel="Window_PreviewMouseWheel"
         FocusManager.FocusedElement="{Binding RelativeSource={x:Static RelativeSource.Self}, Mode=OneTime}">
+	<Window.DataContext>
+		<local:SettingsViewModel x:Name="model" />
+	</Window.DataContext>
+	
 	<Window.Resources>
 		<Style TargetType="{x:Type local:LetterBox}">
 			<Setter Property="HorizontalAlignment" Value="Center" />

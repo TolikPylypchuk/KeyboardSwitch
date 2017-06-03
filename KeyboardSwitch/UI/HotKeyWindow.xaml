@@ -6,6 +6,10 @@
         xmlns:local="clr-namespace:KeyboardSwitch.UI"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize" Title="Hot Keys" Height="180" Width="235">
+	<Window.DataContext>
+		<local:HotKeyViewModel x:Name="model" />
+	</Window.DataContext>
+	
 	<Window.Resources>
 		<Style TargetType="{x:Type local:LetterBox}">
 			<Setter Property="VerticalAlignment" Value="Center" />
@@ -39,7 +43,7 @@
 			<ColumnDefinition Width="*" />
 		</Grid.ColumnDefinitions>
 
-		<ComboBox x:Name="checkBox" Grid.Row="0" Grid.RowSpan="2"
+		<ComboBox x:Name="comboBox" Grid.Row="0" Grid.RowSpan="2"
 		          Grid.Column="0" VerticalAlignment="Center" Margin="10"
 		          HorizontalAlignment="Right" SelectedIndex="0">
 			<ComboBox.Items>

@@ -102,6 +102,8 @@
     <Compile Include="App.cs" />
     <Compile Include="Infrastructure\NativeFunctions.cs" />
     <Compile Include="Infrastructure\SingleInstanceWrapper.cs" />
+    <Compile Include="UI\HotKeyViewModel.cs" />
+    <Compile Include="UI\SettingsViewModel.cs" />
     <Compile Include="UI\SwitchCommands.cs" />
     <Page Include="UI\AboutWindow.xaml">
       <SubType>Designer</SubType>
