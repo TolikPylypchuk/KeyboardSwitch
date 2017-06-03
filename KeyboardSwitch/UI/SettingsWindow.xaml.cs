@@ -15,7 +15,6 @@ namespace KeyboardSwitch.UI
 {
 	public partial class SettingsWindow : Window
 	{
-		private App currentApp = Application.Current as App;
 		private bool canSave;
 		private bool canClose;
 		private bool isBorderClicked;
@@ -24,11 +23,6 @@ namespace KeyboardSwitch.UI
 		public SettingsWindow()
 		{
 			this.InitializeComponent();
-
-			if (currentApp == null)
-			{
-				return;
-			}
 			
 			var langs = InputLanguageManager.Current.AvailableInputLanguages
 				?.Cast<CultureInfo>()
@@ -245,7 +239,7 @@ namespace KeyboardSwitch.UI
 		private void Window_Closed(object sender, EventArgs e)
 		{
 			this.tbIcon.Dispose();
-			this.currentApp.Shutdown();
+			Application.Current.Shutdown();
 		}
 
 		private void StackPanel_MouseLeftButtonDown(
@@ -474,12 +468,12 @@ namespace KeyboardSwitch.UI
 
 		private void SwitchForward_Click(object sender, RoutedEventArgs e)
 		{
-			this.currentApp.HotKeyPressed(this.currentApp.HotKeyForward);
+			LanguageManager.Current.SwitchText(true);
 		}
 
 		private void SwitchBackward_Click(object sender, RoutedEventArgs e)
 		{
-			this.currentApp.HotKeyPressed(this.currentApp.HotKeyBackward);
+			LanguageManager.Current.SwitchText(false);
 		}
 
 		private void Exit_Click(object sender, RoutedEventArgs e)
@@ -536,14 +530,14 @@ namespace KeyboardSwitch.UI
 			object sender,
 			ExecutedRoutedEventArgs e)
 		{
-			this.currentApp.HotKeyPressed(this.currentApp.HotKeyForward);
+			LanguageManager.Current.SwitchText(true);
 		}
 
 		private void SwitchBackward_Executed(
 			object sender,
 			ExecutedRoutedEventArgs e)
 		{
-			this.currentApp.HotKeyPressed(this.currentApp.HotKeyBackward);
+			LanguageManager.Current.SwitchText(false);
 		}
 
 		private void Switch_CanExecute(

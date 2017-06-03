@@ -54,7 +54,7 @@ namespace KeyboardSwitch
 				window.BringToForeground();
 			} else
 			{
-				BringWindowToForeground(MainWindow);
+				BringWindowToForeground(this.MainWindow);
 			}
 		}
 		
