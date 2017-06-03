@@ -91,17 +91,23 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interop\LayoutManager.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Services\KeyModifier.cs" />
+    <Compile Include="Services\DefaultInputLanguageManager.cs" />
+    <Compile Include="Services\IInputLanguageManager.cs" />
+    <Compile Include="Services\ILayoutManager.cs" />
+    <Compile Include="Services\ITextManager.cs" />
+    <Compile Include="Interop\KeyModifier.cs" />
     <Compile Include="Services\LanguageManager.cs" />
+    <Compile Include="Services\ClipboardTextManager.cs" />
     <Compile Include="UI\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\CharChangedEventArgs.cs" />
     <Compile Include="Services\FileManager.cs" />
     <Compile Include="App.cs" />
-    <Compile Include="Infrastructure\NativeFunctions.cs" />
-    <Compile Include="Infrastructure\SingleInstanceWrapper.cs" />
+    <Compile Include="Interop\NativeFunctions.cs" />
+    <Compile Include="SingleInstanceWrapper.cs" />
     <Compile Include="UI\HotKeyViewModel.cs" />
     <Compile Include="UI\SettingsViewModel.cs" />
     <Compile Include="UI\SwitchCommands.cs" />

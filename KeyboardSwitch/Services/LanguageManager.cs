@@ -5,9 +5,6 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows;
-using System.Windows.Input;
-
-using static KeyboardSwitch.Infrastructure.NativeFunctions;
 
 namespace KeyboardSwitch.Services
 {
@@ -20,26 +17,26 @@ namespace KeyboardSwitch.Services
 		public CultureInfo CurrentLanguage { get; private set; }
 		public Dictionary<CultureInfo, StringBuilder> Languages { get; set; }
 
+		public IInputLanguageManager InputLanguageManager { get; set; }
+		public ILayoutManager LayoutManager { get; set; }
+		public ITextManager TextManager { get; set; }
+
 		private object SyncRoot { get; } = new Object();
 
 		public void SetCurrentLanguage()
 		{
 			lock (this.SyncRoot)
 			{
-				var layout = GetKeyboardLayout(
-					GetWindowThreadProcessId(
-						GetForegroundWindow(), IntPtr.Zero));
-
-				var currentCulture = new CultureInfo((short)layout.ToInt64());
+				var currentLanguage = this.LayoutManager.GetCurrentLayout();
 
 				if (this.CurrentLanguage == null ||
-				    this.CurrentLanguage.LCID != currentCulture.LCID)
+				    this.CurrentLanguage.LCID != currentLanguage.LCID)
 				{
 					Debug.Write(
-						"In HandleCurrentLanguage(): " +
+						$"In {nameof(SetCurrentLanguage)}(): " +
 						(this.CurrentLanguage?.ToString() ?? "null") + " -> ");
 
-					this.CurrentLanguage = currentCulture;
+					this.CurrentLanguage = currentLanguage;
 
 					Debug.WriteLine(this.CurrentLanguage.ToString());
 				}
@@ -47,45 +44,23 @@ namespace KeyboardSwitch.Services
 		}
 
 		public void ChangeLanguage()
-		{
-			var lang = InputLanguageManager.Current.CurrentInputLanguage;
-			InputLanguageManager.Current.CurrentInputLanguage = this.CurrentLanguage;
-
-			var input = new StringBuilder(9);
-			GetKeyboardLayout((uint)Process.GetCurrentProcess().Id);
-
-			GetKeyboardLayoutName(input);
-
-			PostMessage(
-				GetForegroundWindow(),
-				0x0050,
-				IntPtr.Zero,
-				LoadKeyboardLayout(input.ToString(), 1));
-
-			InputLanguageManager.Current.CurrentInputLanguage = lang;
-		}
+			=> this.LayoutManager.SetCurrentLayout(this.CurrentLanguage);
 
 		public void SwitchText(bool forward)
 		{
 			lock (this.SyncRoot)
 			{
-				CultureInfo toLang = null;
+				CultureInfo targetLang = null;
 
-				var list = InputLanguageManager.Current.AvailableInputLanguages
-					?.Cast<CultureInfo>().ToList();
-
-				if (list == null)
-				{
-					return;
-				}
-
+				var langs = this.InputLanguageManager.InputLanguages.ToList();
+				
 				if (!forward)
 				{
-					list.Reverse();
+					langs.Reverse();
 				}
 
 				bool finished = false;
-				foreach (var lang in list)
+				foreach (var lang in langs)
 				{
 					if (!finished)
 					{
@@ -93,7 +68,7 @@ namespace KeyboardSwitch.Services
 							this.CurrentLanguage);
 					} else
 					{
-						toLang = lang;
+						targetLang = lang;
 						finished = false;
 						break;
 					}
@@ -101,21 +76,21 @@ namespace KeyboardSwitch.Services
 
 				if (finished)
 				{
-					toLang = list[0];
+					targetLang = langs[0];
 				}
 
-				if (toLang == null)
+				if (targetLang == null)
 				{
 					return;
 				}
 
-				if (Clipboard.ContainsText())
+				if (this.TextManager.HasText)
 				{
 					string oldString =
 						this.Languages[this.CurrentLanguage].ToString();
-					string newString = this.Languages[toLang].ToString();
+					string newString = this.Languages[targetLang].ToString();
 
-					string text = Clipboard.GetText();
+					string text = this.TextManager.GetText();
 					var result = new StringBuilder();
 
 					foreach (char ch in text)
@@ -146,12 +121,12 @@ namespace KeyboardSwitch.Services
 						}
 					}
 
-					Clipboard.SetText(result.ToString());
+					this.TextManager.SetText(result.ToString());
 
 					Debug.Write(
-						$"In SwitchText(): {this.CurrentLanguage} -> ");
+						$"In {nameof(SwitchText)}(): {this.CurrentLanguage} -> ");
 
-					this.CurrentLanguage = toLang;
+					this.CurrentLanguage = targetLang;
 					this.ChangeLanguage();
 
 					Debug.WriteLine(this.CurrentLanguage);

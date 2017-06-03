@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,8 +15,17 @@ namespace KeyboardSwitch
 	[ExcludeFromCodeCoverage]
 	public class App : Application
 	{
+		public App(FileManager fileManager, LanguageManager langManager)
+		{
+			this.FileManager = fileManager;
+			this.LanguageManager = langManager;
+		}
+
 		public HotKey HotKeyForward { get; set; }
 		public HotKey HotKeyBackward { get; set; }
+
+		public FileManager FileManager { get; }
+		public LanguageManager LanguageManager { get; }
 		
 		public static Key GetKey(char value)
 		{
@@ -60,7 +68,7 @@ namespace KeyboardSwitch
 		
 		public void HotKeyPressed(HotKey key)
 		{
-			LanguageManager.Current.SwitchText(key == this.HotKeyForward);
+			this.LanguageManager.SwitchText(key == this.HotKeyForward);
 		}
 
 		protected override async void OnStartup(StartupEventArgs e)
@@ -85,9 +93,9 @@ namespace KeyboardSwitch
 
 		private void SetLanguages()
 		{
-			LanguageManager.Current.Languages = FileManager.Current.Read();
+			this.LanguageManager.Languages = FileManager.Current.Read();
 
-			if (LanguageManager.Current.Languages == null)
+			if (this.LanguageManager.Languages == null)
 			{
 				MessageBox.Show(
 					"Cannot read character mappings.\n" +
@@ -96,9 +104,8 @@ namespace KeyboardSwitch
 					MessageBoxButton.OK,
 					MessageBoxImage.Error);
 
-				LanguageManager.Current.Languages =
-					InputLanguageManager.Current.AvailableInputLanguages
-						?.Cast<CultureInfo>()
+				this.LanguageManager.Languages =
+					this.LanguageManager.InputLanguageManager.InputLanguages
 						.ToDictionary(lang => lang, _ => new StringBuilder(" "));
 			}
 		}
@@ -137,7 +144,7 @@ namespace KeyboardSwitch
 		{
 			while (true)
 			{
-				LanguageManager.Current.SetCurrentLanguage();
+				this.LanguageManager.SetCurrentLanguage();
 				await Task.Delay(100);
 			}
 		}

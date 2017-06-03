@@ -8,7 +8,7 @@
     <Setting Name="HotKeyBackward" Type="System.Char" Scope="User">
       <Value Profile="(Default)">Z</Value>
     </Setting>
-    <Setting Name="KeyModifiers" Type="KeyboardSwitch.Services.KeyModifier" Scope="User">
+    <Setting Name="KeyModifiers" Type="KeyboardSwitch.Interop.KeyModifier" Scope="User">
       <Value Profile="(Default)">Alt, Ctrl</Value>
     </Setting>
   </Settings>

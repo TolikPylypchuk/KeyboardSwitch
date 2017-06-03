@@ -1,7 +1,5 @@
 ﻿using System;
 
-using KeyboardSwitch.Infrastructure;
-
 namespace KeyboardSwitch
 {
 	public class Program

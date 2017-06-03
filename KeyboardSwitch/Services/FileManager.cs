@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Windows.Input;
 
@@ -12,24 +10,11 @@ namespace KeyboardSwitch.Services
 {
 	public class FileManager
 	{
-		static FileManager()
-		{
-			Current = new FileManager
-			{
-				MappingsLocation =
-					Path.Combine(
-						Path.GetDirectoryName(
-							Assembly.GetEntryAssembly().Location)
-							?? Environment.CurrentDirectory,
-						ConfigurationManager.AppSettings["MappingsLocation"])
-			};
-		}
-
 		private FileManager() { }
 
-		public static FileManager Current { get; }
+		public static FileManager Current { get; } = new FileManager();
 
-		public string MappingsLocation { get; private set; }
+		public string MappingsLocation { get; set; }
 
 		public Dictionary<CultureInfo, StringBuilder> Read(bool all = false)
 		{

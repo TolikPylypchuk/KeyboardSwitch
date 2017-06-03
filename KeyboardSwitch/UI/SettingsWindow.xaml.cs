@@ -29,15 +29,9 @@ namespace KeyboardSwitch.UI
 
 		private void InitializeLanguages()
 		{
-			var langs = InputLanguageManager.Current.AvailableInputLanguages
-			   ?.Cast<CultureInfo>()
-				.ToList();
-
-			if (langs == null)
-			{
-				return;
-			}
-
+			var langs = this.model.CurrentApp.LanguageManager
+				.InputLanguageManager.InputLanguages.ToList();
+			
 			for (int i = 0; i < langs.Count; i++)
 			{
 				this.langGrid.RowDefinitions.Add(new RowDefinition());
@@ -239,7 +233,7 @@ namespace KeyboardSwitch.UI
 		private void Window_Closed(object sender, EventArgs e)
 		{
 			this.tbIcon.Dispose();
-			Application.Current.Shutdown();
+			this.model.CurrentApp.Shutdown();
 		}
 
 		private void StackPanel_MouseLeftButtonDown(

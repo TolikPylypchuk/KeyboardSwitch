@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace KeyboardSwitch.Infrastructure
+namespace KeyboardSwitch.Interop
 {
 	[ExcludeFromCodeCoverage]
 	internal class NativeFunctions

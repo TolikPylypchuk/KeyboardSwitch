@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
+using KeyboardSwitch.Interop;
 using KeyboardSwitch.Properties;
 using KeyboardSwitch.Services;
 

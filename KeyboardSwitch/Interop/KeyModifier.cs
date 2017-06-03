@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KeyboardSwitch.Services
+namespace KeyboardSwitch.Interop
 {
 	[Flags]
 	public enum KeyModifier
