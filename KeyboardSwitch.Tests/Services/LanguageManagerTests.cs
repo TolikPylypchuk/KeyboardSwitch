@@ -27,61 +27,89 @@ namespace KeyboardSwitch.Tests.Services
 		[TestInitialize]
 		public void Initialize()
 		{
-			mockInputLanguageManager = new Mock<IInputLanguageManager>();
+			this.mockInputLanguageManager = new Mock<IInputLanguageManager>();
 
-			mockInputLanguageManager.SetupGet(ls => ls.InputLanguages)
-				.Returns(new[] { ukUA, enUS });
+			this.mockInputLanguageManager.SetupGet(ls => ls.InputLanguages)
+				.Returns(new[] { this.ukUA, this.enUS });
 
 			LanguageManager.Current.InputLanguageManager =
-				mockInputLanguageManager.Object;
+				this.mockInputLanguageManager.Object;
 			
 			LanguageManager.Current.Languages =
 				new Dictionary<CultureInfo, StringBuilder>
 			{
-				[enUS] = new StringBuilder("as"),
-				[ukUA] = new StringBuilder("фі")
+				[this.enUS] = new StringBuilder("as"),
+				[this.ukUA] = new StringBuilder("фі")
 			};
 
-			mockLayoutManager = new Mock<ILayoutManager>();
+			this.mockLayoutManager = new Mock<ILayoutManager>();
 
-			mockLayoutManager.Setup(m => m.SetCurrentLayout(ukUA))
-				.Callback(() => currentLang = ukUA);
-			mockLayoutManager.Setup(m => m.SetCurrentLayout(enUS))
-				.Callback(() => currentLang = enUS);
+			this.mockLayoutManager.Setup(m => m.SetCurrentLayout(this.ukUA))
+				.Callback(() => currentLang = this.ukUA);
+			this.mockLayoutManager.Setup(m => m.SetCurrentLayout(this.enUS))
+				.Callback(() => currentLang = this.enUS);
 
-			LanguageManager.Current.LayoutManager = mockLayoutManager.Object;
+			LanguageManager.Current.LayoutManager = this.mockLayoutManager.Object;
 
-			mockTextManager = new Mock<ITextManager>();
+			this.mockTextManager = new Mock<ITextManager>();
 
-			LanguageManager.Current.TextManager = mockTextManager.Object;
+			LanguageManager.Current.TextManager = this.mockTextManager.Object;
 		}
 
 		[TestMethod]
 		public void SwitchTextForwardTest()
 		{
-			currentLang = enUS;
+			this.currentLang = this.enUS;
 
-			mockLayoutManager.Setup(m => m.GetCurrentLayout())
-				.Returns(currentLang);
+			this.mockLayoutManager.Setup(m => m.GetCurrentLayout())
+				.Returns(this.currentLang);
 
-			text = "as";
+			this.text = "as";
 
-			mockTextManager.SetupGet(m => m.HasText)
+			this.mockTextManager.SetupGet(m => m.HasText)
 				.Returns(true);
-			mockTextManager.Setup(m => m.GetText())
-				.Returns(text);
-			mockTextManager.Setup(m => m.SetText("as"))
-				.Callback(() => text = "as");
-			mockTextManager.Setup(m => m.SetText("фі"))
-				.Callback(() => text = "фі");
+			this.mockTextManager.Setup(m => m.GetText())
+				.Returns(this.text);
+			this.mockTextManager.Setup(m => m.SetText("as"))
+				.Callback(() => this.text = "as");
+			this.mockTextManager.Setup(m => m.SetText("фі"))
+				.Callback(() => this.text = "фі");
 
 			LanguageManager.Current.SetCurrentLanguage();
 			LanguageManager.Current.SwitchText(true);
 
-			Assert.AreEqual("фі", text);
+			Assert.AreEqual("фі", this.text);
 
-			mockTextManager.Verify(m => m.GetText(), Times.Once());
-			mockTextManager.Verify(m => m.SetText("фі"), Times.Once());
+			this.mockTextManager.Verify(m => m.GetText(), Times.AtLeastOnce());
+			this.mockTextManager.Verify(m => m.SetText("фі"), Times.AtLeastOnce());
+		}
+
+		[TestMethod]
+		public void SwitchTextBackwardTest()
+		{
+			this.currentLang = this.ukUA;
+
+			this.mockLayoutManager.Setup(m => m.GetCurrentLayout())
+				.Returns(this.currentLang);
+
+			this.text = "фі";
+
+			this.mockTextManager.SetupGet(m => m.HasText)
+				.Returns(true);
+			this.mockTextManager.Setup(m => m.GetText())
+				.Returns(this.text);
+			this.mockTextManager.Setup(m => m.SetText("as"))
+				.Callback(() => this.text = "as");
+			this.mockTextManager.Setup(m => m.SetText("фі"))
+				.Callback(() => this.text = "фі");
+
+			LanguageManager.Current.SetCurrentLanguage();
+			LanguageManager.Current.SwitchText(false);
+
+			Assert.AreEqual("as", this.text);
+
+			this.mockTextManager.Verify(m => m.GetText(), Times.AtLeastOnce());
+			this.mockTextManager.Verify(m => m.SetText("as"), Times.AtLeastOnce());
 		}
 	}
 }

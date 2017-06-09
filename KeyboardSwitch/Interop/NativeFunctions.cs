@@ -6,7 +6,7 @@ using System.Text;
 namespace KeyboardSwitch.Interop
 {
 	[ExcludeFromCodeCoverage]
-	internal class NativeFunctions
+	internal static class NativeFunctions
 	{
 		[DllImport("user32.dll")]
 		public static extern IntPtr GetKeyboardLayout(uint idThread);

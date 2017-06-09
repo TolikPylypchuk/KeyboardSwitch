@@ -45,7 +45,7 @@ namespace KeyboardSwitch.Services
 					}
 
 					var tokens = line.Split('\t');
-					CultureInfo lang = null;
+					CultureInfo lang;
 
 					try
 					{
@@ -127,7 +127,6 @@ namespace KeyboardSwitch.Services
 				}
 			} catch
 			{
-				fullDict = null;
 				result = false;
 			} finally
 			{

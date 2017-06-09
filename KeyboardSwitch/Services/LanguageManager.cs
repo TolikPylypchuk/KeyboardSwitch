@@ -33,7 +33,7 @@ namespace KeyboardSwitch.Services
 				    this.CurrentLanguage.LCID != currentLanguage.LCID)
 				{
 					Debug.Write(
-						$"In {nameof(SetCurrentLanguage)}(): " +
+						$"In {nameof(this.SetCurrentLanguage)}(): " +
 						(this.CurrentLanguage?.ToString() ?? "null") + " -> ");
 
 					this.CurrentLanguage = currentLanguage;
@@ -95,7 +95,8 @@ namespace KeyboardSwitch.Services
 
 					foreach (char ch in text)
 					{
-						if (Char.IsWhiteSpace(ch) || Char.IsControl(ch))
+						if (Char.IsWhiteSpace(ch) || Char.IsControl(ch) ||
+							!oldString.Contains(ch))
 						{
 							result.Append(ch);
 						} else
@@ -111,12 +112,15 @@ namespace KeyboardSwitch.Services
 									"Keyboard Layout Switch - Error",
 									MessageBoxButton.OK,
 									MessageBoxImage.Error);
-								result = null;
-								GC.Collect();
 								return;
 							} catch
 							{
-								result.Append(ch);
+								MessageBox.Show(
+									"An unknown error occured.",
+									"Keyboard Layout Switch - Error",
+									MessageBoxButton.OK,
+									MessageBoxImage.Error);
+								return;
 							}
 						}
 					}
@@ -124,7 +128,8 @@ namespace KeyboardSwitch.Services
 					this.TextManager.SetText(result.ToString());
 
 					Debug.Write(
-						$"In {nameof(SwitchText)}(): {this.CurrentLanguage} -> ");
+						$"In {nameof(this.SwitchText)}(): " +
+						$"{this.CurrentLanguage} -> ");
 
 					this.CurrentLanguage = targetLang;
 					this.ChangeLanguage();

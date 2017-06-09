@@ -122,7 +122,7 @@ namespace KeyboardSwitch.UI
 		private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
 		{
 			if (this.model.FocusedBorder != null &&
-				Keyboard.FocusedElement == this.scrollViewer)
+				Keyboard.FocusedElement.Equals(this.scrollViewer))
 			{
 				int col = Grid.GetColumn(this.model.FocusedBorder);
 				int offset = 28;
@@ -410,11 +410,11 @@ namespace KeyboardSwitch.UI
 				if (letterBox.Char != ' ')
 				{
 					if (itemsInRow.OfType<Border>()
-								  .Select(currentBorder =>
-									currentBorder.Child as LetterBox)
-								  .Any(currentBox =>
-									letterBox != currentBox &&
-									letterBox.Char == currentBox?.Char))
+						.Select(currentBorder =>
+							currentBorder.Child as LetterBox)
+						.Any(currentBox =>
+							!letterBox.Equals(currentBox) &&
+							letterBox.Char == currentBox?.Char))
 					{
 						MessageBox.Show(
 							"This character is already occupied.",
@@ -585,7 +585,7 @@ namespace KeyboardSwitch.UI
                     if (currentCol > focusedCol)
 					{
 						Grid.SetColumn(border, currentCol - 1);
-					} else if (border != this.model.FocusedBorder &&
+					} else if (!border.Equals(this.model.FocusedBorder) &&
 						currentCol == focusedCol)
 					{
 						borderToDelete = border;
