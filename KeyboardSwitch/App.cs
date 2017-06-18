@@ -15,16 +15,14 @@ namespace KeyboardSwitch
 	[ExcludeFromCodeCoverage]
 	public class App : Application
 	{
-		public App(FileManager fileManager, LanguageManager langManager)
+		public App(LanguageManager langManager)
 		{
-			this.FileManager = fileManager;
 			this.LanguageManager = langManager;
 		}
 
 		public HotKey HotKeyForward { get; set; }
 		public HotKey HotKeyBackward { get; set; }
 
-		public FileManager FileManager { get; }
 		public LanguageManager LanguageManager { get; }
 		
 		public static Key GetKey(char value)
