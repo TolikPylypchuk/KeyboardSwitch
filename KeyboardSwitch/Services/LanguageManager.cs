@@ -19,7 +19,6 @@ namespace KeyboardSwitch.Services
 
 		public IInputLanguageManager InputLanguageManager { get; set; }
 		public ILayoutManager LayoutManager { get; set; }
-		public ITextManager TextManager { get; set; }
 
 		private object SyncRoot { get; } = new Object();
 
@@ -46,7 +45,7 @@ namespace KeyboardSwitch.Services
 		public void ChangeLanguage()
 			=> this.LayoutManager.SetCurrentLayout(this.CurrentLanguage);
 
-		public void SwitchText(bool forward)
+		public void SwitchText(ITextManager textManager, bool forward)
 		{
 			lock (this.SyncRoot)
 			{
@@ -84,13 +83,13 @@ namespace KeyboardSwitch.Services
 					return;
 				}
 
-				if (this.TextManager.HasText)
+				if (textManager.HasText)
 				{
 					string oldString =
 						this.Languages[this.CurrentLanguage].ToString();
 					string newString = this.Languages[targetLang].ToString();
 
-					string text = this.TextManager.GetText();
+					string text = textManager.GetText();
 					var result = new StringBuilder();
 
 					foreach (char ch in text)
@@ -125,7 +124,7 @@ namespace KeyboardSwitch.Services
 						}
 					}
 
-					this.TextManager.SetText(result.ToString());
+					textManager.SetText(result.ToString());
 
 					Debug.Write(
 						$"In {nameof(this.SwitchText)}(): " +

@@ -10,6 +10,12 @@ namespace KeyboardSwitch
 {
 	public static class DependencyInjector
 	{
+		public static App GetNewApp()
+			=> new App(
+				FileManager.Current,
+				LanguageManager.Current,
+				ClipboardTextManager.Current);
+
 		public static void InjectDependencies()
 		{
 			FileManager.Current.MappingsLocation = Path.Combine(
@@ -21,7 +27,6 @@ namespace KeyboardSwitch
 			LanguageManager.Current.InputLanguageManager =
 				WpfInputLanguageManager.Current;
 			LanguageManager.Current.LayoutManager = LayoutManager.Current;
-			LanguageManager.Current.TextManager = ClipboardTextManager.Current;
 		}
 	}
 }

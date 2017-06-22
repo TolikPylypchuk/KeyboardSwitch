@@ -53,7 +53,6 @@ namespace KeyboardSwitch.Tests.Services
 
 			this.mockTextManager = new Mock<ITextManager>();
 
-			LanguageManager.Current.TextManager = this.mockTextManager.Object;
 		}
 
 		[TestMethod]
@@ -76,7 +75,7 @@ namespace KeyboardSwitch.Tests.Services
 				.Callback(() => this.text = "фі");
 
 			LanguageManager.Current.SetCurrentLanguage();
-			LanguageManager.Current.SwitchText(true);
+			LanguageManager.Current.SwitchText(this.mockTextManager.Object, true);
 
 			Assert.AreEqual("фі", this.text);
 
@@ -104,7 +103,7 @@ namespace KeyboardSwitch.Tests.Services
 				.Callback(() => this.text = "фі");
 
 			LanguageManager.Current.SetCurrentLanguage();
-			LanguageManager.Current.SwitchText(false);
+			LanguageManager.Current.SwitchText(this.mockTextManager.Object, false);
 
 			Assert.AreEqual("as", this.text);
 

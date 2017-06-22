@@ -15,15 +15,22 @@ namespace KeyboardSwitch
 	[ExcludeFromCodeCoverage]
 	public class App : Application
 	{
-		public App(LanguageManager langManager)
+		public App(
+			FileManager fileManager,
+			LanguageManager langManager,
+			ITextManager textManager)
 		{
+			this.FileManager = fileManager;
 			this.LanguageManager = langManager;
+			this.TextManager = textManager;
 		}
 
 		public HotKey HotKeyForward { get; set; }
 		public HotKey HotKeyBackward { get; set; }
 
+		public FileManager FileManager { get; }
 		public LanguageManager LanguageManager { get; }
+		public ITextManager TextManager { get; }
 		
 		public static Key GetKey(char value)
 		{
@@ -63,11 +70,12 @@ namespace KeyboardSwitch
 				BringWindowToForeground(this.MainWindow);
 			}
 		}
-		
+
 		public void HotKeyPressed(HotKey key)
-		{
-			this.LanguageManager.SwitchText(key == this.HotKeyForward);
-		}
+			=> this.SwitchText(key == this.HotKeyForward);
+
+		public void SwitchText(bool forward)
+			=> this.LanguageManager.SwitchText(this.TextManager, forward);
 
 		protected override async void OnStartup(StartupEventArgs e)
 		{

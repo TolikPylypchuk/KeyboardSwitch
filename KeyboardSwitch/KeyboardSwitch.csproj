@@ -94,7 +94,7 @@
     <Compile Include="DependencyInjector.cs" />
     <Compile Include="Interop\LayoutManager.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Services\DefaultInputLanguageManager.cs" />
+    <Compile Include="Services\WpfInputLanguageManager.cs" />
     <Compile Include="Services\IInputLanguageManager.cs" />
     <Compile Include="Services\ILayoutManager.cs" />
     <Compile Include="Services\ITextManager.cs" />

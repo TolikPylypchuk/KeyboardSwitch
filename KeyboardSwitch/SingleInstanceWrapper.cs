@@ -2,8 +2,6 @@
 
 using Microsoft.VisualBasic.ApplicationServices;
 
-using KeyboardSwitch.Services;
-
 namespace KeyboardSwitch
 {
 	[ExcludeFromCodeCoverage]
@@ -20,7 +18,7 @@ namespace KeyboardSwitch
 		{
 			DependencyInjector.InjectDependencies();
 
-			this.app = new App(LanguageManager.Current);
+			this.app = DependencyInjector.GetNewApp();
 			this.app.Run();
 
 			return false;
