@@ -5,12 +5,12 @@ using System.Windows.Input;
 
 namespace KeyboardSwitch.Services
 {
-	public class DefaultInputLanguageManager : IInputLanguageManager
+	public class WpfInputLanguageManager : IInputLanguageManager
 	{
-		private DefaultInputLanguageManager() { }
+		private WpfInputLanguageManager() { }
 
-		public static DefaultInputLanguageManager Current { get; } =
-			new DefaultInputLanguageManager();
+		public static WpfInputLanguageManager Current { get; } =
+			new WpfInputLanguageManager();
 
 		public IEnumerable<CultureInfo> InputLanguages =>
 			InputLanguageManager.Current.AvailableInputLanguages

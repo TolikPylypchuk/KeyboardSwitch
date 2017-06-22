@@ -19,7 +19,7 @@ namespace KeyboardSwitch
 				ConfigurationManager.AppSettings["MappingsLocation"]);
 
 			LanguageManager.Current.InputLanguageManager =
-				DefaultInputLanguageManager.Current;
+				WpfInputLanguageManager.Current;
 			LanguageManager.Current.LayoutManager = LayoutManager.Current;
 			LanguageManager.Current.TextManager = ClipboardTextManager.Current;
 		}
