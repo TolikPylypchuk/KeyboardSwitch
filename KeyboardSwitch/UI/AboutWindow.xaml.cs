@@ -10,6 +10,8 @@ namespace KeyboardSwitch.UI
 {
 	public partial class AboutWindow : Window
 	{
+		#region Constructors
+
 		public AboutWindow()
 		{
 			this.InitializeComponent();
@@ -17,10 +19,14 @@ namespace KeyboardSwitch.UI
 			var version = Assembly.GetExecutingAssembly().GetName().Version;
 
 			this.textBlock.Text = "Keyboard Layout Switch\n" +
-			                      $"Version {version.Major}.{version.Minor}\n" +
-			                      "Created by Tolik Pylypchuk";
+				$"Version {version.Major}.{version.Minor}\n" +
+				"Created by Tolik Pylypchuk";
 		}
-		
+
+		#endregion
+
+		#region Event handlers
+
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
 			this.Close();
@@ -37,5 +43,7 @@ namespace KeyboardSwitch.UI
 							Environment.CurrentDirectory,
 					ConfigurationManager.AppSettings["ReadmeLocation"]));
 		}
+
+		#endregion
 	}
 }

@@ -11,14 +11,14 @@ namespace KeyboardSwitch.Services
 	[ExcludeFromCodeCoverage]
 	public class HotKey : IDisposable
 	{
-		private static Dictionary<int, HotKey> dictHotKeyToCallBackProc;
+		#region Fields
 
+		private static Dictionary<int, HotKey> dictHotKeyToCallBackProc;
 		private bool disposed;
 
-		public Key Key { get; private set; }
-		public KeyModifier KeyModifiers { get; private set; }
-		public Action<HotKey> Action { get; private set; }
-		public int Id { get; set; }
+		#endregion
+
+		#region Constructors and destructor
 
 		public HotKey(
 			Key k,
@@ -37,6 +37,19 @@ namespace KeyboardSwitch.Services
 		}
 
 		~HotKey() => this.Dispose(false);
+
+		#endregion
+
+		#region Properties
+
+		public Key Key { get; private set; }
+		public KeyModifier KeyModifiers { get; private set; }
+		public Action<HotKey> Action { get; private set; }
+		public int Id { get; set; }
+
+		#endregion
+
+		#region Methods
 
 		public bool Register()
 		{
@@ -70,6 +83,25 @@ namespace KeyboardSwitch.Services
 			}
 		}
 
+		public void Dispose()
+		{
+			this.Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!this.disposed)
+			{
+				if (disposing)
+				{
+					this.Unregister();
+				}
+
+				this.disposed = true;
+			}
+		}
+
 		private static void ComponentDispatcherThreadFilterMessage(
 			ref MSG msg,
 			ref bool handled)
@@ -87,24 +119,7 @@ namespace KeyboardSwitch.Services
 				}
 			}
 		}
-		
-		public void Dispose()
-		{
-			this.Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-		
-		protected virtual void Dispose(bool disposing)
-		{
-			if (!this.disposed)
-			{
-				if (disposing)
-				{
-					this.Unregister();
-				}
 
-				this.disposed = true;
-			}
-		}
+		#endregion
 	}
 }

@@ -6,20 +6,14 @@ namespace KeyboardSwitch.UI
 {
 	public class LetterBox : TextBox
 	{
+		#region Dependency properties and routed events
+
 		public static readonly DependencyProperty CharProperty;
 		public static readonly RoutedEvent CharChangedEvent;
 
-		public char Char
-		{
-			get => (char)this.GetValue(CharProperty);
-			set => this.SetValue(CharProperty, value);
-		}
+		#endregion
 
-		public event EventHandler<CharChangedEventArgs> CharChanged
-		{
-			add => this.AddHandler(CharChangedEvent, value);
-			remove => this.RemoveHandler(CharChangedEvent, value);
-		}
+		#region Constructors
 
 		static LetterBox()
 		{
@@ -84,16 +78,25 @@ namespace KeyboardSwitch.UI
 						: box.Char.ToString();
 				}
 			};
-        }
+		}
+
+		#endregion
+
+		#region Properties
+
+		public char Char
+		{
+			get => (char)this.GetValue(CharProperty);
+			set => this.SetValue(CharProperty, value);
+		}
+
+		#endregion
+		
+		#region Methods
 
 		protected virtual void OnCharChanged(CharChangedEventArgs e)
 		{
 			this.RaiseEvent(e);
-		}
-
-		private void SelectAllText(object sender, RoutedEventArgs e)
-		{
-			(sender as TextBox)?.SelectAll();
 		}
 
 		private static void OnCharPropertyChanged(
@@ -108,5 +111,22 @@ namespace KeyboardSwitch.UI
 				letterBox.OnCharChanged(args);
 			}
 		}
+
+		private void SelectAllText(object sender, RoutedEventArgs e)
+		{
+			(sender as TextBox)?.SelectAll();
+		}
+
+		#endregion
+
+		#region Events
+
+		public event EventHandler<CharChangedEventArgs> CharChanged
+		{
+			add => this.AddHandler(CharChangedEvent, value);
+			remove => this.RemoveHandler(CharChangedEvent, value);
+		}
+
+		#endregion
 	}
 }

@@ -10,7 +10,9 @@ namespace KeyboardSwitch.UI
 {
 	public partial class HotKeyWindow : Window
 	{
-        public HotKeyWindow()
+		#region Constructors
+
+		public HotKeyWindow()
 		{
 			this.InitializeComponent();
 
@@ -29,7 +31,20 @@ namespace KeyboardSwitch.UI
 
 			this.model.Index = this.comboBox.SelectedIndex;
 		}
+
+		#endregion
+
+		#region Methods
 		
+		private void SelectAddress(object sender, RoutedEventArgs e)
+		{
+			(sender as TextBox)?.SelectAll();
+		}
+
+		#endregion
+
+		#region Event handlers
+
 		private void BtnOK_Click(object sender, RoutedEventArgs e)
 		{
 			if (this.letterBoxBackward.Text.Length != 0 &&
@@ -93,9 +108,7 @@ namespace KeyboardSwitch.UI
 		}
 
 		private void BtnCancel_Click(object sender, RoutedEventArgs e)
-		{
-			this.Close();
-		}
+			=> this.Close();
 		
 		public void LetterBoxForward_TextChanged(
 			object sender,
@@ -106,7 +119,8 @@ namespace KeyboardSwitch.UI
 				try
 				{
 					if (this.letterBoxBackward.Text.Length > 0 &&
-					    this.letterBoxForward.Char == letterBoxBackward.Char)
+					    this.letterBoxForward.Char ==
+						this.letterBoxBackward.Char)
 					{
 						MessageBox.Show(
 							"This letter is already set as the\n" + 
@@ -119,7 +133,8 @@ namespace KeyboardSwitch.UI
 						return;
 					}
 
-					this.model.KeyForward = App.GetKey(this.letterBoxForward.Char);
+					this.model.KeyForward = App.GetKey(
+						this.letterBoxForward.Char);
 				} catch (ArgumentOutOfRangeException exp)
 				{
 					MessageBox.Show(
@@ -144,7 +159,8 @@ namespace KeyboardSwitch.UI
 				try
 				{
 					if (this.letterBoxForward.Text.Length > 0 &&
-					    this.letterBoxBackward.Char == letterBoxForward.Char)
+					    this.letterBoxBackward.Char ==
+						this.letterBoxForward.Char)
 					{
 						MessageBox.Show(
 							"This letter is already set as the\n" +
@@ -173,9 +189,6 @@ namespace KeyboardSwitch.UI
             }
 		}
 
-		private void SelectAddress(object sender, RoutedEventArgs e)
-		{
-			(sender as TextBox)?.SelectAll();
-		}
+		#endregion
 	}
 }

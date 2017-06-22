@@ -15,6 +15,8 @@ namespace KeyboardSwitch
 	[ExcludeFromCodeCoverage]
 	public class App : Application
 	{
+		#region Constructors
+
 		public App(
 			FileManager fileManager,
 			LanguageManager langManager,
@@ -25,13 +27,21 @@ namespace KeyboardSwitch
 			this.TextManager = textManager;
 		}
 
+		#endregion
+
+		#region properties
+
 		public HotKey HotKeyForward { get; set; }
 		public HotKey HotKeyBackward { get; set; }
 
 		public FileManager FileManager { get; }
 		public LanguageManager LanguageManager { get; }
 		public ITextManager TextManager { get; }
-		
+
+		#endregion
+
+		#region Public methods
+
 		public static Key GetKey(char value)
 		{
 			value = Char.ToUpper(value);
@@ -77,6 +87,10 @@ namespace KeyboardSwitch
 		public void SwitchText(bool forward)
 			=> this.LanguageManager.SwitchText(this.TextManager, forward);
 
+		#endregion
+
+		#region Protected methods
+
 		protected override async void OnStartup(StartupEventArgs e)
 		{
 			base.OnStartup(e);
@@ -96,6 +110,10 @@ namespace KeyboardSwitch
 			this.HotKeyBackward.Dispose();
 			base.OnExit(e);
 		}
+
+		#endregion
+
+		#region Provate methods
 
 		private void SetLanguages()
 		{
@@ -154,5 +172,7 @@ namespace KeyboardSwitch
 				await Task.Delay(100);
 			}
 		}
+
+		#endregion
 	}
 }

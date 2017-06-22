@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 
@@ -8,6 +9,7 @@ using KeyboardSwitch.Services;
 
 namespace KeyboardSwitch
 {
+	[ExcludeFromCodeCoverage]
 	public static class DependencyInjector
 	{
 		public static App GetNewApp()

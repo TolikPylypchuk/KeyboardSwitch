@@ -10,7 +10,13 @@ namespace KeyboardSwitch.Services
 {
 	public class LanguageManager
 	{
+		#region Constructors
+
 		private LanguageManager() { }
+
+		#endregion
+		
+		#region Properties
 
 		public static LanguageManager Current { get; } = new LanguageManager();
 
@@ -21,6 +27,10 @@ namespace KeyboardSwitch.Services
 		public ILayoutManager LayoutManager { get; set; }
 
 		private object SyncRoot { get; } = new Object();
+
+		#endregion
+
+		#region Methods
 
 		public void SetCurrentLanguage()
 		{
@@ -137,5 +147,7 @@ namespace KeyboardSwitch.Services
 				}
 			}
 		}
+
+		#endregion
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace KeyboardSwitch.UI
 {
-	static class SwitchCommands
+	public static class SwitchCommands
 	{
 		public static RoutedUICommand Forward { get; }
 		public static RoutedUICommand Backward { get; }

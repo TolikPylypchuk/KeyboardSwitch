@@ -15,11 +15,17 @@ namespace KeyboardSwitch.UI
 {
 	public partial class SettingsWindow : Window
 	{
+		#region Constructors
+
 		public SettingsWindow()
 		{
 			this.InitializeComponent();
 			this.InitializeLanguages();
 		}
+
+		#endregion
+
+		#region Methods
 
 		public void BringToForeground()
 		{
@@ -31,7 +37,7 @@ namespace KeyboardSwitch.UI
 		{
 			var langs = this.model.CurrentApp.LanguageManager
 				.InputLanguageManager.InputLanguages.ToList();
-			
+
 			for (int i = 0; i < langs.Count; i++)
 			{
 				this.langGrid.RowDefinitions.Add(new RowDefinition());
@@ -90,7 +96,7 @@ namespace KeyboardSwitch.UI
 				this.nameGrid.Children.Add(langName);
 
 				int col = 0;
-				string languageStr =this.model.CurrentApp.LanguageManager
+				string languageStr = this.model.CurrentApp.LanguageManager
 					.Languages[lang].ToString();
 
 				foreach (char ch in languageStr)
@@ -102,160 +108,7 @@ namespace KeyboardSwitch.UI
 				row++;
 			}
 		}
-
-		private void Window_PreviewMouseWheel(
-			object sender,
-			MouseWheelEventArgs e)
-		{
-			if (Keyboard.Modifiers != ModifierKeys.Control)
-			{
-				this.scrollViewer.ScrollToVerticalOffset(
-					this.scrollViewer.VerticalOffset);
-
-				this.scrollViewer.ScrollToHorizontalOffset(
-					this.scrollViewer.HorizontalOffset - e.Delta);
-			} else
-			{
-				this.scrollViewer.ScrollToVerticalOffset(
-					this.scrollViewer.VerticalOffset - e.Delta);
-			}
-		}
-
-		private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
-		{
-			if (this.model.FocusedBorder == null ||
-				!Keyboard.FocusedElement.Equals(this.scrollViewer))
-			{
-				return;
-			}
-
-			int col = Grid.GetColumn(this.model.FocusedBorder);
-			int offset = 28;
-
-			switch (e.Key)
-			{
-				case Key.Right:
-					if (col != this.langGrid.ColumnDefinitions.Count - 1)
-					{
-						var currentColumn =
-							this.GetItemsInColumn(col).ToArray();
-
-						var nextColumn =
-							this.GetItemsInColumn(col + 1).ToArray();
-							
-						foreach (var item in currentColumn)
-						{
-							Grid.SetColumn(item, col + 1);
-						}
-
-						foreach (var item in nextColumn)
-						{
-							Grid.SetColumn(item, col);
-						}
-
-						foreach (var str in this.model.CurrentApp
-							.LanguageManager.Languages.Values)
-						{
-							char swap = str[col];
-							str[col] = str[col + 1];
-							str[col + 1] = swap;
-						}
-					}
-					break;
-				case Key.Left:
-					if (col != 0)
-					{
-						var currentColumn =
-							this.GetItemsInColumn(col).ToArray();
-						var prevColumn =
-							this.GetItemsInColumn(col - 1).ToArray();
-							
-						foreach (var item in currentColumn)
-						{
-							Grid.SetColumn(item, col - 1);
-						}
-
-						foreach (var item in prevColumn)
-						{
-							Grid.SetColumn(item, col);
-						}
-
-						foreach (var builder in this.model.CurrentApp
-							.LanguageManager.Languages.Values)
-						{
-							char swap = builder[col];
-							builder[col] = builder[col - 1];
-							builder[col - 1] = swap;
-						}
-					}
-
-					offset = -offset;
-					break;
-				default:
-					return;
-			}
-
-			this.scrollViewer.ScrollToHorizontalOffset(
-				this.scrollViewer.ContentHorizontalOffset + offset);
-
-			this.model.CanSave = true;
-			this.langGrid.UpdateLayout();
-
-			e.Handled = true;
-		}
-
-		private void Window_Closing(object sender, CancelEventArgs e)
-		{
-			if (this.model.FocusedBorder != null)
-			{
-				this.RemoveFocusedBorder();
-			}
-
-			this.Hide();
-
-			for (int i = 0;
-				 i < this.model.CurrentApp.LanguageManager.Languages.Count;
-				 i++)
-			{
-				var itemsInRow = this.GetItemsInRow(i);
-				int j = 0;
-
-				foreach (var item in itemsInRow)
-				{
-					var letterBox = (item as Border)?.Child as LetterBox;
-
-					if (letterBox?.Text.Length == 0)
-					{
-						letterBox.Char =
-							this.model.CurrentApp.LanguageManager.Languages[
-								this.GetLanguage(i)][j];
-					}
-
-					j++;
-				}
-			}
-
-			e.Cancel = !this.model.CanClose;
-		}
-
-		private void Window_Closed(object sender, EventArgs e)
-		{
-			this.tbIcon.Dispose();
-			this.model.CurrentApp.Shutdown();
-		}
-
-		private void StackPanel_MouseLeftButtonDown(
-			object sender,
-			MouseButtonEventArgs e)
-		{
-			if (!this.model.IsBorderClicked)
-			{
-				this.RemoveFocusedBorder();
-			}
-
-			this.model.IsBorderClicked = false;
-		}
-
+		
 		private void AddNewBorder(int row, int col, char ch, int tabIndex)
 		{
 			var border = new Border { ContextMenu = new ContextMenu() };
@@ -305,7 +158,7 @@ namespace KeyboardSwitch.UI
 				Header = "_Delete",
 				Command = SwitchCommands.Delete
 			});
-			
+
 			border.Child = letterBox;
 
 			Grid.SetRow(border, row);
@@ -315,45 +168,7 @@ namespace KeyboardSwitch.UI
 
 			this.langGrid.Children.Add(border);
 		}
-
-		private void LetterBox_GotFocus(object sender, RoutedEventArgs e)
-		{
-			this.RemoveFocusedBorder();
-
-			var border = (sender as LetterBox)?.Parent as Border;
-
-			if (border == null)
-			{
-				return;
-			}
-
-			this.SetFocusedBorder(border);
-
-			InputLanguageManager.Current.CurrentInputLanguage =
-				this.GetLanguage(Grid.GetRow(border));
-
-			e.Handled = true;
-		}
-
-		private void LetterBox_LostFocus(object sender, RoutedEventArgs e)
-		{
-			this.SetBackground(
-				this.model.FocusedBorder, Brushes.Transparent);
-			this.model.FocusedBorder = null;
-			this.scrollViewer.Focus();
-		}
-
-		private void Border_MouseLeftButtonDown(
-			object sender,
-			RoutedEventArgs e)
-		{
-			var border = sender as Border;
-			this.RemoveFocusedBorder();
-			this.scrollViewer.Focus();
-			this.SetFocusedBorder(border);
-			this.model.IsBorderClicked = true;
-		}
-
+		
 		private void SetFocusedBorder(Border border)
 		{
 			this.model.FocusedBorder = border;
@@ -392,6 +207,217 @@ namespace KeyboardSwitch.UI
 					}
 				}
 			}
+		}
+
+		private CultureInfo GetLanguage(int index)
+			=> this.nameGrid.Children[index] is TextBlock tb
+				? new CultureInfo(tb.Text)
+				: null;
+
+		private IEnumerable<UIElement> GetItemsInRow(int row)
+			=> this.langGrid.Children
+				.Cast<UIElement>()
+				.Where(elem => Grid.GetRow(elem) == row);
+
+		private IEnumerable<UIElement> GetItemsInColumn(int column)
+			=> this.langGrid.Children
+				.Cast<UIElement>()
+				.Where(elem => Grid.GetColumn(elem) == column);
+
+		#endregion
+
+		#region Event handlers
+
+		private void Window_PreviewMouseWheel(
+			object sender,
+			MouseWheelEventArgs e)
+		{
+			if (Keyboard.Modifiers != ModifierKeys.Control)
+			{
+				this.scrollViewer.ScrollToVerticalOffset(
+					this.scrollViewer.VerticalOffset);
+
+				this.scrollViewer.ScrollToHorizontalOffset(
+					this.scrollViewer.HorizontalOffset - e.Delta);
+			}
+			else
+			{
+				this.scrollViewer.ScrollToVerticalOffset(
+					this.scrollViewer.VerticalOffset - e.Delta);
+			}
+		}
+
+		private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+		{
+			if (this.model.FocusedBorder == null ||
+				!Keyboard.FocusedElement.Equals(this.scrollViewer))
+			{
+				return;
+			}
+
+			int col = Grid.GetColumn(this.model.FocusedBorder);
+			int offset = 28;
+
+			switch (e.Key)
+			{
+				case Key.Right:
+					if (col != this.langGrid.ColumnDefinitions.Count - 1)
+					{
+						var currentColumn =
+							this.GetItemsInColumn(col).ToArray();
+
+						var nextColumn =
+							this.GetItemsInColumn(col + 1).ToArray();
+
+						foreach (var item in currentColumn)
+						{
+							Grid.SetColumn(item, col + 1);
+						}
+
+						foreach (var item in nextColumn)
+						{
+							Grid.SetColumn(item, col);
+						}
+
+						foreach (var str in this.model.CurrentApp
+							.LanguageManager.Languages.Values)
+						{
+							char swap = str[col];
+							str[col] = str[col + 1];
+							str[col + 1] = swap;
+						}
+					}
+					break;
+				case Key.Left:
+					if (col != 0)
+					{
+						var currentColumn =
+							this.GetItemsInColumn(col).ToArray();
+						var prevColumn =
+							this.GetItemsInColumn(col - 1).ToArray();
+
+						foreach (var item in currentColumn)
+						{
+							Grid.SetColumn(item, col - 1);
+						}
+
+						foreach (var item in prevColumn)
+						{
+							Grid.SetColumn(item, col);
+						}
+
+						foreach (var builder in this.model.CurrentApp
+							.LanguageManager.Languages.Values)
+						{
+							char swap = builder[col];
+							builder[col] = builder[col - 1];
+							builder[col - 1] = swap;
+						}
+					}
+
+					offset = -offset;
+					break;
+				default:
+					return;
+			}
+
+			this.scrollViewer.ScrollToHorizontalOffset(
+				this.scrollViewer.ContentHorizontalOffset + offset);
+
+			this.model.CanSave = true;
+			this.langGrid.UpdateLayout();
+
+			e.Handled = true;
+		}
+
+		private void Window_Closing(object sender, CancelEventArgs e)
+		{
+			if (this.model.FocusedBorder != null)
+			{
+				this.RemoveFocusedBorder();
+			}
+
+			this.Hide();
+
+			for (int i = 0;
+				i < this.model.CurrentApp.LanguageManager.Languages.Count;
+				i++)
+			{
+				var itemsInRow = this.GetItemsInRow(i);
+				int j = 0;
+
+				foreach (var item in itemsInRow)
+				{
+					var letterBox = (item as Border)?.Child as LetterBox;
+
+					if (letterBox?.Text.Length == 0)
+					{
+						letterBox.Char =
+							this.model.CurrentApp.LanguageManager.Languages[
+								this.GetLanguage(i)][j];
+					}
+
+					j++;
+				}
+			}
+
+			e.Cancel = !this.model.CanClose;
+		}
+
+		private void Window_Closed(object sender, EventArgs e)
+		{
+			this.tbIcon.Dispose();
+			this.model.CurrentApp.Shutdown();
+		}
+
+		private void StackPanel_MouseLeftButtonDown(
+			object sender,
+			MouseButtonEventArgs e)
+		{
+			if (!this.model.IsBorderClicked)
+			{
+				this.RemoveFocusedBorder();
+			}
+
+			this.model.IsBorderClicked = false;
+		}
+
+		private void LetterBox_GotFocus(object sender, RoutedEventArgs e)
+		{
+			this.RemoveFocusedBorder();
+
+			var border = (sender as LetterBox)?.Parent as Border;
+
+			if (border == null)
+			{
+				return;
+			}
+
+			this.SetFocusedBorder(border);
+
+			InputLanguageManager.Current.CurrentInputLanguage =
+				this.GetLanguage(Grid.GetRow(border));
+
+			e.Handled = true;
+		}
+
+		private void LetterBox_LostFocus(object sender, RoutedEventArgs e)
+		{
+			this.SetBackground(
+				this.model.FocusedBorder, Brushes.Transparent);
+			this.model.FocusedBorder = null;
+			this.scrollViewer.Focus();
+		}
+
+		private void Border_MouseLeftButtonDown(
+			object sender,
+			RoutedEventArgs e)
+		{
+			var border = sender as Border;
+			this.RemoveFocusedBorder();
+			this.scrollViewer.Focus();
+			this.SetFocusedBorder(border);
+			this.model.IsBorderClicked = true;
 		}
 
 		private void LetterBox_CharChanged(
@@ -452,17 +478,12 @@ namespace KeyboardSwitch.UI
 			}
 		}
 
-		private CultureInfo GetLanguage(int index)
-			=> this.nameGrid.Children[index] is TextBlock tb
-				? new CultureInfo(tb.Text)
-				: null;
-
 		private void SetHotKeys_Click(object sender, RoutedEventArgs e)
 			=> new HotKeyWindow { Owner = this }.ShowDialog();
 
 		private void About_Click(object sender, RoutedEventArgs e)
 			=> new AboutWindow { Owner = this }.ShowDialog();
-		
+
 		private void ShowWindow_Click(object sender, RoutedEventArgs e)
 			=> this.BringToForeground();
 
@@ -477,6 +498,10 @@ namespace KeyboardSwitch.UI
 			this.model.CanClose = true;
 			this.Close();
 		}
+
+		#endregion
+
+		#region Command bindings
 
 		private void Save_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
@@ -619,14 +644,6 @@ namespace KeyboardSwitch.UI
 		private void Show_Executed(object sender, ExecutedRoutedEventArgs e)
 			=> this.BringToForeground();
 
-		private IEnumerable<UIElement> GetItemsInRow(int row)
-			=> this.langGrid.Children
-						.Cast<UIElement>()
-						.Where(elem => Grid.GetRow(elem) == row);
-
-		private IEnumerable<UIElement> GetItemsInColumn(int column)
-			=> this.langGrid.Children
-						.Cast<UIElement>()
-						.Where(elem => Grid.GetColumn(elem) == column);
+		#endregion
 	}
 }
