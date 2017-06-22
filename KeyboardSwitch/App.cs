@@ -113,7 +113,7 @@ namespace KeyboardSwitch
 
 		#endregion
 
-		#region Provate methods
+		#region Private methods
 
 		private void SetLanguages()
 		{

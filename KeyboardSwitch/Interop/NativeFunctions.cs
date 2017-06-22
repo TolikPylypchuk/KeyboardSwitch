@@ -5,6 +5,7 @@ using System.Text;
 
 namespace KeyboardSwitch.Interop
 {
+#pragma warning disable IDE1006 // Naming Styles
 	[ExcludeFromCodeCoverage]
 	internal static class NativeFunctions
 	{
@@ -44,5 +45,10 @@ namespace KeyboardSwitch.Interop
 
 		[DllImport("user32.dll")]
 		public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+		[DllImport("user32.dll")]
+		public static extern void keybd_event(byte bVk, byte bScan, uint dwFlags,
+			int dwExtraInfo);
 	}
+#pragma warning restore IDE1006 // Naming Styles
 }

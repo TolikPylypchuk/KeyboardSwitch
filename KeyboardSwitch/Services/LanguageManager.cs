@@ -88,63 +88,58 @@ namespace KeyboardSwitch.Services
 					targetLang = langs[0];
 				}
 
-				if (targetLang == null)
+				if (targetLang == null || !textManager.HasText)
 				{
 					return;
 				}
+				
+				string oldString =
+					this.Languages[this.CurrentLanguage].ToString();
+				string newString = this.Languages[targetLang].ToString();
 
-				if (textManager.HasText)
+				string text = textManager.GetText();
+				var result = new StringBuilder();
+
+				foreach (char ch in text)
 				{
-					string oldString =
-						this.Languages[this.CurrentLanguage].ToString();
-					string newString = this.Languages[targetLang].ToString();
-
-					string text = textManager.GetText();
-					var result = new StringBuilder();
-
-					foreach (char ch in text)
+					if (Char.IsWhiteSpace(ch) || Char.IsControl(ch) ||
+						!oldString.Contains(ch))
 					{
-						if (Char.IsWhiteSpace(ch) || Char.IsControl(ch) ||
-							!oldString.Contains(ch))
+						result.Append(ch);
+					} else
+					{
+						try
 						{
-							result.Append(ch);
-						} else
+							char newCh = newString[oldString.IndexOf(ch)];
+							result.Append(newCh);
+						} catch (OutOfMemoryException)
 						{
-							try
-							{
-								char newCh = newString[oldString.IndexOf(ch)];
-								result.Append(newCh);
-							} catch (OutOfMemoryException)
-							{
-								MessageBox.Show(
-									"Out of memory.",
-									"Keyboard Layout Switch - Error",
-									MessageBoxButton.OK,
-									MessageBoxImage.Error);
-								return;
-							} catch
-							{
-								MessageBox.Show(
-									"An unknown error occured.",
-									"Keyboard Layout Switch - Error",
-									MessageBoxButton.OK,
-									MessageBoxImage.Error);
-								return;
-							}
+							MessageBox.Show(
+								"Out of memory.",
+								"Keyboard Layout Switch - Error",
+								MessageBoxButton.OK,
+								MessageBoxImage.Error);
+							return;
+						} catch
+						{
+							MessageBox.Show(
+								"An unknown error occured.",
+								"Keyboard Layout Switch - Error",
+								MessageBoxButton.OK,
+								MessageBoxImage.Error);
+							return;
 						}
 					}
-
-					textManager.SetText(result.ToString());
-
-					Debug.Write(
-						$"In {nameof(this.SwitchText)}(): " +
-						$"{this.CurrentLanguage} -> ");
-
-					this.CurrentLanguage = targetLang;
-					this.ChangeLanguage();
-
-					Debug.WriteLine(this.CurrentLanguage);
 				}
+
+				textManager.SetText(result.ToString());
+
+				Debug.WriteLine(
+					$"In {nameof(this.SwitchText)}(): " +
+					$"{text} -> {result}");
+
+				this.CurrentLanguage = targetLang;
+				this.ChangeLanguage();
 			}
 		}
 

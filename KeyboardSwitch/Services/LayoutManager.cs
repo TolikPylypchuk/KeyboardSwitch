@@ -4,11 +4,9 @@ using System.Globalization;
 using System.Text;
 using System.Windows.Input;
 
-using KeyboardSwitch.Services;
-
 using static KeyboardSwitch.Interop.NativeFunctions;
 
-namespace KeyboardSwitch.Interop
+namespace KeyboardSwitch.Services
 {
 	[ExcludeFromCodeCoverage]
 	public class LayoutManager : ILayoutManager

@@ -4,7 +4,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 
-using KeyboardSwitch.Interop;
+using WindowsInput;
+
 using KeyboardSwitch.Services;
 
 namespace KeyboardSwitch
@@ -16,7 +17,7 @@ namespace KeyboardSwitch
 			=> new App(
 				FileManager.Current,
 				LanguageManager.Current,
-				ClipboardTextManager.Current);
+				InstantClipboardTextManager.Current);
 
 		public static void InjectDependencies()
 		{
@@ -29,6 +30,9 @@ namespace KeyboardSwitch
 			LanguageManager.Current.InputLanguageManager =
 				WpfInputLanguageManager.Current;
 			LanguageManager.Current.LayoutManager = LayoutManager.Current;
+
+			InstantClipboardTextManager.Current.Keyboard =
+				new InputSimulator().Keyboard;
 		}
 	}
 }
