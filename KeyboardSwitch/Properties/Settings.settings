@@ -11,5 +11,11 @@
     <Setting Name="KeyModifiers" Type="KeyboardSwitch.Interop.KeyModifier" Scope="User">
       <Value Profile="(Default)">Alt, Ctrl</Value>
     </Setting>
+    <Setting Name="HotKeyInstantForward" Type="System.Char" Scope="User">
+      <Value Profile="(Default)">V</Value>
+    </Setting>
+    <Setting Name="HotKeyInstantBackward" Type="System.Char" Scope="User">
+      <Value Profile="(Default)">C</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

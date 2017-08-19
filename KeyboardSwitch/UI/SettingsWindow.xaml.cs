@@ -488,10 +488,12 @@ namespace KeyboardSwitch.UI
 			=> this.BringToForeground();
 
 		private void SwitchForward_Click(object sender, RoutedEventArgs e)
-			=> this.model.CurrentApp.SwitchText(true);
+			=> this.model.CurrentApp.SwitchText(
+				true, DependencyInjector.DefaultTextManager);
 
 		private void SwitchBackward_Click(object sender, RoutedEventArgs e)
-			=> this.model.CurrentApp.SwitchText(false);
+			=> this.model.CurrentApp.SwitchText(
+				false, DependencyInjector.DefaultTextManager);
 
 		private void Exit_Click(object sender, RoutedEventArgs e)
 		{
@@ -551,17 +553,19 @@ namespace KeyboardSwitch.UI
 		private void SwitchForward_Executed(
 			object sender,
 			ExecutedRoutedEventArgs e)
-			=> this.model.CurrentApp.SwitchText(true);
+			=> this.model.CurrentApp.SwitchText(
+				true, DependencyInjector.DefaultTextManager);
 
 		private void SwitchBackward_Executed(
 			object sender,
 			ExecutedRoutedEventArgs e)
-			=> this.model.CurrentApp.SwitchText(false);
+			=> this.model.CurrentApp.SwitchText(
+				false, DependencyInjector.DefaultTextManager);
 
 		private void Switch_CanExecute(
 			object sender,
 			CanExecuteRoutedEventArgs e)
-			=> e.CanExecute = this.model.CurrentApp.TextManager.HasText;
+			=> e.CanExecute = DependencyInjector.DefaultTextManager.HasText;
 
 		private void New_Executed(object sender, ExecutedRoutedEventArgs e)
 		{

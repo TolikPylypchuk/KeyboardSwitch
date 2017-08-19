@@ -29,7 +29,9 @@ namespace KeyboardSwitch.Services
 			Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
 				new Action(() => { }));
 
-			string result = Clipboard.GetText();
+			string result = Clipboard.ContainsText()
+				? Clipboard.GetText()
+				: String.Empty;
 
 			Debug.WriteLine($"In {nameof(this.GetText)}. Copied {result}.");
 

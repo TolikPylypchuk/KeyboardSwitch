@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
@@ -19,24 +20,24 @@ namespace KeyboardSwitch
 
 		public App(
 			FileManager fileManager,
-			LanguageManager langManager,
-			ITextManager textManager)
+			LanguageManager langManager)
 		{
 			this.FileManager = fileManager;
 			this.LanguageManager = langManager;
-			this.TextManager = textManager;
 		}
 
 		#endregion
 
-		#region properties
+		#region Properties
 
 		public HotKey HotKeyForward { get; set; }
 		public HotKey HotKeyBackward { get; set; }
 
+		public HotKey HotKeyInstantForward { get; set; }
+		public HotKey HotKeyInstantBackward { get; set; }
+
 		public FileManager FileManager { get; }
 		public LanguageManager LanguageManager { get; }
-		public ITextManager TextManager { get; }
 
 		#endregion
 
@@ -82,10 +83,18 @@ namespace KeyboardSwitch
 		}
 
 		public void HotKeyPressed(HotKey key)
-			=> this.SwitchText(key == this.HotKeyForward);
+		{
+			Debug.WriteLine($"In {nameof(this.HotKeyPressed)}()");
 
-		public void SwitchText(bool forward)
-			=> this.LanguageManager.SwitchText(this.TextManager, forward);
+			this.SwitchText(
+				key == this.HotKeyForward || key == this.HotKeyInstantForward,
+				key == this.HotKeyForward || key == this.HotKeyBackward
+					? DependencyInjector.DefaultTextManager
+					: DependencyInjector.InstantTextManager);
+		}
+
+		public void SwitchText(bool forward, ITextManager textManager)
+			=> this.LanguageManager.SwitchText(textManager, forward);
 
 		#endregion
 
@@ -145,6 +154,16 @@ namespace KeyboardSwitch
 
 			this.HotKeyBackward = new HotKey(
 				GetKey(Settings.Default.HotKeyBackward),
+				modifiers,
+				this.HotKeyPressed);
+
+			this.HotKeyInstantForward = new HotKey(
+				GetKey(Settings.Default.HotKeyInstantForward),
+				modifiers,
+				this.HotKeyPressed);
+
+			this.HotKeyInstantBackward = new HotKey(
+				GetKey(Settings.Default.HotKeyInstantBackward),
 				modifiers,
 				this.HotKeyPressed);
 		}

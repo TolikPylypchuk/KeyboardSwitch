@@ -14,10 +14,7 @@ namespace KeyboardSwitch
 	public static class DependencyInjector
 	{
 		public static App GetNewApp()
-			=> new App(
-				FileManager.Current,
-				LanguageManager.Current,
-				InstantClipboardTextManager.Current);
+			=> new App(FileManager.Current, LanguageManager.Current);
 
 		public static void InjectDependencies()
 		{
@@ -34,5 +31,11 @@ namespace KeyboardSwitch
 			InstantClipboardTextManager.Current.Keyboard =
 				new InputSimulator().Keyboard;
 		}
+
+		public static ITextManager DefaultTextManager
+			=> ClipboardTextManager.Current;
+
+		public static ITextManager InstantTextManager
+			=> InstantClipboardTextManager.Current;
 	}
 }

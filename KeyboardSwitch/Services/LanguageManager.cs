@@ -102,33 +102,33 @@ namespace KeyboardSwitch.Services
 
 				foreach (char ch in text)
 				{
-					if (Char.IsWhiteSpace(ch) || Char.IsControl(ch) ||
-						!oldString.Contains(ch))
+					try
 					{
-						result.Append(ch);
-					} else
-					{
-						try
+						if (Char.IsWhiteSpace(ch) || Char.IsControl(ch) ||
+							!oldString.Contains(ch))
+						{
+							result.Append(ch);
+						} else
 						{
 							char newCh = newString[oldString.IndexOf(ch)];
 							result.Append(newCh);
-						} catch (OutOfMemoryException)
-						{
-							MessageBox.Show(
-								"Out of memory.",
-								"Keyboard Layout Switch - Error",
-								MessageBoxButton.OK,
-								MessageBoxImage.Error);
-							return;
-						} catch
-						{
-							MessageBox.Show(
-								"An unknown error occured.",
-								"Keyboard Layout Switch - Error",
-								MessageBoxButton.OK,
-								MessageBoxImage.Error);
-							return;
 						}
+					} catch (OutOfMemoryException)
+					{
+						MessageBox.Show(
+							"Out of memory.",
+							"Keyboard Layout Switch - Error",
+							MessageBoxButton.OK,
+							MessageBoxImage.Error);
+						return;
+					} catch
+					{
+						MessageBox.Show(
+							"An unknown error occured.",
+							"Keyboard Layout Switch - Error",
+							MessageBoxButton.OK,
+							MessageBoxImage.Error);
+						return;
 					}
 				}
 
