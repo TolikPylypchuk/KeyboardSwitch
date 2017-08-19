@@ -18,7 +18,7 @@ namespace KeyboardSwitch.Services
 
 		#endregion
 
-		#region Constructors and destructor
+		#region Constructor and destructor
 
 		public HotKey(
 			Key k,
@@ -53,8 +53,8 @@ namespace KeyboardSwitch.Services
 
 		public bool Register()
 		{
-			int virtualKeyCode = KeyInterop.VirtualKeyFromKey(Key);
-			this.Id = virtualKeyCode + ((int)this.KeyModifiers * 0x10000);
+			int virtualKeyCode = KeyInterop.VirtualKeyFromKey(this.Key);
+			this.Id = virtualKeyCode + (int)this.KeyModifiers * 0x10000;
 
 			bool result = NativeFunctions.RegisterHotKey(
 				IntPtr.Zero,
