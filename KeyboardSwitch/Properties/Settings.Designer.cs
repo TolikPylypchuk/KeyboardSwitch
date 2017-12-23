@@ -61,7 +61,7 @@ namespace KeyboardSwitch.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("V")]
+        [global::System.Configuration.DefaultSettingValueAttribute("S")]
         public char HotKeyInstantForward {
             get {
                 return ((char)(this["HotKeyInstantForward"]));
@@ -73,7 +73,7 @@ namespace KeyboardSwitch.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C")]
+        [global::System.Configuration.DefaultSettingValueAttribute("A")]
         public char HotKeyInstantBackward {
             get {
                 return ((char)(this["HotKeyInstantBackward"]));

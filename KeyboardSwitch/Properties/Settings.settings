@@ -12,10 +12,10 @@
       <Value Profile="(Default)">Alt, Ctrl</Value>
     </Setting>
     <Setting Name="HotKeyInstantForward" Type="System.Char" Scope="User">
-      <Value Profile="(Default)">V</Value>
+      <Value Profile="(Default)">S</Value>
     </Setting>
     <Setting Name="HotKeyInstantBackward" Type="System.Char" Scope="User">
-      <Value Profile="(Default)">C</Value>
+      <Value Profile="(Default)">A</Value>
     </Setting>
   </Settings>
 </SettingsFile>
