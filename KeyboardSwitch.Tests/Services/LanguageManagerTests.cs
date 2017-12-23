@@ -45,9 +45,9 @@ namespace KeyboardSwitch.Tests.Services
 			this.mockLayoutManager = new Mock<ILayoutManager>();
 
 			this.mockLayoutManager.Setup(m => m.SetCurrentLayout(this.ukUA))
-				.Callback(() => currentLang = this.ukUA);
+				.Callback(() => this.currentLang = this.ukUA);
 			this.mockLayoutManager.Setup(m => m.SetCurrentLayout(this.enUS))
-				.Callback(() => currentLang = this.enUS);
+				.Callback(() => this.currentLang = this.enUS);
 
 			LanguageManager.Current.LayoutManager = this.mockLayoutManager.Object;
 

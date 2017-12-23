@@ -26,7 +26,8 @@ namespace KeyboardSwitch.Services
 			this.Keyboard.ModifiedKeyStroke(
 				VirtualKeyCode.CONTROL, VirtualKeyCode.VK_X);
 
-			Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
+			Application.Current.Dispatcher.Invoke(
+				DispatcherPriority.Background,
 				new Action(() => { }));
 
 			string result = Clipboard.ContainsText()
@@ -40,6 +41,10 @@ namespace KeyboardSwitch.Services
 
 		public void SetText(string text)
 		{
+			Application.Current.Dispatcher.Invoke(
+				DispatcherPriority.Background,
+				new Action(() => { }));
+
 			Clipboard.SetText(text);
 			
 			this.Keyboard.ModifiedKeyStroke(
