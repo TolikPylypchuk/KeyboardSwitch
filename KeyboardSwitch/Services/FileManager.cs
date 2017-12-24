@@ -10,11 +10,12 @@ namespace KeyboardSwitch.Services
 {
 	public class FileManager
 	{
-		private FileManager() { }
-
-		public static FileManager Current { get; } = new FileManager();
-
-		public string MappingsLocation { get; set; }
+		public FileManager(string mappingsLocation)
+		{
+			this.MappingsLocation = mappingsLocation;
+		}
+		
+		public string MappingsLocation { get; }
 
 		public Dictionary<CultureInfo, StringBuilder> Read(bool all = false)
 		{

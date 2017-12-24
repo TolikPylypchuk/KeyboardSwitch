@@ -1,17 +1,42 @@
-﻿using System.Windows;
+﻿using System;
+using System.Runtime.InteropServices;
+using System.Windows;
 
 namespace KeyboardSwitch.Services
 {
 	public class ClipboardTextManager : ITextManager
 	{
-		private ClipboardTextManager() { }
+		public bool HasText
+		{
+			get
+			{
+				try
+				{
+					return Clipboard.ContainsText();
+				} catch (COMException)
+				{
+					return false;
+				}
+			}
+		}
 
-		public static ClipboardTextManager Current { get; } =
-			new ClipboardTextManager();
+		public string GetText()
+		{
+			try
+			{
+				return Clipboard.GetText();
+			} catch (COMException)
+			{
+				return String.Empty;
+			}
+		}
 
-		public bool HasText => Clipboard.ContainsText();
-
-		public string GetText() => Clipboard.GetText();
-		public void SetText(string text) => Clipboard.SetText(text);
+		public void SetText(string text)
+		{
+			try
+			{
+				Clipboard.SetText(text);
+			} catch (COMException) { }
+		}
 	}
 }

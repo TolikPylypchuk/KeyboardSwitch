@@ -5,16 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KeyboardSwitch.UI"
         xmlns:tb="http://www.hardcodet.net/taskbar"
+		d:DataContext="{d:DesignInstance Type=local:SettingsViewModel, IsDesignTimeCreatable=True}"
         mc:Ignorable="d" ResizeMode="CanResize" Height="200" Width="380"
         WindowStartupLocation="CenterScreen" Closing="Window_Closing"
         Title="Keyboard Layout Switch Settings" Closed="Window_Closed"
         MinHeight="200" MinWidth="380" PreviewKeyDown="Window_PreviewKeyDown"
         PreviewMouseWheel="Window_PreviewMouseWheel"
         FocusManager.FocusedElement="{Binding RelativeSource={x:Static RelativeSource.Self}, Mode=OneTime}">
-	<Window.DataContext>
-		<local:SettingsViewModel x:Name="model" />
-	</Window.DataContext>
-	
 	<Window.Resources>
 		<Style TargetType="{x:Type local:LetterBox}">
 			<Setter Property="HorizontalAlignment" Value="Center" />

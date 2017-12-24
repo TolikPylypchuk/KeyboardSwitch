@@ -10,28 +10,22 @@ namespace KeyboardSwitch.Services
 {
 	public class LanguageManager
 	{
-		#region Constructors
-
-		private LanguageManager() { }
-
-		#endregion
+		public LanguageManager(
+			IInputLanguageManager inputLanguageManager,
+			ILayoutManager layoutManager)
+		{
+			this.InputLanguageManager = inputLanguageManager;
+			this.LayoutManager = layoutManager;
+		}
 		
-		#region Properties
-
-		public static LanguageManager Current { get; } = new LanguageManager();
-
 		public CultureInfo CurrentLanguage { get; private set; }
 		public Dictionary<CultureInfo, StringBuilder> Languages { get; set; }
 
-		public IInputLanguageManager InputLanguageManager { get; set; }
-		public ILayoutManager LayoutManager { get; set; }
+		public IInputLanguageManager InputLanguageManager { get; }
+		public ILayoutManager LayoutManager { get; }
 
 		private object SyncRoot { get; } = new Object();
-
-		#endregion
-
-		#region Methods
-
+		
 		public void SetCurrentLanguage()
 		{
 			lock (this.SyncRoot)
@@ -98,51 +92,53 @@ namespace KeyboardSwitch.Services
 				string newString = this.Languages[targetLang].ToString();
 
 				string text = textManager.GetText();
-				var result = new StringBuilder();
 
-				foreach (char ch in text)
+				if (!String.IsNullOrEmpty(text))
 				{
-					try
+					var result = new StringBuilder();
+
+					foreach (char ch in text)
 					{
-						if (Char.IsWhiteSpace(ch) || Char.IsControl(ch) ||
-							!oldString.Contains(ch))
+						try
 						{
-							result.Append(ch);
-						} else
+							if (Char.IsWhiteSpace(ch) || Char.IsControl(ch) ||
+								!oldString.Contains(ch))
+							{
+								result.Append(ch);
+							} else
+							{
+								char newCh = newString[oldString.IndexOf(ch)];
+								result.Append(newCh);
+							}
+						} catch (OutOfMemoryException)
 						{
-							char newCh = newString[oldString.IndexOf(ch)];
-							result.Append(newCh);
+							MessageBox.Show(
+								"Out of memory.",
+								"Keyboard Layout Switch - Error",
+								MessageBoxButton.OK,
+								MessageBoxImage.Error);
+							return;
+						} catch
+						{
+							MessageBox.Show(
+								"An unknown error occured.",
+								"Keyboard Layout Switch - Error",
+								MessageBoxButton.OK,
+								MessageBoxImage.Error);
+							return;
 						}
-					} catch (OutOfMemoryException)
-					{
-						MessageBox.Show(
-							"Out of memory.",
-							"Keyboard Layout Switch - Error",
-							MessageBoxButton.OK,
-							MessageBoxImage.Error);
-						return;
-					} catch
-					{
-						MessageBox.Show(
-							"An unknown error occured.",
-							"Keyboard Layout Switch - Error",
-							MessageBoxButton.OK,
-							MessageBoxImage.Error);
-						return;
 					}
+
+					textManager.SetText(result.ToString());
+
+					Debug.WriteLine(
+						$"In {nameof(this.SwitchText)}(): " +
+						$"{text} -> {result}");
+
+					this.CurrentLanguage = targetLang;
+					this.ChangeLanguage();
 				}
-
-				textManager.SetText(result.ToString());
-
-				Debug.WriteLine(
-					$"In {nameof(this.SwitchText)}(): " +
-					$"{text} -> {result}");
-
-				this.CurrentLanguage = targetLang;
-				this.ChangeLanguage();
 			}
 		}
-
-		#endregion
 	}
 }

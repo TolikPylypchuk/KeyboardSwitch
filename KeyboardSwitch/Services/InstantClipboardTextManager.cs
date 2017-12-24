@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
@@ -16,12 +17,12 @@ namespace KeyboardSwitch.Services
 	{
 		private const int SLEEP_TIME = 50;
 
-		private InstantClipboardTextManager() { }
-
-		public static InstantClipboardTextManager Current { get; } =
-			new InstantClipboardTextManager();
-
-		public IKeyboardSimulator Keyboard { get; set; }
+		public InstantClipboardTextManager(IKeyboardSimulator keyboard)
+		{
+			this.Keyboard = keyboard;
+		}
+		
+		public IKeyboardSimulator Keyboard { get; }
 
 		public bool HasText => true;
 
@@ -38,9 +39,15 @@ namespace KeyboardSwitch.Services
 				DispatcherPriority.Background,
 				new Action(() => { }));
 
-			string result = Clipboard.ContainsText()
-				? Clipboard.GetText()
-				: String.Empty;
+			string result = String.Empty;
+
+			try
+			{
+				if (Clipboard.ContainsText())
+				{
+					result = Clipboard.GetText();
+				}
+			} catch (COMException) { }
 
 			Debug.WriteLine($"In {nameof(this.GetText)}. Copied {result}.");
 
@@ -55,7 +62,10 @@ namespace KeyboardSwitch.Services
 				DispatcherPriority.Background,
 				new Action(() => { }));
 
-			Clipboard.SetText(text);
+			try
+			{
+				Clipboard.SetText(text);
+			} catch (COMException) { }
 
 			Thread.Sleep(SLEEP_TIME);
 

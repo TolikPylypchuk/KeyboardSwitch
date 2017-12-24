@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
+using Unity;
+
 using KeyboardSwitch.Properties;
 using KeyboardSwitch.Services;
 using KeyboardSwitch.UI;
@@ -18,11 +20,17 @@ namespace KeyboardSwitch
 		#region Constructors
 
 		public App(
+			IUnityContainer container,
 			FileManager fileManager,
-			LanguageManager langManager)
+			LanguageManager langManager,
+			ITextManager defaultTextManager,
+			ITextManager instantTextManager)
 		{
+			this.Container = container;
 			this.FileManager = fileManager;
 			this.LanguageManager = langManager;
+			this.DefaultTextManager = defaultTextManager;
+			this.InstantTextManager = instantTextManager;
 		}
 
 		#endregion
@@ -35,8 +43,11 @@ namespace KeyboardSwitch
 		public HotKey HotKeyInstantForward { get; set; }
 		public HotKey HotKeyInstantBackward { get; set; }
 
+		public IUnityContainer Container { get; }
 		public FileManager FileManager { get; }
 		public LanguageManager LanguageManager { get; }
+		public ITextManager DefaultTextManager { get; }
+		public ITextManager InstantTextManager { get; }
 
 		#endregion
 
@@ -88,8 +99,8 @@ namespace KeyboardSwitch
 			this.SwitchText(
 				key == this.HotKeyForward || key == this.HotKeyInstantForward,
 				key == this.HotKeyForward || key == this.HotKeyBackward
-					? DependencyInjector.DefaultTextManager
-					: DependencyInjector.InstantTextManager);
+					? this.DefaultTextManager
+					: this.InstantTextManager);
 		}
 
 		public void SwitchText(bool forward, ITextManager textManager)
@@ -125,7 +136,7 @@ namespace KeyboardSwitch
 
 		private void SetLanguages()
 		{
-			this.LanguageManager.Languages = FileManager.Current.Read();
+			this.LanguageManager.Languages = this.FileManager.Read();
 
 			if (this.LanguageManager.Languages == null)
 			{
@@ -169,7 +180,7 @@ namespace KeyboardSwitch
 
 		private async Task CreateMainWindow()
 		{
-			this.MainWindow = new SettingsWindow();
+			this.MainWindow = this.Container.Resolve<SettingsWindow>();
 			this.MainWindow.Show();
 
 			if (Array.Exists(

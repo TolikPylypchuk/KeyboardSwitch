@@ -7,11 +7,6 @@ namespace KeyboardSwitch.Services
 {
 	public class WpfInputLanguageManager : IInputLanguageManager
 	{
-		private WpfInputLanguageManager() { }
-
-		public static WpfInputLanguageManager Current { get; } =
-			new WpfInputLanguageManager();
-
 		public IEnumerable<CultureInfo> InputLanguages =>
 			InputLanguageManager.Current.AvailableInputLanguages
 				?.Cast<CultureInfo>()

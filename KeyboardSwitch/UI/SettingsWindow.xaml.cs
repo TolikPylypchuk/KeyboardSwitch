@@ -9,7 +9,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 
 using KeyboardSwitch.Properties;
-using KeyboardSwitch.Services;
 
 namespace KeyboardSwitch.UI
 {
@@ -17,11 +16,20 @@ namespace KeyboardSwitch.UI
 	{
 		#region Constructors
 
-		public SettingsWindow()
+		public SettingsWindow(SettingsViewModel model)
 		{
 			this.InitializeComponent();
+
+			this.Model = model;
+
 			this.InitializeLanguages();
 		}
+
+		#endregion
+
+		#region Properties
+
+		public SettingsViewModel Model { get; }
 
 		#endregion
 
@@ -35,7 +43,7 @@ namespace KeyboardSwitch.UI
 
 		private void InitializeLanguages()
 		{
-			var langs = this.model.CurrentApp.LanguageManager
+			var langs = this.Model.CurrentApp.LanguageManager
 				.InputLanguageManager.InputLanguages.ToList();
 
 			for (int i = 0; i < langs.Count; i++)
@@ -44,7 +52,7 @@ namespace KeyboardSwitch.UI
 				this.nameGrid.RowDefinitions.Add(new RowDefinition());
 			}
 
-			int length = this.model.CurrentApp.LanguageManager
+			int length = this.Model.CurrentApp.LanguageManager
 				.Languages.Values.First().Length;
 
 			for (int i = 0; i < length; i++)
@@ -57,7 +65,7 @@ namespace KeyboardSwitch.UI
 				Width = new GridLength(55)
 			});
 
-			int langCount = this.model.CurrentApp.LanguageManager
+			int langCount = this.Model.CurrentApp.LanguageManager
 				.Languages.Count;
 			int row = 0;
 
@@ -96,7 +104,7 @@ namespace KeyboardSwitch.UI
 				this.nameGrid.Children.Add(langName);
 
 				int col = 0;
-				string languageStr = this.model.CurrentApp.LanguageManager
+				string languageStr = this.Model.CurrentApp.LanguageManager
 					.Languages[lang].ToString();
 
 				foreach (char ch in languageStr)
@@ -171,14 +179,14 @@ namespace KeyboardSwitch.UI
 		
 		private void SetFocusedBorder(Border border)
 		{
-			this.model.FocusedBorder = border;
-			this.SetBackground(this.model.FocusedBorder, Brushes.AliceBlue);
+			this.Model.FocusedBorder = border;
+			this.SetBackground(this.Model.FocusedBorder, Brushes.AliceBlue);
 		}
 
 		private void RemoveFocusedBorder()
 		{
-			this.SetBackground(this.model.FocusedBorder, Brushes.Transparent);
-			this.model.FocusedBorder = null;
+			this.SetBackground(this.Model.FocusedBorder, Brushes.Transparent);
+			this.Model.FocusedBorder = null;
 		}
 
 		private void SetBackground(UIElement element, Brush brush)
@@ -188,7 +196,7 @@ namespace KeyboardSwitch.UI
 				return;
 			}
 
-			int count = this.model.CurrentApp.LanguageManager
+			int count = this.Model.CurrentApp.LanguageManager
 				.Languages.Keys.Count;
 
 			for (int i = 0; i < count; i++)
@@ -249,13 +257,13 @@ namespace KeyboardSwitch.UI
 
 		private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
 		{
-			if (this.model.FocusedBorder == null ||
+			if (this.Model.FocusedBorder == null ||
 				!Keyboard.FocusedElement.Equals(this.scrollViewer))
 			{
 				return;
 			}
 
-			int col = Grid.GetColumn(this.model.FocusedBorder);
+			int col = Grid.GetColumn(this.Model.FocusedBorder);
 			int offset = 28;
 
 			switch (e.Key)
@@ -279,7 +287,7 @@ namespace KeyboardSwitch.UI
 							Grid.SetColumn(item, col);
 						}
 
-						foreach (var str in this.model.CurrentApp
+						foreach (var str in this.Model.CurrentApp
 							.LanguageManager.Languages.Values)
 						{
 							char swap = str[col];
@@ -306,7 +314,7 @@ namespace KeyboardSwitch.UI
 							Grid.SetColumn(item, col);
 						}
 
-						foreach (var builder in this.model.CurrentApp
+						foreach (var builder in this.Model.CurrentApp
 							.LanguageManager.Languages.Values)
 						{
 							char swap = builder[col];
@@ -324,7 +332,7 @@ namespace KeyboardSwitch.UI
 			this.scrollViewer.ScrollToHorizontalOffset(
 				this.scrollViewer.ContentHorizontalOffset + offset);
 
-			this.model.CanSave = true;
+			this.Model.CanSave = true;
 			this.langGrid.UpdateLayout();
 
 			e.Handled = true;
@@ -332,7 +340,7 @@ namespace KeyboardSwitch.UI
 
 		private void Window_Closing(object sender, CancelEventArgs e)
 		{
-			if (this.model.FocusedBorder != null)
+			if (this.Model.FocusedBorder != null)
 			{
 				this.RemoveFocusedBorder();
 			}
@@ -340,7 +348,7 @@ namespace KeyboardSwitch.UI
 			this.Hide();
 
 			for (int i = 0;
-				i < this.model.CurrentApp.LanguageManager.Languages.Count;
+				i < this.Model.CurrentApp.LanguageManager.Languages.Count;
 				i++)
 			{
 				var itemsInRow = this.GetItemsInRow(i);
@@ -353,7 +361,7 @@ namespace KeyboardSwitch.UI
 					if (letterBox?.Text.Length == 0)
 					{
 						letterBox.Char =
-							this.model.CurrentApp.LanguageManager.Languages[
+							this.Model.CurrentApp.LanguageManager.Languages[
 								this.GetLanguage(i)][j];
 					}
 
@@ -361,51 +369,47 @@ namespace KeyboardSwitch.UI
 				}
 			}
 
-			e.Cancel = !this.model.CanClose;
+			e.Cancel = !this.Model.CanClose;
 		}
 
 		private void Window_Closed(object sender, EventArgs e)
 		{
 			this.tbIcon.Dispose();
-			this.model.CurrentApp.Shutdown();
+			this.Model.CurrentApp.Shutdown();
 		}
 
 		private void StackPanel_MouseLeftButtonDown(
 			object sender,
 			MouseButtonEventArgs e)
 		{
-			if (!this.model.IsBorderClicked)
+			if (!this.Model.IsBorderClicked)
 			{
 				this.RemoveFocusedBorder();
 			}
 
-			this.model.IsBorderClicked = false;
+			this.Model.IsBorderClicked = false;
 		}
 
 		private void LetterBox_GotFocus(object sender, RoutedEventArgs e)
 		{
 			this.RemoveFocusedBorder();
 
-			var border = (sender as LetterBox)?.Parent as Border;
-
-			if (border == null)
+			if ((sender as LetterBox)?.Parent is Border border)
 			{
-				return;
+				this.SetFocusedBorder(border);
+
+				InputLanguageManager.Current.CurrentInputLanguage =
+					this.GetLanguage(Grid.GetRow(border));
+
+				e.Handled = true;
 			}
-
-			this.SetFocusedBorder(border);
-
-			InputLanguageManager.Current.CurrentInputLanguage =
-				this.GetLanguage(Grid.GetRow(border));
-
-			e.Handled = true;
 		}
 
 		private void LetterBox_LostFocus(object sender, RoutedEventArgs e)
 		{
 			this.SetBackground(
-				this.model.FocusedBorder, Brushes.Transparent);
-			this.model.FocusedBorder = null;
+				this.Model.FocusedBorder, Brushes.Transparent);
+			this.Model.FocusedBorder = null;
 			this.scrollViewer.Focus();
 		}
 
@@ -417,7 +421,7 @@ namespace KeyboardSwitch.UI
 			this.RemoveFocusedBorder();
 			this.scrollViewer.Focus();
 			this.SetFocusedBorder(border);
-			this.model.IsBorderClicked = true;
+			this.Model.IsBorderClicked = true;
 		}
 
 		private void LetterBox_CharChanged(
@@ -429,52 +433,48 @@ namespace KeyboardSwitch.UI
 				return;
 			}
 
-			this.model.CanSave = true;
+			this.Model.CanSave = true;
 
-			var border = letterBox.Parent as Border;
-
-			if (border == null)
+			if (letterBox.Parent is Border border)
 			{
-				return;
-			}
+				var itemsInRow = this.GetItemsInRow(Grid.GetRow(border));
+				bool isUnique = true;
 
-			var itemsInRow = this.GetItemsInRow(Grid.GetRow(border));
-			bool isUnique = true;
-
-			if (letterBox.Char != ' ' &&
-				(Char.IsWhiteSpace(letterBox.Char) ||
-				 Char.IsControl(letterBox.Char)))
-			{
-				letterBox.Char = ' ';
-			}
-
-			if (letterBox.Char != ' ')
-			{
-				if (itemsInRow.OfType<Border>()
-					.Select(currentBorder =>
-						currentBorder.Child as LetterBox)
-					.Any(currentBox =>
-						!letterBox.Equals(currentBox) &&
-						letterBox.Char == currentBox?.Char))
+				if (letterBox.Char != ' ' &&
+					(Char.IsWhiteSpace(letterBox.Char) ||
+					 Char.IsControl(letterBox.Char)))
 				{
-					MessageBox.Show(
-						"This character is already occupied.",
-						"Error",
-						MessageBoxButton.OK,
-						MessageBoxImage.Error);
-
-					isUnique = false;
-					letterBox.Text = string.Empty;
-					letterBox.SelectionStart = 0;
-					letterBox.SelectionLength = 1;
+					letterBox.Char = ' ';
 				}
-			}
 
-			if (isUnique)
-			{
-				this.model.CurrentApp.LanguageManager.Languages[
-					this.GetLanguage(Grid.GetRow(border))][
-					Grid.GetColumn(border)] = letterBox.Char;
+				if (letterBox.Char != ' ')
+				{
+					if (itemsInRow.OfType<Border>()
+						.Select(currentBorder =>
+							currentBorder.Child as LetterBox)
+						.Any(currentBox =>
+							!letterBox.Equals(currentBox) &&
+							letterBox.Char == currentBox?.Char))
+					{
+						MessageBox.Show(
+							"This character is already occupied.",
+							"Error",
+							MessageBoxButton.OK,
+							MessageBoxImage.Error);
+
+						isUnique = false;
+						letterBox.Text = string.Empty;
+						letterBox.SelectionStart = 0;
+						letterBox.SelectionLength = 1;
+					}
+				}
+
+				if (isUnique)
+				{
+					this.Model.CurrentApp.LanguageManager.Languages[
+						this.GetLanguage(Grid.GetRow(border))][
+						Grid.GetColumn(border)] = letterBox.Char;
+				}
 			}
 		}
 
@@ -488,16 +488,16 @@ namespace KeyboardSwitch.UI
 			=> this.BringToForeground();
 
 		private void SwitchForward_Click(object sender, RoutedEventArgs e)
-			=> this.model.CurrentApp.SwitchText(
-				true, DependencyInjector.DefaultTextManager);
+			=> this.Model.CurrentApp.SwitchText(
+				true, this.Model.DefaultTextManager);
 
 		private void SwitchBackward_Click(object sender, RoutedEventArgs e)
-			=> this.model.CurrentApp.SwitchText(
-				false, DependencyInjector.DefaultTextManager);
+			=> this.Model.CurrentApp.SwitchText(
+				false, this.Model.DefaultTextManager);
 
 		private void Exit_Click(object sender, RoutedEventArgs e)
 		{
-			this.model.CanClose = true;
+			this.Model.CanClose = true;
 			this.Close();
 		}
 
@@ -508,7 +508,7 @@ namespace KeyboardSwitch.UI
 		private void Save_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
 			for (int i = 0;
-					i < this.model.CurrentApp.LanguageManager.Languages.Count;
+					i < this.Model.CurrentApp.LanguageManager.Languages.Count;
 					i++)
 			{
 				var itemsInRow = this.GetItemsInRow(i);
@@ -520,7 +520,7 @@ namespace KeyboardSwitch.UI
 						letterBox.Text.Length == 0)
 					{
 						letterBox.Char =
-							this.model.CurrentApp.LanguageManager.Languages[
+							this.Model.CurrentApp.LanguageManager.Languages[
 								this.GetLanguage(i)][j];
 					}
 
@@ -528,8 +528,8 @@ namespace KeyboardSwitch.UI
 				}
 			}
 			
-			if (!this.model.CurrentApp.FileManager.Write(
-				LanguageManager.Current.Languages))
+			if (!this.Model.CurrentApp.FileManager.Write(
+				this.Model.LanguageManager.Languages))
 			{
 				MessageBox.Show(
 					"Couldn't write new info into the file.",
@@ -539,7 +539,7 @@ namespace KeyboardSwitch.UI
 			}
 
 			Settings.Default.Save();
-			this.model.CanSave = false;
+			this.Model.CanSave = false;
 
 			this.RemoveFocusedBorder();
 			this.scrollViewer.Focus();
@@ -548,31 +548,31 @@ namespace KeyboardSwitch.UI
 		private void Save_CanExecute(
 			object sender,
 			CanExecuteRoutedEventArgs e)
-			=> e.CanExecute = this.model.CanSave;
+			=> e.CanExecute = this.Model.CanSave;
 
 		private void SwitchForward_Executed(
 			object sender,
 			ExecutedRoutedEventArgs e)
-			=> this.model.CurrentApp.SwitchText(
-				true, DependencyInjector.DefaultTextManager);
+			=> this.Model.CurrentApp.SwitchText(
+				true, this.Model.DefaultTextManager);
 
 		private void SwitchBackward_Executed(
 			object sender,
 			ExecutedRoutedEventArgs e)
-			=> this.model.CurrentApp.SwitchText(
-				false, DependencyInjector.DefaultTextManager);
+			=> this.Model.CurrentApp.SwitchText(
+				false, this.Model.DefaultTextManager);
 
 		private void Switch_CanExecute(
 			object sender,
 			CanExecuteRoutedEventArgs e)
-			=> e.CanExecute = DependencyInjector.DefaultTextManager.HasText;
+			=> e.CanExecute = this.Model.DefaultTextManager.HasText;
 
 		private void New_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
 			this.langGrid.ColumnDefinitions.Add(new ColumnDefinition());
 
 			for (int i = 0;
-					i < this.model.CurrentApp.LanguageManager.Languages.Count;
+					i < this.Model.CurrentApp.LanguageManager.Languages.Count;
 					i++)
 			{
 				this.AddNewBorder(
@@ -580,7 +580,7 @@ namespace KeyboardSwitch.UI
 					this.langGrid.ColumnDefinitions.Count - 1, ' ',
 					this.langGrid.Children.Count);
 
-				this.model.CurrentApp.LanguageManager.Languages[
+				this.Model.CurrentApp.LanguageManager.Languages[
 					this.GetLanguage(i)].Append(' ');
 			}
 
@@ -602,47 +602,44 @@ namespace KeyboardSwitch.UI
 
 				foreach (var item in itemsInRow)
 				{
-					var border = item as Border;
-					if (border == null)
+					if (item is Border border)
 					{
-						continue;
-					}
+						int focusedCol = Grid.GetColumn(this.Model.FocusedBorder);
+						int currentCol = Grid.GetColumn(border);
 
-					int focusedCol = Grid.GetColumn(this.model.FocusedBorder);
-					int currentCol = Grid.GetColumn(border);
-
-					if (currentCol > focusedCol)
-					{
-						Grid.SetColumn(border, currentCol - 1);
-					} else if (!border.Equals(this.model.FocusedBorder) &&
-						currentCol == focusedCol)
-					{
-						borderToDelete = border;
+						if (currentCol > focusedCol)
+						{
+							Grid.SetColumn(border, currentCol - 1);
+						} else if (!border.Equals(this.Model.FocusedBorder) &&
+								   currentCol == focusedCol)
+						{
+							borderToDelete = border;
+						}
 					}
 				}
 
 				this.langGrid.Children.Remove(borderToDelete);
 
-				this.model.CurrentApp.LanguageManager.Languages[
+				this.Model.CurrentApp.LanguageManager.Languages[
 					this.GetLanguage(i)].Remove(
 						borderToDelete != null
 							? Grid.GetColumn(borderToDelete)
-							: Grid.GetColumn(this.model.FocusedBorder),
+							: Grid.GetColumn(this.Model.FocusedBorder),
 						1);
 			}
 
-			this.langGrid.Children.Remove(this.model.FocusedBorder);
-			this.model.FocusedBorder = null;
+			this.langGrid.Children.Remove(this.Model.FocusedBorder);
+			this.Model.FocusedBorder = null;
 
 			this.langGrid.ColumnDefinitions.RemoveAt(
 				this.langGrid.ColumnDefinitions.Count - 1);
-			this.model.CanSave = true;
+			this.Model.CanSave = true;
 		}
 
 		private void Delete_CanExecute(
 			object sender,
 			CanExecuteRoutedEventArgs e)
-			=> e.CanExecute = this.model.FocusedBorder != null &&
+			=> e.CanExecute = this.Model.FocusedBorder != null &&
 				this.langGrid.Children.Count > 2;
 
 		private void Show_Executed(object sender, ExecutedRoutedEventArgs e)

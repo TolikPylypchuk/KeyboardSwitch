@@ -9,10 +9,6 @@ namespace KeyboardSwitch.Services
 {
 	public class LayoutManager : ILayoutManager
 	{
-		private LayoutManager() { }
-
-		public static LayoutManager Current { get; } = new LayoutManager();
-
 		public CultureInfo GetCurrentLayout()
 		{
 			var layout = GetKeyboardLayout(
