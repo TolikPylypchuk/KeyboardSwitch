@@ -1,10 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-using Microsoft.VisualBasic.ApplicationServices;
+﻿using Microsoft.VisualBasic.ApplicationServices;
 
 namespace KeyboardSwitch
 {
-	[ExcludeFromCodeCoverage]
 	internal class SingleInstanceWrapper : WindowsFormsApplicationBase
 	{
 		private App app;

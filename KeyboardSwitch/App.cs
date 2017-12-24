@@ -13,7 +13,6 @@ using KeyboardSwitch.UI;
 
 namespace KeyboardSwitch
 {
-	[ExcludeFromCodeCoverage]
 	public class App : Application
 	{
 		#region Constructors

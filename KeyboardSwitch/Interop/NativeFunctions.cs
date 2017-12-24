@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text;
 
 namespace KeyboardSwitch.Interop
 {
 #pragma warning disable IDE1006 // Naming Styles
-	[ExcludeFromCodeCoverage]
 	internal static class NativeFunctions
 	{
 		[DllImport("user32.dll")]

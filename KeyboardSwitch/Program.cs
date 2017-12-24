@@ -7,8 +7,7 @@ namespace KeyboardSwitch
 		[STAThread]
 		static void Main(string[] args)
 		{
-			var wrapper = new SingleInstanceWrapper();
-			wrapper.Run(args);
+			new SingleInstanceWrapper().Run(args);
 		}
 	}
 }

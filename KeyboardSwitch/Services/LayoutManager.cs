@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text;
 using System.Windows.Input;
@@ -8,7 +7,6 @@ using static KeyboardSwitch.Interop.NativeFunctions;
 
 namespace KeyboardSwitch.Services
 {
-	[ExcludeFromCodeCoverage]
 	public class LayoutManager : ILayoutManager
 	{
 		private LayoutManager() { }

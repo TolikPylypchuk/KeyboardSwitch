@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using System.Windows.Interop;
 
@@ -8,7 +7,6 @@ using KeyboardSwitch.Interop;
 
 namespace KeyboardSwitch.Services
 {
-	[ExcludeFromCodeCoverage]
 	public class HotKey : IDisposable
 	{
 		#region Fields

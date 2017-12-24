@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
@@ -13,7 +12,6 @@ using KeyboardSwitch.Properties;
 
 namespace KeyboardSwitch.Services
 {
-	[ExcludeFromCodeCoverage]
 	public class InstantClipboardTextManager : ITextManager
 	{
 		private const int SLEEP_TIME = 50;

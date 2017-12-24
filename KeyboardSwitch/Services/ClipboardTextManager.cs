@@ -1,9 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Windows;
+﻿using System.Windows;
 
 namespace KeyboardSwitch.Services
 {
-	[ExcludeFromCodeCoverage]
 	public class ClipboardTextManager : ITextManager
 	{
 		private ClipboardTextManager() { }
