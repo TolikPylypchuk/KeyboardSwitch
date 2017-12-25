@@ -11,10 +11,18 @@ namespace KeyboardSwitch.UI
 
 		public Key KeyForward { get; set; }
 		public Key KeyBackward { get; set; }
+		
+		public Key InstantKeyForward { get; set; }
+		public Key InstantKeyBackward { get; set; }
 
 		public char CharForward { get; set; }
 		public char CharBackward { get; set; }
-		public int Index { get; set; }
+
+		public char CharInstantForward { get; set; }
+		public char CharInstantBackward { get; set; }
+
+		public int IndexDefault	{ get; set; }
+		public int IndexInstant { get; set; }
 
 		public HotKeyViewModel()
 		{
@@ -23,6 +31,12 @@ namespace KeyboardSwitch.UI
 
 			this.KeyForward = App.GetKey(this.CharForward);
 			this.KeyBackward = App.GetKey(this.CharBackward);
+
+			this.CharInstantForward = Settings.Default.HotKeyInstantForward;
+			this.CharInstantBackward = Settings.Default.HotKeyInstantBackward;
+
+			this.InstantKeyForward = App.GetKey(this.CharInstantForward);
+			this.InstantKeyBackward = App.GetKey(this.CharInstantBackward);
 		}
 	}
 }

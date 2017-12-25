@@ -17,5 +17,8 @@
     <Setting Name="HotKeyInstantBackward" Type="System.Char" Scope="User">
       <Value Profile="(Default)">A</Value>
     </Setting>
+    <Setting Name="InstantKeyModifiers" Type="KeyboardSwitch.Interop.KeyModifier" Scope="User">
+      <Value Profile="(Default)">Alt, Shift</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

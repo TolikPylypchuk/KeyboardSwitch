@@ -6,43 +6,60 @@ namespace KeyboardSwitch.UI
 	{
 		public static RoutedUICommand Forward { get; }
 		public static RoutedUICommand Backward { get; }
+
+		public static RoutedUICommand MoveRight { get; }
+		public static RoutedUICommand MoveLeft { get; }
+
 		public static RoutedUICommand Delete { get; }
+
 		public static RoutedUICommand Show { get; }
 
 		static SwitchCommands()
 		{
-			var input = new InputGestureCollection
-			{
-				new KeyGesture(Key.F, ModifierKeys.Control, "Ctrl+F")
-			};
-
 			Forward = new RoutedUICommand(
 				"Forward",
 				nameof(Forward),
 				typeof(SwitchCommands),
-				input);
-
-			input = new InputGestureCollection
-			{
-				new KeyGesture(Key.B, ModifierKeys.Control, "Ctrl+B")
-			};
-
+				new InputGestureCollection
+				{
+					new KeyGesture(Key.F, ModifierKeys.Control, "Ctrl+F")
+				});
+			
 			Backward = new RoutedUICommand(
 				"Backward",
 				nameof(Backward),
 				typeof(SwitchCommands),
-				input);
+				new InputGestureCollection
+				{
+					new KeyGesture(Key.B, ModifierKeys.Control, "Ctrl+B")
+				});
 
-			input = new InputGestureCollection
-			{
-				new KeyGesture(Key.D, ModifierKeys.Control, "Ctrl+D")
-			};
+			MoveRight = new RoutedUICommand(
+				"Move right",
+				nameof(MoveRight),
+				typeof(SwitchCommands),
+				new InputGestureCollection
+				{
+					new KeyGesture(Key.Right, ModifierKeys.Alt, "Alt+Right")
+				});
+
+			MoveLeft = new RoutedUICommand(
+				"Move left",
+				nameof(MoveLeft),
+				typeof(SwitchCommands),
+				new InputGestureCollection
+				{
+					new KeyGesture(Key.Left, ModifierKeys.Alt, "Alt+Left")
+				});
 
 			Delete = new RoutedUICommand(
 				"Delete mapping",
 				nameof(Delete),
 				typeof(SwitchCommands),
-				input);
+				new InputGestureCollection
+				{
+					new KeyGesture(Key.Delete)
+				});
 
 			Show = new RoutedUICommand(
 				"Show", nameof(Show), typeof(SwitchCommands));

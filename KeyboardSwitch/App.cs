@@ -118,6 +118,7 @@ namespace KeyboardSwitch
 
 			this.SetLanguages();
 			this.SetHotKeys();
+			this.SetJumpList();
 
 			await this.CreateMainWindow();
 			await this.HandleLanguageLoopAsync();
@@ -167,6 +168,8 @@ namespace KeyboardSwitch
 				modifiers,
 				this.HotKeyPressed);
 
+			modifiers = Settings.Default.InstantKeyModifiers;
+
 			this.HotKeyInstantForward = new HotKey(
 				GetKey(Settings.Default.HotKeyInstantForward),
 				modifiers,
@@ -176,6 +179,11 @@ namespace KeyboardSwitch
 				GetKey(Settings.Default.HotKeyInstantBackward),
 				modifiers,
 				this.HotKeyPressed);
+		}
+
+		private void SetJumpList()
+		{
+
 		}
 
 		private async Task CreateMainWindow()

@@ -47,10 +47,10 @@ namespace KeyboardSwitch.Services
 				{
 					result = Clipboard.GetText();
 				}
+
+				Debug.WriteLine($"In {nameof(this.GetText)}. Copied {result}.");
 			} catch (COMException) { }
-
-			Debug.WriteLine($"In {nameof(this.GetText)}. Copied {result}.");
-
+			
 			return result;
 		}
 
@@ -65,29 +65,29 @@ namespace KeyboardSwitch.Services
 			try
 			{
 				Clipboard.SetText(text);
+
+				this.Keyboard.ModifiedKeyStroke(
+					VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
+
+				Debug.WriteLine($"In {nameof(this.SetText)}. Pasted {text}.");
+
+				Thread.Sleep(SLEEP_TIME);
 			} catch (COMException) { }
-
-			Thread.Sleep(SLEEP_TIME);
-
-			this.Keyboard.ModifiedKeyStroke(
-				VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
-
-			Debug.WriteLine($"In {nameof(this.SetText)}. Pasted {text}.");
 		}
 
 		private void ModifiersUp()
 		{
-			if ((Settings.Default.KeyModifiers & KeyModifier.Alt) != KeyModifier.None)
+			if ((Settings.Default.InstantKeyModifiers & KeyModifier.Alt) != KeyModifier.None)
 			{
 				this.Keyboard.KeyUp(VirtualKeyCode.MENU);
 			}
 
-			if ((Settings.Default.KeyModifiers & KeyModifier.Ctrl) != KeyModifier.None)
+			if ((Settings.Default.InstantKeyModifiers & KeyModifier.Ctrl) != KeyModifier.None)
 			{
 				this.Keyboard.KeyUp(VirtualKeyCode.CONTROL);
 			}
 
-			if ((Settings.Default.KeyModifiers & KeyModifier.Shift) != KeyModifier.None)
+			if ((Settings.Default.InstantKeyModifiers & KeyModifier.Shift) != KeyModifier.None)
 			{
 				this.Keyboard.KeyUp(VirtualKeyCode.SHIFT);
 			}

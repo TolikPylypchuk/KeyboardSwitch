@@ -7,10 +7,9 @@
         xmlns:tb="http://www.hardcodet.net/taskbar"
 		d:DataContext="{d:DesignInstance Type=local:SettingsViewModel, IsDesignTimeCreatable=True}"
         mc:Ignorable="d" ResizeMode="CanResize" Height="200" Width="380"
-        WindowStartupLocation="CenterScreen" Closing="Window_Closing"
-        Title="Keyboard Layout Switch Settings" Closed="Window_Closed"
-        MinHeight="200" MinWidth="380" PreviewKeyDown="Window_PreviewKeyDown"
-        PreviewMouseWheel="Window_PreviewMouseWheel"
+		Loaded="Window_Loaded" Closing="Window_Closing" Closed="Window_Closed"
+        Title="Keyboard Layout Switch Settings" WindowStartupLocation="CenterScreen"
+        MinHeight="200" MinWidth="380" PreviewMouseWheel="Window_PreviewMouseWheel"
         FocusManager.FocusedElement="{Binding RelativeSource={x:Static RelativeSource.Self}, Mode=OneTime}">
 	<Window.Resources>
 		<Style TargetType="{x:Type local:LetterBox}">
@@ -43,6 +42,12 @@
 		<CommandBinding Command="local:SwitchCommands.Backward"
 		                Executed="SwitchBackward_Executed"
 		                CanExecute="Switch_CanExecute" />
+		<CommandBinding Command="local:SwitchCommands.MoveRight"
+						Executed="MoveRight_Executed"
+						CanExecute="MoveRight_CanExecute" />
+		<CommandBinding Command="local:SwitchCommands.MoveLeft"
+						Executed="MoveLeft_Executed"
+						CanExecute="MoveLeft_CanExecute" />
 		<CommandBinding Command="local:SwitchCommands.Delete"
 		                Executed="Delete_Executed"
 		                CanExecute="Delete_CanExecute" />
@@ -64,6 +69,7 @@
 				<ContextMenu x:Name="contextMenu">
 					<MenuItem Header="Show settings"
 					          Click="ShowWindow_Click" />
+					<Separator />
 					<MenuItem Header="Switch forward"
 					          Click="SwitchForward_Click" />
 					<MenuItem Header="Switch backward"
@@ -90,25 +96,28 @@
 				          Command="local:SwitchCommands.Backward" />
 			</MenuItem>
 			<MenuItem Header="P_references">
-				<MenuItem Click="SetHotKeys_Click" Header="_Set hot keys" />
+				<MenuItem Header="_Set hot keys" Click="SetHotKeys_Click" />
 			</MenuItem>
 		</Menu>
 
-		<ScrollViewer x:Name="scrollViewer" Grid.Row="1"
-		              Background="Transparent"
-		              VerticalScrollBarVisibility="Auto"
-		              FocusVisualStyle="{x:Null}"
-		              HorizontalScrollBarVisibility="Auto"
-		              PanningMode="Both">
-			<StackPanel Orientation="Vertical" Background="Transparent"
-			            MouseLeftButtonDown="StackPanel_MouseLeftButtonDown">
-				<TextBlock Margin="10,5">Character mappings:</TextBlock>
-				<StackPanel Orientation="Horizontal">
+		<DockPanel Grid.Row="1" VerticalAlignment="Stretch" Background="Transparent"
+		            MouseLeftButtonDown="DockPanel_MouseLeftButtonDown">
+			<DockPanel DockPanel.Dock="Top">
+				<TextBlock Margin="10,5" DockPanel.Dock="Left">
+					Character mappings:
+				</TextBlock>
+			</DockPanel>
+			<ScrollViewer x:Name="scrollViewer" Background="Transparent"
+			              VerticalScrollBarVisibility="Auto"
+			              FocusVisualStyle="{x:Null}" PanningMode="Both"
+			              HorizontalScrollBarVisibility="Auto"
+			              VerticalAlignment="Stretch">
+				<StackPanel Orientation="Horizontal" VerticalAlignment="Stretch">
 					<Grid x:Name="nameGrid" />
 					<Grid x:Name="langGrid" />
 				</StackPanel>
-			</StackPanel>
-		</ScrollViewer>
+			</ScrollViewer>
+		</DockPanel>
 	</Grid>
 </Window>
 

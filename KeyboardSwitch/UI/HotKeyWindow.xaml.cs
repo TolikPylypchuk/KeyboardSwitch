@@ -15,21 +15,35 @@ namespace KeyboardSwitch.UI
 		public HotKeyWindow()
 		{
 			this.InitializeComponent();
+			
+			switch (Settings.Default.KeyModifiers)
+			{
+				case KeyModifier.Ctrl | KeyModifier.Shift:
+					this.comboBoxDefault.SelectedIndex = 1;
+					break;
+				case KeyModifier.Alt | KeyModifier.Shift:
+					this.comboBoxDefault.SelectedIndex = 2;
+					break;
+			}
+
+			switch (Settings.Default.InstantKeyModifiers)
+			{
+				case KeyModifier.Ctrl | KeyModifier.Shift:
+					this.comboBoxInstant.SelectedIndex = 1;
+					break;
+				case KeyModifier.Alt | KeyModifier.Shift:
+					this.comboBoxInstant.SelectedIndex = 2;
+					break;
+			}
+
+			this.model.IndexDefault = this.comboBoxDefault.SelectedIndex;
+			this.model.IndexInstant = this.comboBoxInstant.SelectedIndex;
 
 			this.letterBoxForward.Char = Settings.Default.HotKeyForward;
 			this.letterBoxBackward.Char = Settings.Default.HotKeyBackward;
 
-			switch (Settings.Default.KeyModifiers)
-			{
-				case KeyModifier.Ctrl | KeyModifier.Shift:
-					this.comboBox.SelectedIndex = 1;
-					break;
-				case KeyModifier.Alt | KeyModifier.Shift:
-					this.comboBox.SelectedIndex = 2;
-					break;
-			}
-
-			this.model.Index = this.comboBox.SelectedIndex;
+			this.letterBoxInstantForward.Char = Settings.Default.HotKeyInstantForward;
+			this.letterBoxInstantBackward.Char = Settings.Default.HotKeyInstantBackward;
 		}
 
 		#endregion
@@ -48,15 +62,17 @@ namespace KeyboardSwitch.UI
 		private void BtnOK_Click(object sender, RoutedEventArgs e)
 		{
 			if (this.letterBoxBackward.Text.Length != 0 &&
-				this.letterBoxBackward.Text.Length != 0)
+				this.letterBoxBackward.Text.Length != 0 &&
+				this.letterBoxInstantForward.Text.Length != 0 &&
+				this.letterBoxInstantBackward.Text.Length != 0)
 			{
 				var modifiers = Settings.Default.KeyModifiers;
 				bool modifiersChanged = false;
 
-				if (this.comboBox.SelectedIndex != this.model.Index)
+				if (this.comboBoxDefault.SelectedIndex != this.model.IndexDefault)
 				{
 					modifiersChanged = true;
-					switch (this.comboBox.SelectedIndex)
+					switch (this.comboBoxDefault.SelectedIndex)
 					{
 						case 0:
 							Settings.Default.KeyModifiers = modifiers =
@@ -74,8 +90,7 @@ namespace KeyboardSwitch.UI
 				}
 
 				if (modifiersChanged ||
-					this.model.KeyForward !=
-					this.model.CurrentApp.HotKeyForward.Key)
+					this.model.KeyForward != this.model.CurrentApp.HotKeyForward.Key)
 				{
 					this.model.CurrentApp.HotKeyForward.Dispose();
 					this.model.CurrentApp.HotKeyForward = new HotKey(
@@ -83,13 +98,11 @@ namespace KeyboardSwitch.UI
 						modifiers,
 						this.model.CurrentApp.HotKeyPressed);
 
-					Settings.Default.HotKeyForward =
-						this.letterBoxForward.Char;
+					Settings.Default.HotKeyForward = this.letterBoxForward.Char;
 				}
 
 				if (modifiersChanged ||
-					this.model.KeyBackward !=
-					this.model.CurrentApp.HotKeyBackward.Key)
+					this.model.KeyBackward != this.model.CurrentApp.HotKeyBackward.Key)
 				{
 					this.model.CurrentApp.HotKeyBackward.Dispose();
 					this.model.CurrentApp.HotKeyBackward = new HotKey(
@@ -97,8 +110,58 @@ namespace KeyboardSwitch.UI
 						modifiers,
 						this.model.CurrentApp.HotKeyPressed);
 
-					Settings.Default.HotKeyBackward =
-						this.letterBoxBackward.Char;
+					Settings.Default.HotKeyBackward = this.letterBoxBackward.Char;
+				}
+
+				modifiers = Settings.Default.InstantKeyModifiers;
+				modifiersChanged = false;
+
+				if (this.comboBoxInstant.SelectedIndex != this.model.IndexInstant)
+				{
+					modifiersChanged = true;
+					switch (this.comboBoxInstant.SelectedIndex)
+					{
+						case 0:
+							Settings.Default.InstantKeyModifiers = modifiers =
+								KeyModifier.Alt | KeyModifier.Ctrl;
+							break;
+						case 1:
+							Settings.Default.InstantKeyModifiers = modifiers =
+								KeyModifier.Ctrl | KeyModifier.Shift;
+							break;
+						case 2:
+							Settings.Default.InstantKeyModifiers = modifiers =
+								KeyModifier.Alt | KeyModifier.Shift;
+							break;
+					}
+				}
+
+				if (modifiersChanged ||
+					this.model.InstantKeyForward !=
+					this.model.CurrentApp.HotKeyInstantForward.Key)
+				{
+					this.model.CurrentApp.HotKeyInstantForward.Dispose();
+					this.model.CurrentApp.HotKeyInstantForward = new HotKey(
+						this.model.InstantKeyForward,
+						modifiers,
+						this.model.CurrentApp.HotKeyPressed);
+
+					Settings.Default.HotKeyInstantForward =
+						this.letterBoxInstantForward.Char;
+				}
+
+				if (modifiersChanged ||
+					this.model.InstantKeyBackward !=
+					this.model.CurrentApp.HotKeyInstantBackward.Key)
+				{
+					this.model.CurrentApp.HotKeyInstantBackward.Dispose();
+					this.model.CurrentApp.HotKeyInstantBackward = new HotKey(
+						this.model.InstantKeyBackward,
+						modifiers,
+						this.model.CurrentApp.HotKeyPressed);
+
+					Settings.Default.HotKeyInstantBackward =
+						this.letterBoxInstantBackward.Char;
 				}
 
 				Settings.Default.Save();
@@ -118,13 +181,17 @@ namespace KeyboardSwitch.UI
 			{
 				try
 				{
-					if (this.letterBoxBackward.Text.Length > 0 &&
-					    this.letterBoxForward.Char ==
-						this.letterBoxBackward.Char)
+					if ((this.letterBoxBackward.Text.Length > 0 &&
+					    this.letterBoxForward.Char == this.letterBoxBackward.Char) ||
+						(this.comboBoxDefault.SelectedIndex ==
+						 this.comboBoxInstant.SelectedIndex &&
+						 ((this.letterBoxInstantForward.Text.Length > 0 &&
+						   this.letterBoxForward.Char == this.letterBoxInstantForward.Char) ||
+						  (this.letterBoxInstantBackward.Text.Length > 0 &&
+						   this.letterBoxForward.Char == this.letterBoxInstantBackward.Char))))
 					{
 						MessageBox.Show(
-							"This letter is already set as the\n" + 
-							"backward hot key.",
+							"This letter is already occupied",
 							"Error",
 							MessageBoxButton.OK,
 							MessageBoxImage.Error);
@@ -142,8 +209,7 @@ namespace KeyboardSwitch.UI
 						"Error",
 						MessageBoxButton.OK,
 						MessageBoxImage.Error);
-					this.letterBoxForward.Char =
-						Settings.Default.HotKeyForward;
+					this.letterBoxForward.Char = Settings.Default.HotKeyForward;
 				}
 
 				this.model.CharForward = this.letterBoxForward.Char;
@@ -158,13 +224,17 @@ namespace KeyboardSwitch.UI
 			{
 				try
 				{
-					if (this.letterBoxForward.Text.Length > 0 &&
-					    this.letterBoxBackward.Char ==
-						this.letterBoxForward.Char)
+					if ((this.letterBoxForward.Text.Length > 0 &&
+						 this.letterBoxBackward.Char == this.letterBoxForward.Char) ||
+						(this.comboBoxDefault.SelectedIndex ==
+						 this.comboBoxInstant.SelectedIndex &&
+						 ((this.letterBoxInstantForward.Text.Length > 0 &&
+						   this.letterBoxBackward.Char == this.letterBoxInstantForward.Char) ||
+						  (this.letterBoxInstantBackward.Text.Length > 0 &&
+						   this.letterBoxBackward.Char == this.letterBoxInstantBackward.Char))))
 					{
 						MessageBox.Show(
-							"This letter is already set as the\n" +
-							"forward hot key.",
+							"This letter is already occupied",
 							"Error",
 							MessageBoxButton.OK,
 							MessageBoxImage.Error);
@@ -187,6 +257,95 @@ namespace KeyboardSwitch.UI
 
 				this.model.CharBackward = this.letterBoxBackward.Char;
             }
+		}
+
+		public void LetterBoxInstantForward_TextChanged(
+			object sender,
+			TextChangedEventArgs e)
+		{
+			if (this.letterBoxInstantForward.Text.Length != 0)
+			{
+				try
+				{
+					if ((this.letterBoxInstantBackward.Text.Length > 0 &&
+						 this.letterBoxInstantForward.Char ==
+						 this.letterBoxInstantBackward.Char) ||
+						(this.comboBoxDefault.SelectedIndex ==
+						 this.comboBoxInstant.SelectedIndex &&
+						 ((this.letterBoxForward.Text.Length > 0 &&
+						   this.letterBoxInstantForward.Char == this.letterBoxForward.Char) ||
+						  (this.letterBoxBackward.Text.Length > 0 &&
+						   this.letterBoxInstantForward.Char == this.letterBoxBackward.Char))))
+					{
+						MessageBox.Show(
+							"This letter is already occupied",
+							"Error",
+							MessageBoxButton.OK,
+							MessageBoxImage.Error);
+
+						this.letterBoxInstantForward.Char = this.model.CharInstantForward;
+						return;
+					}
+
+					this.model.InstantKeyForward =
+						App.GetKey(this.letterBoxInstantForward.Char);
+				} catch (ArgumentOutOfRangeException exp)
+				{
+					MessageBox.Show(
+						exp.Message,
+						"Error",
+						MessageBoxButton.OK,
+						MessageBoxImage.Error);
+					this.letterBoxInstantForward.Char =
+						Settings.Default.HotKeyInstantForward;
+				}
+
+				this.model.CharInstantForward = this.letterBoxInstantForward.Char;
+			}
+		}
+
+		public void LetterBoxInstantBackward_TextChanged(
+			object sender,
+			TextChangedEventArgs e)
+		{
+			if (this.letterBoxInstantBackward.Text.Length != 0)
+			{
+				try
+				{
+					if ((this.letterBoxInstantForward.Text.Length > 0 &&
+						 this.letterBoxInstantBackward.Char ==
+						 this.letterBoxInstantForward.Char) ||
+						(this.comboBoxDefault.SelectedIndex ==
+						 this.comboBoxInstant.SelectedIndex &&
+						 ((this.letterBoxForward.Text.Length > 0 &&
+						   this.letterBoxInstantBackward.Char == this.letterBoxForward.Char) ||
+						  (this.letterBoxBackward.Text.Length > 0 &&
+						   this.letterBoxInstantBackward.Char == this.letterBoxBackward.Char))))
+					{
+						MessageBox.Show(
+							"This letter is already occupied",
+							"Error",
+							MessageBoxButton.OK,
+							MessageBoxImage.Error);
+						this.letterBoxInstantBackward.Char = this.model.CharInstantBackward;
+						return;
+					}
+
+					this.model.InstantKeyBackward =
+						App.GetKey(this.letterBoxInstantBackward.Char);
+				} catch (ArgumentOutOfRangeException exp)
+				{
+					MessageBox.Show(
+						exp.Message,
+						"Error",
+						MessageBoxButton.OK,
+						MessageBoxImage.Error);
+					this.letterBoxInstantBackward.Char =
+						Settings.Default.HotKeyInstantBackward;
+				}
+
+				this.model.CharInstantBackward = this.letterBoxInstantBackward.Char;
+			}
 		}
 
 		#endregion

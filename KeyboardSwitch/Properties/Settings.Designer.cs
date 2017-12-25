@@ -82,5 +82,17 @@ namespace KeyboardSwitch.Properties {
                 this["HotKeyInstantBackward"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Alt, Shift")]
+        public global::KeyboardSwitch.Interop.KeyModifier InstantKeyModifiers {
+            get {
+                return ((global::KeyboardSwitch.Interop.KeyModifier)(this["InstantKeyModifiers"]));
+            }
+            set {
+                this["InstantKeyModifiers"] = value;
+            }
+        }
     }
 }
