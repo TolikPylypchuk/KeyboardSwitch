@@ -36,12 +36,11 @@ namespace KeyboardSwitch.UI
 			object sender, MouseButtonEventArgs e)
 		{
 			Process.Start(
-				ConfigurationManager.AppSettings["ReadmeApp"],
 				Path.Combine(
 					Path.GetDirectoryName(
 						Assembly.GetEntryAssembly().Location) ??
 							Environment.CurrentDirectory,
-					ConfigurationManager.AppSettings["ReadmeLocation"]));
+					ConfigurationManager.AppSettings["ReadmeFile"]));
 		}
 
 		#endregion

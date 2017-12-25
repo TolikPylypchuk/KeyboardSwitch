@@ -83,11 +83,9 @@
 		</tb:TaskbarIcon>
 
 		<Menu Grid.Row="0">
-			<MenuItem Header="_Program">
+			<MenuItem Header="_File">
 				<MenuItem Header="_New mapping" Command="New" />
 				<MenuItem Header="_Save" Command="Save" />
-				<Separator />
-				<MenuItem Header="_About" Click="About_Click" />
 				<Separator />
 				<MenuItem Header="_Exit" Click="Exit_Click" />
 			</MenuItem>
@@ -99,6 +97,9 @@
 			</MenuItem>
 			<MenuItem Header="P_references">
 				<MenuItem Header="_Set hot keys" Click="SetHotKeys_Click" />
+			</MenuItem>
+			<MenuItem Header="_Help">
+				<MenuItem Header="_About" Click="About_Click" />
 			</MenuItem>
 		</Menu>
 
