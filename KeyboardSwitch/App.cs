@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Shell;
 
 using Unity;
 
@@ -81,14 +84,30 @@ namespace KeyboardSwitch
 			window.Focus();
 		}
 
-		public void ProcessNextInstance()
+		public void ProcessNextInstance(IEnumerable<string> args)
 		{
-			if (this.MainWindow is SettingsWindow window)
+			string argument = args.FirstOrDefault();
+
+			switch (argument)
 			{
-				window.BringToForeground();
-			} else
-			{
-				BringWindowToForeground(this.MainWindow);
+				case Args.FORWARD:
+					this.SwitchText(true, this.DefaultTextManager);
+					break;
+				case Args.BACKWARD:
+					this.SwitchText(false, this.DefaultTextManager);
+					break;
+				case Args.EXIT:
+					this.Shutdown();
+					break;
+				default:
+					if (this.MainWindow is SettingsWindow window)
+					{
+						window.BringToForeground();
+					} else
+					{
+						BringWindowToForeground(this.MainWindow);
+					}
+					break;
 			}
 		}
 
@@ -183,7 +202,36 @@ namespace KeyboardSwitch
 
 		private void SetJumpList()
 		{
+			var jumpList = new JumpList();
+			JumpList.SetJumpList(this, jumpList);
 
+			string thisApp = Assembly.GetExecutingAssembly().Location;
+
+			var forward = new JumpTask
+			{
+				Title = "Switch forward",
+				ApplicationPath = thisApp,
+				Arguments = Args.FORWARD
+			};
+
+			var backward = new JumpTask
+			{
+				Title = "Switch backward",
+				ApplicationPath = thisApp,
+				Arguments = Args.BACKWARD
+			};
+
+			var exit = new JumpTask
+			{
+				Title = "Exit",
+				ApplicationPath = thisApp,
+				Arguments = Args.EXIT
+			};
+
+			jumpList.JumpItems.Add(forward);
+			jumpList.JumpItems.Add(backward);
+			jumpList.JumpItems.Add(exit);
+			jumpList.Apply();
 		}
 
 		private async Task CreateMainWindow()
@@ -193,7 +241,7 @@ namespace KeyboardSwitch
 
 			if (Array.Exists(
 				Environment.GetCommandLineArgs(),
-				s => s.Equals("--nowindow")))
+				s => s.Equals(Args.NO_WINDOW)))
 			{
 				await Task.Delay(500);
 				this.MainWindow.Hide();

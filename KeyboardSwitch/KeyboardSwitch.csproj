@@ -138,6 +138,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Args.cs" />
     <Compile Include="Services\LayoutManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Services\InstantClipboardTextManager.cs" />
