@@ -1,27 +1,95 @@
 # Keyboard Layout Switch
 
-Version 2.0 (in progress)
+Version 2.0
 
 Created by Tolik Pylypchuk
 
-This application is created to switch typed text as if it was typed with another keyboard layout.
+This application swiches typed text
+as if it were typed with another keyboard layout.
 
-All you have to do is select the mistyped text, cut (or copy) it to the clipboard, press the key combination of your choice (default are Ctrl+Alt+X and Ctrl+Alt+Z) and then just paste the switched text.
+## Default Switching
 
-The app is completely customisable: you can set character mappings, add new ones, delete them, and even move them, if you want (to do that, click on a column of characers and press an arrow key).
+To switch text, all you have to do is select the mistyped text,
+cut (or copy) it to the clipboard, press the key combination
+of your choice (the defaults are Ctrl+Alt+X to switch forward
+and Ctrl+Alt+Z to switch backward) and then just paste
+the switched text.
 
-By default scrolling in the settings window is horizontal. If you want to scroll vertically, press Ctrl while you scroll. Touchpad horizontal scrolling is not supported.
+## Instant Switching
 
-The app runs on the background, so if you close the settings window, it will not shut down. It uses a tray icon, so you can see that it's there.
+In addition to the default switching mode this app also
+offers the instant mode.
 
-The app uses the list of your input languages in the same order, as defined by the system. You can switch both forward and backward through this list. The app also automaticly changes your input language, so you don't have to do it yourself. You cannot add a language that's not present as one of the system's input languages.
-If you add/remove an input language while the app is running, you'll have to restart it.
+**Warning!**
+Instant switching mode is less stable than the default mode.
+Sometimes it doesn't switch properly. Use it with caution.
 
-Note: it uses a single layout for a language. e.g. if you are using both English QWERTY and English DVORAK, you can only set one of them for the app to switch.
+Instead of copying and pasting the text manually, you can
+use the instant switching mode. It will copy the text, switch it
+and paste it in one go. You just have to press one key combination
+(the defaults are Ctrl+Shift+X to switch forward
+and Ctrl+Shift+Z to switch backward).
 
-I hope this app will make your life at least 1% easier :)
+**Note:** A few things to consider:
+
+- The app simulates pressing Ctrl+C to copy
+and Ctrl+V to paste text. This is the default
+behaviour for most (if not all) applications.
+But if you are working in an app which behaves
+differently on those key presses, this app will
+not be able to switch text.
+
+- Ctrl+Shift work best as the modifier keys for instant
+switching because pressing Alt will change the focus
+to some kind of a menu in most apps.
+
+## Settings
+
+The app is completely customisable:
+you can set character mappings, add new ones, delete them,
+and even move them around.
+
+To quickly change mappings, you can use the TAB key. It will move
+the input focus to the next item in the mapping table.
+In addition, it will change the input language so you don't have
+to do it yourself.
+
+By default scrolling in the settings window is horizontal.
+If you want to scroll vertically, press Ctrl while you scroll.
+Touchpad horizontal scrolling is not supported.
+
+The app runs in the background, so if you close
+the settings window, it will not shut down.
+It uses a tray icon, so you can see that it's there.
+
+## Languages
+
+The app uses the list of your input languages in the same order
+as defined by the system. You can switch both forward
+and backward through this list. The app also automaticly
+changes your input language, so you don't have to do it yourself.
+You cannot add a language that's not present as one of
+the system's input languages.
+If you add/remove an input language while the app is running,
+you'll have to restart it.
+
+**Note:** The app uses a single layout for a language.
+e.g. if you are using both English QWERTY and English DVORAK,
+you can only set one of them for the app to switch.
+
 
 ## Changes
 
-What's new in version 1.1:
-- minor bug fixes.
+### What's new in version 2.0:
+
+- Brand new installer for the app.
+- Instant switching mode.
+- Updated readme.
+- Minor UI updates.
+- Minor bug fixes.
+
+### What's new in version 1.1:
+
+- Minor bug fixes.
+
+I hope this app will make your life at least 1% easier :)
