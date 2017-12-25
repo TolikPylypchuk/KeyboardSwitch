@@ -4,7 +4,7 @@ Version 2.0
 
 Created by Tolik Pylypchuk
 
-This application swiches typed text
+This application switches typed text
 as if it were typed with another keyboard layout.
 
 ## Default Switching
