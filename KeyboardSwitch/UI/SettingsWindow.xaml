@@ -30,6 +30,8 @@
 		<Style TargetType="{x:Type RowDefinition}">
 			<Setter Property="Height" Value="28" />
 		</Style>
+
+		<BooleanToVisibilityConverter x:Key="BoolToVisibility" />
 	</Window.Resources>
 
 	<Window.CommandBindings>
@@ -105,6 +107,10 @@
 			<DockPanel DockPanel.Dock="Top">
 				<TextBlock Margin="10,5" DockPanel.Dock="Left">
 					Character mappings:
+				</TextBlock>
+				<TextBlock Margin="10,5" DockPanel.Dock="Right" TextAlignment="Right"
+				           Visibility="{Binding Path=CanSave, Converter={StaticResource BoolToVisibility}}">
+					You have unsaved changes
 				</TextBlock>
 			</DockPanel>
 			<ScrollViewer x:Name="scrollViewer" Background="Transparent"

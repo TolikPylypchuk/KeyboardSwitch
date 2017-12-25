@@ -12,13 +12,13 @@
       <Value Profile="(Default)">Alt, Ctrl</Value>
     </Setting>
     <Setting Name="HotKeyInstantForward" Type="System.Char" Scope="User">
-      <Value Profile="(Default)">S</Value>
+      <Value Profile="(Default)">X</Value>
     </Setting>
     <Setting Name="HotKeyInstantBackward" Type="System.Char" Scope="User">
-      <Value Profile="(Default)">A</Value>
+      <Value Profile="(Default)">Z</Value>
     </Setting>
     <Setting Name="InstantKeyModifiers" Type="KeyboardSwitch.Interop.KeyModifier" Scope="User">
-      <Value Profile="(Default)">Alt, Shift</Value>
+      <Value Profile="(Default)">Ctrl, Shift</Value>
     </Setting>
   </Settings>
 </SettingsFile>

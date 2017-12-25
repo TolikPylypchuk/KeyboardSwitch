@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 
-[assembly: AssemblyTitle("switch")]
+[assembly: AssemblyTitle("Keyboard Layout Switch")]
 [assembly: AssemblyDescription("Keyboard Layout Switch")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Tolik Pylypchuk")]
