@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="Keyboard Layout Switch" Language="1033" Version="2.0.0.0"
+	         Manufacturer="Tolik Pylypchuk" UpgradeCode="55998633-ba48-409d-8847-18969740314a">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
+		<MediaTemplate />
+
+		<Media Id="1" Cabinet="KeyboardSwitch.cab" EmbedCab="yes" DiskPrompt="CD-ROM #1" />
+		<Property Id="DiskPrompt" Value="Keyboard Layout Switch 2.0 Installation [1]" />
+
+		<Feature Id="ProductFeature" Title="Keyboard Layout Switch" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="Keyboard Layout Switch" />
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<Component Id="ProductComponent" Guid="">
+				<File Id="KeyboardSwitchExe" Name="Keyboard Layout Switch.exe" DiskId="1"
+				      Source="Keyboard Layout Switch.exe" KeyPath="yes">
+					<Shortcut Id="StartMenuKeyboardSwitch" Directory="ProgramMenuDir"
+					          Name="Keyboard Layout Switch" WorkingDirectory="INSTALLDIR"
+					          Icon="Keyboard Layout Switch.exe" IconIndex="0" Advertise="yes" />
+				</File>
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>

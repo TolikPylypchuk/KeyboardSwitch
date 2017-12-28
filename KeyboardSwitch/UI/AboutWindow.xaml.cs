@@ -35,12 +35,22 @@ namespace KeyboardSwitch.UI
 		private void TextBlock_MouseLeftButtonUp(
 			object sender, MouseButtonEventArgs e)
 		{
-			Process.Start(
-				Path.Combine(
-					Path.GetDirectoryName(
-						Assembly.GetEntryAssembly().Location) ??
-							Environment.CurrentDirectory,
-					ConfigurationManager.AppSettings["ReadmeFile"]));
+			try
+			{
+				Process.Start(
+					Path.Combine(
+						Path.GetDirectoryName(
+							Assembly.GetEntryAssembly().Location) ??
+						Environment.CurrentDirectory,
+						ConfigurationManager.AppSettings["ReadmeFile"]));
+			} catch
+			{
+				MessageBox.Show(
+					"Could not open the readme file.",
+					"Error",
+					MessageBoxButton.OK,
+					MessageBoxImage.Error);
+			}
 		}
 
 		#endregion

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -156,16 +157,18 @@ namespace KeyboardSwitch
 
 		private void SetLanguages()
 		{
+			bool mappingsExist = File.Exists(this.FileManager.MappingsLocation);
+
 			this.LanguageManager.Languages = this.FileManager.Read();
 
-			if (this.LanguageManager.Languages == null)
+			if (!mappingsExist || this.LanguageManager.Languages == null)
 			{
 				MessageBox.Show(
 					"Cannot read character mappings.\n" +
 					"You have to define them yourself.",
 					"Keyboard Layout Switch - Error",
 					MessageBoxButton.OK,
-					MessageBoxImage.Error);
+					MessageBoxImage.Exclamation);
 
 				this.LanguageManager.Languages =
 					this.LanguageManager.InputLanguageManager.InputLanguages

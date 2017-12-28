@@ -285,14 +285,13 @@ namespace KeyboardSwitch.UI
 
 				this.scrollViewer.ScrollToHorizontalOffset(
 					this.scrollViewer.HorizontalOffset - e.Delta);
-			}
-			else
+			} else
 			{
 				this.scrollViewer.ScrollToVerticalOffset(
 					this.scrollViewer.VerticalOffset - e.Delta);
 			}
 		}
-		
+
 		private void Window_Closing(object sender, CancelEventArgs e)
 		{
 			if (this.model.FocusedBorder != null)
@@ -403,8 +402,7 @@ namespace KeyboardSwitch.UI
 				if (letterBox.Char != ' ')
 				{
 					if (itemsInRow.OfType<Border>()
-						.Select(currentBorder =>
-							currentBorder.Child as LetterBox)
+						.Select(currentBorder => currentBorder.Child as LetterBox)
 						.Any(currentBox =>
 							!letterBox.Equals(currentBox) &&
 							letterBox.Char == currentBox?.Char))
@@ -480,9 +478,15 @@ namespace KeyboardSwitch.UI
 					j++;
 				}
 			}
+
+			bool success = this.model.CurrentApp.FileManager.Write(
+				this.model.LanguageManager.Languages);
 			
-			if (!this.model.CurrentApp.FileManager.Write(
-				this.model.LanguageManager.Languages))
+			if (success)
+			{
+				Settings.Default.Save();
+				this.model.CanSave = false;
+			} else
 			{
 				MessageBox.Show(
 					"Couldn't write new info into the file.",
@@ -490,9 +494,6 @@ namespace KeyboardSwitch.UI
 					MessageBoxButton.OK,
 					MessageBoxImage.Error);
 			}
-
-			Settings.Default.Save();
-			this.model.CanSave = false;
 
 			this.RemoveFocusedBorder();
 			this.scrollViewer.Focus();

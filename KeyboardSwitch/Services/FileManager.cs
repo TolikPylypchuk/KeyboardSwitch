@@ -30,6 +30,11 @@ namespace KeyboardSwitch.Services
 
 			var result = new Dictionary<CultureInfo, StringBuilder>();
 
+			if (!File.Exists(this.MappingsLocation))
+			{
+				File.Create(this.MappingsLocation).Close();
+			}
+
 			StreamReader reader = null;
 
 			try
