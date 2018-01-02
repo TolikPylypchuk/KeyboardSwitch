@@ -7,10 +7,6 @@
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 
-		<Condition Message="You need to be an administrator to install this product.">
-			Privileged
-		</Condition>
-
 		<Media Id="1" Cabinet="KeyboardSwitch.cab" EmbedCab="yes" DiskPrompt="CD-ROM #1" />
 
 		<Property Id="DiskPrompt" Value="Keyboard Layout Switch Installation [1]" />
