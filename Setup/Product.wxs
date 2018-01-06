@@ -19,6 +19,8 @@
 		<Icon Id="AppIcon.exe" SourceFile="$(var.KeyboardSwitch.TargetDir)\Icon.ico" />
 
 		<WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
+		<WixVariable Id="WixUIBannerBmp" Value="Banner.bmp" />
+		<WixVariable Id="WixUIDialogBmp" Value="Dialog.bmp" />
 
 		<Feature Id="Complete" Title="Keyboard Layout Switch" Description="Keyboard Layout Switch"
 		         Level="1" Display="expand" ConfigurableDirectory="INSTALLFOLDER">
