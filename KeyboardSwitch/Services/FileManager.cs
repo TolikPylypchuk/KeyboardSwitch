@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows.Input;
 
@@ -10,12 +11,19 @@ namespace KeyboardSwitch.Services
 {
 	public class FileManager
 	{
-		public FileManager(string mappingsLocation)
+		public FileManager(string mappingsFile)
 		{
-			this.MappingsLocation = mappingsLocation;
+			this.DefaultMappingsFile = mappingsFile
+				?? throw new ArgumentNullException(nameof(mappingsFile));
+
+			this.CurrentMappingsFile = Path.Combine(
+				Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+				Assembly.GetExecutingAssembly().GetName().Name,
+				Path.GetFileName(mappingsFile));
 		}
 		
-		public string MappingsLocation { get; }
+		public string DefaultMappingsFile { get; }
+		public string CurrentMappingsFile { get; }
 
 		public Dictionary<CultureInfo, StringBuilder> Read(bool all = false)
 		{
@@ -28,19 +36,16 @@ namespace KeyboardSwitch.Services
 				return null;
 			}
 
-			var result = new Dictionary<CultureInfo, StringBuilder>();
+			this.CreateFilesIfTheyDontExist();
 
-			if (!File.Exists(this.MappingsLocation))
-			{
-				File.Create(this.MappingsLocation).Close();
-			}
+			var result = new Dictionary<CultureInfo, StringBuilder>();
 
 			StreamReader reader = null;
 
 			try
 			{
-				reader = new StreamReader(this.MappingsLocation, Encoding.UTF8);
-
+				reader = new StreamReader(this.CurrentMappingsFile, Encoding.UTF8);
+				
 				while (!reader.EndOfStream)
 				{
 					string line = reader.ReadLine();
@@ -105,11 +110,13 @@ namespace KeyboardSwitch.Services
 			return result;
 		}
 
-		public bool Write(Dictionary<CultureInfo, StringBuilder> dict)
+		public bool Write(
+			Dictionary<CultureInfo, StringBuilder> newMappings,
+			bool toDefault = false)
 		{
-			var fullDict = this.Read(true);
+			var oldMappings = this.Read(true);
 
-			if (fullDict == null)
+			if (oldMappings == null)
 			{
 				return false;
 			}
@@ -120,15 +127,15 @@ namespace KeyboardSwitch.Services
 			try
 			{
 				writer = new StreamWriter(
-					this.MappingsLocation,
+					toDefault ? this.DefaultMappingsFile : this.CurrentMappingsFile,
 					false,
 					Encoding.UTF8);
 
-				foreach (var pair in fullDict)
+				foreach (var pair in oldMappings)
 				{
 					writer.WriteLine(
-						dict.ContainsKey(pair.Key)
-							? $"{pair.Key}\t{dict[pair.Key]}"
+						newMappings.ContainsKey(pair.Key)
+							? $"{pair.Key}\t{newMappings[pair.Key]}"
 							: $"{pair.Key}\t{pair.Value}");
 				}
 			} catch
@@ -140,6 +147,28 @@ namespace KeyboardSwitch.Services
 			}
 
 			return result;
+		}
+
+		private void CreateFilesIfTheyDontExist()
+		{
+			if (!File.Exists(this.DefaultMappingsFile))
+			{
+				File.Create(this.DefaultMappingsFile).Close();
+			}
+
+			string dir = Path.GetDirectoryName(this.CurrentMappingsFile);
+
+			if (dir != null && !Directory.Exists(dir))
+			{
+				Directory.CreateDirectory(dir);
+			}
+
+			if (!File.Exists(this.CurrentMappingsFile))
+			{
+				File.WriteAllText(
+					this.CurrentMappingsFile,
+					File.ReadAllText(this.DefaultMappingsFile));
+			}
 		}
 	}
 }

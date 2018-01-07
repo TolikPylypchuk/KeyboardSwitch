@@ -7,6 +7,13 @@ Created by Tolik Pylypchuk
 This application switches typed text
 as if it were typed with another keyboard layout.
 
+## Installation
+
+This app can be either installed or used as a portable app.
+The only difference is that the installed version gets
+a shortcut in the Start Menu and will be started when
+you log into the system.
+
 ## Default Switching
 
 To switch text, all you have to do is select the mistyped text,
@@ -26,9 +33,9 @@ Sometimes it doesn't switch properly. Use it with caution.
 
 Instead of copying and pasting the text manually, you can
 use the instant switching mode. It will copy the text, switch it
-and paste it in one go. You just have to press one key combination
-(the defaults are Ctrl+Shift+X to switch forward
-and Ctrl+Shift+Z to switch backward).
+and paste it in one go. You just have to select the text and
+press the key combination (the defaults are Ctrl+Shift+X
+to switch forward and Ctrl+Shift+Z to switch backward).
 
 **Note:** A few things to consider:
 
@@ -77,6 +84,15 @@ you'll have to restart it.
 e.g. if you are using both English QWERTY and English DVORAK,
 you can only set one of them for the app to switch.
 
+## Configuration
+
+The mappings that this app creates are stored in the
+file called mappings.dat. The file itself is stored in the
+local app data folder.
+
+There is another mappings.dat file - the one stored with the
+app. This file contains the default mappings. They are used
+when the app is started for the first time on a computer.
 
 ## Changes
 
@@ -85,6 +101,7 @@ you can only set one of them for the app to switch.
 - Brand new installer for the app.
 - Instant switching mode.
 - Updated readme.
+- Updated configuration
 - Minor UI updates.
 - Minor bug fixes.
 

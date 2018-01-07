@@ -38,6 +38,8 @@
 		<CommandBinding Command="New" Executed="New_Executed" />
 		<CommandBinding Command="Save" Executed="Save_Executed"
 		                CanExecute="Save_CanExecute" />
+		<CommandBinding Command="local:SwitchCommands.SaveAsDefault"
+		                Executed="SaveAsDefault_Executed" />
 		<CommandBinding Command="local:SwitchCommands.Forward"
 		                Executed="SwitchForward_Executed"
 		                CanExecute="Switch_CanExecute" />
@@ -86,6 +88,8 @@
 			<MenuItem Header="_File">
 				<MenuItem Header="_New mapping" Command="New" />
 				<MenuItem Header="_Save" Command="Save" />
+				<MenuItem Header="Save as _default"
+				          Command="local:SwitchCommands.SaveAsDefault" />
 				<Separator />
 				<MenuItem Header="_Exit" Click="Exit_Click" />
 			</MenuItem>

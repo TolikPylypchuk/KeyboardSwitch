@@ -265,6 +265,54 @@ namespace KeyboardSwitch.UI
 				.Cast<UIElement>()
 				.Where(elem => Grid.GetColumn(elem) == column);
 
+		private void Save(bool toDefault)
+		{
+			for (int i = 0;
+			     i < this.model.CurrentApp.LanguageManager.Languages.Count;
+			     i++)
+			{
+				var itemsInRow = this.GetItemsInRow(i);
+				int j = 0;
+				foreach (var item in itemsInRow)
+				{
+					if (item is Border b &&
+						b.Child is LetterBox letterBox &&
+						letterBox.Text.Length == 0)
+					{
+						letterBox.Char =
+							this.model.CurrentApp.LanguageManager.Languages[
+								this.GetLanguage(i)][j];
+					}
+
+					j++;
+				}
+			}
+
+			bool success = this.model.CurrentApp.FileManager.Write(
+				this.model.LanguageManager.Languages, toDefault);
+
+			if (success)
+			{
+				Settings.Default.Save();
+
+				if (!toDefault)
+				{
+					this.model.CanSave = false;
+				}
+			}
+			else
+			{
+				MessageBox.Show(
+					"Couldn't write new info into the file.",
+					"Error",
+					MessageBoxButton.OK,
+					MessageBoxImage.Error);
+			}
+
+			this.RemoveFocusedBorder();
+			this.scrollViewer.Focus();
+		}
+
 		#endregion
 
 		#region Event handlers
@@ -458,51 +506,18 @@ namespace KeyboardSwitch.UI
 
 		private void Save_Executed(object sender, ExecutedRoutedEventArgs e)
 		{
-			for (int i = 0;
-					i < this.model.CurrentApp.LanguageManager.Languages.Count;
-					i++)
-			{
-				var itemsInRow = this.GetItemsInRow(i);
-				int j = 0;
-				foreach (var item in itemsInRow)
-				{
-					if (item is Border b &&
-						b.Child is LetterBox letterBox &&
-						letterBox.Text.Length == 0)
-					{
-						letterBox.Char =
-							this.model.CurrentApp.LanguageManager.Languages[
-								this.GetLanguage(i)][j];
-					}
-
-					j++;
-				}
-			}
-
-			bool success = this.model.CurrentApp.FileManager.Write(
-				this.model.LanguageManager.Languages);
-			
-			if (success)
-			{
-				Settings.Default.Save();
-				this.model.CanSave = false;
-			} else
-			{
-				MessageBox.Show(
-					"Couldn't write new info into the file.",
-					"Error",
-					MessageBoxButton.OK,
-					MessageBoxImage.Error);
-			}
-
-			this.RemoveFocusedBorder();
-			this.scrollViewer.Focus();
+			this.Save(false);
 		}
 
 		private void Save_CanExecute(
 			object sender,
 			CanExecuteRoutedEventArgs e)
 			=> e.CanExecute = this.model.CanSave;
+
+		private void SaveAsDefault_Executed(object sender, ExecutedRoutedEventArgs e)
+		{
+			this.Save(true);
+		}
 
 		private void SwitchForward_Executed(
 			object sender,

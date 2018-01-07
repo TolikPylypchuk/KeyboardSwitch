@@ -3,10 +3,10 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 		<title>Keyboard Layout Switch</title>
-		
+
 		<style>* { font-family: sans-serif }</style>
 	</head>
 
@@ -22,20 +22,34 @@
 					This application switches typed text
 					as if it were typed with another keyboard layout.
 				</p>
-				
+
 				<p>
 					This project is open-source. You can find the source code
 					<a href="https://github.com/TolikPylypchuk/KeyboardSwitch">here</a>.
 				</p>
 			</header>
-			
+
 			<nav>
+				<a href="#installation">Installation</a> |
 				<a href="#default">Default Switching</a> |
 				<a href="#instant">Instant Switching</a> |
 				<a href="#settings">Settings</a> |
 				<a href="#langs">Languages</a> |
+				<a href="#config">Configuration</a> |
 				<a href="#changes">Changes</a>
 			</nav>
+
+			<section>
+				<a id="installation"></a>
+				<h2>Installation</h2>
+
+				<p>
+					This app can be either installed or used as a portable app.
+					The only difference is that the installed version gets
+					a shortcut in the Start Menu and will be started when
+					you log into the system.
+				</p>
+			</section>
 
 			<section>
 				<a id="default"></a>
@@ -58,21 +72,21 @@
 					In addition to the default switching mode this app also
 					offers the instant mode.
 				</p>
-				
+
 				<p>
 					<strong>Warning!</strong>
 					Instant switching mode is less stable than the default mode.
 					Sometimes it doesn't switch properly. Use it with caution.
 				</p>
-				
+
 				<p>
 					Instead of copying and pasting the text manually, you can
 					use the instant switching mode. It will copy the text, switch it
-					and paste it in one go. You just have to press one key combination
-					(the defaults are Ctrl+Shift+X to switch forward
-					and Ctrl+Shift+Z to switch backward).
+					and paste it in one go. You just have to select the text and
+					press the key combination (the defaults are Ctrl+Shift+X
+					to switch forward and Ctrl+Shift+Z to switch backward).
 				</p>
-				
+
 				<p>
 					<strong>Note:</strong>
 					A few things to consider:
@@ -148,6 +162,23 @@
 			</section>
 
 			<section>
+				<a id="config"></a>
+				<h2>Configuration</h2>
+
+				<p>
+					The mappings that this app creates are stored in the
+					file called mappings.dat. The file itself is stored in the
+					local app data folder.
+				</p>
+
+				<p>
+					There is another mappings.dat file - the one stored with the
+					app. This file contains the default mappings. They are used
+					when the app is started for the first time on a computer.
+				</p>
+			</section>
+
+			<section>
 				<a id="changes"></a>
 				<h2>Changes</h2>
 
@@ -156,6 +187,7 @@
 					<li>Brand new installer for the app.</li>
 					<li>Instant switching mode.</li>
 					<li>Updated readme.</li>
+					<li>Updated configuration.</li>
 					<li>Minor UI updates.</li>
 					<li>Minor bug fixes.</li>
 				</ul>
@@ -165,11 +197,11 @@
 					<li>Minor bug fixes.</li>
 				</ul>
 			</section>
-
-			<aside>
-				<p>I hope this app will make your life at least 1% easier. :)</p>
-			</aside>
 		</main>
+
+		<aside>
+			<p>I hope this app will make your life at least 1% easier. :)</p>
+		</aside>
 
 		<hr />
 

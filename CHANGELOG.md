@@ -1,8 +1,9 @@
-# v2.0 (Upcoming)
+# [v2.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v2.0) (January 2018)
 
 - Brand new installer for the app
 - Instant switching mode
 - Updated readme
+- Updated configuration
 - Minor UI updates
 - Minor bug fixes
 

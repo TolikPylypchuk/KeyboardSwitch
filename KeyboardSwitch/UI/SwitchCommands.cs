@@ -7,6 +7,8 @@ namespace KeyboardSwitch.UI
 		public static RoutedUICommand Forward { get; }
 		public static RoutedUICommand Backward { get; }
 
+		public static RoutedUICommand SaveAsDefault { get; }
+
 		public static RoutedUICommand MoveRight { get; }
 		public static RoutedUICommand MoveLeft { get; }
 
@@ -32,6 +34,16 @@ namespace KeyboardSwitch.UI
 				new InputGestureCollection
 				{
 					new KeyGesture(Key.B, ModifierKeys.Control, "Ctrl+B")
+				});
+
+			SaveAsDefault = new RoutedUICommand(
+				"Save as default",
+				nameof(SaveAsDefault),
+				typeof(SwitchCommands),
+				new InputGestureCollection
+				{
+					new KeyGesture(
+						Key.S, ModifierKeys.Control | ModifierKeys.Shift, "Ctrl+Shift+S")
 				});
 
 			MoveRight = new RoutedUICommand(

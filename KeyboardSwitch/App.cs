@@ -157,7 +157,7 @@ namespace KeyboardSwitch
 
 		private void SetLanguages()
 		{
-			bool mappingsExist = File.Exists(this.FileManager.MappingsLocation);
+			bool mappingsExist = File.Exists(this.FileManager.DefaultMappingsFile);
 
 			this.LanguageManager.Languages = this.FileManager.Read();
 

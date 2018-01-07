@@ -50,7 +50,7 @@ namespace KeyboardSwitch
 			string mappingsLocation = Path.Combine(
 				Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)
 				?? Environment.CurrentDirectory,
-				ConfigurationManager.AppSettings["MappingsLocation"]);
+				ConfigurationManager.AppSettings["MappingsFile"]);
 			
 			this.container.RegisterSingleton<FileManager>(
 				new InjectionConstructor(mappingsLocation));
