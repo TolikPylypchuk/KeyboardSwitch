@@ -11,7 +11,7 @@
 
 		<Property Id="DiskPrompt" Value="Keyboard Layout Switch Installation [1]" />
 		<Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
-		<Property Id="ARPPRODUCTICON" Value="AppIcon.ico" />
+		<Property Id="ARPPRODUCTICON" Value="AppIcon.exe" />
 
 		<UIRef Id="WixUI_InstallDir" />
 		<UIRef Id="WixUI_ErrorProgressText" />
