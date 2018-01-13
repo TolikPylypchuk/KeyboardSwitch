@@ -57,68 +57,68 @@
 			<Directory Id="ProgramFiles64Folder">
 				<Directory Id="INSTALLFOLDER" Name="Keyboard Layout Switch">
 					<Component Id="KeyboardSwitchComponent" Guid="*" Win64="yes">
-						<File Id="KeyboardSwitchExe" Name="Keyboard Layout Switch.exe" DiskId="1"
-									Source="$(var.KeyboardSwitch.TargetDir)\Keyboard Layout Switch.exe" KeyPath="yes">
+						<File Id="KeyboardSwitchExe" Name="Keyboard Layout Switch.exe" KeyPath="yes"
+									Source="$(var.KeyboardSwitch.TargetDir)\Keyboard Layout Switch.exe">
 							<Shortcut Id="StartMenuKeyboardSwitch" Directory="ProgramMenuFolder"
 							          Name="Keyboard Layout Switch" WorkingDirectory="INSTALLDIR"
 							          Icon="AppIcon.exe" Advertise="yes" />
 						</File>
 					</Component>
 					<Component Id="KeyboardSwitchConfigComponent" Guid="*" Win64="yes">
-						<File Id="KeyboardSwitchConfig" Name="Keyboard Layout Switch.exe.config" DiskId="1"
-						      Source="$(var.KeyboardSwitch.TargetDir)\Keyboard Layout Switch.exe.config" KeyPath="yes" />
+						<File Id="KeyboardSwitchConfig" Name="Keyboard Layout Switch.exe.config" KeyPath="yes"
+						      Source="$(var.KeyboardSwitch.TargetDir)\Keyboard Layout Switch.exe.config" />
 					</Component>
 					<Component Id="CommonServiceLocatorComponent" Guid="*" Win64="yes">
-						<File Id="CommonServiceLocatorDll" Name="CommonServiceLocator.dll" DiskId="1"
-									Source="$(var.KeyboardSwitch.TargetDir)\CommonServiceLocator.dll" KeyPath="yes" />
+						<File Id="CommonServiceLocatorDll" Name="CommonServiceLocator.dll" KeyPath="yes"
+									Source="$(var.KeyboardSwitch.TargetDir)\CommonServiceLocator.dll" />
 					</Component>
 					<Component Id="HardcodetWpfTaskbarNotificationComponent" Guid="*" Win64="yes">
-						<File Id="HardcodetWpfTaskbarNotificationDll" Name="Hardcodet.Wpf.TaskbarNotification.dll" DiskId="1"
+						<File Id="HardcodetWpfTaskbarNotificationDll" Name="Hardcodet.Wpf.TaskbarNotification.dll"
 									Source="$(var.KeyboardSwitch.TargetDir)\Hardcodet.Wpf.TaskbarNotification.dll" KeyPath="yes" />
 					</Component>
 					<Component Id="UnityAbstractionsComponent" Guid="*" Win64="yes">
-						<File Id="UnityAbstractionsDll" Name="Unity.Abstractions.dll" DiskId="1"
-									Source="$(var.KeyboardSwitch.TargetDir)\Unity.Abstractions.dll" KeyPath="yes" />
+						<File Id="UnityAbstractionsDll" Name="Unity.Abstractions.dll" KeyPath="yes"
+									Source="$(var.KeyboardSwitch.TargetDir)\Unity.Abstractions.dll" />
 					</Component>
 					<Component Id="UnityConfigurationComponent" Guid="*" Win64="yes">
-						<File Id="UnityConfigurationDll" Name="Unity.Configuration.dll" DiskId="1"
-									Source="$(var.KeyboardSwitch.TargetDir)\Unity.Configuration.dll" KeyPath="yes" />
+						<File Id="UnityConfigurationDll" Name="Unity.Configuration.dll" KeyPath="yes"
+									Source="$(var.KeyboardSwitch.TargetDir)\Unity.Configuration.dll" />
 					</Component>
 					<Component Id="UnityContainerComponent" Guid="*" Win64="yes">
-						<File Id="UnityContainerDll" Name="Unity.Container.dll" DiskId="1"
-									Source="$(var.KeyboardSwitch.TargetDir)\Unity.Container.dll" KeyPath="yes" />
+						<File Id="UnityContainerDll" Name="Unity.Container.dll" KeyPath="yes"
+									Source="$(var.KeyboardSwitch.TargetDir)\Unity.Container.dll" />
 					</Component>
 					<Component Id="UnityInterceptionConfigurationComponent" Guid="*" Win64="yes">
-						<File Id="UnityInterceptionConfigurationDll" Name="Unity.Interception.Configuration.dll" DiskId="1"
+						<File Id="UnityInterceptionConfigurationDll" Name="Unity.Interception.Configuration.dll"
 									Source="$(var.KeyboardSwitch.TargetDir)\Unity.Interception.Configuration.dll" KeyPath="yes" />
 					</Component>
 					<Component Id="UnityInterceptionComponent" Guid="*" Win64="yes">
-						<File Id="UnityInterceptionDll" Name="Unity.Interception.dll" DiskId="1"
-									Source="$(var.KeyboardSwitch.TargetDir)\Unity.Interception.dll" KeyPath="yes" />
+						<File Id="UnityInterceptionDll" Name="Unity.Interception.dll" KeyPath="yes"
+									Source="$(var.KeyboardSwitch.TargetDir)\Unity.Interception.dll" />
 					</Component>
 					<Component Id="UnityRegistrationByConventionComponent" Guid="*" Win64="yes">
-						<File Id="UnityRegistrationByConventionDll" Name="Unity.RegistrationByConvention.dll" DiskId="1"
+						<File Id="UnityRegistrationByConventionDll" Name="Unity.RegistrationByConvention.dll"
 									Source="$(var.KeyboardSwitch.TargetDir)\Unity.RegistrationByConvention.dll" KeyPath="yes" />
 					</Component>
 					<Component Id="UnityServiceLocationComponent" Guid="*" Win64="yes">
-						<File Id="UnityServiceLocationDll" Name="Unity.ServiceLocation.dll" DiskId="1"
-									Source="$(var.KeyboardSwitch.TargetDir)\Unity.ServiceLocation.dll" KeyPath="yes" />
+						<File Id="UnityServiceLocationDll" Name="Unity.ServiceLocation.dll" KeyPath="yes"
+									Source="$(var.KeyboardSwitch.TargetDir)\Unity.ServiceLocation.dll" />
 					</Component>
 					<Component Id="WindowsInputComponent" Guid="*" Win64="yes">
-						<File Id="WindowsInputDll" Name="WindowsInput.dll" DiskId="1"
-									Source="$(var.KeyboardSwitch.TargetDir)\WindowsInput.dll" KeyPath="yes" />
+						<File Id="WindowsInputDll" Name="WindowsInput.dll" KeyPath="yes"
+									Source="$(var.KeyboardSwitch.TargetDir)\WindowsInput.dll" />
 					</Component>
 					<Component Id="MappingsComponent" Guid="*" Win64="yes">
-						<File Id="Mappings" Name="mappings.dat" DiskId="1"
-									Source="$(var.KeyboardSwitch.TargetDir)\mappings.dat" KeyPath="yes" />
+						<File Id="Mappings" Name="mappings.dat" KeyPath="yes"
+									Source="$(var.KeyboardSwitch.TargetDir)\mappings.dat" />
 					</Component>
 					<Component Id="ReadmeComponent" Guid="*" Win64="yes">
-						<File Id="Readme" Name="readme.html" DiskId="1"
-						      Source="$(var.KeyboardSwitch.TargetDir)\readme.html" KeyPath="yes" />
+						<File Id="Readme" Name="readme.html" KeyPath="yes"
+						      Source="$(var.KeyboardSwitch.TargetDir)\readme.html" />
 					</Component>
 					<Component Id="IconComponent" Guid="*" Win64="yes">
-						<File Id="Icon" Name="Icon.ico" DiskId="1"
-									Source="$(var.KeyboardSwitch.TargetDir)\Icon.ico" KeyPath="yes" />
+						<File Id="Icon" Name="Icon.ico" KeyPath="yes"
+									Source="$(var.KeyboardSwitch.TargetDir)\Icon.ico" />
 					</Component>
 				</Directory>
 			</Directory>

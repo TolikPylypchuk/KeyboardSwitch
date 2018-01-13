@@ -92,7 +92,7 @@ local app data folder.
 
 There is another mappings.dat file - the one stored with the
 app. This file contains the default mappings. They are used
-when the app is started for the first time on a computer.
+when the app is started for the first time for a user.
 
 ## Changes
 
