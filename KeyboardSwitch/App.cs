@@ -72,17 +72,20 @@ namespace KeyboardSwitch
 		
 		public static void BringWindowToForeground(Window window)
 		{
-			if (window.WindowState == WindowState.Minimized ||
-				window.Visibility == Visibility.Hidden)
+			if (window != null)
 			{
-				window.Show();
-				window.WindowState = WindowState.Normal;
-			}
+				if (window.WindowState == WindowState.Minimized ||
+					window.Visibility == Visibility.Hidden)
+				{
+					window.Show();
+					window.WindowState = WindowState.Normal;
+				}
 
-			window.Activate();
-			window.Topmost = true;
-			window.Topmost = false;
-			window.Focus();
+				window.Activate();
+				window.Topmost = true;
+				window.Topmost = false;
+				window.Focus();
+			}
 		}
 
 		public void ProcessNextInstance(IEnumerable<string> args)
@@ -240,14 +243,27 @@ namespace KeyboardSwitch
 		private async Task CreateMainWindow()
 		{
 			this.MainWindow = this.Container.Resolve<SettingsWindow>();
-			this.MainWindow.Show();
 
-			if (Array.Exists(
-				Environment.GetCommandLineArgs(),
-				s => s.Equals(Args.NO_WINDOW)))
+			if (this.MainWindow != null)
 			{
-				await Task.Delay(500);
-				this.MainWindow.Hide();
+				this.MainWindow.Show();
+
+				if (Array.Exists(
+					Environment.GetCommandLineArgs(),
+					s => s.Equals(Args.NO_WINDOW)))
+				{
+					await Task.Delay(500);
+					this.MainWindow.Hide();
+				}
+			} else
+			{
+				MessageBox.Show(
+					"Could not create the settings window",
+					"Error",
+					MessageBoxButton.OK,
+					MessageBoxImage.Error);
+
+				this.Shutdown();
 			}
 		}
 
