@@ -48,6 +48,7 @@
 				<ComponentRef Id="ReadmeComponent" />
 				<ComponentRef Id="IconComponent" />
 				<ComponentRef Id="ProgramMenuDir" />
+				<ComponentRef Id="Autostart" />
 			</Feature>
 		</Feature>
 	</Product>
@@ -127,6 +128,13 @@
 					<RemoveFolder Id="ProgramMenuDir" On="uninstall" />
 					<RegistryValue Root="HKCU" Key="Software\Tolik Pylypchuk\Keyboard Layout Switch"
 					               Type="string" Value="" KeyPath="yes" />
+				</Component>
+				<Component Id="Autostart" Guid="*">
+					<RegistryValue Id="KeyboardSwitch.rst" Root="HKCU" Action="write"
+					               Key="Software\Microsoft\Windows\CurrentVersion\Run"
+					               Name="Keyboard Layout Switch.exe"
+					               Value='"[INSTALLFOLDER]Keyboard Layout Switch.exe" --no-window'
+					               Type="string" />
 				</Component>
 			</Directory>
 		</Directory>
