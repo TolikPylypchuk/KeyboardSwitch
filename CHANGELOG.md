@@ -1,4 +1,4 @@
-# [v2.1](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v2.0) (1 April 2018)
+# [v2.1](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v2.1) (1 April 2018)
 
 Minor bug fixes
 
