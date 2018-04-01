@@ -1,6 +1,6 @@
 # Keyboard Layout Switch
 
-Version 2.0
+Version 2.1
 
 Created by Tolik Pylypchuk
 
@@ -95,6 +95,10 @@ app. This file contains the default mappings. They are used
 when the app is started for the first time for a user.
 
 ## Changes
+
+### What's new in version 2.1:
+
+- Minor bug fixes.
 
 ### What's new in version 2.0:
 
