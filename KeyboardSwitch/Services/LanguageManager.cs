@@ -32,8 +32,9 @@ namespace KeyboardSwitch.Services
 			{
 				var currentLanguage = this.LayoutManager.GetCurrentLayout();
 
-				if (this.CurrentLanguage == null ||
-				    this.CurrentLanguage.LCID != currentLanguage.LCID)
+				if (currentLanguage != null &&
+					(this.CurrentLanguage == null ||
+				    this.CurrentLanguage.LCID != currentLanguage.LCID))
 				{
 					Debug.Write(
 						$"In {nameof(this.SetCurrentLanguage)}(): " +
