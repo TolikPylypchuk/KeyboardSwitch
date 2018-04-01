@@ -138,7 +138,7 @@ namespace KeyboardSwitch
 			base.OnStartup(e);
 
 			this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-
+			this.SetUncaughtExceptionHandler();
 			this.SetLanguages();
 			this.SetHotKeys();
 			this.SetJumpList();
@@ -275,6 +275,30 @@ namespace KeyboardSwitch
 				this.LanguageManager.SetCurrentLanguage();
 				await Task.Delay(100);
 			}
+		}
+
+		[Conditional("DEBUG")]
+		private void SetUncaughtExceptionHandler()
+		{
+			this.DispatcherUnhandledException += (sender, e) =>
+			{
+				string path =
+					Path.Combine(
+						Environment.GetFolderPath(
+							Environment.SpecialFolder.LocalApplicationData),
+						"Keyboard Layout Switch",
+						$"{DateTime.Now:yyyy-MM-ddTHH-mm-ss}.log");
+
+				using (var stream = new FileStream(path, FileMode.CreateNew))
+				using (var writer = new StreamWriter(stream, Encoding.UTF8))
+				{
+					writer.WriteLine($"Exception:   {e.Exception.GetType()}");
+					writer.WriteLine($"Message:     {e.Exception.Message}");
+					writer.WriteLine($"Source:      {e.Exception.Source}");
+					writer.WriteLine($"Target site: {e.Exception.TargetSite}");
+					writer.WriteLine($"Stack trace:\n{e.Exception.StackTrace}");
+				}
+			};
 		}
 
 		#endregion

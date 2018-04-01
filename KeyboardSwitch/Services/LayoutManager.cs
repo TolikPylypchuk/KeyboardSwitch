@@ -11,11 +11,14 @@ namespace KeyboardSwitch.Services
 	{
 		public CultureInfo GetCurrentLayout()
 		{
-			var layout = GetKeyboardLayout(
+			long layout = GetKeyboardLayout(
 				GetWindowThreadProcessId(
-					GetForegroundWindow(), IntPtr.Zero));
+					GetForegroundWindow(), IntPtr.Zero))
+				.ToInt64();
 
-			return new CultureInfo((short)layout.ToInt64());
+			return layout == 0
+				? null
+				: new CultureInfo((short)layout);
 		}
 
 		public void SetCurrentLayout(CultureInfo value)

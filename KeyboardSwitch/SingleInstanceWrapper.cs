@@ -36,9 +36,7 @@ namespace KeyboardSwitch
 
 		protected override void OnStartupNextInstance(
 			StartupNextInstanceEventArgs e)
-		{
-			this.app.ProcessNextInstance(e.CommandLine);
-		}
+			=> this.app.ProcessNextInstance(e.CommandLine);
 
 		private void SetUpContainer()
 		{
