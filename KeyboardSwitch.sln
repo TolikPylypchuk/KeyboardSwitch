@@ -1,47 +1,41 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardSwitch", "KeyboardSwitch\KeyboardSwitch.csproj", "{8C7343C8-1986-4D78-84A0-1D229590583F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{70CE6F48-72C5-4BC0-8D76-D67470D74C59}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		CHANGELOG.md = CHANGELOG.md
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Setup", "Setup\Setup.wixproj", "{10E004D6-F81F-41BD-9C1D-3CA3CF7E1FCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch", "KeyboardSwitch\KeyboardSwitch.csproj", "{3B77F28C-A7AF-49F6-B041-28C5D31FBE67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardSwitch.Settings", "KeyboardSwitch.Settings\KeyboardSwitch.Settings.csproj", "{135A4C14-E1C2-4848-A83A-F0B16872A2AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
-		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
-		Release|x64 = Release|x64
-		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8C7343C8-1986-4D78-84A0-1D229590583F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C7343C8-1986-4D78-84A0-1D229590583F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8C7343C8-1986-4D78-84A0-1D229590583F}.Debug|x64.ActiveCfg = Debug|x64
-		{8C7343C8-1986-4D78-84A0-1D229590583F}.Debug|x64.Build.0 = Debug|x64
-		{8C7343C8-1986-4D78-84A0-1D229590583F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{8C7343C8-1986-4D78-84A0-1D229590583F}.Debug|x86.Build.0 = Debug|Any CPU
-		{8C7343C8-1986-4D78-84A0-1D229590583F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8C7343C8-1986-4D78-84A0-1D229590583F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8C7343C8-1986-4D78-84A0-1D229590583F}.Release|x64.ActiveCfg = Release|Any CPU
-		{8C7343C8-1986-4D78-84A0-1D229590583F}.Release|x64.Build.0 = Release|Any CPU
-		{8C7343C8-1986-4D78-84A0-1D229590583F}.Release|x86.ActiveCfg = Release|Any CPU
-		{8C7343C8-1986-4D78-84A0-1D229590583F}.Release|x86.Build.0 = Release|Any CPU
-		{10E004D6-F81F-41BD-9C1D-3CA3CF7E1FCD}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{10E004D6-F81F-41BD-9C1D-3CA3CF7E1FCD}.Debug|x64.ActiveCfg = Debug|x64
-		{10E004D6-F81F-41BD-9C1D-3CA3CF7E1FCD}.Debug|x64.Build.0 = Debug|x64
-		{10E004D6-F81F-41BD-9C1D-3CA3CF7E1FCD}.Debug|x86.ActiveCfg = Debug|x64
-		{10E004D6-F81F-41BD-9C1D-3CA3CF7E1FCD}.Release|Any CPU.ActiveCfg = Release|x64
-		{10E004D6-F81F-41BD-9C1D-3CA3CF7E1FCD}.Release|x64.ActiveCfg = Release|x64
-		{10E004D6-F81F-41BD-9C1D-3CA3CF7E1FCD}.Release|x64.Build.0 = Release|x64
-		{10E004D6-F81F-41BD-9C1D-3CA3CF7E1FCD}.Release|x86.ActiveCfg = Release|x64
+		{3B77F28C-A7AF-49F6-B041-28C5D31FBE67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B77F28C-A7AF-49F6-B041-28C5D31FBE67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B77F28C-A7AF-49F6-B041-28C5D31FBE67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B77F28C-A7AF-49F6-B041-28C5D31FBE67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{135A4C14-E1C2-4848-A83A-F0B16872A2AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{135A4C14-E1C2-4848-A83A-F0B16872A2AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{135A4C14-E1C2-4848-A83A-F0B16872A2AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{135A4C14-E1C2-4848-A83A-F0B16872A2AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {9E01C0D7-5F7F-458A-BB27-0A8CD4EE46CA}
+		SolutionGuid = {4C1EC3F6-087A-4B33-B917-FF6969E738C5}
 	EndGlobalSection
 EndGlobal
