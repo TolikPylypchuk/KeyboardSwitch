@@ -1,18 +1,11 @@
 # Keyboard Layout Switch
 
-Version 2.1
+Version 3.0 (Work in progress)
 
 Created by Tolik Pylypchuk
 
 This application switches typed text
 as if it were typed with another keyboard layout.
-
-## Installation
-
-This app can be either installed or used as a portable app.
-The only difference is that the installed version gets
-a shortcut in the Start Menu and will be started when
-you log into the system.
 
 ## Default Switching
 
@@ -55,11 +48,6 @@ to some kind of a menu in most apps.
 The app is completely customisable:
 you can set character mappings, add new ones, delete them,
 and even move them around.
-
-To quickly change mappings, you can use the TAB key. It will move
-the input focus to the next item in the mapping table.
-In addition, it will change the input language so you don't have
-to do it yourself.
 
 By default scrolling in the settings window is horizontal.
 If you want to scroll vertically, press Ctrl while you scroll.

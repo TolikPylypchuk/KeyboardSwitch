@@ -1,3 +1,10 @@
+# v3.0 (Upcoming)
+
+ - Completely rewritten app based on .NET Core and working as a windows service
+instead of a background ap with a hidden window
+ - The settings are now a separate app
+ - Tray icon is removed
+
 # [v2.1](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v2.1) (1 April 2018)
 
 Minor bug fixes
