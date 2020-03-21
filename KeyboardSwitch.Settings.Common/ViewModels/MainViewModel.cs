@@ -1,6 +1,6 @@
 using ReactiveUI;
 
-namespace KeyboardSwitch.Settings.ViewModels
+namespace KeyboardSwitch.Settings.Common.ViewModels
 {
     public class MainViewModel : ReactiveObject
     {

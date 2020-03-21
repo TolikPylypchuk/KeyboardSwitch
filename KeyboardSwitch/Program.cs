@@ -6,13 +6,16 @@ namespace KeyboardSwitch
     public static class Program
     {
         public static void Main(string[] args)
-            => CreateHostBuilder(args).Build().Run();
+            => Host.CreateDefaultBuilder(args)
+                .ConfigureServices(ConfigureServices)
+                .UseWindowsService()
+                .UseSystemd()
+                .Build()
+                .Run();
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureServices((hostContext, services) =>
-                {
-                    services.AddHostedService<Worker>();
-                });
+        private static void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
+        {
+            services.AddHostedService<Worker>();
+        }
     }
 }

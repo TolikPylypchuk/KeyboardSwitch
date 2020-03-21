@@ -1,7 +1,7 @@
 using System.Reactive.Disposables;
 using System.Windows;
 
-using KeyboardSwitch.Settings.ViewModels;
+using KeyboardSwitch.Settings.Common.ViewModels;
 
 using ReactiveUI;
 

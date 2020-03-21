@@ -14,14 +14,10 @@
   <ItemGroup>
     <PackageReference Include="akavache" Version="6.10.4" />
     <PackageReference Include="FluentWPF" Version="0.8.0" />
-    <PackageReference Include="Fody" Version="6.1.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.2" />
     <PackageReference Include="ReactiveUI" Version="11.2.3" />
     <PackageReference Include="ReactiveUI.Events.WPF" Version="11.2.3" />
-    <PackageReference Include="ReactiveUI.Fody" Version="11.2.3" />
+    <PackageReference Include="ReactiveUI.Validation" Version="1.4.10" />
     <PackageReference Include="ReactiveUI.WPF" Version="11.2.3" />
     <PackageReference Include="Splat" Version="9.3.11" />
     <PackageReference Include="Splat.Microsoft.Extensions.Logging" Version="9.3.11" />
@@ -29,6 +25,10 @@
 
   <ItemGroup>
     <Folder Include="Views\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\KeyboardSwitch.Settings.Common\KeyboardSwitch.Settings.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>
