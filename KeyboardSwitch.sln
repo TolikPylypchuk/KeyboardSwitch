@@ -15,7 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch", "KeyboardSwitch\KeyboardSwitch.csproj", "{3B77F28C-A7AF-49F6-B041-28C5D31FBE67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardSwitch.Settings", "KeyboardSwitch.Settings\KeyboardSwitch.Settings.csproj", "{135A4C14-E1C2-4848-A83A-F0B16872A2AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Settings", "KeyboardSwitch.Settings\KeyboardSwitch.Settings.csproj", "{135A4C14-E1C2-4848-A83A-F0B16872A2AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardSwitch.Common", "KeyboardSwitch.Common\KeyboardSwitch.Common.csproj", "{57008AC4-B4B3-4858-A068-559AEB22BC74}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,10 @@ Global
 		{135A4C14-E1C2-4848-A83A-F0B16872A2AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{135A4C14-E1C2-4848-A83A-F0B16872A2AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{135A4C14-E1C2-4848-A83A-F0B16872A2AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57008AC4-B4B3-4858-A068-559AEB22BC74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57008AC4-B4B3-4858-A068-559AEB22BC74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57008AC4-B4B3-4858-A068-559AEB22BC74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57008AC4-B4B3-4858-A068-559AEB22BC74}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
