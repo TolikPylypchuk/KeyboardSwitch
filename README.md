@@ -102,3 +102,8 @@ when the app is started for the first time for a user.
 - Minor bug fixes.
 
 I hope this app will make your life at least 1% easier :)
+
+# Icon
+
+Icon made by [ultimatearm](https://www.flaticon.com/authors/ultimatearm)
+from [www.flaticon.com](https://www.flaticon.com/).
