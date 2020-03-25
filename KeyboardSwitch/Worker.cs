@@ -12,9 +12,7 @@ namespace KeyboardSwitch
         private readonly ILogger<Worker> logger;
 
         public Worker(ILogger<Worker> logger)
-        {
-            this.logger = logger;
-        }
+            => this.logger = logger;
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {

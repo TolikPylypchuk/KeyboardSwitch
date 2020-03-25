@@ -8,7 +8,7 @@ namespace KeyboardSwitch
         public static void Main(string[] args)
             => Host.CreateDefaultBuilder(args)
                 .ConfigureServices(ConfigureServices)
-                .UseWindowsService()
+                .UseConsoleLifetime()
                 .UseSystemd()
                 .Build()
                 .Run();
