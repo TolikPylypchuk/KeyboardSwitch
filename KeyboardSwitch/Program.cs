@@ -9,7 +9,6 @@ namespace KeyboardSwitch
             => Host.CreateDefaultBuilder(args)
                 .ConfigureServices(ConfigureServices)
                 .UseConsoleLifetime()
-                .UseSystemd()
                 .Build()
                 .Run();
 

@@ -31,7 +31,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\KeyboardSwitch.Settings.Common\KeyboardSwitch.Settings.Common.csproj" />
+    <ProjectReference Include="..\KeyboardSwitch.Common\KeyboardSwitch.Common.csproj" />
+    <ProjectReference Include="..\KeyboardSwitch.Settings.Common\KeyboardSwitch.Settings.Core.csproj" />
+    <ProjectReference Include="..\KeyboardSwitch.Settings.Core\KeyboardSwitch.Settings.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
