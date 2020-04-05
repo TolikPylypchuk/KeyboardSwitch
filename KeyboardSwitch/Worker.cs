@@ -1,6 +1,7 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
+
+using KeyboardSwitch.Common.Services;
 
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -10,17 +11,19 @@ namespace KeyboardSwitch
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> logger;
+        private readonly IKeyboardHookService keyboardHookService;
 
-        public Worker(ILogger<Worker> logger)
-            => this.logger = logger;
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        public Worker(ILogger<Worker> logger, IKeyboardHookService keyboardHookService)
         {
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                this.logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                await Task.Delay(1000, stoppingToken);
-            }
+            this.logger = logger;
+            this.keyboardHookService = keyboardHookService;
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken token)
+        {
+            this.logger.LogTrace("Starting the service execution");
+
+            await this.keyboardHookService.WaitForMessagesAsync(token);
         }
     }
 }

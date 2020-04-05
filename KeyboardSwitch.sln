@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Common", "Ke
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Settings.Core", "KeyboardSwitch.Settings.Core\KeyboardSwitch.Settings.Core.csproj", "{1BC312D4-F82A-4F5A-BB26-1DC93C008714}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardSwitch.Common.Windows", "KeyboardSwitch.Common.Windows\KeyboardSwitch.Common.Windows.csproj", "{ED51CEDE-B35C-4CCA-A950-F740799C150E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,14 @@ Global
 		{1BC312D4-F82A-4F5A-BB26-1DC93C008714}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1BC312D4-F82A-4F5A-BB26-1DC93C008714}.Release|x64.ActiveCfg = Release|Any CPU
 		{1BC312D4-F82A-4F5A-BB26-1DC93C008714}.Release|x64.Build.0 = Release|Any CPU
+		{ED51CEDE-B35C-4CCA-A950-F740799C150E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED51CEDE-B35C-4CCA-A950-F740799C150E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED51CEDE-B35C-4CCA-A950-F740799C150E}.Debug|x64.ActiveCfg = Debug|x64
+		{ED51CEDE-B35C-4CCA-A950-F740799C150E}.Debug|x64.Build.0 = Debug|x64
+		{ED51CEDE-B35C-4CCA-A950-F740799C150E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED51CEDE-B35C-4CCA-A950-F740799C150E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED51CEDE-B35C-4CCA-A950-F740799C150E}.Release|x64.ActiveCfg = Release|Any CPU
+		{ED51CEDE-B35C-4CCA-A950-F740799C150E}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
