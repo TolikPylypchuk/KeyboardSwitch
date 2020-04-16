@@ -7,9 +7,10 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using KeyboardSwitch.Common.Services;
-using KeyboardSwitch.Common.Windows.Interop;
 
 using Microsoft.Extensions.Logging;
+
+using static KeyboardSwitch.Common.Windows.Interop.Native;
 
 namespace KeyboardSwitch.Common.Windows.Services
 {
@@ -17,23 +18,21 @@ namespace KeyboardSwitch.Common.Windows.Services
 
     public sealed class KeyboardHookService : IKeyboardHookService
     {
-        private const int WhKeyboardLL = 13;
-        private const int WmKeyDown = 0x0100;
-        private const int WmKeyUp = 0x0101;
-        private const int WmSysKeyDown = 0x0104;
-        private const int WmSysKeyUp = 0x0105;
-
         private IntPtr hookId = IntPtr.Zero;
 
-        private readonly Dictionary<HotKey, Action<HotKey>> hotKeyActions = new Dictionary<HotKey, Action<HotKey>>();
+        private readonly object modifiersLock = new object();
+        private LowLevelKeyboardProc? hook;
 
         private readonly IModiferKeysService modiferKeysService;
         private readonly ILogger<KeyboardHookService> logger;
-        private bool disposed = false;
 
+        private readonly Dictionary<HotKey, Action<HotKey>> hotKeyActions = new Dictionary<HotKey, Action<HotKey>>();
         private ModifierKeys downModifierKeys;
-        private readonly object modifiersLock = new object();
-        private LowLevelKeyboardProc hook;
+
+        private Action? scheduledAction;
+
+
+        private bool disposed = false;
 
         public KeyboardHookService(IModiferKeysService modiferKeysService, ILogger<KeyboardHookService> logger)
         {
@@ -98,10 +97,12 @@ namespace KeyboardSwitch.Common.Windows.Services
                 {
                     this.CreateHook();
 
-                    while (NativeFunctions.GetMessage(out var msg, IntPtr.Zero, 0, 0) && !token.IsCancellationRequested)
+                    this.logger.LogTrace("Starting the message loop to check for keyboard input");
+
+                    while (GetMessage(out var msg, IntPtr.Zero, 0, 0) && !token.IsCancellationRequested)
                     {
-                        NativeFunctions.TranslateMessage(ref msg);
-                        NativeFunctions.DispatchMessage(ref msg);
+                        TranslateMessage(ref msg);
+                        DispatchMessage(ref msg);
                     }
                 },
                 token);
@@ -112,7 +113,7 @@ namespace KeyboardSwitch.Common.Windows.Services
             {
                 this.logger.LogTrace("Destroying the global hook");
 
-                NativeFunctions.UnhookWindowsHookEx(hookId);
+                UnhookWindowsHookEx(hookId);
                 GC.SuppressFinalize(this);
 
                 this.disposed = true;
@@ -126,7 +127,7 @@ namespace KeyboardSwitch.Common.Windows.Services
             var hMod = Marshal.GetHINSTANCE(typeof(KeyboardHookService).Module);
 
             this.hook = this.OnMessageReceived;
-            this.hookId = NativeFunctions.SetWindowsHookEx(WhKeyboardLL, this.hook, hMod, 0);
+            this.hookId = SetWindowsHookEx(WhKeyboardLL, this.hook, hMod, 0);
         }
 
         private IntPtr OnMessageReceived(int nCode, IntPtr wParam, IntPtr lParam)
@@ -137,7 +138,7 @@ namespace KeyboardSwitch.Common.Windows.Services
                 Task.Run(() => this.HandleSingleKeyboardInput(wParam, vkCode));
             }
 
-            return NativeFunctions.CallNextHookEx(hookId, nCode, wParam, lParam);
+            return CallNextHookEx(hookId, nCode, wParam, lParam);
         }
 
         private void HandleSingleKeyboardInput(IntPtr wParam, int vkCode)
@@ -165,16 +166,23 @@ namespace KeyboardSwitch.Common.Windows.Services
                     }
                 }
 
-                var currentKey = new HotKey(this.downModifierKeys, vkCode);
-
-                if (this.hotKeyActions.TryGetValue(currentKey, out var action))
+                if (this.downModifierKeys == ModifierKeys.None && this.scheduledAction != null)
                 {
-                    action(currentKey);
+                    this.scheduledAction();
+                    this.scheduledAction = null;
+                } else
+                {
+                    var currentKey = new HotKey(this.downModifierKeys, vkCode);
+
+                    if (this.hotKeyActions.TryGetValue(currentKey, out var action))
+                    {
+                        this.scheduledAction = () => action(currentKey);
+                    }
                 }
             }
         }
 
-        private void ThrowIfDisposed([CallerMemberName] string method = null)
+        private void ThrowIfDisposed([CallerMemberName] string? method = null)
         {
             if (this.disposed)
             {

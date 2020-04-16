@@ -1,3 +1,5 @@
+using GregsStack.InputSimulatorStandard;
+
 using KeyboardSwitch.Common.Services;
 using KeyboardSwitch.Common.Windows.Services;
 
@@ -9,7 +11,10 @@ namespace KeyboardSwitch.Common.Windows
     {
         public static IServiceCollection AddKeyboardSwitchServices(this IServiceCollection services)
             => services
+                .AddSingleton<IInputSimulator>(new InputSimulator())
                 .AddSingleton<IModiferKeysService, ModifierKeysService>()
-                .AddSingleton<IKeyboardHookService, KeyboardHookService>();
+                .AddSingleton<IKeyboardHookService, KeyboardHookService>()
+                .AddSingleton<ITextService, ClipboardTextService>()
+                .AddSingleton<ISwitchService, SwitchService>();
     }
 }

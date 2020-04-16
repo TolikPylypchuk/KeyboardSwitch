@@ -6,9 +6,15 @@ using KeyboardSwitch.Common.Windows.Services;
 
 namespace KeyboardSwitch.Common.Windows.Interop
 {
-    internal static class NativeFunctions
+    internal static class Native
     {
         public const string User32 = "user32.dll";
+
+        public const int WhKeyboardLL = 13;
+        public const int WmKeyDown = 0x0100;
+        public const int WmKeyUp = 0x0101;
+        public const int WmSysKeyDown = 0x0104;
+        public const int WmSysKeyUp = 0x0105;
 
         [DllImport(User32, CharSet = CharSet.Auto, SetLastError = true)]
         public static extern IntPtr SetWindowsHookEx(
