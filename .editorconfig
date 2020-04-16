@@ -38,5 +38,6 @@ dotnet_style_qualification_for_method = true:silent
 dotnet_style_qualification_for_property = true:silent
 dotnet_style_readonly_field = true:suggestion
 dotnet_style_require_accessibility_modifiers = for_non_interface_members:silent
+dotnet_diagnostic.CA1031.severity = none
 dotnet_diagnostic.CA1822.severity = none
 dotnet_diagnostic.IDE0067.severity = none

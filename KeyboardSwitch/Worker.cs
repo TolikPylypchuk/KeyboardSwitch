@@ -10,20 +10,25 @@ namespace KeyboardSwitch
 {
     public class Worker : BackgroundService
     {
+        private readonly IKeyboardHookService keyboardHook;
+        private readonly ITextService text;
         private readonly ILogger<Worker> logger;
-        private readonly IKeyboardHookService keyboardHookService;
 
-        public Worker(ILogger<Worker> logger, IKeyboardHookService keyboardHookService)
+        public Worker(
+            IKeyboardHookService keyboardHook,
+            ITextService text,
+            ILogger<Worker> logger)
         {
+            this.keyboardHook = keyboardHook;
+            this.text = text;
             this.logger = logger;
-            this.keyboardHookService = keyboardHookService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken token)
         {
             this.logger.LogTrace("Starting the service execution");
 
-            await this.keyboardHookService.WaitForMessagesAsync(token);
+            await this.keyboardHook.WaitForMessagesAsync(token);
         }
     }
 }
