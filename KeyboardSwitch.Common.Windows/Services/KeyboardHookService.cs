@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -23,29 +25,34 @@ namespace KeyboardSwitch.Common.Windows.Services
         private readonly object modifiersLock = new object();
         private LowLevelKeyboardProc? hook;
 
-        private readonly IKeysService modiferKeysService;
+        private readonly IKeysService keysService;
         private readonly ILogger<KeyboardHookService> logger;
 
-        private readonly Dictionary<HotKey, Action<HotKey>> hotKeyActions = new Dictionary<HotKey, Action<HotKey>>();
-        private ModifierKeys downModifierKeys;
+        private readonly HashSet<HotKey> hotKeys = new HashSet<HotKey>();
 
-        private Action? scheduledAction;
+        private readonly Subject<HotKey> hotKeyPressedSubject = new Subject<HotKey>();
+        
+        private ModifierKeys downModifierKeys;
+        private HotKey? pressedHotKey;
 
         private bool disposed = false;
 
         public KeyboardHookService(IKeysService modiferKeysService, ILogger<KeyboardHookService> logger)
         {
-            this.modiferKeysService = modiferKeysService;
+            this.keysService = modiferKeysService;
             this.logger = logger;
         }
 
         ~KeyboardHookService()
             => this.Dispose();
 
-        public HotKey RegisterHotKey(int virtualKeyCode, Action<HotKey> action)
-            => this.RegisterHotKey(ModifierKeys.None, virtualKeyCode, action);
+        public IObservable<HotKey> HotKeyPressed
+            => this.hotKeyPressedSubject.AsObservable();
 
-        public HotKey RegisterHotKey(ModifierKeys modifiers, int virtualKeyCode, Action<HotKey> action)
+        public HotKey RegisterHotKey(int virtualKeyCode)
+            => this.RegisterHotKey(ModifierKeys.None, virtualKeyCode);
+
+        public HotKey RegisterHotKey(ModifierKeys modifiers, int virtualKeyCode)
         {
             this.ThrowIfDisposed();
 
@@ -53,7 +60,7 @@ namespace KeyboardSwitch.Common.Windows.Services
 
             this.logger.LogTrace($"Registering a hot key: {key}");
 
-            this.hotKeyActions.Add(key, action);
+            this.hotKeys.Add(key);
 
             this.logger.LogTrace($"Registered a hot key: {key}");
 
@@ -72,13 +79,13 @@ namespace KeyboardSwitch.Common.Windows.Services
 
             this.logger.LogTrace($"Unregistering a hot key: {key}");
 
-            if (!this.hotKeyActions.ContainsKey(key))
+            if (!this.hotKeys.Contains(key))
             {
                 this.logger.LogWarning($"Key {key} not found");
                 return;
             }
 
-            this.hotKeyActions.Remove(key);
+            this.hotKeys.Remove(key);
 
             this.logger.LogTrace($"Unregistered a hot key: {key}");
         }
@@ -88,7 +95,7 @@ namespace KeyboardSwitch.Common.Windows.Services
             this.logger.LogTrace("Unregistering all hot keys");
 
             this.ThrowIfDisposed();
-            this.hotKeyActions.Keys.ForEach(this.UnregisterHotKey);
+            this.hotKeys.ForEach(this.UnregisterHotKey);
         }
 
         public Task WaitForMessagesAsync(CancellationToken token)
@@ -142,7 +149,7 @@ namespace KeyboardSwitch.Common.Windows.Services
 
         private void HandleSingleKeyboardInput(IntPtr wParam, int vkCode)
         {
-            var modifierKey = this.modiferKeysService.GetModifierKeyFromCode(vkCode);
+            var modifierKey = this.keysService.GetModifierKeyFromCode(vkCode);
 
             if (wParam == (IntPtr)WmKeyDown || wParam == (IntPtr)WmSysKeyDown)
             {
@@ -165,17 +172,17 @@ namespace KeyboardSwitch.Common.Windows.Services
                     }
                 }
 
-                if (this.downModifierKeys == ModifierKeys.None && this.scheduledAction != null)
+                if (this.downModifierKeys == ModifierKeys.None && !(this.pressedHotKey is null))
                 {
-                    this.scheduledAction();
-                    this.scheduledAction = null;
+                    this.hotKeyPressedSubject.OnNext(this.pressedHotKey);
+                    this.pressedHotKey = null;
                 } else
                 {
                     var currentKey = new HotKey(this.downModifierKeys, vkCode);
 
-                    if (this.hotKeyActions.TryGetValue(currentKey, out var action))
+                    if (this.hotKeys.Contains(currentKey))
                     {
-                        this.scheduledAction = () => action(currentKey);
+                        this.pressedHotKey = currentKey;
                     }
                 }
             }

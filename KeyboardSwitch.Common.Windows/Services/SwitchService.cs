@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 
 using KeyboardSwitch.Common.Services;
@@ -8,19 +9,19 @@ namespace KeyboardSwitch.Common.Windows.Services
 {
     internal class SwitchService : ISwitchService
     {
-        private readonly ITextService text;
+        private readonly ITextService textService;
         private readonly ILogger<SwitchService> logger;
 
         public SwitchService(ITextService text, ILogger<SwitchService> logger)
         {
-            this.text = text;
+            this.textService = text;
             this.logger = logger;
         }
 
-        public Task SwitchTextAsync(SwitchDirection direction)
+        public async Task SwitchTextAsync(SwitchDirection direction)
         {
             this.logger.LogTrace("Switching the text");
-            return Task.CompletedTask;
+            await this.textService.SetTextAsync(await this.textService.GetTextAsync() ?? String.Empty);
         }
     }
 }
