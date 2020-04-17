@@ -1,6 +1,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using Akavache;
+
 using KeyboardSwitch.Common.Services;
 
 using Microsoft.Extensions.Hosting;
@@ -11,24 +13,37 @@ namespace KeyboardSwitch
     public class Worker : BackgroundService
     {
         private readonly IKeyboardHookService keyboardHook;
-        private readonly ITextService text;
         private readonly ILogger<Worker> logger;
 
         public Worker(
             IKeyboardHookService keyboardHook,
-            ITextService text,
             ILogger<Worker> logger)
         {
             this.keyboardHook = keyboardHook;
-            this.text = text;
             this.logger = logger;
         }
 
         protected override async Task ExecuteAsync(CancellationToken token)
         {
-            this.logger.LogTrace("Starting the service execution");
+            try
+            {
+                this.logger.LogTrace("Configuring the keyboard switch service");
 
-            await this.keyboardHook.WaitForMessagesAsync(token);
+                this.RegisterHotKeys();
+
+                this.logger.LogTrace("Starting the service execution");
+
+                await this.keyboardHook.WaitForMessagesAsync(token);
+            } finally
+            {
+                this.logger.LogTrace("Stopping the service");
+                await BlobCache.Shutdown();
+            }
+        }
+
+        private void RegisterHotKeys()
+        {
+
         }
     }
 }

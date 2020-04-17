@@ -2,8 +2,11 @@ using KeyboardSwitch.Common.Services;
 
 namespace KeyboardSwitch.Common.Windows.Services
 {
-    internal sealed class ModifierKeysService : IModiferKeysService
+    internal sealed class KeysService : IKeysService
     {
+        public int GetVirtualKeyCode(char ch)
+            => 0;
+
         public int GetModifierKeysCode(ModifierKeys keys)
             => (int)keys;
 

@@ -16,14 +16,14 @@ namespace KeyboardSwitch.Common.Windows.Services
 {
     internal delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
-    public sealed class KeyboardHookService : IKeyboardHookService
+    internal sealed class KeyboardHookService : IKeyboardHookService
     {
         private IntPtr hookId = IntPtr.Zero;
 
         private readonly object modifiersLock = new object();
         private LowLevelKeyboardProc? hook;
 
-        private readonly IModiferKeysService modiferKeysService;
+        private readonly IKeysService modiferKeysService;
         private readonly ILogger<KeyboardHookService> logger;
 
         private readonly Dictionary<HotKey, Action<HotKey>> hotKeyActions = new Dictionary<HotKey, Action<HotKey>>();
@@ -31,10 +31,9 @@ namespace KeyboardSwitch.Common.Windows.Services
 
         private Action? scheduledAction;
 
-
         private bool disposed = false;
 
-        public KeyboardHookService(IModiferKeysService modiferKeysService, ILogger<KeyboardHookService> logger)
+        public KeyboardHookService(IKeysService modiferKeysService, ILogger<KeyboardHookService> logger)
         {
             this.modiferKeysService = modiferKeysService;
             this.logger = logger;

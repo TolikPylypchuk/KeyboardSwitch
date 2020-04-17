@@ -1,3 +1,5 @@
+using KeyboardSwitch.Common;
+using KeyboardSwitch.Common.Settings;
 using KeyboardSwitch.Common.Windows;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +18,8 @@ namespace KeyboardSwitch
 
         private static void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
             => services.AddHostedService<Worker>()
-                .AddKeyboardSwitchServices();
+                .Configure<GlobalSettings>(hostContext.Configuration.GetSection("Settings"))
+                .AddKeyboardSwitchServices()
+                .AddKeyboardSwitchWindowsServices();
     }
 }

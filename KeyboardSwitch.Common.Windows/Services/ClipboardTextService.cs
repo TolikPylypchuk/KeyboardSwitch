@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace KeyboardSwitch.Common.Windows.Services
 {
-    public class ClipboardTextService : ITextService
+    internal class ClipboardTextService : ITextService
     {
         private readonly IInputSimulator input;
         private readonly ILogger<ClipboardTextService> logger;
@@ -24,7 +24,7 @@ namespace KeyboardSwitch.Common.Windows.Services
 
         public Task<string?> GetTextAsync()
         {
-            this.logger.LogTrace("Getting the text from the clipboard.");
+            this.logger.LogTrace("Simulating pressing Ctrl+C and getting the text from the clipboard");
 
             return TaskUtils.RunSTATask(() =>
             {
@@ -36,7 +36,7 @@ namespace KeyboardSwitch.Common.Windows.Services
 
         public Task SetTextAsync(string text)
         {
-            this.logger.LogTrace("Setting the text into the clipboard.");
+            this.logger.LogTrace("Setting the text into the clipboard and simulating pressing Ctrl+V");
 
             return TaskUtils.RunSTATask(() =>
             {
