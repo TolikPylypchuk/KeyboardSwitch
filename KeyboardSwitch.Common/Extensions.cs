@@ -6,6 +6,9 @@ namespace KeyboardSwitch.Common
 {
     public static class Extensions
     {
+        public static ModifierKeys Flatten(this IEnumerable<ModifierKeys> keys)
+            => keys.Aggregate(ModifierKeys.None, (acc, key) => acc | key);
+
         public static string ToFormattedString(this ModifierKeys modifiers)
             => Enum.GetValues(typeof(ModifierKeys))
                 .Cast<ModifierKeys>()

@@ -18,7 +18,7 @@ namespace KeyboardSwitch.Common.Windows.Services
 {
     internal delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
-    internal sealed class KeyboardHookService : IKeyboardHookService
+    internal sealed class KeyboardHookService : DisposableService, IKeyboardHookService
     {
         private IntPtr hookId = IntPtr.Zero;
 
@@ -34,8 +34,6 @@ namespace KeyboardSwitch.Common.Windows.Services
         
         private ModifierKeys downModifierKeys;
         private HotKey? pressedHotKey;
-
-        private bool disposed = false;
 
         public KeyboardHookService(IKeysService modiferKeysService, ILogger<KeyboardHookService> logger)
         {
@@ -103,7 +101,7 @@ namespace KeyboardSwitch.Common.Windows.Services
                 {
                     this.CreateHook();
 
-                    this.logger.LogTrace("Starting the message loop to check for keyboard input");
+                    this.logger.LogInformation("Starting the message loop to check for keyboard input");
 
                     while (GetMessage(out var msg, IntPtr.Zero, 0, 0) && !token.IsCancellationRequested)
                     {
@@ -115,20 +113,20 @@ namespace KeyboardSwitch.Common.Windows.Services
 
         public void Dispose()
         {
-            if (!this.disposed)
+            if (!this.Disposed)
             {
-                this.logger.LogTrace("Destroying the global hook");
+                this.logger.LogInformation("Destroying the global hook");
 
                 UnhookWindowsHookEx(hookId);
                 GC.SuppressFinalize(this);
 
-                this.disposed = true;
+                this.Disposed = true;
             }
         }
 
         private void CreateHook()
         {
-            this.logger.LogTrace("Creating a global hook");
+            this.logger.LogInformation("Creating a global hook");
 
             var hMod = Marshal.GetHINSTANCE(typeof(KeyboardHookService).Module);
 
@@ -185,14 +183,6 @@ namespace KeyboardSwitch.Common.Windows.Services
                         this.pressedHotKey = currentKey;
                     }
                 }
-            }
-        }
-
-        private void ThrowIfDisposed([CallerMemberName] string? method = null)
-        {
-            if (this.disposed)
-            {
-                throw new ObjectDisposedException($"Cannot call {method} - the service is disposed");
             }
         }
     }

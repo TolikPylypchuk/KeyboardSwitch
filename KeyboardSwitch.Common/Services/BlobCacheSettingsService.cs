@@ -1,3 +1,4 @@
+using System;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 
@@ -9,10 +10,8 @@ using Microsoft.Extensions.Logging;
 
 namespace KeyboardSwitch.Common.Services
 {
-    internal class BlobCacheSettingsService : ISettingsService
+    internal class BlobCacheSettingsService : DisposableService, ISettingsService, IAsyncDisposable
     {
-        private const string SwitchSettingsKey = "SwitchSettings";
-
         private readonly IBlobCache cache;
         private readonly ILogger<BlobCacheSettingsService> logger;
 
@@ -24,14 +23,28 @@ namespace KeyboardSwitch.Common.Services
 
         public async Task<SwitchSettings> GetSwitchSettingsAsync()
         {
+            this.ThrowIfDisposed();
+
             this.logger.LogTrace("Getting the switch settings");
-            return await this.cache.GetObject<SwitchSettings>(SwitchSettingsKey);
+            return await this.cache.GetObject<SwitchSettings>(SwitchSettings.CacheKey);
         }
 
         public async Task SaveSwitchSettingsAsync(SwitchSettings switchSettings)
         {
+            this.ThrowIfDisposed();
+
             this.logger.LogTrace("Setting the switch settings");
-            await this.cache.InsertObject(SwitchSettingsKey, switchSettings);
+            await this.cache.InsertObject(SwitchSettings.CacheKey, switchSettings);
+        }
+
+        public async ValueTask DisposeAsync()
+        {
+            if (!this.Disposed)
+            {
+                this.logger.LogInformation("Shutting the blob cache down");
+                await BlobCache.Shutdown();
+                this.Disposed = true;
+            }
         }
     }
 }

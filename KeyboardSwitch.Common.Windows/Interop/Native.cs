@@ -38,5 +38,8 @@ namespace KeyboardSwitch.Common.Windows.Interop
 
         [DllImport(User32)]
         public static extern IntPtr DispatchMessage([In] ref MSG lpmsg);
+
+        [DllImport(User32)]
+        public static extern short VkKeyScan(char ch);
     }
 }

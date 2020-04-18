@@ -1,11 +1,14 @@
+using System;
 using KeyboardSwitch.Common.Services;
+
+using static KeyboardSwitch.Common.Windows.Interop.Native;
 
 namespace KeyboardSwitch.Common.Windows.Services
 {
     internal sealed class KeysService : IKeysService
     {
         public int GetVirtualKeyCode(char ch)
-            => 0;
+            => VkKeyScan(Char.ToLower(ch));
 
         public int GetModifierKeysCode(ModifierKeys keys)
             => (int)keys;

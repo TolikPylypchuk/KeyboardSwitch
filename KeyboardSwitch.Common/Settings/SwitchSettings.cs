@@ -6,6 +6,8 @@ namespace KeyboardSwitch.Common.Settings
     [DataContract]
     public sealed class SwitchSettings
     {
+        public static readonly string CacheKey = "SwitchSettings";
+
         [DataMember]
         public List<ModifierKeys> ModifierKeys { get; set; } = new List<ModifierKeys>();
 
