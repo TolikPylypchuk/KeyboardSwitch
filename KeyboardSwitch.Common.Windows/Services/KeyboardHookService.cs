@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -149,7 +148,7 @@ namespace KeyboardSwitch.Common.Windows.Services
         {
             var modifierKey = this.keysService.GetModifierKeyFromCode(vkCode);
 
-            if (wParam == (IntPtr)WmKeyDown || wParam == (IntPtr)WmSysKeyDown)
+            if (wParam == WmKeyDown || wParam == WmSysKeyDown)
             {
                 if (modifierKey != null)
                 {
@@ -158,9 +157,19 @@ namespace KeyboardSwitch.Common.Windows.Services
                         this.downModifierKeys |= modifierKey.Value;
                     }
                 }
+
+                if (this.pressedHotKey == null)
+                {
+                    var currentKey = new HotKey(this.downModifierKeys, vkCode);
+
+                    if (this.hotKeys.Contains(currentKey))
+                    {
+                        this.pressedHotKey = currentKey;
+                    }
+                }
             }
 
-            if (wParam == (IntPtr)WmKeyUp || wParam == (IntPtr)WmSysKeyUp)
+            if (wParam == WmKeyUp || wParam == WmSysKeyUp)
             {
                 if (modifierKey != null)
                 {
@@ -170,18 +179,12 @@ namespace KeyboardSwitch.Common.Windows.Services
                     }
                 }
 
-                if (this.downModifierKeys == ModifierKeys.None && !(this.pressedHotKey is null))
+                if (this.downModifierKeys == ModifierKeys.None && this.pressedHotKey != null)
                 {
-                    this.hotKeyPressedSubject.OnNext(this.pressedHotKey);
+                    var hotKey = this.pressedHotKey;
                     this.pressedHotKey = null;
-                } else
-                {
-                    var currentKey = new HotKey(this.downModifierKeys, vkCode);
 
-                    if (this.hotKeys.Contains(currentKey))
-                    {
-                        this.pressedHotKey = currentKey;
-                    }
+                    this.hotKeyPressedSubject.OnNext(hotKey);
                 }
             }
         }

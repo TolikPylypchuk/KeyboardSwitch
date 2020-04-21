@@ -18,7 +18,7 @@ namespace KeyboardSwitch.Common
         public override bool Equals(object? obj)
             => obj is HotKey kc && this.Equals(kc);
 
-        public bool Equals(HotKey other)
+        public bool Equals(HotKey? other)
             => !(other is null) &&
                this.VirtualKeyCode == other.VirtualKeyCode &&
                this.Modifiers == other.Modifiers;
@@ -36,10 +36,10 @@ namespace KeyboardSwitch.Common
             return $"{modifiersDescription}{this.VirtualKeyCode}";
         }
 
-        public static bool operator ==(HotKey left, HotKey right)
+        public static bool operator ==(HotKey? left, HotKey? right)
             => left?.Equals(right) ?? right is null;
 
-        public static bool operator !=(HotKey left, HotKey right)
+        public static bool operator !=(HotKey? left, HotKey? right)
             => !(left == right);
     }
 }

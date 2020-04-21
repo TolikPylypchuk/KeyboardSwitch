@@ -21,6 +21,7 @@ namespace KeyboardSwitch.Common.Windows.Services
         public async Task SwitchTextAsync(SwitchDirection direction)
         {
             this.logger.LogTrace("Switching the text");
+
             await this.textService.SetTextAsync(await this.textService.GetTextAsync() ?? String.Empty);
         }
     }
