@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using KeyboardSwitch.Common.Services;
+
 namespace KeyboardSwitch.Common
 {
     public static class Extensions
@@ -30,5 +32,8 @@ namespace KeyboardSwitch.Common
         public static IEnumerable<T?> AsNullable<T>(this IEnumerable<T> items)
             where T : struct
             => items.Select(item => (T?)item);
+
+        public static string AsString(this SwitchDirection direction)
+            => direction == SwitchDirection.Forward ? "forward" : "backward";
     }
 }

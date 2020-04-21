@@ -30,7 +30,7 @@ namespace KeyboardSwitch
                 await host.RunAsync();
             } catch (OperationCanceledException)
             {
-                logger.LogInformation("KeyboardSwitch service execution is cancelled");
+                logger.LogInformation("KeyboardSwitch service execution was cancelled");
             } catch (Exception e)
             {
                 logger.LogError(e, "Unknown error");

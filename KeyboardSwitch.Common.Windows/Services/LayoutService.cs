@@ -6,6 +6,7 @@ using System.Text;
 
 using KeyboardSwitch.Common.Services;
 
+using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 
 using static KeyboardSwitch.Common.Windows.Interop.Native;
@@ -15,22 +16,40 @@ namespace KeyboardSwitch.Common.Windows.Services
     public sealed class LayoutService : ILayoutService
     {
         private const string KeyboardLayoutNameRegistryKeyFormat = @"SYSTEM\CurrentControlSet\Control\Keyboard Layouts\{0}";
-        private const string LayoutName = "Layout Text";
+        private const string LayoutText = "Layout Text";
+
+        private readonly ILogger<LayoutService> logger;
+
+        public LayoutService(ILogger<LayoutService> logger)
+            => this.logger = logger;
 
         public KeyboardLayout GetForegroundProcessKeyboardLayout()
-            => this.GetThreadKeyboardLayout(GetWindowThreadProcessId(GetForegroundWindow(), IntPtr.Zero));
+        {
+            this.logger.LogTrace("Getting the keyboard layout of the foreground process");
+            return this.GetThreadKeyboardLayout(GetWindowThreadProcessId(GetForegroundWindow(), IntPtr.Zero));
+        }
 
-        public KeyboardLayout GetThreadKeyboardLayout(int threadId)
-            => this.CreateKeyboardLayout((int)GetKeyboardLayout(threadId));
+        public void SwitchForegroundProcessLayout(SwitchDirection direction)
+        {
+            this.logger.LogTrace($"Switching the keyboard layout of the foregound process {direction.AsString()}");
 
-        public int SetThreadKeyboardLayout(int keyboardLayoutId)
-            => this.SetKeyboardLayout(keyboardLayoutId, 0);
+            var foregroundWindowHandle = GetForegroundWindow();
+            int foregroundWindowThreadId = GetWindowThreadProcessId(foregroundWindowHandle, IntPtr.Zero);
 
-        public int SetProcessKeyboardLayout(int keyboardLayoutId)
-            => this.SetKeyboardLayout(keyboardLayoutId, KlfSetForProcess);
+            int keyboardLayoutId = GetKeyboardLayout(foregroundWindowThreadId);
+
+            SetThreadKeyboardLayout(keyboardLayoutId);
+            SetThreadKeyboardLayout(direction == SwitchDirection.Forward ? HklNext : HklPrev);
+
+            var layout = LoadKeyboardLayout(this.GetCurrentLayoutName(), KlfActivate);
+
+            PostMessage(foregroundWindowHandle, WmInputLangChangeRequest, IntPtr.Zero, layout);
+        }
 
         public List<KeyboardLayout> GetKeyboardLayouts()
         {
+            this.logger.LogTrace("Getting the list of keyboard layouts in the system");
+
             int count = GetKeyboardLayoutList(0, null);
             var keyboardLayoutIds = new IntPtr[count];
 
@@ -40,6 +59,12 @@ namespace KeyboardSwitch.Common.Windows.Services
                 .Select(keyboardLayoutId => this.CreateKeyboardLayout((int)keyboardLayoutId))
                 .ToList();
         }
+
+        private KeyboardLayout GetThreadKeyboardLayout(int threadId)
+            => this.CreateKeyboardLayout(GetKeyboardLayout(threadId));
+
+        private void SetThreadKeyboardLayout(int keyboardLayoutId)
+            => ActivateKeyboardLayout(keyboardLayoutId, 0);
 
         private KeyboardLayout CreateKeyboardLayout(int keyboardLayoutId)
         {
@@ -51,23 +76,24 @@ namespace KeyboardSwitch.Common.Windows.Services
                 languageId,
                 keyboardId,
                 CultureInfo.GetCultureInfo(languageId).DisplayName,
-                this.GetLayoutName(keyboardLayoutId));
+                this.GetLayoutDisplayName(keyboardLayoutId));
         }
 
-        private int SetKeyboardLayout(int keyboardLayoutId, int flags)
-            => ActivateKeyboardLayout(keyboardLayoutId, flags);
-
-        private string GetLayoutName(int keyboardLayoutId)
+        private string GetLayoutDisplayName(int keyboardLayoutId)
         {
             SetThreadKeyboardLayout(keyboardLayoutId);
-
-            StringBuilder name = new StringBuilder(KlNameLength);
-
-            GetKeyboardLayoutName(name);
+            string name = this.GetCurrentLayoutName();
 
             using var key = Registry.LocalMachine.OpenSubKey(String.Format(KeyboardLayoutNameRegistryKeyFormat, name));
 
-            return key?.GetValue(LayoutName)?.ToString() ?? String.Empty;
+            return key?.GetValue(LayoutText)?.ToString() ?? String.Empty;
+        }
+
+        private string GetCurrentLayoutName()
+        {
+            StringBuilder name = new StringBuilder(KlNameLength);
+            GetKeyboardLayoutName(name);
+            return name.ToString();
         }
     }
 }

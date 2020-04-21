@@ -45,6 +45,8 @@ namespace KeyboardSwitch
 
         private async Task RegisterHotKeysAsync()
         {
+            this.logger.LogTrace("Registering hot keys to switch forward and backward");
+
             var settings = await this.settingsService.GetSwitchSettingsAsync();
 
             var modifiers = settings.ModifierKeys.Flatten();

@@ -18,10 +18,12 @@ namespace KeyboardSwitch.Common.Windows.Interop
         public static readonly IntPtr WmSysKeyDown = (IntPtr)0x0104;
         public static readonly IntPtr WmSysKeyUp = (IntPtr)0x0105;
 
+        public const int WmInputLangChangeRequest = 0x50;
+
         public const int HklNext = 1;
         public const int HklPrev = 0;
 
-        public const int KlfSetForProcess = 0x00000100;
+        public const int KlfActivate = 0x00000001;
         public const int KlNameLength = 9;
 
         [DllImport(User32, CharSet = CharSet.Auto, SetLastError = true)]
@@ -57,7 +59,7 @@ namespace KeyboardSwitch.Common.Windows.Interop
         public static extern IntPtr GetForegroundWindow();
 
         [DllImport(User32)]
-        public static extern IntPtr GetKeyboardLayout(int idThread);
+        public static extern int GetKeyboardLayout(int idThread);
 
         [DllImport(User32)]
         public static extern int GetKeyboardLayoutList(int nBuff, IntPtr[]? lpList);
@@ -65,7 +67,13 @@ namespace KeyboardSwitch.Common.Windows.Interop
         [DllImport(User32, CharSet = CharSet.Unicode)]
         public static extern bool GetKeyboardLayoutName([Out] StringBuilder pwszKLID);
 
-        [DllImport("user32.dll")]
-        public static extern int ActivateKeyboardLayout(int hkl, int flags);
+        [DllImport(User32)]
+        public static extern int ActivateKeyboardLayout(int hkl, uint flags);
+
+        [DllImport(User32, CharSet = CharSet.Unicode)]
+        public static extern IntPtr LoadKeyboardLayout(string pwszKLID, uint flags);
+
+        [DllImport(User32)]
+        public static extern bool PostMessage(IntPtr hhwnd, int msg, IntPtr wparam, IntPtr lparam);
     }
 }
