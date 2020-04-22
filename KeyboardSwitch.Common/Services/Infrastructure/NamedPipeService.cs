@@ -4,7 +4,6 @@ using System.IO;
 using System.IO.Pipes;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Reflection;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
@@ -19,10 +18,10 @@ namespace KeyboardSwitch.Common.Services.Infrastructure
         public NamedPipeService(ILogger<NamedPipeService> logger)
         {
             this.logger = logger;
-            this.NamedPipeName = Assembly.GetEntryAssembly()?.FullName;
+            this.NamedPipeName = nameof(KeyboardSwitch);
         }
 
-        public string? NamedPipeName { get; }
+        public string NamedPipeName { get; }
 
         public IObservable<string> ReceivedString
             => this.receivedString.AsObservable();
