@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 using KeyboardSwitch.Common;
+using KeyboardSwitch.Common.Services.Infrastructure;
 using KeyboardSwitch.Common.Settings;
 using KeyboardSwitch.Common.Windows;
 
@@ -22,6 +23,8 @@ namespace KeyboardSwitch
                 .Build();
 
             var logger = host.Services.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(Program));
+
+            ConfigureSingleInstance(host, logger);
 
             logger.LogInformation("KeyboardSwitch service execution started");
 
@@ -50,6 +53,26 @@ namespace KeyboardSwitch
             {
                 services.AddKeyboardSwitchWindowsServices();
             }
+        }
+
+        private static void ConfigureSingleInstance(IHost host, ILogger logger)
+        {
+            var singleInstanceService = host.Services.GetRequiredService<ISingleInstanceService>();
+            var mutex = singleInstanceService.TryAcquireMutex();
+
+            GC.KeepAlive(mutex);
+
+            var namedPipeService = host.Services.GetRequiredService<INamedPipeService>();
+            namedPipeService.StartServer();
+
+            namedPipeService.ReceivedString.SubscribeAsync(async command =>
+            {
+                if (String.Equals(command, CommandLineArguments.Stop, StringComparison.OrdinalIgnoreCase))
+                {
+                    logger.LogInformation("Service stop requested externally");
+                    await host.StopAsync();
+                }
+            });
         }
     }
 }

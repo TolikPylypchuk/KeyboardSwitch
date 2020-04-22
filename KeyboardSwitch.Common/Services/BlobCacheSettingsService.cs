@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace KeyboardSwitch.Common.Services
 {
-    internal class BlobCacheSettingsService : DisposableService, ISettingsService, IAsyncDisposable
+    internal sealed class BlobCacheSettingsService : DisposableService, ISettingsService, IAsyncDisposable
     {
         private readonly IBlobCache cache;
         private readonly ILogger<BlobCacheSettingsService> logger;
@@ -41,7 +41,7 @@ namespace KeyboardSwitch.Common.Services
         {
             if (!this.Disposed)
             {
-                this.logger.LogInformation("Shutting the blob cache down");
+                this.logger.LogInformation("Shutting down the blob cache");
                 await BlobCache.Shutdown();
                 this.Disposed = true;
             }
