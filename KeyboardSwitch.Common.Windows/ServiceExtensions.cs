@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reactive.Concurrency;
-using System.Reactive.Linq;
 
 using Akavache;
 using Akavache.Sqlite3;
@@ -47,53 +44,16 @@ namespace KeyboardSwitch.Common.Windows
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 options.Value.Path);
 
-            bool shouldCreateDefaultSettings = true;
-
             if (!File.Exists(path))
             {
-                logger.LogInformation("The blob cache file for settings not found");
-                logger.LogInformation("Creating the file and putting the default settings into it");
+                logger.LogInformation("The blob cache file for settings not found - creating a new file");
 
                 var file = new FileInfo(path);
                 file.Directory.Create();
                 file.Create().Close();
-
-                shouldCreateDefaultSettings = true;
             }
 
-            var cache = new SqlRawPersistentBlobCache(path, scheduler);
-
-            if (shouldCreateDefaultSettings)
-            {
-                var layoutService = services.GetRequiredService<ILayoutService>();
-                var settings = CreateDefaultSettings(layoutService);
-                cache.InsertObject(SwitchSettings.CacheKey, settings).Wait();
-            }
-
-            return cache;
+            return new SqlRawPersistentBlobCache(path, scheduler);
         }
-
-        private static SwitchSettings CreateDefaultSettings(ILayoutService layoutService)
-            => new SwitchSettings
-            {
-                Forward = 'X',
-                Backward = 'Z',
-                ModifierKeys = new List<ModifierKeys> { ModifierKeys.Alt, ModifierKeys.Ctrl },
-                CharsByKeyboardLayoutId = layoutService.GetKeyboardLayouts()
-                    .ToDictionary(layout => layout.Id, GetCharsForLayout)
-            };
-
-        private static string GetCharsForLayout(KeyboardLayout layout)
-            => layout.Culture.TwoLetterISOLanguageName switch
-            {
-                "en" => @"qwertyuiop[]\asdfghjkl;'zxcvbnm,./QWERTYUIOP{}|ASDFGHJKL:""ZXCVBNM<>?`1234567890-=~!@#$%^&*()_+",
-                "uk" => @"йцукенгшщзхї\фівапролджєячсмитьбю.ЙЦУКЕНГШЩЗХЇ/ФІВАПРОЛДЖЄЯЧСМИТЬБЮ,'1234567890-=₴!""№;%:?*()_+",
-                "ru" => @"йцукенгшщзхъ\фывапролджэячсмитьбю.ЙЦУКЕНГШЩЗХЪ/ФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,ё1234567890-=Ё!""№;%:?*()_+",
-                "pl" => @"qwertyuiop[]\asdfghjkl;'zxcvbnm,./QWERTYUIOP{}|ASDFGHJKL:""ZXCVBNM<>?`1234567890-=~!@#$%^&*()_+",
-                "de" => @"qwertzuiopü+#asdfghjklöäyxcvbnm,.-QWERTZUIOPÜ*'ASDFGHJKLÖÄYXCVBNM;:_^1234567890ß´°!""§$%&/()=?`",
-                "fr" => @"azertyuiop^$*qsdfghjklmùwxcvbn,;:!AZERTYUIOP¨£µQSDFGHJKLM%WXCVBN?./§²&é""'(-è_çà)=~1234567890°+",
-                "es" => @"qwertyuiop`+çasdfghjklñ´zxcvbnm,.-QWERTYUIOP^*ÇASDFGHJKLÑ¨ZXCVBNM;:_º1234567890'¡ª!""·$%&/()=?¿",
-                _ => String.Empty
-            };
     }
 }

@@ -33,9 +33,10 @@ namespace KeyboardSwitch.Common.Windows.Services
 
             string? textToSwitch = await this.textService.GetTextAsync();
 
+            var settings = await this.settingsService.GetSwitchSettingsAsync();
+
             if (!String.IsNullOrEmpty(textToSwitch))
             {
-                var settings = await this.settingsService.GetSwitchSettingsAsync();
                 var allLayouts = layoutService.GetKeyboardLayouts();
 
                 if (direction == SwitchDirection.Backward)
@@ -60,7 +61,10 @@ namespace KeyboardSwitch.Common.Windows.Services
                     .ToArray()));
             }
 
-            layoutService.SwitchForegroundProcessLayout(direction);
+            if (settings.SwitchLayout)
+            {
+                layoutService.SwitchForegroundProcessLayout(direction);
+            }
         }
     }
 }

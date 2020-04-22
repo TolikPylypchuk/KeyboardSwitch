@@ -3,6 +3,8 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 
+using Akavache;
+
 namespace KeyboardSwitch.Common
 {
     public static class ObservableExtensions
@@ -13,5 +15,16 @@ namespace KeyboardSwitch.Common
                 await subscriber(result);
                 return Unit.Default;
             }).Subscribe();
+
+        public static Task<bool> ContainsKey(this IBlobCache cache, string key)
+        {
+            var completionSource = new TaskCompletionSource<bool>();
+
+            cache.Get(key).Subscribe(
+                x => completionSource.SetResult(true),
+                ex => completionSource.SetResult(false));
+
+            return completionSource.Task;
+        }
     }
 }

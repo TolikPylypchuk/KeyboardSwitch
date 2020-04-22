@@ -8,5 +8,6 @@ namespace KeyboardSwitch.Common.Services
     {
         Task<SwitchSettings> GetSwitchSettingsAsync();
         Task SaveSwitchSettingsAsync(SwitchSettings switchSettings);
+        void InvalidateSwitchSettings();
     }
 }

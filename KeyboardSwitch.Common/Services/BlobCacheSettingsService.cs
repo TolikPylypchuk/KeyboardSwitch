@@ -15,6 +15,8 @@ namespace KeyboardSwitch.Common.Services
         private readonly IBlobCache cache;
         private readonly ILogger<BlobCacheSettingsService> logger;
 
+        private SwitchSettings? switchSettings;
+
         public BlobCacheSettingsService(IBlobCache cache, ILogger<BlobCacheSettingsService> logger)
         {
             this.cache = cache;
@@ -25,8 +27,13 @@ namespace KeyboardSwitch.Common.Services
         {
             this.ThrowIfDisposed();
 
-            this.logger.LogTrace("Getting the switch settings");
-            return await this.cache.GetObject<SwitchSettings>(SwitchSettings.CacheKey);
+            if (this.switchSettings == null)
+            {
+                this.logger.LogTrace("Getting the switch settings");
+                this.switchSettings = await this.cache.GetObject<SwitchSettings>(SwitchSettings.CacheKey);
+            }
+
+            return this.switchSettings;
         }
 
         public async Task SaveSwitchSettingsAsync(SwitchSettings switchSettings)
@@ -35,6 +42,14 @@ namespace KeyboardSwitch.Common.Services
 
             this.logger.LogTrace("Setting the switch settings");
             await this.cache.InsertObject(SwitchSettings.CacheKey, switchSettings);
+
+            this.switchSettings = switchSettings;
+        }
+
+        public void InvalidateSwitchSettings()
+        {
+            this.ThrowIfDisposed();
+            this.switchSettings = null;
         }
 
         public async ValueTask DisposeAsync()
