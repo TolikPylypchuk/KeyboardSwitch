@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 using KeyboardSwitch.Common.Services;
@@ -11,12 +12,18 @@ namespace KeyboardSwitch.Common.Windows.Services
     {
         private readonly ITextService textService;
         private readonly ILayoutService layoutService;
+        private readonly ISettingsService settingsService;
         private readonly ILogger<SwitchService> logger;
 
-        public SwitchService(ITextService text, ILayoutService layoutService, ILogger<SwitchService> logger)
+        public SwitchService(
+            ITextService text,
+            ILayoutService layoutService,
+            ISettingsService settingsService,
+            ILogger<SwitchService> logger)
         {
             this.textService = text;
             this.layoutService = layoutService;
+            this.settingsService = settingsService;
             this.logger = logger;
         }
 
@@ -24,9 +31,36 @@ namespace KeyboardSwitch.Common.Windows.Services
         {
             this.logger.LogDebug($"Switching the text {direction.AsString()}");
 
-            layoutService.SwitchForegroundProcessLayout(direction);
+            string? textToSwitch = await this.textService.GetTextAsync();
 
-            await this.textService.SetTextAsync(await this.textService.GetTextAsync() ?? String.Empty);
+            if (!String.IsNullOrEmpty(textToSwitch))
+            {
+                var settings = await this.settingsService.GetSwitchSettingsAsync();
+                var allLayouts = layoutService.GetKeyboardLayouts();
+
+                if (direction == SwitchDirection.Backward)
+                {
+                    allLayouts.Reverse();
+                }
+
+                var currentLayout = layoutService.GetForegroundProcessKeyboardLayout();
+
+                var newLayout = allLayouts.SkipWhile(layout => layout != currentLayout)
+                    .Skip(1)
+                    .FirstOrDefault()
+                    ?? allLayouts[0];
+
+                string currentChars = settings.CharsByKeyboardLayoutId[currentLayout.Id];
+                string newChars = settings.CharsByKeyboardLayoutId[newLayout.Id];
+
+                var mapping = currentChars.Zip(newChars).ToDictionary(chars => chars.First, chars => chars.Second);
+
+                await this.textService.SetTextAsync(new String(textToSwitch
+                    .Select(ch => mapping.TryGetValue(ch, out char newCh) ? newCh : ch)
+                    .ToArray()));
+            }
+
+            layoutService.SwitchForegroundProcessLayout(direction);
         }
     }
 }
