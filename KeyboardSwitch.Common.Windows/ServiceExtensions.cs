@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 
@@ -35,9 +36,9 @@ namespace KeyboardSwitch.Common.Windows
         {
             var logger = services.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(SerivceExtensions));
 
-            logger.LogInformation("Spinning the blob cache up");
+            logger.LogInformation("Spinning up the blob cache");
 
-            BlobCache.ApplicationName = "KeyboardSwitch";
+            BlobCache.ApplicationName = nameof(KeyboardSwitch);
 
             var options = services.GetRequiredService<IOptions<GlobalSettings>>();
             var scheduler = services.GetService<IScheduler>();
@@ -50,7 +51,7 @@ namespace KeyboardSwitch.Common.Windows
 
             if (!File.Exists(path))
             {
-                logger.LogInformation("The blob cache file for settings doesn't exist");
+                logger.LogInformation("The blob cache file for settings not found");
                 logger.LogInformation("Creating the file and putting the default settings into it");
 
                 var file = new FileInfo(path);
@@ -64,18 +65,35 @@ namespace KeyboardSwitch.Common.Windows
 
             if (shouldCreateDefaultSettings)
             {
-                cache.InsertObject(SwitchSettings.CacheKey, CreateDefaultSettings()).Wait();
+                var layoutService = services.GetRequiredService<ILayoutService>();
+                var settings = CreateDefaultSettings(layoutService);
+                cache.InsertObject(SwitchSettings.CacheKey, settings).Wait();
             }
 
             return cache;
         }
 
-        private static SwitchSettings CreateDefaultSettings()
+        private static SwitchSettings CreateDefaultSettings(ILayoutService layoutService)
             => new SwitchSettings
             {
                 Forward = 'X',
                 Backward = 'Z',
-                ModifierKeys = new List<ModifierKeys> { ModifierKeys.Alt, ModifierKeys.Ctrl }
+                ModifierKeys = new List<ModifierKeys> { ModifierKeys.Alt, ModifierKeys.Ctrl },
+                CharsByKeyboardLayoutId = layoutService.GetKeyboardLayouts()
+                    .ToDictionary(layout => layout.Id, GetCharsForLayout)
+            };
+
+        private static string GetCharsForLayout(KeyboardLayout layout)
+            => layout.Culture.TwoLetterISOLanguageName switch
+            {
+                "en" => @"qwertyuiop[]\asdfghjkl;'zxcvbnm,./QWERTYUIOP{}|ASDFGHJKL:""ZXCVBNM<>?`1234567890-=~!@#$%^&*()_+",
+                "uk" => @"йцукенгшщзхї\фівапролджєячсмитьбю.ЙЦУКЕНГШЩЗХЇ/ФІВАПРОЛДЖЄЯЧСМИТЬБЮ,'1234567890-=₴!""№;%:?*()_+",
+                "ru" => @"йцукенгшщзхъ\фывапролджэячсмитьбю.ЙЦУКЕНГШЩЗХЪ/ФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,ё1234567890-=Ё!""№;%:?*()_+",
+                "pl" => @"qwertyuiop[]\asdfghjkl;'zxcvbnm,./QWERTYUIOP{}|ASDFGHJKL:""ZXCVBNM<>?`1234567890-=~!@#$%^&*()_+",
+                "de" => @"qwertzuiopü+#asdfghjklöäyxcvbnm,.-QWERTZUIOPÜ*'ASDFGHJKLÖÄYXCVBNM;:_^1234567890ß´°!""§$%&/()=?`",
+                "fr" => @"azertyuiop^$*qsdfghjklmùwxcvbn,;:!AZERTYUIOP¨£µQSDFGHJKLM%WXCVBN?./§²&é""'(-è_çà)=~1234567890°+",
+                "es" => @"qwertyuiop`+çasdfghjklñ´zxcvbnm,.-QWERTYUIOP^*ÇASDFGHJKLÑ¨ZXCVBNM;:_º1234567890'¡ª!""·$%&/()=?¿",
+                _ => String.Empty
             };
     }
 }

@@ -67,17 +67,10 @@ namespace KeyboardSwitch.Common.Windows.Services
             => ActivateKeyboardLayout(keyboardLayoutId, 0);
 
         private KeyboardLayout CreateKeyboardLayout(int keyboardLayoutId)
-        {
-            ushort languageId = (ushort)(keyboardLayoutId & 0xFFFF);
-            ushort keyboardId = (ushort)(keyboardLayoutId >> 16);
-
-            return new KeyboardLayout(
+            => new KeyboardLayout(
                 keyboardLayoutId,
-                languageId,
-                keyboardId,
-                CultureInfo.GetCultureInfo(languageId).DisplayName,
+                CultureInfo.GetCultureInfo(keyboardLayoutId & 0xFFFF),
                 this.GetLayoutDisplayName(keyboardLayoutId));
-        }
 
         private string GetLayoutDisplayName(int keyboardLayoutId)
         {

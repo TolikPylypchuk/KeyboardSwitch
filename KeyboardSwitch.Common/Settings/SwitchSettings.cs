@@ -16,5 +16,8 @@ namespace KeyboardSwitch.Common.Settings
 
         [DataMember]
         public char Backward { get; set; }
+
+        [DataMember]
+        public Dictionary<int, string> CharsByKeyboardLayoutId { get; set; } = new Dictionary<int, string>();
     }
 }

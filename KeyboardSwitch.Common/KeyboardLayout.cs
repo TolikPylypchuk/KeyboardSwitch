@@ -1,25 +1,38 @@
+using System;
+using System.Globalization;
+
 namespace KeyboardSwitch.Common
 {
-    public class KeyboardLayout
+    public class KeyboardLayout : IEquatable<KeyboardLayout>
     {
-        public KeyboardLayout(int id, ushort languageId, ushort keyboardId, string languageName, string keyboardName)
+        public KeyboardLayout(int id, CultureInfo culture, string keyboardName)
         {
             this.Id = id;
-            this.LanguageId = languageId;
-            this.KeyboardId = keyboardId;
-            this.LanguageName = languageName;
+            this.Culture = culture;
             this.KeyboardName = keyboardName;
         }
 
         public int Id { get; }
 
-        public ushort LanguageId { get; }
-        public ushort KeyboardId { get; }
-
-        public string LanguageName { get; }
+        public CultureInfo Culture { get; }
         public string KeyboardName { get; }
 
+        public override bool Equals(object? obj)
+            => obj is KeyboardLayout other && this.Equals(other);
+
+        public bool Equals(KeyboardLayout? other)
+            => other != null && this.Id == other.Id;
+
+        public override int GetHashCode()
+            => HashCode.Combine(this.Id);
+
         public override string ToString()
-            => $"{this.LanguageName} - {this.KeyboardName}";
+            => $"{this.Culture.DisplayName} - {this.KeyboardName}";
+
+        public static bool operator ==(KeyboardLayout? left, KeyboardLayout? right)
+            => left?.Equals(right) ?? right is null;
+
+        public static bool operator !=(KeyboardLayout? left, KeyboardLayout? right)
+            => !(left == right);
     }
 }
