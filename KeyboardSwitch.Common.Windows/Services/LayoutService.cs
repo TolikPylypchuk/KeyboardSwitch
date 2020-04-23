@@ -20,6 +20,8 @@ namespace KeyboardSwitch.Common.Windows.Services
 
         private readonly ILogger<LayoutService> logger;
 
+        private List<KeyboardLayout>? systemLayouts;
+
         public LayoutService(ILogger<LayoutService> logger)
             => this.logger = logger;
 
@@ -48,6 +50,11 @@ namespace KeyboardSwitch.Common.Windows.Services
 
         public List<KeyboardLayout> GetKeyboardLayouts()
         {
+            if (this.systemLayouts != null)
+            {
+                return this.systemLayouts;
+            }
+
             this.logger.LogTrace("Getting the list of keyboard layouts in the system");
 
             int count = GetKeyboardLayoutList(0, null);
@@ -55,9 +62,11 @@ namespace KeyboardSwitch.Common.Windows.Services
 
             GetKeyboardLayoutList(keyboardLayoutIds.Length, keyboardLayoutIds);
 
-            return keyboardLayoutIds
+            this.systemLayouts = keyboardLayoutIds
                 .Select(keyboardLayoutId => this.CreateKeyboardLayout((int)keyboardLayoutId))
                 .ToList();
+
+            return this.systemLayouts;
         }
 
         private KeyboardLayout GetThreadKeyboardLayout(int threadId)

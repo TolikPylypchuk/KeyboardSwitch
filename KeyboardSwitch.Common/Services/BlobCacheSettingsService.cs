@@ -23,7 +23,7 @@ namespace KeyboardSwitch.Common.Services
             this.logger = logger;
         }
 
-        public async Task<SwitchSettings> GetSwitchSettingsAsync()
+        public async ValueTask<SwitchSettings> GetSwitchSettingsAsync()
         {
             this.ThrowIfDisposed();
 

@@ -6,7 +6,7 @@ namespace KeyboardSwitch.Common.Services
 {
     public interface ISettingsService
     {
-        Task<SwitchSettings> GetSwitchSettingsAsync();
+        ValueTask<SwitchSettings> GetSwitchSettingsAsync();
         Task SaveSwitchSettingsAsync(SwitchSettings switchSettings);
         void InvalidateSwitchSettings();
     }
