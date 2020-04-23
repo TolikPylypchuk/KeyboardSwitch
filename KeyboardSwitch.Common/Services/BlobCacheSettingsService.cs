@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 
@@ -13,13 +15,18 @@ namespace KeyboardSwitch.Common.Services
     internal sealed class BlobCacheSettingsService : DisposableService, ISettingsService, IAsyncDisposable
     {
         private readonly IBlobCache cache;
+        private readonly ILayoutService layoutService;
         private readonly ILogger<BlobCacheSettingsService> logger;
 
         private SwitchSettings? switchSettings;
 
-        public BlobCacheSettingsService(IBlobCache cache, ILogger<BlobCacheSettingsService> logger)
+        public BlobCacheSettingsService(
+            IBlobCache cache,
+            ILayoutService layoutService,
+            ILogger<BlobCacheSettingsService> logger)
         {
             this.cache = cache;
+            this.layoutService = layoutService;
             this.logger = logger;
         }
 
@@ -30,7 +37,18 @@ namespace KeyboardSwitch.Common.Services
             if (this.switchSettings == null)
             {
                 this.logger.LogTrace("Getting the switch settings");
-                this.switchSettings = await this.cache.GetObject<SwitchSettings>(SwitchSettings.CacheKey);
+
+                if (await this.cache.ContainsKey(SwitchSettings.CacheKey))
+                {
+                    this.switchSettings = await this.cache.GetObject<SwitchSettings>(SwitchSettings.CacheKey);
+
+                } else
+                {
+                    this.logger.LogInformation("Settings not found - creating default settings");
+
+                    this.switchSettings = this.CreateDefaultSettings();
+                    await this.cache.InsertObject(SwitchSettings.CacheKey, this.switchSettings);
+                }
             }
 
             return this.switchSettings;
@@ -61,5 +79,30 @@ namespace KeyboardSwitch.Common.Services
                 this.Disposed = true;
             }
         }
+
+        private SwitchSettings CreateDefaultSettings()
+            => new SwitchSettings
+            {
+                Forward = 'X',
+                Backward = 'Z',
+                ModifierKeys = new List<ModifierKeys> { ModifierKeys.Alt, ModifierKeys.Ctrl },
+                CharsByKeyboardLayoutId = this.layoutService.GetKeyboardLayouts()
+                    .ToDictionary(layout => layout.Id, this.GetCharsForLayout),
+                InstantSwitching = true,
+                SwitchLayout = true
+            };
+
+        private string GetCharsForLayout(KeyboardLayout layout)
+            => layout.Culture.TwoLetterISOLanguageName switch
+            {
+                "en" => @"qwertyuiop[]\asdfghjkl;'zxcvbnm,./QWERTYUIOP{}|ASDFGHJKL:""ZXCVBNM<>?`1234567890-=~!@#$%^&*()_+",
+                "uk" => @"йцукенгшщзхї\фівапролджєячсмитьбю.ЙЦУКЕНГШЩЗХЇ/ФІВАПРОЛДЖЄЯЧСМИТЬБЮ,'1234567890-=₴!""№;%:?*()_+",
+                "ru" => @"йцукенгшщзхъ\фывапролджэячсмитьбю.ЙЦУКЕНГШЩЗХЪ/ФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,ё1234567890-=Ё!""№;%:?*()_+",
+                "pl" => @"qwertyuiop[]\asdfghjkl;'zxcvbnm,./QWERTYUIOP{}|ASDFGHJKL:""ZXCVBNM<>?`1234567890-=~!@#$%^&*()_+",
+                "de" => @"qwertzuiopü+#asdfghjklöäyxcvbnm,.-QWERTZUIOPÜ*'ASDFGHJKLÖÄYXCVBNM;:_^1234567890ß´°!""§$%&/()=?`",
+                "fr" => @"azertyuiop^$*qsdfghjklmùwxcvbn,;:!AZERTYUIOP¨£µQSDFGHJKLM%WXCVBN?./§²&é""'(-è_çà)=~1234567890°+",
+                "es" => @"qwertyuiop`+çasdfghjklñ´zxcvbnm,.-QWERTYUIOP^*ÇASDFGHJKLÑ¨ZXCVBNM;:_º1234567890'¡ª!""·$%&/()=?¿",
+                _ => String.Empty
+            };
     }
 }

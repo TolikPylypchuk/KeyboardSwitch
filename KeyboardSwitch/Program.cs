@@ -1,4 +1,5 @@
 using System;
+using System.Reactive.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -65,14 +66,10 @@ namespace KeyboardSwitch
             var namedPipeService = host.Services.GetRequiredService<INamedPipeService>();
             namedPipeService.StartServer();
 
-            namedPipeService.ReceivedString.SubscribeAsync(async command =>
-            {
-                if (String.Equals(command, CommandLineArguments.Stop, StringComparison.OrdinalIgnoreCase))
-                {
-                    logger.LogInformation("Service stop requested externally");
-                    await host.StopAsync();
-                }
-            });
+            namedPipeService.ReceivedString
+                .Where(command => command.IsCommand(ExternalCommand.Stop))
+                .Do(_ => logger.LogInformation("Stopping the service by external request"))
+                .SubscribeAsync(async _ => await host.StopAsync());
         }
     }
 }

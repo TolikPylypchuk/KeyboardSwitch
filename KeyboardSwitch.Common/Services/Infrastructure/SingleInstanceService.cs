@@ -43,20 +43,38 @@ namespace KeyboardSwitch.Common.Services.Infrastructure
         {
             try
             {
-                string message = Environment.GetCommandLineArgs().Length > 1
-                    ? Environment.GetCommandLineArgs()[1]
-                    : String.Empty;
+                this.namedPipeService.Write(GetCommand() ?? String.Empty);
 
-                this.namedPipeService.Write(message);
-
-                this.logger.LogTrace("Sent the argument to the original instance");
+                this.logger.LogTrace("Sent the command to the original instance");
             } catch (Exception e)
             {
-                this.logger.LogError(e, "Unknown error during sending an argument to the original instance");
+                this.logger.LogError(e, "Unknown error during sending a command to the original instance");
             } finally
             {
                 Environment.Exit(0);
             }
+        }
+
+        private string? GetCommand()
+        {
+            if (Environment.GetCommandLineArgs().Length <= 1)
+            {
+                return null;
+            }
+
+            string arg = Environment.GetCommandLineArgs()[1];
+
+            if (arg.StartsWith("--"))
+            {
+                return arg[2..];
+            }
+
+            if (arg.StartsWith('-') || arg.StartsWith('/'))
+            {
+                return arg[1..];
+            }
+
+            return arg;
         }
     }
 }
