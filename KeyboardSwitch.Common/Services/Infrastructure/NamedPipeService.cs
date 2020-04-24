@@ -15,10 +15,10 @@ namespace KeyboardSwitch.Common.Services.Infrastructure
         private readonly Subject<string> receivedString = new Subject<string>();
         private readonly ILogger<NamedPipeService> logger;
 
-        public NamedPipeService(ILogger<NamedPipeService> logger)
+        public NamedPipeService(ILogger<NamedPipeService> logger, string name)
         {
             this.logger = logger;
-            this.NamedPipeName = nameof(KeyboardSwitch);
+            this.NamedPipeName = name;
         }
 
         public string NamedPipeName { get; }

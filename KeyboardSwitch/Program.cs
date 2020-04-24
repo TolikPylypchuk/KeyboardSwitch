@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 using KeyboardSwitch.Common;
+using KeyboardSwitch.Common.Services;
 using KeyboardSwitch.Common.Services.Infrastructure;
 using KeyboardSwitch.Common.Settings;
 using KeyboardSwitch.Common.Windows;
@@ -58,12 +59,16 @@ namespace KeyboardSwitch
 
         private static void ConfigureSingleInstance(IHost host, ILogger logger)
         {
-            var singleInstanceService = host.Services.GetRequiredService<ISingleInstanceService>();
+            var singleInstanceResolver = host.Services.GetRequiredService<ServiceResolver<ISingleInstanceService>>();
+            var singleInstanceService = singleInstanceResolver(nameof(KeyboardSwitch));
+
             var mutex = singleInstanceService.TryAcquireMutex();
 
             GC.KeepAlive(mutex);
 
-            var namedPipeService = host.Services.GetRequiredService<INamedPipeService>();
+            var namedPipeResolver = host.Services.GetRequiredService<ServiceResolver<INamedPipeService>>();
+            var namedPipeService = namedPipeResolver(nameof(KeyboardSwitch));
+
             namedPipeService.StartServer();
 
             namedPipeService.ReceivedString

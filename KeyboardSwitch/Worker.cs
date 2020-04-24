@@ -26,14 +26,14 @@ namespace KeyboardSwitch
             ISwitchService switchService,
             ISettingsService settingsService,
             IKeysService keysService,
-            INamedPipeService namedPipeService,
+            ServiceResolver<INamedPipeService> namedPipeResolver,
             ILogger<Worker> logger)
         {
             this.keyboardHookService = keyboardHookService;
             this.switchService = switchService;
             this.settingsService = settingsService;
             this.keysService = keysService;
-            this.namedPipeService = namedPipeService;
+            this.namedPipeService = namedPipeResolver(nameof(KeyboardSwitch));
             this.logger = logger;
         }
 

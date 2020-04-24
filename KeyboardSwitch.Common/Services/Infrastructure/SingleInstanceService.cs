@@ -11,9 +11,12 @@ namespace KeyboardSwitch.Common.Services.Infrastructure
         private readonly INamedPipeService namedPipeService;
         private readonly ILogger<SingleInstanceService> logger;
 
-        public SingleInstanceService(INamedPipeService namedPipeService, ILogger<SingleInstanceService> logger)
+        public SingleInstanceService(
+            ServiceResolver<INamedPipeService> namedPipeResolver,
+            ILogger<SingleInstanceService> logger,
+            string name)
         {
-            this.namedPipeService = namedPipeService;
+            this.namedPipeService = namedPipeResolver(name);
             this.logger = logger;
         }
 
