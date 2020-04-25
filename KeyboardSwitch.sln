@@ -15,13 +15,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch", "KeyboardSwitch\KeyboardSwitch.csproj", "{3B77F28C-A7AF-49F6-B041-28C5D31FBE67}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Settings", "KeyboardSwitch.Settings\KeyboardSwitch.Settings.csproj", "{135A4C14-E1C2-4848-A83A-F0B16872A2AA}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Common", "KeyboardSwitch.Common\KeyboardSwitch.Common.csproj", "{57008AC4-B4B3-4858-A068-559AEB22BC74}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Settings.Core", "KeyboardSwitch.Settings.Core\KeyboardSwitch.Settings.Core.csproj", "{1BC312D4-F82A-4F5A-BB26-1DC93C008714}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardSwitch.Common.Windows", "KeyboardSwitch.Common.Windows\KeyboardSwitch.Common.Windows.csproj", "{ED51CEDE-B35C-4CCA-A950-F740799C150E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Common.Windows", "KeyboardSwitch.Common.Windows\KeyboardSwitch.Common.Windows.csproj", "{ED51CEDE-B35C-4CCA-A950-F740799C150E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardSwitch.Settings", "KeyboardSwitch.Settings\KeyboardSwitch.Settings.csproj", "{CE74E7BE-00D2-450A-ADAC-5A32A6D3C874}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,14 +39,6 @@ Global
 		{3B77F28C-A7AF-49F6-B041-28C5D31FBE67}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3B77F28C-A7AF-49F6-B041-28C5D31FBE67}.Release|x64.ActiveCfg = Release|x64
 		{3B77F28C-A7AF-49F6-B041-28C5D31FBE67}.Release|x64.Build.0 = Release|x64
-		{135A4C14-E1C2-4848-A83A-F0B16872A2AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{135A4C14-E1C2-4848-A83A-F0B16872A2AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{135A4C14-E1C2-4848-A83A-F0B16872A2AA}.Debug|x64.ActiveCfg = Debug|x64
-		{135A4C14-E1C2-4848-A83A-F0B16872A2AA}.Debug|x64.Build.0 = Debug|x64
-		{135A4C14-E1C2-4848-A83A-F0B16872A2AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{135A4C14-E1C2-4848-A83A-F0B16872A2AA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{135A4C14-E1C2-4848-A83A-F0B16872A2AA}.Release|x64.ActiveCfg = Release|x64
-		{135A4C14-E1C2-4848-A83A-F0B16872A2AA}.Release|x64.Build.0 = Release|x64
 		{57008AC4-B4B3-4858-A068-559AEB22BC74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{57008AC4-B4B3-4858-A068-559AEB22BC74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57008AC4-B4B3-4858-A068-559AEB22BC74}.Debug|x64.ActiveCfg = Debug|x64
@@ -71,6 +63,14 @@ Global
 		{ED51CEDE-B35C-4CCA-A950-F740799C150E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ED51CEDE-B35C-4CCA-A950-F740799C150E}.Release|x64.ActiveCfg = Release|Any CPU
 		{ED51CEDE-B35C-4CCA-A950-F740799C150E}.Release|x64.Build.0 = Release|Any CPU
+		{CE74E7BE-00D2-450A-ADAC-5A32A6D3C874}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE74E7BE-00D2-450A-ADAC-5A32A6D3C874}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE74E7BE-00D2-450A-ADAC-5A32A6D3C874}.Debug|x64.ActiveCfg = Debug|x64
+		{CE74E7BE-00D2-450A-ADAC-5A32A6D3C874}.Debug|x64.Build.0 = Debug|x64
+		{CE74E7BE-00D2-450A-ADAC-5A32A6D3C874}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE74E7BE-00D2-450A-ADAC-5A32A6D3C874}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE74E7BE-00D2-450A-ADAC-5A32A6D3C874}.Release|x64.ActiveCfg = Release|Any CPU
+		{CE74E7BE-00D2-450A-ADAC-5A32A6D3C874}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
