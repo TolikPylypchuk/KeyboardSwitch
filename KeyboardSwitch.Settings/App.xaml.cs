@@ -1,9 +1,15 @@
+using System.Reflection;
+
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 
 using KeyboardSwitch.Settings.Core.ViewModels;
 using KeyboardSwitch.Settings.Views;
+
+using ReactiveUI;
+
+using Splat;
 
 namespace KeyboardSwitch.Settings
 {
@@ -18,9 +24,11 @@ namespace KeyboardSwitch.Settings
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
+                Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
+
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = new MainViewModel(),
+                    ViewModel = new MainViewModel(new ServiceViewModel())
                 };
             }
 

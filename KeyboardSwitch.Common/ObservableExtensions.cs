@@ -9,6 +9,9 @@ namespace KeyboardSwitch.Common
 {
     public static class ObservableExtensions
     {
+        public static IObservable<bool> Invert(this IObservable<bool> observable)
+            => observable.Select(value => !value);
+
         public static void SubscribeAsync<T>(this IObservable<T> observable, Func<T, Task> subscriber)
             => observable.SelectMany(async result =>
             {
