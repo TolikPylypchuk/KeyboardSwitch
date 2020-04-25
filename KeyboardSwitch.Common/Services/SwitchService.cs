@@ -2,11 +2,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using KeyboardSwitch.Common.Services;
-
 using Microsoft.Extensions.Logging;
 
-namespace KeyboardSwitch.Common.Windows.Services
+namespace KeyboardSwitch.Common.Services
 {
     internal class SwitchService : ISwitchService
     {
