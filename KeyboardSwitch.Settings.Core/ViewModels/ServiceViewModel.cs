@@ -82,17 +82,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         private async Task StartServiceAsync()
         {
             var settings = await settingsService.GetUISettingsAsync();
-
-            var process = Process.Start(new ProcessStartInfo(settings.ServicePath) { RedirectStandardOutput = true });
-
-            await Task.Run(() =>
-            {
-                var reader = process.StandardOutput;
-                while (!reader.EndOfStream)
-                {
-                    this.Log().Info(reader.ReadLine());
-                }
-            });
+            Process.Start(settings.ServicePath);
         }
 
         private void OnStopService()
