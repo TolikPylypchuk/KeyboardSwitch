@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
+
+using Akavache;
 
 using Avalonia;
 using Avalonia.Logging.Serilog;
@@ -11,13 +14,18 @@ using Avalonia.ReactiveUI;
 using KeyboardSwitch.Common;
 using KeyboardSwitch.Common.Services;
 using KeyboardSwitch.Common.Services.Infrastructure;
+using KeyboardSwitch.Common.Settings;
 using KeyboardSwitch.Common.Windows;
 
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 
 using ReactiveUI;
 
+using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
 using Splat.Microsoft.Extensions.Logging;
 
@@ -26,42 +34,50 @@ namespace KeyboardSwitch.Settings
     public static class Program
     {
         public static int Main(string[] args)
-            => AppBuilder.Configure<App>()
-                .UsePlatformDetect()
-                .AddServices()
-                .LogToDebug()
-                .UseReactiveUI()
-                .StartWithClassicDesktopLifetime(args);
-
-        private static AppBuilder AddServices(this AppBuilder builder)
         {
             var services = new ServiceCollection();
             ConfigureServices(services);
 
-            var serviceProvider = services.BuildServiceProvider();
+            return AppBuilder.Configure<App>()
+                .UsePlatformDetect()
+                .LogToDebug()
+                .UseReactiveUI()
+                .Configure(services)
+                .StartWithClassicDesktopLifetime(args);
+        }
 
-            var mutex = ConfigureSingleInstance(serviceProvider);
-
-            builder.AfterSetup(newBuilder =>
+        private static AppBuilder Configure(this AppBuilder builder, IServiceCollection services)
+            => builder.AfterSetup(newBuilder =>
             {
                 if (newBuilder.Instance is App app)
                 {
+                    var serviceProvider = services.BuildServiceProvider();
+                    serviceProvider.UseMicrosoftDependencyResolver();
+
+                    var mutex = ConfigureSingleInstance(serviceProvider);
+
                     app.OnAppExitDisposable = Disposable.Create(() =>
                     {
-                        serviceProvider.Dispose();
+                        serviceProvider.DisposeAsync().AsTask().Wait();
                         mutex.ReleaseMutex();
                         mutex.Dispose();
                     });
                 }
             });
 
-            return builder;
-        }
-
         private static void ConfigureServices(IServiceCollection services)
         {
+            var provider = new JsonConfigurationProvider(new JsonConfigurationSource
+            {
+                Path = "appsettings.json",
+                FileProvider = new PhysicalFileProvider(Environment.CurrentDirectory)
+            });
+
+            var config = new ConfigurationRoot(new List<IConfigurationProvider> { provider });
+
             services
-                .AddLogging(ConfigureLogging)
+                .AddLogging(logging => ConfigureLogging(config, logging))
+                .Configure<GlobalSettings>(config.GetSection("Settings"))
                 .AddKeyboardSwitchServices();
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -70,10 +86,18 @@ namespace KeyboardSwitch.Settings
             }
 
             services.UseMicrosoftDependencyResolver();
+
+            Locator.CurrentMutable.InitializeSplat();
+            Locator.CurrentMutable.InitializeReactiveUI();
+            Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
+
+            BlobCache.ApplicationName = nameof(KeyboardSwitch);
         }
 
-        private static void ConfigureLogging(ILoggingBuilder logging)
-            => logging.AddDebug()
+        private static void ConfigureLogging(IConfiguration config, ILoggingBuilder logging)
+            => logging
+                .AddConfiguration(config.GetSection("Logging"))
+                .AddDebug()
                 .AddSplat();
 
         private static Mutex ConfigureSingleInstance(IServiceProvider services)

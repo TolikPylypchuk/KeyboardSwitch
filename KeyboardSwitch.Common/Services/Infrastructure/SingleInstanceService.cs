@@ -38,7 +38,7 @@ namespace KeyboardSwitch.Common.Services.Infrastructure
                 throw new TimeoutException(message);
             }
 
-            this.logger.LogTrace("Acquired the global mutex");
+            this.logger.LogDebug("Acquired the global mutex");
 
             return mutex;
         }
@@ -49,7 +49,7 @@ namespace KeyboardSwitch.Common.Services.Infrastructure
             {
                 this.namedPipeService.Write(GetCommand() ?? String.Empty);
 
-                this.logger.LogTrace("Sent the command to the original instance");
+                this.logger.LogDebug("Sent the command to the original instance");
             } catch (Exception e)
             {
                 this.logger.LogError(e, "Unknown error during sending a command to the original instance");

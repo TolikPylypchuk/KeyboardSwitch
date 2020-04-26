@@ -20,14 +20,27 @@
     <AvaloniaResource Remove="Views\ServiceView.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="appsettings.json" />
     <None Remove="Views\ServiceView.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.9.9" />
     <PackageReference Include="Avalonia.Desktop" Version="0.9.9" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.9" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.3" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.3" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.3" />
     <PackageReference Include="ReactiveUI" Version="11.3.8" />
     <PackageReference Include="ReactiveUI.Fody" Version="11.3.8" />
     <PackageReference Include="ReactiveUI.Validation" Version="1.4.13" />
@@ -47,6 +60,5 @@
     <ProjectReference Include="..\KeyboardSwitch.Common.Windows\KeyboardSwitch.Common.Windows.csproj" />
     <ProjectReference Include="..\KeyboardSwitch.Common\KeyboardSwitch.Common.csproj" />
     <ProjectReference Include="..\KeyboardSwitch.Settings.Core\KeyboardSwitch.Settings.Core.csproj" />
-    <ProjectReference Include="..\KeyboardSwitch\KeyboardSwitch.csproj" />
   </ItemGroup>
 </Project>

@@ -39,19 +39,19 @@ namespace KeyboardSwitch
 
         protected override async Task ExecuteAsync(CancellationToken token)
         {
-            this.logger.LogTrace("Configuring the keyboard switch service");
+            this.logger.LogDebug("Configuring the keyboard switch service");
 
             this.SubscribeToExternalCommands();
             await this.RegisterHotKeysAsync();
 
-            this.logger.LogTrace("Starting the service execution");
+            this.logger.LogDebug("Starting the service execution");
 
             await this.keyboardHookService.WaitForMessagesAsync(token);
         }
 
         private async Task RegisterHotKeysAsync()
         {
-            this.logger.LogTrace("Registering hot keys to switch forward and backward");
+            this.logger.LogDebug("Registering hot keys to switch forward and backward");
 
             var settings = await this.settingsService.GetSwitchSettingsAsync();
 

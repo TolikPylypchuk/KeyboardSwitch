@@ -29,7 +29,7 @@ namespace KeyboardSwitch.Common.Windows.Services
 
         public async Task<string?> GetTextAsync()
         {
-            this.logger.LogTrace("Getting the text from the clipboard");
+            this.logger.LogDebug("Getting the text from the clipboard");
 
             var settings = await this.settingsService.GetSwitchSettingsAsync();
 
@@ -47,7 +47,7 @@ namespace KeyboardSwitch.Common.Windows.Services
 
         public async Task SetTextAsync(string text)
         {
-            this.logger.LogTrace("Setting the text into the clipboard");
+            this.logger.LogDebug("Setting the text into the clipboard");
 
             var settings = await this.settingsService.GetSwitchSettingsAsync();
 

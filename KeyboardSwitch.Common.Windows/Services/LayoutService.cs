@@ -27,13 +27,13 @@ namespace KeyboardSwitch.Common.Windows.Services
 
         public KeyboardLayout GetForegroundProcessKeyboardLayout()
         {
-            this.logger.LogTrace("Getting the keyboard layout of the foreground process");
+            this.logger.LogDebug("Getting the keyboard layout of the foreground process");
             return this.GetThreadKeyboardLayout(GetWindowThreadProcessId(GetForegroundWindow(), IntPtr.Zero));
         }
 
         public void SwitchForegroundProcessLayout(SwitchDirection direction)
         {
-            this.logger.LogTrace($"Switching the keyboard layout of the foregound process {direction.AsString()}");
+            this.logger.LogDebug($"Switching the keyboard layout of the foregound process {direction.AsString()}");
 
             var foregroundWindowHandle = GetForegroundWindow();
             int foregroundWindowThreadId = GetWindowThreadProcessId(foregroundWindowHandle, IntPtr.Zero);
@@ -55,7 +55,7 @@ namespace KeyboardSwitch.Common.Windows.Services
                 return this.systemLayouts;
             }
 
-            this.logger.LogTrace("Getting the list of keyboard layouts in the system");
+            this.logger.LogDebug("Getting the list of keyboard layouts in the system");
 
             int count = GetKeyboardLayoutList(0, null);
             var keyboardLayoutIds = new IntPtr[count];

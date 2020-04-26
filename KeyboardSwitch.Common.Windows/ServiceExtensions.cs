@@ -34,8 +34,6 @@ namespace KeyboardSwitch.Common.Windows
 
             logger.LogInformation("Spinning up the blob cache");
 
-            BlobCache.ApplicationName = nameof(KeyboardSwitch);
-
             var options = services.GetRequiredService<IOptions<GlobalSettings>>();
             var scheduler = services.GetService<IScheduler>();
 

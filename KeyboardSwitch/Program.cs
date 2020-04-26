@@ -2,7 +2,8 @@ using System;
 using System.Reactive.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Threading.Tasks;
+
+using Akavache;
 
 using KeyboardSwitch.Common;
 using KeyboardSwitch.Common.Services;
@@ -18,10 +19,13 @@ namespace KeyboardSwitch
 {
     public static class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
+            BlobCache.ApplicationName = nameof(KeyboardSwitch);
+
             var host = Host.CreateDefaultBuilder(args)
                 .ConfigureServices(ConfigureServices)
+                .ConfigureLogging(ConfigureLogging)
                 .UseConsoleLifetime()
                 .Build();
 
@@ -33,7 +37,7 @@ namespace KeyboardSwitch
 
             try
             {
-                await host.RunAsync();
+                host.Run();
             } catch (OperationCanceledException)
             {
                 logger.LogInformation("KeyboardSwitch service execution was cancelled");
@@ -61,6 +65,13 @@ namespace KeyboardSwitch
                 services.AddKeyboardSwitchWindowsServices();
             }
         }
+
+        private static void ConfigureLogging(HostBuilderContext hostingContext, ILoggingBuilder logging)
+            => logging
+                .ClearProviders()
+                .AddConfiguration(hostingContext.Configuration.GetSection("Logging"))
+                .AddConsole()
+                .AddDebug();
 
         private static Mutex ConfigureSingleInstance(IHost host, ILogger logger)
         {

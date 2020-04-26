@@ -7,6 +7,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="KeyboardSwitch.Settings.Views.MainWindow"
         Icon="/Assets/icon.ico" WindowStartupLocation="CenterScreen"
-        Title="Keyboard Switch Settings" Width="800" Height="400">
+        Title="Keyboard Switch Settings" Width="800" Height="400"
+        MinWidth="400" MinHeight="200">
     <ContentControl x:Name="ServiceViewContent" />
 </Window>

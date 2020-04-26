@@ -5,6 +5,7 @@ using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Threading.Tasks;
 
 using KeyboardSwitch.Common;
 using KeyboardSwitch.Common.Services;
@@ -21,12 +22,17 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
     public sealed class ServiceViewModel : ReactiveObject
     {
+        private readonly ISettingsService settingsService;
         private readonly INamedPipeService namedPipeService;
 
         private bool isShutdownRequested = false;
 
-        public ServiceViewModel(INamedPipeService? namedPipeService = null, IScheduler? scheduler = null)
+        public ServiceViewModel(
+            ISettingsService? settingsService = null,
+            INamedPipeService? namedPipeService = null,
+            IScheduler? scheduler = null)
         {
+            this.settingsService = settingsService ?? Locator.Current.GetService<ISettingsService>();
             this.namedPipeService = namedPipeService ??
                 Locator.Current.GetService<ServiceResolver<INamedPipeService>>()(nameof(KeyboardSwitch));
 
@@ -40,7 +46,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             var canStopService = serviceStatus.Select(status => status == ServiceStatus.Running);
             var canKillService = serviceStatus.Select(status => status == ServiceStatus.ShuttingDown);
 
-            this.StartService = ReactiveCommand.Create(this.OnStartService, canStartService);
+            this.StartService = ReactiveCommand.CreateFromTask(this.StartServiceAsync, canStartService);
             this.StopService = ReactiveCommand.Create(this.OnStopService, canStopService);
             this.KillService = ReactiveCommand.Create(this.OnKillService, canKillService);
 
@@ -73,8 +79,21 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 : ServiceStatus.Stopped;
         }
 
-        private void OnStartService()
-            => Process.Start(nameof(KeyboardSwitch));
+        private async Task StartServiceAsync()
+        {
+            var settings = await settingsService.GetUISettingsAsync();
+
+            var process = Process.Start(new ProcessStartInfo(settings.ServicePath) { RedirectStandardOutput = true });
+
+            await Task.Run(() =>
+            {
+                var reader = process.StandardOutput;
+                while (!reader.EndOfStream)
+                {
+                    this.Log().Info(reader.ReadLine());
+                }
+            });
+        }
 
         private void OnStopService()
         {

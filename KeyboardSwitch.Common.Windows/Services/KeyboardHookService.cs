@@ -55,11 +55,11 @@ namespace KeyboardSwitch.Common.Windows.Services
 
             var key = new HotKey(modifiers, virtualKeyCode);
 
-            this.logger.LogTrace($"Registering a hot key: {key}");
+            this.logger.LogDebug($"Registering a hot key: {key}");
 
             this.hotKeys.Add(key);
 
-            this.logger.LogTrace($"Registered a hot key: {key}");
+            this.logger.LogDebug($"Registered a hot key: {key}");
 
             return key;
         }
@@ -74,7 +74,7 @@ namespace KeyboardSwitch.Common.Windows.Services
         {
             this.ThrowIfDisposed();
 
-            this.logger.LogTrace($"Unregistering a hot key: {key}");
+            this.logger.LogDebug($"Unregistering a hot key: {key}");
 
             if (!this.hotKeys.Contains(key))
             {
@@ -84,12 +84,12 @@ namespace KeyboardSwitch.Common.Windows.Services
 
             this.hotKeys.Remove(key);
 
-            this.logger.LogTrace($"Unregistered a hot key: {key}");
+            this.logger.LogDebug($"Unregistered a hot key: {key}");
         }
 
         public void UnregisterAll()
         {
-            this.logger.LogTrace("Unregistering all hot keys");
+            this.logger.LogDebug("Unregistering all hot keys");
 
             this.ThrowIfDisposed();
             this.hotKeys.ForEach(this.UnregisterHotKey);
@@ -114,8 +114,6 @@ namespace KeyboardSwitch.Common.Windows.Services
         {
             if (!this.Disposed)
             {
-                this.logger.LogInformation("Destroying the global hook");
-
                 UnhookWindowsHookEx(hookId);
                 GC.SuppressFinalize(this);
 
