@@ -1,6 +1,7 @@
 using System;
 using System.Reactive.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 
 using KeyboardSwitch.Common;
@@ -26,7 +27,7 @@ namespace KeyboardSwitch
 
             var logger = host.Services.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(Program));
 
-            ConfigureSingleInstance(host, logger);
+            var mutex = ConfigureSingleInstance(host, logger);
 
             logger.LogInformation("KeyboardSwitch service execution started");
 
@@ -39,6 +40,10 @@ namespace KeyboardSwitch
             } catch (Exception e)
             {
                 logger.LogError(e, "Unknown error");
+            } finally
+            {
+                mutex.ReleaseMutex();
+                mutex.Dispose();
             }
 
             logger.LogInformation("KeyboardSwitch service execution stopped");
@@ -57,14 +62,12 @@ namespace KeyboardSwitch
             }
         }
 
-        private static void ConfigureSingleInstance(IHost host, ILogger logger)
+        private static Mutex ConfigureSingleInstance(IHost host, ILogger logger)
         {
             var singleInstanceResolver = host.Services.GetRequiredService<ServiceResolver<ISingleInstanceService>>();
             var singleInstanceService = singleInstanceResolver(nameof(KeyboardSwitch));
 
             var mutex = singleInstanceService.TryAcquireMutex();
-
-            GC.KeepAlive(mutex);
 
             var namedPipeResolver = host.Services.GetRequiredService<ServiceResolver<INamedPipeService>>();
             var namedPipeService = namedPipeResolver(nameof(KeyboardSwitch));
@@ -75,6 +78,8 @@ namespace KeyboardSwitch
                 .Where(command => command.IsCommand(ExternalCommand.Stop))
                 .Do(_ => logger.LogInformation("Stopping the service by external request"))
                 .SubscribeAsync(async _ => await host.StopAsync());
+
+            return mutex;
         }
     }
 }

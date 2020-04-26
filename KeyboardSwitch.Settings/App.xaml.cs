@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 
 using Avalonia;
@@ -13,26 +14,40 @@ using Splat;
 
 namespace KeyboardSwitch.Settings
 {
-    public class App : Application
+    public class App : Application, IEnableLogger
     {
+        public IDisposable OnAppExitDisposable { get; set; } = null!;
+
         public override void Initialize()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+            => AvaloniaXamlLoader.Load(this);
 
         public override void OnFrameworkInitializationCompleted()
         {
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            if (this.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
-
-                desktop.MainWindow = new MainWindow
-                {
-                    ViewModel = new MainViewModel(new ServiceViewModel())
-                };
+                this.InitializeDesktop(desktop);
             }
 
             base.OnFrameworkInitializationCompleted();
+        }
+
+        private void InitializeDesktop(IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            this.Log().Info("Starting the settings app");
+
+            Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
+
+            var mainViewModel = new MainViewModel();
+
+            desktop.MainWindow = new MainWindow { ViewModel = mainViewModel };
+
+            desktop.Exit += this.OnExit;
+        }
+
+        private void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
+        {
+            this.Log().Info("Shutting down the settings app");
+            this.OnAppExitDisposable.Dispose();
         }
     }
 }

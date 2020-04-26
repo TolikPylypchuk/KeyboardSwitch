@@ -1,6 +1,6 @@
-using ReactiveUI;
+using System.Reactive;
 
-using Splat;
+using ReactiveUI;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
@@ -8,9 +8,12 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
     {
         public MainViewModel(ServiceViewModel? serviceViewModel = null)
         {
-            this.ServiceViewModel = serviceViewModel ?? Locator.Current.GetService<ServiceViewModel>();
+            this.ServiceViewModel = serviceViewModel ?? new ServiceViewModel();
+            this.OpenExternally = ReactiveCommand.Create(() => { });
         }
 
         public ServiceViewModel ServiceViewModel { get; }
+
+        public ReactiveCommand<Unit, Unit> OpenExternally { get; set; }
     }
 }

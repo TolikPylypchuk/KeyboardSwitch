@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using System.Threading;
 
 using Microsoft.Extensions.Logging;
@@ -10,6 +9,7 @@ namespace KeyboardSwitch.Common.Services.Infrastructure
     {
         private readonly INamedPipeService namedPipeService;
         private readonly ILogger<SingleInstanceService> logger;
+        private readonly string name;
 
         public SingleInstanceService(
             ServiceResolver<INamedPipeService> namedPipeResolver,
@@ -18,11 +18,12 @@ namespace KeyboardSwitch.Common.Services.Infrastructure
         {
             this.namedPipeService = namedPipeResolver(name);
             this.logger = logger;
+            this.name = name;
         }
 
         public Mutex TryAcquireMutex()
         {
-            var mutex = new Mutex(false, $"Global\\{Assembly.GetExecutingAssembly().FullName}", out bool createdNew);
+            var mutex = new Mutex(false, $"Global\\{this.name}", out bool createdNew);
 
             if (!createdNew)
             {

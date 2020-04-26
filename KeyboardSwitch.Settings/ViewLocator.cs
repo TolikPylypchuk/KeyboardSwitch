@@ -7,7 +7,7 @@ using Splat;
 
 namespace KeyboardSwitch.Settings
 {
-    public class ViewLocator : IDataTemplate
+    public sealed class ViewLocator : IDataTemplate
     {
         public bool SupportsRecycling
             => false;

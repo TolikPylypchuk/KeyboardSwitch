@@ -3,50 +3,86 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Concurrency;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 
 using KeyboardSwitch.Common;
+using KeyboardSwitch.Common.Services;
+using KeyboardSwitch.Common.Services.Infrastructure;
 
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
+using Splat;
+
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
+    public enum ServiceStatus { Running, Stopped, ShuttingDown }
+
     public sealed class ServiceViewModel : ReactiveObject
     {
-        public ServiceViewModel(IScheduler? scheduler = null)
+        private readonly INamedPipeService namedPipeService;
+
+        private bool isShutdownRequested = false;
+
+        public ServiceViewModel(INamedPipeService? namedPipeService = null, IScheduler? scheduler = null)
         {
+            this.namedPipeService = namedPipeService ??
+                Locator.Current.GetService<ServiceResolver<INamedPipeService>>()(nameof(KeyboardSwitch));
+
             scheduler ??= RxApp.MainThreadScheduler;
 
-            var isServiceRunning = new Subject<bool>();
+            var serviceStatus = new Subject<ServiceStatus>();
 
-            isServiceRunning.ToPropertyEx(this, vm => vm.IsServiceRunning);
+            serviceStatus.ToPropertyEx(this, vm => vm.ServiceStatus);
 
-            this.StartService = ReactiveCommand.Create(this.OnStartService, isServiceRunning.Invert());
-            this.StopService = ReactiveCommand.Create(this.OnStopService, isServiceRunning);
+            var canStartService = serviceStatus.Select(status => status == ServiceStatus.Stopped);
+            var canStopService = serviceStatus.Select(status => status == ServiceStatus.Running);
+            var canKillService = serviceStatus.Select(status => status == ServiceStatus.ShuttingDown);
 
-            Observable.Interval(TimeSpan.FromSeconds(1), scheduler ?? RxApp.MainThreadScheduler)
-                .Select(_ => this.CheckIfServiceIsRunning())
-                .Merge(this.StartService.Select(_ => true))
-                .Merge(this.StopService.Select(_ => false))
+            this.StartService = ReactiveCommand.Create(this.OnStartService, canStartService);
+            this.StopService = ReactiveCommand.Create(this.OnStopService, canStopService);
+            this.KillService = ReactiveCommand.Create(this.OnKillService, canKillService);
+
+            Observable.Interval(TimeSpan.FromSeconds(1), scheduler)
+                .Select(_ => this.CheckServiceStatus())
+                .Merge(this.StartService.Select(_ => ServiceStatus.Running))
+                .Merge(this.StopService.Select(_ => ServiceStatus.ShuttingDown))
+                .Merge(this.KillService.Select(_ => ServiceStatus.Stopped))
                 .DistinctUntilChanged()
-                .Subscribe(isServiceRunning);
+                .Subscribe(serviceStatus);
         }
 
-        public bool IsServiceRunning { [ObservableAsProperty] get; }
+        public ServiceStatus ServiceStatus{ [ObservableAsProperty] get; }
 
         public ReactiveCommand<Unit, Unit> StartService { get; }
         public ReactiveCommand<Unit, Unit> StopService { get; }
+        public ReactiveCommand<Unit, Unit> KillService { get; }
 
-        private bool CheckIfServiceIsRunning()
-            => Process.GetProcessesByName(nameof(KeyboardSwitch)).Length > 0;
+        private ServiceStatus CheckServiceStatus()
+        {
+            bool isRunning = Process.GetProcessesByName(nameof(KeyboardSwitch)).Length > 0;
+
+            if (!isRunning)
+            {
+                this.isShutdownRequested = false;
+            }
+
+            return isRunning
+                ? isShutdownRequested ? ServiceStatus.ShuttingDown : ServiceStatus.Running
+                : ServiceStatus.Stopped;
+        }
 
         private void OnStartService()
             => Process.Start(nameof(KeyboardSwitch));
 
         private void OnStopService()
+        {
+            this.namedPipeService.Write(ExternalCommand.Stop);
+            this.isShutdownRequested = true;
+        }
+
+        private void OnKillService()
             => Process.GetProcessesByName(nameof(KeyboardSwitch)).ForEach(process => process.Kill());
     }
 }

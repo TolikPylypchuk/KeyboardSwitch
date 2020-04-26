@@ -13,6 +13,10 @@
             The Keyboard Switch service is not running
         </TextBlock>
 
+        <TextBlock x:Name="ServiceShuttingDownTextBlock" Grid.Column="0" VerticalAlignment="Center" Margin="10">
+            The Keyboard Switch service is shutting down
+        </TextBlock>
+
         <Button x:Name="StartServiceButton" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"
                 Margin="10" Padding="5,2">
             Start
@@ -21,6 +25,11 @@
         <Button x:Name="StopServiceButton" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"
                 Margin="10" Padding="5,2">
             Stop
+        </Button>
+
+        <Button x:Name="KillServiceButton" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"
+                Margin="10" Padding="5,2">
+            Kill
         </Button>
     </Grid>
 </UserControl>

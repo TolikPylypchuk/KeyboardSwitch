@@ -5,6 +5,7 @@
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <Platforms>AnyCPU;x64</Platforms>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="**\*.xaml.cs">
@@ -31,6 +32,8 @@
     <PackageReference Include="ReactiveUI.Fody" Version="11.3.8" />
     <PackageReference Include="ReactiveUI.Validation" Version="1.4.13" />
     <PackageReference Include="Splat" Version="9.4.5" />
+    <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="9.4.5" />
+    <PackageReference Include="Splat.Microsoft.Extensions.Logging" Version="9.4.5" />
     <PackageReference Include="System.Interactive" Version="4.1.1" />
     <PackageReference Include="System.Interactive.Async" Version="4.1.1" />
     <PackageReference Include="System.Reactive" Version="4.4.1" />
