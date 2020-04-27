@@ -17,10 +17,12 @@
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
   <ItemGroup>
+    <AvaloniaResource Remove="Views\MainContentView.xaml" />
     <AvaloniaResource Remove="Views\ServiceView.xaml" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="appsettings.json" />
+    <None Remove="Views\MainContentView.xaml" />
     <None Remove="Views\ServiceView.xaml" />
   </ItemGroup>
   <ItemGroup>
@@ -57,8 +59,26 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Views\MainContentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\KeyboardSwitch.Common.Windows\KeyboardSwitch.Common.Windows.csproj" />
     <ProjectReference Include="..\KeyboardSwitch.Common\KeyboardSwitch.Common.csproj" />
     <ProjectReference Include="..\KeyboardSwitch.Settings.Core\KeyboardSwitch.Settings.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Messages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Messages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

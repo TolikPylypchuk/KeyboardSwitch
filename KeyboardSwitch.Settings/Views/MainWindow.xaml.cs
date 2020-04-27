@@ -20,6 +20,9 @@ namespace KeyboardSwitch.Settings.Views
                 this.OneWayBind(this, v => v.ViewModel, v => v.DataContext)
                     .DisposeWith(disposables);
 
+                this.OneWayBind(this.ViewModel, vm => vm.MainContent, v => v.MainContent.Content)
+                    .DisposeWith(disposables);
+
                 this.OneWayBind(this.ViewModel, vm => vm.ServiceViewModel, v => v.ServiceViewContent.Content)
                     .DisposeWith(disposables);
             });
@@ -30,12 +33,14 @@ namespace KeyboardSwitch.Settings.Views
 #endif
         }
 
+        private ContentControl MainContent { get; set; } = null!;
         private ContentControl ServiceViewContent { get; set; } = null!;
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
 
+            this.MainContent = this.FindControl<ContentControl>(nameof(this.MainContent));
             this.ServiceViewContent = this.FindControl<ContentControl>(nameof(this.ServiceViewContent));
         }
     }

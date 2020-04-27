@@ -2,34 +2,34 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:l="clr-namespace:KeyboardSwitch.Settings.Localization"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="KeyboardSwitch.Settings.Views.ServiceView">
-    <Grid ColumnDefinitions="1*,100">
-        <TextBlock x:Name="ServiceRunningTextBlock" Grid.Column="0" VerticalAlignment="Center" Margin="10">
-            The Keyboard Switch service is running
-        </TextBlock>
+    <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="5">
+        <StackPanel.Styles>
+            <Style Selector="TextBlock.status">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Margin" Value="10" />
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+            <Style Selector="Button">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Margin" Value="30,10" />
+                <Setter Property="Padding" Value="10,4" />
+            </Style>
+        </StackPanel.Styles>
         
-        <TextBlock x:Name="ServiceNotRunningTextBlock" Grid.Column="0" VerticalAlignment="Center" Margin="10">
-            The Keyboard Switch service is not running
-        </TextBlock>
-
-        <TextBlock x:Name="ServiceShuttingDownTextBlock" Grid.Column="0" VerticalAlignment="Center" Margin="10">
-            The Keyboard Switch service is shutting down
-        </TextBlock>
-
-        <Button x:Name="StartServiceButton" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"
-                Margin="10" Padding="5,2">
-            Start
-        </Button>
+        <TextBlock x:Name="ServiceRunningTextBlock" Classes="status"
+                   Text="{l:Translate KeyboardSwitchServiceRunning}" />
         
-        <Button x:Name="StopServiceButton" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"
-                Margin="10" Padding="5,2">
-            Stop
-        </Button>
+        <TextBlock x:Name="ServiceNotRunningTextBlock" Classes="status"
+                   Text="{l:Translate KeyboardSwitchServiceNotRunning}" />
 
-        <Button x:Name="KillServiceButton" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right"
-                Margin="10" Padding="5,2">
-            Kill
-        </Button>
-    </Grid>
+        <TextBlock x:Name="ServiceShuttingDownTextBlock" Classes="status"
+                   Text="{l:Translate KeyboardSwitchServiceShuttingDown}" />
+
+        <Button x:Name="StartServiceButton" Content="{l:Translate Start}" />
+        <Button x:Name="StopServiceButton" Content="{l:Translate Stop}" />
+        <Button x:Name="KillServiceButton" Content="{l:Translate Kill}" />
+    </StackPanel>
 </UserControl>

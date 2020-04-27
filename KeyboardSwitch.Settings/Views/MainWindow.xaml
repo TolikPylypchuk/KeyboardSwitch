@@ -3,11 +3,13 @@
         xmlns:vm="clr-namespace:KeyboardSwitch.Settings.ViewModels;assembly=KeyboardSwitch.Settings"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:KeyboardSwitch.Settings.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="KeyboardSwitch.Settings.Views.MainWindow"
         Icon="/Assets/icon.ico" WindowStartupLocation="CenterScreen"
         Title="Keyboard Switch Settings" Width="800" Height="400"
         MinWidth="400" MinHeight="200">
-    <ContentControl x:Name="ServiceViewContent" />
+    <DockPanel>
+        <ContentControl x:Name="ServiceViewContent" Height="75" DockPanel.Dock="Bottom" />
+        <ContentControl x:Name="MainContent" />
+    </DockPanel>
 </Window>
