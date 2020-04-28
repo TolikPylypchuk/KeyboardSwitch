@@ -11,12 +11,13 @@
 
   <ItemGroup>
     <PackageReference Include="akavache" Version="6.10.11" />
+    <PackageReference Include="DynamicData" Version="6.14.14" />
     <PackageReference Include="Fody" Version="6.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ReactiveUI" Version="11.3.7" />
-    <PackageReference Include="ReactiveUI.Fody" Version="11.3.7" />
+    <PackageReference Include="ReactiveUI" Version="11.3.8" />
+    <PackageReference Include="ReactiveUI.Fody" Version="11.3.8" />
     <PackageReference Include="ReactiveUI.Validation" Version="1.4.13" />
     <PackageReference Include="Splat" Version="9.4.5" />
     <PackageReference Include="System.Interactive" Version="4.1.1" />

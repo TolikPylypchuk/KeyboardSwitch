@@ -20,12 +20,16 @@
   </ItemGroup>
   <ItemGroup>
     <AvaloniaResource Remove="Views\MainContentView.xaml" />
+    <AvaloniaResource Remove="Views\OtherSettingsView.xaml" />
     <AvaloniaResource Remove="Views\ServiceView.xaml" />
+    <AvaloniaResource Remove="Views\SwitchSettingsView.xaml" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="appsettings.json" />
     <None Remove="Views\MainContentView.xaml" />
+    <None Remove="Views\OtherSettingsView.xaml" />
     <None Remove="Views\ServiceView.xaml" />
+    <None Remove="Views\SwitchSettingsView.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="appsettings.json">
@@ -36,6 +40,7 @@
     <PackageReference Include="Avalonia" Version="0.9.9" />
     <PackageReference Include="Avalonia.Desktop" Version="0.9.9" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.9" />
+    <PackageReference Include="DynamicData" Version="6.14.14" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.1.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.3" />
@@ -62,6 +67,16 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\MainContentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\SwitchSettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\OtherSettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>

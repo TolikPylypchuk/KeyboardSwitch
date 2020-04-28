@@ -16,6 +16,7 @@ using KeyboardSwitch.Common.Services;
 using KeyboardSwitch.Common.Services.Infrastructure;
 using KeyboardSwitch.Common.Settings;
 using KeyboardSwitch.Common.Windows;
+using KeyboardSwitch.Settings.Properties;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
@@ -46,6 +47,39 @@ namespace KeyboardSwitch.Settings
                 .StartWithClassicDesktopLifetime(args);
         }
 
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            var provider = new JsonConfigurationProvider(new JsonConfigurationSource
+            {
+                Path = "appsettings.json",
+                FileProvider = new PhysicalFileProvider(Environment.CurrentDirectory)
+            });
+
+            var config = new ConfigurationRoot(new List<IConfigurationProvider> { provider });
+
+            services
+                .AddLogging(logging => logging
+                    .AddConfiguration(config.GetSection("Logging"))
+                    .AddDebug()
+                    .AddSplat())
+                .Configure<GlobalSettings>(config.GetSection("Settings"))
+                .AddSingleton(Messages.ResourceManager)
+                .AddKeyboardSwitchServices();
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                services.AddKeyboardSwitchWindowsServices();
+            }
+
+            services.UseMicrosoftDependencyResolver();
+
+            Locator.CurrentMutable.InitializeSplat();
+            Locator.CurrentMutable.InitializeReactiveUI();
+            Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
+
+            BlobCache.ApplicationName = nameof(KeyboardSwitch);
+        }
+
         private static AppBuilder Configure(this AppBuilder builder, IServiceCollection services)
             => builder.AfterSetup(newBuilder =>
             {
@@ -64,41 +98,6 @@ namespace KeyboardSwitch.Settings
                     });
                 }
             });
-
-        private static void ConfigureServices(IServiceCollection services)
-        {
-            var provider = new JsonConfigurationProvider(new JsonConfigurationSource
-            {
-                Path = "appsettings.json",
-                FileProvider = new PhysicalFileProvider(Environment.CurrentDirectory)
-            });
-
-            var config = new ConfigurationRoot(new List<IConfigurationProvider> { provider });
-
-            services
-                .AddLogging(logging => ConfigureLogging(config, logging))
-                .Configure<GlobalSettings>(config.GetSection("Settings"))
-                .AddKeyboardSwitchServices();
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                services.AddKeyboardSwitchWindowsServices();
-            }
-
-            services.UseMicrosoftDependencyResolver();
-
-            Locator.CurrentMutable.InitializeSplat();
-            Locator.CurrentMutable.InitializeReactiveUI();
-            Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
-
-            BlobCache.ApplicationName = nameof(KeyboardSwitch);
-        }
-
-        private static void ConfigureLogging(IConfiguration config, ILoggingBuilder logging)
-            => logging
-                .AddConfiguration(config.GetSection("Logging"))
-                .AddDebug()
-                .AddSplat();
 
         private static Mutex ConfigureSingleInstance(IServiceProvider services)
         {
