@@ -7,7 +7,7 @@
         x:Class="KeyboardSwitch.Settings.Views.MainWindow"
         Icon="/Assets/icon.ico" WindowStartupLocation="CenterScreen"
         Title="Keyboard Switch Settings" Width="800" Height="400"
-        MinWidth="400" MinHeight="200">
+        MinWidth="450" MinHeight="200">
     <DockPanel>
         <ContentControl x:Name="ServiceViewContent" Height="75" DockPanel.Dock="Bottom" />
         <ContentControl x:Name="MainContent" />
