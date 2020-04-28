@@ -7,6 +7,8 @@
     <Platforms>AnyCPU;x64</Platforms>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <OutputType>WinExe</OutputType>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <FileVersion>3.0.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
