@@ -1,16 +1,10 @@
-using System;
 using System.Runtime.Serialization;
 
-namespace KeyboardSwitch.Common.Settings
+namespace KeyboardSwitch.Settings.Core.State
 {
     [DataContract]
-    public class UISettings
+    public class AppState
     {
-        public static readonly string CacheKey = "UISettings";
-
-        [DataMember]
-        public string ServicePath { get; set; } = String.Empty;
-
         [DataMember]
         public double WindowWidth { get; set; }
 
@@ -22,5 +16,11 @@ namespace KeyboardSwitch.Common.Settings
 
         [DataMember]
         public int WindowY { get; set; }
+
+        [DataMember]
+        public bool IsWindowMaximized { get; set; }
+
+        [DataMember]
+        public bool IsInitialized { get; set; }
     }
 }

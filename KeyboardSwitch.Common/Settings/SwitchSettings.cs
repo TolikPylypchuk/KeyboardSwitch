@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -25,5 +26,8 @@ namespace KeyboardSwitch.Common.Settings
 
         [DataMember]
         public bool SwitchLayout { get; set; }
+
+        [DataMember]
+        public string ServicePath { get; set; } = String.Empty;
     }
 }

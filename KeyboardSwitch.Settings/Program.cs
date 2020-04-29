@@ -16,6 +16,7 @@ using KeyboardSwitch.Common.Services;
 using KeyboardSwitch.Common.Services.Infrastructure;
 using KeyboardSwitch.Common.Settings;
 using KeyboardSwitch.Common.Windows;
+using KeyboardSwitch.Settings.Core;
 using KeyboardSwitch.Settings.Properties;
 
 using Microsoft.Extensions.Configuration;
@@ -29,6 +30,8 @@ using ReactiveUI;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
 using Splat.Microsoft.Extensions.Logging;
+
+using static KeyboardSwitch.Settings.Core.Constants;
 
 namespace KeyboardSwitch.Settings
 {
@@ -64,6 +67,7 @@ namespace KeyboardSwitch.Settings
                     .AddSplat())
                 .Configure<GlobalSettings>(config.GetSection("Settings"))
                 .AddSingleton(Messages.ResourceManager)
+                .AddSuspensionDriver()
                 .AddKeyboardSwitchServices();
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -73,11 +77,13 @@ namespace KeyboardSwitch.Settings
 
             services.UseMicrosoftDependencyResolver();
 
+            BlobCache.ApplicationName = nameof(KeyboardSwitch);
+
             Locator.CurrentMutable.InitializeSplat();
             Locator.CurrentMutable.InitializeReactiveUI();
             Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
 
-            BlobCache.ApplicationName = nameof(KeyboardSwitch);
+            Locator.CurrentMutable.RegisterConstant(RxApp.TaskpoolScheduler, TaskPoolKey);
         }
 
         private static AppBuilder Configure(this AppBuilder builder, IServiceCollection services)

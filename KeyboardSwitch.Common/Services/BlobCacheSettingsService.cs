@@ -19,7 +19,6 @@ namespace KeyboardSwitch.Common.Services
         private readonly ILogger<BlobCacheSettingsService> logger;
 
         private SwitchSettings? switchSettings;
-        private UISettings? uiSettings;
 
         public BlobCacheSettingsService(
             IBlobCache cache,
@@ -64,42 +63,6 @@ namespace KeyboardSwitch.Common.Services
             this.switchSettings = switchSettings;
         }
 
-        public async ValueTask<UISettings> GetUISettingsAsync()
-        {
-            this.ThrowIfDisposed();
-
-            if (this.uiSettings == null)
-            {
-                this.logger.LogDebug("Getting the UI settings");
-
-                await Task.Run(async () =>
-                {
-                    if (await this.cache.ContainsKey(UISettings.CacheKey))
-                    {
-                        this.uiSettings = await this.cache.GetObject<UISettings>(UISettings.CacheKey);
-                    } else
-                    {
-                        this.logger.LogInformation("UI settings not found - creating default settings");
-
-                        this.uiSettings = this.CreateDefaultUISettings();
-                        await this.cache.InsertObject(UISettings.CacheKey, this.uiSettings);
-                    }
-                });
-            }
-
-            return this.uiSettings!;
-        }
-
-        public async Task SaveUISettingsAsync(UISettings uiSettings)
-        {
-            this.ThrowIfDisposed();
-
-            this.logger.LogDebug("Saving the UI settings");
-            await this.cache.InsertObject(UISettings.CacheKey, uiSettings);
-
-            this.uiSettings = uiSettings;
-        }
-
         public void InvalidateSwitchSettings()
         {
             this.ThrowIfDisposed();
@@ -124,21 +87,12 @@ namespace KeyboardSwitch.Common.Services
                 CharsByKeyboardLayoutId = this.layoutService.GetKeyboardLayouts()
                     .ToDictionary(layout => layout.Id, this.GetCharsForLayout),
                 InstantSwitching = true,
-                SwitchLayout = true
-            };
-
-        private UISettings CreateDefaultUISettings()
-            => new UISettings
-            {
+                SwitchLayout = true,
 #if DEBUG
                 ServicePath = @"..\..\..\..\..\KeyboardSwitch\bin\x64\Debug\netcoreapp3.1\KeyboardSwitch",
 #else
                 ServicePath = nameof(KeyboardSwitch),
 #endif
-                WindowWidth = 800,
-                WindowHeight = 400,
-                WindowX = -1,
-                WindowY = -1
             };
 
         private string GetCharsForLayout(KeyboardLayout layout)
