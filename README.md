@@ -4,85 +4,50 @@ Version 3.0 (Work in progress)
 
 Created by Tolik Pylypchuk
 
-This application switches typed text
-as if it were typed with another keyboard layout.
+This application switches typed text as if it were typed with another keyboard layout.
 
-## Default Switching
+## Switching
 
-To switch text, all you have to do is select the mistyped text,
-cut (or copy) it to the clipboard, press the key combination
-of your choice (the defaults are Ctrl+Alt+X to switch forward
-and Ctrl+Alt+Z to switch backward) and then just paste
-the switched text.
-
-## Instant Switching
-
-In addition to the default switching mode this app also
-offers the instant mode.
-
-**Warning!**
-Instant switching mode is less stable than the default mode.
-Sometimes it doesn't switch properly. Use it with caution.
-
-Instead of copying and pasting the text manually, you can
-use the instant switching mode. It will copy the text, switch it
-and paste it in one go. You just have to select the text and
-press the key combination (the defaults are Ctrl+Shift+X
-to switch forward and Ctrl+Shift+Z to switch backward).
+Instead of manually retyping all that text that you have mistyped, you can switch it using this app.
+It will copy the text, switch it and paste it instantly. You just have to select the text and
+press the key combination (the defaults are Ctrl+Shift+X to switch forward and Ctrl+Shift+Z to switch backward).
 
 **Note:** A few things to consider:
 
-- The app simulates pressing Ctrl+C to copy
-and Ctrl+V to paste text. This is the default
-behaviour for most (if not all) applications.
-But if you are working in an app which behaves
-differently on those key presses, this app will
-not be able to switch text.
+ - The app simulates pressing Ctrl+C to copy and Ctrl+V to paste text. This is the default behaviour for most
+(if not all) applications. But if you are working in an app which behaves differently on those key presses, this app
+will not be able to instantly switch text. You can disable this behaviour, and copy/paste the text manually.
 
-- Ctrl+Shift work best as the modifier keys for instant
-switching because pressing Alt will change the focus
+ - Ctrl+Shift work best as the modifier keys for instant switching because pressing Alt will change the focus
 to some kind of a menu in most apps.
 
 ## Settings
 
-The app is completely customisable:
-you can set character mappings, add new ones, delete them,
-and even move them around.
+The app is completely customizable. Common layouts for a couple languages are built-in. Before using this app
+you should make sure the characters are mapped correctly according to the physical layout of keys on your keyboard.
 
-By default scrolling in the settings window is horizontal.
-If you want to scroll vertically, press Ctrl while you scroll.
-Touchpad horizontal scrolling is not supported.
-
-The app runs in the background, so if you close
-the settings window, it will not shut down.
-It uses a tray icon, so you can see that it's there.
+**Remember**: You can map every character only once per language. Otherwise, it would be impossible to map characters
+deterministically.
 
 ## Languages
 
-The app uses the list of your input languages in the same order
-as defined by the system. You can switch both forward
-and backward through this list. The app also automaticly
-changes your input language, so you don't have to do it yourself.
-You cannot add a language that's not present as one of
-the system's input languages.
-If you add/remove an input language while the app is running,
-you'll have to restart it.
+The app uses the list of your input languages in the same order as defined by the system. You can switch both forward
+and backward through this list. The app also automaticly changes your input language, so you don't have to do it
+yourself. You can disable this as well if you so wish. You cannot add a language that's not present as one of
+the system's input languages. If you add/remove an input language while the app is running, you'll have to restart it.
 
-**Note:** The app uses a single layout for a language.
-e.g. if you are using both English QWERTY and English DVORAK,
-you can only set one of them for the app to switch.
-
-## Configuration
-
-The mappings that this app creates are stored in the
-file called mappings.dat. The file itself is stored in the
-local app data folder.
-
-There is another mappings.dat file - the one stored with the
-app. This file contains the default mappings. They are used
-when the app is started for the first time for a user.
+I hope this app will make your life at least 1% easier :)
 
 ## Changes
+
+## What's new in version 3.0 (Work in progress)
+
+  - A completely rewritten app based on .NET Core and working as a truly UI-less app
+instead of an app with a hidden window
+  - The settings are now a separate app written in Avalonia instead of WPF
+  - Tray icon was removed
+  - Added the ability to switch between multiple layouts of the same language (e.g. QWERTY and Dvorak for English)
+  - Instant switching mode is not extermental anymore and enabled by default
 
 ### What's new in version 2.1:
 
@@ -101,9 +66,7 @@ when the app is started for the first time for a user.
 
 - Minor bug fixes.
 
-I hope this app will make your life at least 1% easier :)
-
-# Icon
+## Icon
 
 Icon made by [ultimatearm](https://www.flaticon.com/authors/ultimatearm)
 from [www.flaticon.com](https://www.flaticon.com/).
