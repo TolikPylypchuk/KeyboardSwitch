@@ -23,13 +23,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Logging;
 
 using ReactiveUI;
+
+using Serilog;
 
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
 using Splat.Microsoft.Extensions.Logging;
+using Splat.Serilog;
 
 using static KeyboardSwitch.Settings.Core.Constants;
 
@@ -61,10 +63,7 @@ namespace KeyboardSwitch.Settings
             var config = new ConfigurationRoot(new List<IConfigurationProvider> { provider });
 
             services
-                .AddLogging(logging => logging
-                    .AddConfiguration(config.GetSection("Logging"))
-                    .AddDebug()
-                    .AddSplat())
+                .AddLogging(logging => logging.AddSplat())
                 .Configure<GlobalSettings>(config.GetSection("Settings"))
                 .AddSingleton(Messages.ResourceManager)
                 .AddSuspensionDriver()
@@ -80,6 +79,12 @@ namespace KeyboardSwitch.Settings
             BlobCache.ApplicationName = nameof(KeyboardSwitch);
 
             Locator.CurrentMutable.InitializeSplat();
+            Locator.CurrentMutable.UseSerilogFullLogger(
+                new LoggerConfiguration()
+                    .ReadFrom.Configuration(config)
+                    .Enrich.FromLogContext()
+                    .CreateLogger());
+
             Locator.CurrentMutable.InitializeReactiveUI();
             Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
 
