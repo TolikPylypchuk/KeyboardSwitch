@@ -2,6 +2,7 @@
   "profiles": {
     "KeyboardSwitch": {
       "commandName": "Project",
+      "workingDirectory": "$(TargetDir)",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
       }

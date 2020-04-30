@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "KeyboardSwitch.Settings": {
+      "commandName": "Project",
+      "workingDirectory": "$(TargetDir)"
+    }
+  }
+}

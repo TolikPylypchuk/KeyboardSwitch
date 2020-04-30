@@ -15,6 +15,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+using Serilog;
+
+using ILogger = Microsoft.Extensions.Logging.ILogger;
+
 namespace KeyboardSwitch
 {
     public static class Program
@@ -69,9 +73,12 @@ namespace KeyboardSwitch
         private static void ConfigureLogging(HostBuilderContext hostingContext, ILoggingBuilder logging)
             => logging
                 .ClearProviders()
-                .AddConfiguration(hostingContext.Configuration.GetSection("Logging"))
-                .AddConsole()
-                .AddDebug();
+                .AddSerilog(
+                    new LoggerConfiguration()
+                        .Enrich.FromLogContext()
+                        .ReadFrom.Configuration(hostingContext.Configuration)
+                        .CreateLogger(),
+                    dispose: true);
 
         private static Mutex ConfigureSingleInstance(IHost host, ILogger logger)
         {
