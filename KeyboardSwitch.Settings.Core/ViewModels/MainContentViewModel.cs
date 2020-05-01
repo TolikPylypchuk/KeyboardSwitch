@@ -5,14 +5,14 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
     public sealed class MainContentViewModel : ReactiveObject
     {
         public MainContentViewModel(
-            SwitchSettingsViewModel? switchSettings = null,
-            OtherSettingsViewModel? otherSettings = null)
+            CharMappingViewModel? switchSettings = null,
+            PreferencesViewModel? otherSettings = null)
         {
-            this.SwitchSettings = switchSettings ?? new SwitchSettingsViewModel();
-            this.OtherSettings = otherSettings ?? new OtherSettingsViewModel();
+            this.SwitchSettings = switchSettings ?? new CharMappingViewModel();
+            this.OtherSettings = otherSettings ?? new PreferencesViewModel();
         }
 
-        public SwitchSettingsViewModel SwitchSettings { get; }
-        public OtherSettingsViewModel OtherSettings { get; }
+        public CharMappingViewModel SwitchSettings { get; }
+        public PreferencesViewModel OtherSettings { get; }
     }
 }

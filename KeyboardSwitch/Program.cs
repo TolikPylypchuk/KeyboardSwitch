@@ -82,13 +82,13 @@ namespace KeyboardSwitch
 
         private static Mutex ConfigureSingleInstance(IHost host, ILogger logger)
         {
-            var singleInstanceResolver = host.Services.GetRequiredService<ServiceResolver<ISingleInstanceService>>();
-            var singleInstanceService = singleInstanceResolver(nameof(KeyboardSwitch));
+            var singleInstanceProvider = host.Services.GetRequiredService<ServiceProvider<ISingleInstanceService>>();
+            var singleInstanceService = singleInstanceProvider(nameof(KeyboardSwitch));
 
             var mutex = singleInstanceService.TryAcquireMutex();
 
-            var namedPipeResolver = host.Services.GetRequiredService<ServiceResolver<INamedPipeService>>();
-            var namedPipeService = namedPipeResolver(nameof(KeyboardSwitch));
+            var namedPipeProvider = host.Services.GetRequiredService<ServiceProvider<INamedPipeService>>();
+            var namedPipeService = namedPipeProvider(nameof(KeyboardSwitch));
 
             namedPipeService.StartServer();
 

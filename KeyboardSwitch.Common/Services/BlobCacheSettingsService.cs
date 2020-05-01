@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -83,7 +82,7 @@ namespace KeyboardSwitch.Common.Services
             {
                 Forward = 'X',
                 Backward = 'Z',
-                ModifierKeys = new List<ModifierKeys> { ModifierKeys.Alt, ModifierKeys.Ctrl },
+                ModifierKeys = ModifierKeys.Ctrl | ModifierKeys.Shift,
                 CharsByKeyboardLayoutId = this.layoutService.GetKeyboardLayouts()
                     .ToDictionary(layout => layout.Id, this.GetCharsForLayout),
                 InstantSwitching = true,

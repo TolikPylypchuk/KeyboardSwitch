@@ -11,11 +11,11 @@ namespace KeyboardSwitch.Common
         public static IServiceCollection AddKeyboardSwitchServices(this IServiceCollection services)
             => services.AddSingleton<ISettingsService, BlobCacheSettingsService>()
                 .AddSingleton<ISwitchService, SwitchService>()
-                .AddSingleton<ServiceResolver<INamedPipeService>>(s => name =>
+                .AddSingleton<ServiceProvider<INamedPipeService>>(s => name =>
                     new NamedPipeService(s.GetRequiredService<ILogger<NamedPipeService>>(), name))
-                .AddSingleton<ServiceResolver<ISingleInstanceService>>(s => name =>
+                .AddSingleton<ServiceProvider<ISingleInstanceService>>(s => name =>
                     new SingleInstanceService(
-                        s.GetRequiredService<ServiceResolver<INamedPipeService>>(),
+                        s.GetRequiredService<ServiceProvider<INamedPipeService>>(),
                         s.GetRequiredService<ILogger<SingleInstanceService>>(),
                         name));
     }

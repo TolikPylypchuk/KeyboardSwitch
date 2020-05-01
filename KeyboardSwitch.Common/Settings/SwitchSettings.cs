@@ -10,7 +10,7 @@ namespace KeyboardSwitch.Common.Settings
         public static readonly string CacheKey = "SwitchSettings";
 
         [DataMember]
-        public List<ModifierKeys> ModifierKeys { get; set; } = new List<ModifierKeys>();
+        public ModifierKeys ModifierKeys { get; set; }
 
         [DataMember]
         public char Forward { get; set; }

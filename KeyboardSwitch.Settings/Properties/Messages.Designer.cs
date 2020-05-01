@@ -61,6 +61,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Character Mappings.
+        /// </summary>
+        internal static string CharMapping {
+            get {
+                return ResourceManager.GetString("CharMapping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Keyboard Switch service is not running.
         /// </summary>
         internal static string KeyboardSwitchServiceNotRunning {
@@ -97,11 +106,11 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Other Settings.
+        ///   Looks up a localized string similar to Preferences.
         /// </summary>
-        internal static string OtherSettings {
+        internal static string Preferences {
             get {
-                return ResourceManager.GetString("OtherSettings", resourceCulture);
+                return ResourceManager.GetString("Preferences", resourceCulture);
             }
         }
         
@@ -120,15 +129,6 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string Stop {
             get {
                 return ResourceManager.GetString("Stop", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Switch Settings.
-        /// </summary>
-        internal static string SwitchSettings {
-            get {
-                return ResourceManager.GetString("SwitchSettings", resourceCulture);
             }
         }
     }

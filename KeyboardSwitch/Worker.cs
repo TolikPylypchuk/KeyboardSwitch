@@ -26,14 +26,14 @@ namespace KeyboardSwitch
             ISwitchService switchService,
             ISettingsService settingsService,
             IKeysService keysService,
-            ServiceResolver<INamedPipeService> namedPipeResolver,
+            ServiceProvider<INamedPipeService> namedPipeProvider,
             ILogger<Worker> logger)
         {
             this.keyboardHookService = keyboardHookService;
             this.switchService = switchService;
             this.settingsService = settingsService;
             this.keysService = keysService;
-            this.namedPipeService = namedPipeResolver(nameof(KeyboardSwitch));
+            this.namedPipeService = namedPipeProvider(nameof(KeyboardSwitch));
             this.logger = logger;
         }
 
@@ -55,12 +55,11 @@ namespace KeyboardSwitch
 
             var settings = await this.settingsService.GetSwitchSettingsAsync();
 
-            var modifiers = settings.ModifierKeys.Flatten();
             int forwardKeyCode = this.keysService.GetVirtualKeyCode(settings.Forward);
             int backwardKeyCode = this.keysService.GetVirtualKeyCode(settings.Backward);
 
-            this.keyboardHookService.RegisterHotKey(modifiers, forwardKeyCode);
-            this.keyboardHookService.RegisterHotKey(modifiers, backwardKeyCode);
+            this.keyboardHookService.RegisterHotKey(settings.ModifierKeys, forwardKeyCode);
+            this.keyboardHookService.RegisterHotKey(settings.ModifierKeys, backwardKeyCode);
 
             this.keyboardHookService.HotKeyPressed
                 .Select(hotKey => hotKey.VirtualKeyCode == forwardKeyCode

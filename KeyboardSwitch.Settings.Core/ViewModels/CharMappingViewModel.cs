@@ -4,12 +4,12 @@ using KeyboardSwitch.Settings.Core.Models;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
-    public sealed class SwitchSettingsViewModel : FormBase<SwitchSettingsModel, SwitchSettingsViewModel>
+    public sealed class CharMappingViewModel : FormBase<CharMappingModel, CharMappingViewModel>
     {
-        protected override SwitchSettingsViewModel Self
+        protected override CharMappingViewModel Self
             => this;
 
-        protected override Task<SwitchSettingsModel> OnSaveAsync()
+        protected override Task<CharMappingModel> OnSaveAsync()
         {
             throw new System.NotImplementedException();
         }

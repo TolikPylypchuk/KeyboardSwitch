@@ -34,7 +34,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         {
             this.settingsService = settingsService ?? Locator.Current.GetService<ISettingsService>();
             this.namedPipeService = namedPipeService ??
-                Locator.Current.GetService<ServiceResolver<INamedPipeService>>()(nameof(KeyboardSwitch));
+                Locator.Current.GetService<ServiceProvider<INamedPipeService>>()(nameof(KeyboardSwitch));
 
             scheduler ??= RxApp.MainThreadScheduler;
 

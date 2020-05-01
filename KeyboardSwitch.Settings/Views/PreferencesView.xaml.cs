@@ -9,9 +9,9 @@ using ReactiveUI;
 
 namespace KeyboardSwitch.Settings.Views
 {
-    public class OtherSettingsView : ReactiveUserControl<OtherSettingsViewModel>
+    public class PreferencesView : ReactiveUserControl<PreferencesViewModel>
     {
-        public OtherSettingsView()
+        public PreferencesView()
         {
             this.WhenActivated(disposables =>
             {

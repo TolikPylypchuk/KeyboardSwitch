@@ -114,12 +114,12 @@ namespace KeyboardSwitch.Settings
         {
             string assemblyName = Assembly.GetExecutingAssembly().FullName ?? String.Empty;
 
-            var singleInstanceResolver = services.GetRequiredService<ServiceResolver<ISingleInstanceService>>();
+            var singleInstanceResolver = services.GetRequiredService<ServiceProvider<ISingleInstanceService>>();
             var singleInstanceService = singleInstanceResolver(assemblyName);
 
             var mutex = singleInstanceService.TryAcquireMutex();
 
-            var namedPipeResolver = services.GetRequiredService<ServiceResolver<INamedPipeService>>();
+            var namedPipeResolver = services.GetRequiredService<ServiceProvider<INamedPipeService>>();
             var namedPipeService = namedPipeResolver(assemblyName);
 
             namedPipeService.StartServer();

@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CharMapping" xml:space="preserve">
+    <value>Character Mappings</value>
+  </data>
   <data name="KeyboardSwitchServiceNotRunning" xml:space="preserve">
     <value>The Keyboard Switch service is not running</value>
   </data>
@@ -129,16 +132,13 @@
   <data name="Kill" xml:space="preserve">
     <value>Kill</value>
   </data>
-  <data name="OtherSettings" xml:space="preserve">
-    <value>Other Settings</value>
+  <data name="Preferences" xml:space="preserve">
+    <value>Preferences</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>Start</value>
   </data>
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
-  </data>
-  <data name="SwitchSettings" xml:space="preserve">
-    <value>Switch Settings</value>
   </data>
 </root>

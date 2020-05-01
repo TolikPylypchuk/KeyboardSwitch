@@ -19,25 +19,25 @@ namespace KeyboardSwitch.Settings.Views
                 this.OneWayBind(this, v => v.ViewModel, v => v.DataContext)
                     .DisposeWith(disposables);
 
-                this.OneWayBind(this.ViewModel, vm => vm.SwitchSettings, v => v.SwitchSettingsTabItem.Content)
+                this.OneWayBind(this.ViewModel, vm => vm.SwitchSettings, v => v.CharMappingTabItem.Content)
                     .DisposeWith(disposables);
 
-                this.OneWayBind(this.ViewModel, vm => vm.OtherSettings, v => v.OtherSettingsTabItem.Content)
+                this.OneWayBind(this.ViewModel, vm => vm.OtherSettings, v => v.PreferencesTabItem.Content)
                     .DisposeWith(disposables);
             });
 
             this.InitializeComponent();
         }
 
-        private TabItem SwitchSettingsTabItem { get; set; } = null!;
-        private TabItem OtherSettingsTabItem { get; set; } = null!;
+        private TabItem CharMappingTabItem { get; set; } = null!;
+        private TabItem PreferencesTabItem { get; set; } = null!;
 
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
 
-            this.SwitchSettingsTabItem = this.FindControl<TabItem>(nameof(this.SwitchSettingsTabItem));
-            this.OtherSettingsTabItem = this.FindControl<TabItem>(nameof(this.OtherSettingsTabItem));
+            this.CharMappingTabItem = this.FindControl<TabItem>(nameof(this.CharMappingTabItem));
+            this.PreferencesTabItem = this.FindControl<TabItem>(nameof(this.PreferencesTabItem));
         }
     }
 }

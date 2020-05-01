@@ -19,17 +19,17 @@
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
   <ItemGroup>
+    <AvaloniaResource Remove="Views\CharMappingView.xaml" />
     <AvaloniaResource Remove="Views\MainContentView.xaml" />
-    <AvaloniaResource Remove="Views\OtherSettingsView.xaml" />
+    <AvaloniaResource Remove="Views\PreferencesView.xaml" />
     <AvaloniaResource Remove="Views\ServiceView.xaml" />
-    <AvaloniaResource Remove="Views\SwitchSettingsView.xaml" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="appsettings.json" />
+    <None Remove="Views\CharMappingView.xaml" />
     <None Remove="Views\MainContentView.xaml" />
-    <None Remove="Views\OtherSettingsView.xaml" />
+    <None Remove="Views\PreferencesView.xaml" />
     <None Remove="Views\ServiceView.xaml" />
-    <None Remove="Views\SwitchSettingsView.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="appsettings.json">
@@ -79,12 +79,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\SwitchSettingsView.xaml">
+    <EmbeddedResource Include="Views\CharMappingView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\OtherSettingsView.xaml">
+    <EmbeddedResource Include="Views\PreferencesView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>
@@ -98,6 +98,12 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Views\PreferencesView.xaml.cs">
+      <DependentUpon>PreferencesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\CharMappingView.xaml.cs">
+      <DependentUpon>CharMappingView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

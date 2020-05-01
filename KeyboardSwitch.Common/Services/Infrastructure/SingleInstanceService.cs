@@ -12,7 +12,7 @@ namespace KeyboardSwitch.Common.Services.Infrastructure
         private readonly string name;
 
         public SingleInstanceService(
-            ServiceResolver<INamedPipeService> namedPipeResolver,
+            ServiceProvider<INamedPipeService> namedPipeResolver,
             ILogger<SingleInstanceService> logger,
             string name)
         {
