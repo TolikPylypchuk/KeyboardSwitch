@@ -2,6 +2,8 @@ using System;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Threading.Tasks;
+
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -32,7 +34,7 @@ namespace KeyboardSwitch.Settings
         public override void Initialize()
             => AvaloniaXamlLoader.Load(this);
 
-        public override void OnFrameworkInitializationCompleted()
+        public override async void OnFrameworkInitializationCompleted()
         {
             this.Log().Info("Starting the settings app");
 
@@ -48,24 +50,29 @@ namespace KeyboardSwitch.Settings
 
                 autoSuspendHelper.OnFrameworkInitializationCompleted();
 
-                desktop.MainWindow = this.CreateMainWindow(new MainViewModel());
+                var mainViewModel = new MainViewModel();
+
+                this.openExternally.InvokeCommand(mainViewModel.OpenExternally);
+
+                desktop.MainWindow = await this.CreateMainWindow(mainViewModel);
+                desktop.MainWindow.Show();
 
                 desktop.Exit += this.OnExit;
+
+                await mainViewModel.LoadAsync();
             }
 
             base.OnFrameworkInitializationCompleted();
         }
 
-        private MainWindow CreateMainWindow(MainViewModel viewModel)
+        private async Task<MainWindow> CreateMainWindow(MainViewModel viewModel)
         {
-            var state = RxApp.SuspensionHost.GetAppState<AppState>();
+            var state = await RxApp.SuspensionHost.ObserveAppState<AppState>().Take(1);
 
             var window = new MainWindow
             {
                 ViewModel = viewModel
             };
-
-            this.openExternally.InvokeCommand(viewModel.OpenExternally);
 
             if (state.IsInitialized)
             {

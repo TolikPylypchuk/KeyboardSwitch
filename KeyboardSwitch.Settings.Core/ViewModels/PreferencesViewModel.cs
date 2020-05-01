@@ -6,17 +6,26 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 {
     public sealed class PreferencesViewModel : FormBase<PreferencesModel, PreferencesViewModel>
     {
+        public PreferencesViewModel(PreferencesModel preferencesModel)
+        {
+            this.PreferencesModel = preferencesModel;
+
+            this.CopyProperties();
+            this.EnableChangeTracking();
+        }
+
+        public PreferencesModel PreferencesModel { get; }
+
         protected override PreferencesViewModel Self
             => this;
 
         protected override Task<PreferencesModel> OnSaveAsync()
         {
-            throw new System.NotImplementedException();
+            return Task.FromResult(this.PreferencesModel);
         }
 
         protected override void CopyProperties()
         {
-            throw new System.NotImplementedException();
         }
     }
 }

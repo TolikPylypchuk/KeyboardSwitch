@@ -19,10 +19,10 @@ namespace KeyboardSwitch.Settings.Views
                 this.OneWayBind(this, v => v.ViewModel, v => v.DataContext)
                     .DisposeWith(disposables);
 
-                this.OneWayBind(this.ViewModel, vm => vm.SwitchSettings, v => v.CharMappingTabItem.Content)
+                this.OneWayBind(this.ViewModel, vm => vm.CharMappingViewModel, v => v.CharMappingTabItem.Content)
                     .DisposeWith(disposables);
 
-                this.OneWayBind(this.ViewModel, vm => vm.OtherSettings, v => v.PreferencesTabItem.Content)
+                this.OneWayBind(this.ViewModel, vm => vm.PreferencesViewModel, v => v.PreferencesTabItem.Content)
                     .DisposeWith(disposables);
             });
 
