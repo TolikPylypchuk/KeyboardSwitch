@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 
+using KeyboardSwitch.Common;
 using KeyboardSwitch.Settings.Core.ViewModels;
 
 using ReactiveUI;
@@ -25,6 +26,10 @@ namespace KeyboardSwitch.Settings.Views
 
                 this.OneWayBind(this.ViewModel, vm => vm.ServiceViewModel, v => v.ServiceViewContent.Content)
                     .DisposeWith(disposables);
+
+                this.ViewModel.OpenExternally
+                    .Subscribe(this.BringToForeground)
+                    .DisposeWith(disposables);
             });
 
             this.InitializeComponent();
@@ -42,6 +47,24 @@ namespace KeyboardSwitch.Settings.Views
 
             this.MainContent = this.FindControl<ContentControl>(nameof(this.MainContent));
             this.ServiceViewContent = this.FindControl<ContentControl>(nameof(this.ServiceViewContent));
+        }
+
+        private void BringToForeground()
+        {
+            if (!this.IsVisible)
+            {
+                this.Show();
+            }
+
+            if (this.WindowState == WindowState.Minimized)
+            {
+                this.WindowState = WindowState.Normal;
+            }
+
+            this.Activate();
+            this.Topmost = true;
+            this.Topmost = false;
+            this.Focus();
         }
     }
 }

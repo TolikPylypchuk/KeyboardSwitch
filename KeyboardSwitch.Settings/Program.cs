@@ -99,7 +99,7 @@ namespace KeyboardSwitch.Settings
                     var serviceProvider = services.BuildServiceProvider();
                     serviceProvider.UseMicrosoftDependencyResolver();
 
-                    var mutex = ConfigureSingleInstance(serviceProvider);
+                    var mutex = ConfigureSingleInstance(serviceProvider, app);
 
                     app.OnAppExitDisposable = Disposable.Create(() =>
                     {
@@ -110,19 +110,23 @@ namespace KeyboardSwitch.Settings
                 }
             });
 
-        private static Mutex ConfigureSingleInstance(IServiceProvider services)
+        private static Mutex ConfigureSingleInstance(IServiceProvider services, App app)
         {
             string assemblyName = Assembly.GetExecutingAssembly().FullName ?? String.Empty;
 
-            var singleInstanceResolver = services.GetRequiredService<ServiceProvider<ISingleInstanceService>>();
-            var singleInstanceService = singleInstanceResolver(assemblyName);
+            var singleInstanceProvider = services.GetRequiredService<ServiceProvider<ISingleInstanceService>>();
+            var singleInstanceService = singleInstanceProvider(assemblyName);
 
             var mutex = singleInstanceService.TryAcquireMutex();
 
-            var namedPipeResolver = services.GetRequiredService<ServiceProvider<INamedPipeService>>();
-            var namedPipeService = namedPipeResolver(assemblyName);
+            var namedPipeProvider = services.GetRequiredService<ServiceProvider<INamedPipeService>>();
+            var namedPipeService = namedPipeProvider(assemblyName);
 
             namedPipeService.StartServer();
+
+            namedPipeService.ReceivedString
+                .Discard()
+                .Subscribe(app.OpenExternally);
 
             return mutex;
         }

@@ -1,6 +1,7 @@
 using System;
+using System.Reactive;
 using System.Reactive.Linq;
-
+using System.Reactive.Subjects;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -21,8 +22,12 @@ namespace KeyboardSwitch.Settings
     public class App : Application, IEnableLogger
     {
         private IClassicDesktopStyleApplicationLifetime desktop = null!;
+        private readonly Subject<Unit> openExternally = new Subject<Unit>();
 
         public IDisposable OnAppExitDisposable { get; set; } = null!;
+
+        public IObserver<Unit> OpenExternally
+            => this.openExternally.AsObserver();
 
         public override void Initialize()
             => AvaloniaXamlLoader.Load(this);
@@ -59,6 +64,8 @@ namespace KeyboardSwitch.Settings
             {
                 ViewModel = viewModel
             };
+
+            this.openExternally.InvokeCommand(viewModel.OpenExternally);
 
             if (state.IsInitialized)
             {
