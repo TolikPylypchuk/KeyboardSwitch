@@ -11,6 +11,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 
 using KeyboardSwitch.Common;
+using KeyboardSwitch.Common.Services;
 using KeyboardSwitch.Settings.Core.State;
 using KeyboardSwitch.Settings.Core.ViewModels;
 using KeyboardSwitch.Settings.Views;
@@ -42,6 +43,8 @@ namespace KeyboardSwitch.Settings
             {
                 this.desktop = desktop;
 
+                desktop.Exit += this.OnExit;
+
                 var autoSuspendHelper = new AutoSuspendHelper(desktop);
                 GC.KeepAlive(autoSuspendHelper);
 
@@ -50,16 +53,14 @@ namespace KeyboardSwitch.Settings
 
                 autoSuspendHelper.OnFrameworkInitializationCompleted();
 
-                var mainViewModel = new MainViewModel();
+                var settings = await Locator.Current.GetService<ISettingsService>().GetSwitchSettingsAsync();
+
+                var mainViewModel = new MainViewModel(settings);
 
                 this.openExternally.InvokeCommand(mainViewModel.OpenExternally);
 
                 desktop.MainWindow = await this.CreateMainWindow(mainViewModel);
                 desktop.MainWindow.Show();
-
-                desktop.Exit += this.OnExit;
-
-                await mainViewModel.LoadAsync();
             }
 
             base.OnFrameworkInitializationCompleted();

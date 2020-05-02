@@ -1,12 +1,11 @@
 using System.Linq;
 using System.Reactive;
-using System.Threading.Tasks;
 
 using KeyboardSwitch.Common.Services;
+using KeyboardSwitch.Common.Settings;
 using KeyboardSwitch.Settings.Core.Models;
 
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 
 using Splat;
 
@@ -14,35 +13,29 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 {
     public class MainViewModel : ReactiveObject
     {
-        private readonly ISettingsService settingsService;
+        private readonly SwitchSettings switchSettings;
         private readonly ILayoutService layoutService;
 
         public MainViewModel(
-            MainContentViewModel? mainContentViewModel = null,
-            ServiceViewModel? serviceViewModel = null,
-            ISettingsService? settingsService = null,
+            SwitchSettings switchSettings,
             ILayoutService? layoutService = null)
         {
-            this.MainContentViewModel = mainContentViewModel ?? new MainContentViewModel();
-            this.ServiceViewModel = serviceViewModel ?? new ServiceViewModel();
-
-            this.settingsService = settingsService ?? Locator.Current.GetService<ISettingsService>();
+            this.switchSettings = switchSettings;
             this.layoutService = layoutService ?? Locator.Current.GetService<ILayoutService>();
+
+            this.MainContentViewModel = new MainContentViewModel(this.CreateCharMappingModel(), new PreferencesModel());
+            this.ServiceViewModel = new ServiceViewModel();
 
             this.OpenExternally = ReactiveCommand.Create(() => { });
         }
 
-        [Reactive]
-        public MainContentViewModel MainContentViewModel { get; set; }
+        public MainContentViewModel MainContentViewModel { get; }
+        public ServiceViewModel ServiceViewModel { get; }
 
-        [Reactive]
-        public ServiceViewModel ServiceViewModel { get; set; }
+        public ReactiveCommand<Unit, Unit> OpenExternally { get; }
 
-        public ReactiveCommand<Unit, Unit> OpenExternally { get; set; }
-
-        public async Task LoadAsync()
+        private CharMappingModel CreateCharMappingModel()
         {
-            var settings = await this.settingsService.GetSwitchSettingsAsync();
             var layouts = this.layoutService.GetKeyboardLayouts();
 
             var layoutsById = layouts.ToDictionary(layout => layout.Id, layout => layout);
@@ -50,8 +43,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             var layoutIndices = layouts.Select((layout, index) => (layout.Id, Index: index))
                 .ToDictionary(item => item.Id, item => item.Index);
 
-            var layoutModels =
-                settings.CharsByKeyboardLayoutId
+            var layoutModels = this.switchSettings.CharsByKeyboardLayoutId
                     .Select(chars => new LayoutModel
                     {
                         Id = chars.Key,
@@ -64,9 +56,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                     })
                     .ToList();
 
-            this.MainContentViewModel.CharMappingViewModel = new CharMappingViewModel(
-                new CharMappingModel { Layouts = layoutModels });
-            this.MainContentViewModel.PreferencesViewModel = new PreferencesViewModel(new PreferencesModel());
+            return new CharMappingModel { Layouts = layoutModels };
         }
     }
 }

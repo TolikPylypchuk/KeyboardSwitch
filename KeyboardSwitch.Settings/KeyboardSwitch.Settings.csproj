@@ -8,6 +8,7 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <AssemblyVersion>3.0.0.0</AssemblyVersion>
     <FileVersion>3.0.0.0</FileVersion>
+    <AssemblyName>KeyboardSwitchSettings</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="**\*.xaml.cs">
@@ -19,14 +20,18 @@
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
   <ItemGroup>
+    <AvaloniaResource Remove="Views\CharacterView.xaml" />
     <AvaloniaResource Remove="Views\CharMappingView.xaml" />
+    <AvaloniaResource Remove="Views\LayoutView.xaml" />
     <AvaloniaResource Remove="Views\MainContentView.xaml" />
     <AvaloniaResource Remove="Views\PreferencesView.xaml" />
     <AvaloniaResource Remove="Views\ServiceView.xaml" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="appsettings.json" />
+    <None Remove="Views\CharacterView.xaml" />
     <None Remove="Views\CharMappingView.xaml" />
+    <None Remove="Views\LayoutView.xaml" />
     <None Remove="Views\MainContentView.xaml" />
     <None Remove="Views\PreferencesView.xaml" />
     <None Remove="Views\ServiceView.xaml" />
@@ -85,6 +90,16 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\PreferencesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\LayoutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\CharacterView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>
