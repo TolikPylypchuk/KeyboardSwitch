@@ -43,8 +43,6 @@ namespace KeyboardSwitch.Settings
             {
                 this.desktop = desktop;
 
-                desktop.Exit += this.OnExit;
-
                 var autoSuspendHelper = new AutoSuspendHelper(desktop);
                 GC.KeepAlive(autoSuspendHelper);
 
@@ -61,6 +59,8 @@ namespace KeyboardSwitch.Settings
 
                 desktop.MainWindow = await this.CreateMainWindow(mainViewModel);
                 desktop.MainWindow.Show();
+
+                desktop.Exit += this.OnExit;
             }
 
             base.OnFrameworkInitializationCompleted();
@@ -84,10 +84,10 @@ namespace KeyboardSwitch.Settings
                 window.WindowState = state.IsWindowMaximized ? WindowState.Maximized : WindowState.Normal;
             }
 
-            Observable.FromEventPattern<AvaloniaPropertyChangedEventArgs>(window, nameof(window.PropertyChanged))
-                .Select(data => data.EventArgs.Property.Name)
-                .Where(name => name == nameof(window.WindowState) || name == nameof(window.ClientSize))
+            window.GetObservable(Window.WindowStateProperty)
+                .DistinctUntilChanged()
                 .Discard()
+                .Merge(window.GetObservable(TopLevel.ClientSizeProperty).DistinctUntilChanged().Discard())
                 .Merge(Observable.FromEventPattern<EventArgs>(window, nameof(window.PositionChanged)).Discard())
                 .Throttle(TimeSpan.FromMilliseconds(500))
                 .ObserveOn(RxApp.MainThreadScheduler)

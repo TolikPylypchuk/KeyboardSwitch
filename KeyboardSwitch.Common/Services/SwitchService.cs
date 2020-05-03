@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.Logging;
 
+using static KeyboardSwitch.Common.Constants;
+
 namespace KeyboardSwitch.Common.Services
 {
     internal class SwitchService : ISwitchService
@@ -55,7 +57,7 @@ namespace KeyboardSwitch.Common.Services
                 var mapping = currentChars.Zip(newChars).ToDictionary(chars => chars.First, chars => chars.Second);
 
                 await this.textService.SetTextAsync(new String(textToSwitch
-                    .Select(ch => mapping.TryGetValue(ch, out char newCh) ? newCh : ch)
+                    .Select(ch => mapping.TryGetValue(ch, out char newCh) && newCh != MissingCharacter ? newCh : ch)
                     .ToArray()));
             }
 

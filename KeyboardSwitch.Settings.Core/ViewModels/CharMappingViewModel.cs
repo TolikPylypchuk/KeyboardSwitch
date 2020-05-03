@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 
 using DynamicData;
@@ -40,16 +41,22 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         protected override void EnableChangeTracking()
         {
-            this.IsCollectionChanged(vm => vm.Layouts, vm => vm.CharMappingModel.Layouts);
+            this.TrackChanges(this.IsCollectionChanged(vm => vm.Layouts, vm => vm.CharMappingModel.Layouts));
+
             base.EnableChangeTracking();
         }
 
-        protected override Task<CharMappingModel> OnSaveAsync()
+        protected override async Task<CharMappingModel> OnSaveAsync()
         {
+            foreach (var layout in this.Layouts)
+            {
+                await layout.Save.Execute();
+            }
+
             this.CharMappingModel.Layouts.Clear();
             this.CharMappingModel.Layouts.AddRange(this.layoutsSource.Items);
 
-            return Task.FromResult(this.CharMappingModel);
+            return this.CharMappingModel;
         }
 
         protected override void CopyProperties()

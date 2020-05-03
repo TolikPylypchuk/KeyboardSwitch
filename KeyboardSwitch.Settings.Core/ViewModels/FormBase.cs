@@ -98,8 +98,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 .AutoRefreshOnObservable(vm => vm.FormChanged)
                 .ToCollection()
                 .Select(vms =>
-                    vms.Count != itemCollection(this.Self).Count ||
-                    vms.Any(vm => vm.IsFormChanged))
+                    vms.Count != itemCollection(this.Self).Count || vms.Any(vm => vm.IsFormChanged))
                 .Do(changed => this.Log().Debug(
                     changed ? $"{propertyName} are changed" : $"{propertyName} are unchanged"));
         }

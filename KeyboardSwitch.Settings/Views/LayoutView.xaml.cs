@@ -1,5 +1,6 @@
+using System;
 using System.Reactive.Disposables;
-
+using System.Reactive.Linq;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
@@ -24,6 +25,13 @@ namespace KeyboardSwitch.Settings.Views
 
                 this.OneWayBind(this.ViewModel, vm => vm.KeyboardName, v => v.KeyboardTextBlock.Text)
                     .DisposeWith(disposables);
+
+                this.OneWayBind(this.ViewModel, vm => vm.Characters, v => v.Characters.Items)
+                    .DisposeWith(disposables);
+
+                this.ViewModel.FormChanged
+                    .Select(_ => this.ViewModel)
+                    .Subscribe(vm => { });
             });
 
             this.InitializeComponent();
@@ -31,6 +39,7 @@ namespace KeyboardSwitch.Settings.Views
 
         private TextBlock LanguageTextBlock { get; set; } = null!;
         private TextBlock KeyboardTextBlock { get; set; } = null!;
+        private ItemsControl Characters { get; set; } = null!;
 
         private void InitializeComponent()
         {
@@ -38,6 +47,7 @@ namespace KeyboardSwitch.Settings.Views
 
             this.LanguageTextBlock = this.FindControl<TextBlock>(nameof(this.LanguageTextBlock));
             this.KeyboardTextBlock = this.FindControl<TextBlock>(nameof(this.KeyboardTextBlock));
+            this.Characters = this.FindControl<ItemsControl>(nameof(this.Characters));
         }
     }
 }

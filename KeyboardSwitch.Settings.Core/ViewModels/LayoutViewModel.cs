@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 
 using DynamicData;
@@ -59,13 +60,18 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.TrackChanges(vm => vm.KeyboardName, vm => vm.LayoutModel.KeyboardName);
             this.TrackChanges(vm => vm.Id, vm => vm.LayoutModel.Id);
             this.TrackChanges(vm => vm.Index, vm => vm.LayoutModel.Index);
-            this.IsCollectionChanged(vm => vm.Characters, vm => vm.LayoutModel.Chars);
+            this.TrackChanges(this.IsCollectionChanged(vm => vm.Characters, vm => vm.LayoutModel.Chars));
 
             base.EnableChangeTracking();
         }
 
-        protected override Task<LayoutModel> OnSaveAsync()
+        protected override async Task<LayoutModel> OnSaveAsync()
         {
+            foreach (var ch in this.Characters)
+            {
+                await ch.Save.Execute();
+            }
+
             this.LayoutModel.LanguageName = this.LanguageName;
             this.LayoutModel.KeyboardName = this.KeyboardName;
             this.LayoutModel.Id = this.Id;
@@ -74,7 +80,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.LayoutModel.Chars.Clear();
             this.LayoutModel.Chars.AddRange(this.charactersSource.Items);
 
-            return Task.FromResult(this.LayoutModel);
+            return this.LayoutModel;
         }
 
         protected override void CopyProperties()
