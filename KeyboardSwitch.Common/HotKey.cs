@@ -4,16 +4,14 @@ namespace KeyboardSwitch.Common
 {
     public class HotKey : IEquatable<HotKey>
     {
-        public HotKey(ModifierKeys modifiers, int virtualKeyCode, Guid? id = null)
+        public HotKey(ModifierKeys modifiers, int virtualKeyCode)
         {
             this.Modifiers = modifiers;
             this.VirtualKeyCode = virtualKeyCode;
-            this.Id = id;
         }
 
         public ModifierKeys Modifiers { get; }
         public int VirtualKeyCode { get; }
-        public Guid? Id { get; }
 
         public override bool Equals(object? obj)
             => obj is HotKey kc && this.Equals(kc);
@@ -28,9 +26,9 @@ namespace KeyboardSwitch.Common
 
         public override string ToString()
         {
-            string formatterModifiers = this.Modifiers.ToFormattedString();
-            string modifiersDescription = formatterModifiers.Length != 0
-                ? $"({formatterModifiers}) "
+            string formattedModifiers = this.Modifiers.ToFormattedString();
+            string modifiersDescription = formattedModifiers.Length != 0
+                ? $"{formattedModifiers}+"
                 : String.Empty;
 
             return $"{modifiersDescription}{this.VirtualKeyCode}";

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using KeyboardSwitch.Common;
 using KeyboardSwitch.Common.Services;
 using KeyboardSwitch.Common.Services.Infrastructure;
+using KeyboardSwitch.Common.Settings;
 
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -53,8 +54,23 @@ namespace KeyboardSwitch
         {
             this.logger.LogDebug("Registering hot keys to switch forward and backward");
 
-            var settings = await this.settingsService.GetSwitchSettingsAsync();
+            var settings = await this.settingsService.GetAppSettingsAsync();
 
+            switch (settings.SwitchMode)
+            {
+                case SwitchMode.HotKey when settings.HotKeySwitchSettings != null:
+                    this.RegisterHotKeys(settings.HotKeySwitchSettings);
+                    break;
+                case SwitchMode.ModifierKey when settings.ModifierKeysSwitchSettings != null:
+                    this.RegisterHotModifierKeys(settings.ModifierKeysSwitchSettings);
+                    break;
+                default:
+                    throw new InvalidOperationException("Switch settings are invalid");
+            }
+        }
+
+        private void RegisterHotKeys(HotKeySwitchSettings settings)
+        {
             int forwardKeyCode = this.keysService.GetVirtualKeyCode(settings.Forward);
             int backwardKeyCode = this.keysService.GetVirtualKeyCode(settings.Backward);
 
@@ -63,6 +79,20 @@ namespace KeyboardSwitch
 
             this.keyboardHookService.HotKeyPressed
                 .Select(hotKey => hotKey.VirtualKeyCode == forwardKeyCode
+                    ? SwitchDirection.Forward
+                    : SwitchDirection.Backward)
+                .SubscribeAsync(this.switchService.SwitchTextAsync);
+        }
+
+        private void RegisterHotModifierKeys(ModifierKeysSwitchSettings settings)
+        {
+            this.keyboardHookService.RegisterHotModifierKey(
+                settings.ForwardModifierKeys, settings.PressCount, settings.WaitMilliseconds);
+            this.keyboardHookService.RegisterHotModifierKey(
+                settings.BackwardModifierKeys, settings.PressCount, settings.WaitMilliseconds);
+
+            this.keyboardHookService.HotKeyPressed
+                .Select(hotKey => hotKey.Modifiers == settings.ForwardModifierKeys
                     ? SwitchDirection.Forward
                     : SwitchDirection.Backward)
                 .SubscribeAsync(this.switchService.SwitchTextAsync);

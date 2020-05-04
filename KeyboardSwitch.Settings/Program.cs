@@ -96,7 +96,10 @@ namespace KeyboardSwitch.Settings
             {
                 if (newBuilder.Instance is App app)
                 {
-                    var serviceProvider = services.BuildServiceProvider();
+                    var serviceProvider = services
+                        .AddSingleton(RxApp.MainThreadScheduler)
+                        .BuildServiceProvider();
+
                     serviceProvider.UseMicrosoftDependencyResolver();
 
                     var mutex = ConfigureSingleInstance(serviceProvider, app);

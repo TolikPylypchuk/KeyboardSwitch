@@ -13,11 +13,11 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 {
     public class MainViewModel : ReactiveObject
     {
-        private readonly SwitchSettings switchSettings;
+        private readonly AppSettings switchSettings;
         private readonly ILayoutService layoutService;
 
         public MainViewModel(
-            SwitchSettings switchSettings,
+            AppSettings switchSettings,
             ILayoutService? layoutService = null)
         {
             this.switchSettings = switchSettings;

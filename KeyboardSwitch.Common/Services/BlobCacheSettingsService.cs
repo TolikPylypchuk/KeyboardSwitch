@@ -17,7 +17,7 @@ namespace KeyboardSwitch.Common.Services
         private readonly ILayoutService layoutService;
         private readonly ILogger<BlobCacheSettingsService> logger;
 
-        private SwitchSettings? switchSettings;
+        private AppSettings? appSettings;
 
         public BlobCacheSettingsService(
             IBlobCache cache,
@@ -29,43 +29,43 @@ namespace KeyboardSwitch.Common.Services
             this.logger = logger;
         }
 
-        public async ValueTask<SwitchSettings> GetSwitchSettingsAsync()
+        public async ValueTask<AppSettings> GetAppSettingsAsync()
         {
             this.ThrowIfDisposed();
 
-            if (this.switchSettings == null)
+            if (this.appSettings == null)
             {
-                this.logger.LogDebug("Getting the switch settings");
+                this.logger.LogDebug("Getting the app settings");
 
-                if (await this.cache.ContainsKey(SwitchSettings.CacheKey))
+                if (await this.cache.ContainsKey(AppSettings.CacheKey))
                 {
-                    this.switchSettings = await this.cache.GetObject<SwitchSettings>(SwitchSettings.CacheKey);
+                    this.appSettings = await this.cache.GetObject<AppSettings>(AppSettings.CacheKey);
                 } else
                 {
-                    this.logger.LogInformation("Switch settings not found - creating default settings");
+                    this.logger.LogInformation("App settings not found - creating default settings");
 
-                    this.switchSettings = this.CreateDefaultSwitchSettings();
-                    await this.cache.InsertObject(SwitchSettings.CacheKey, this.switchSettings);
+                    this.appSettings = this.CreateDefaultAppSettings();
+                    await this.cache.InsertObject(AppSettings.CacheKey, this.appSettings);
                 }
             }
 
-            return this.switchSettings;
+            return this.appSettings;
         }
 
-        public async Task SaveSwitchSettingsAsync(SwitchSettings switchSettings)
+        public async Task SaveAppSettingsAsync(AppSettings appSettings)
         {
             this.ThrowIfDisposed();
 
-            this.logger.LogDebug("Saving the switch settings");
-            await this.cache.InsertObject(SwitchSettings.CacheKey, switchSettings);
+            this.logger.LogDebug("Saving the app settings");
+            await this.cache.InsertObject(AppSettings.CacheKey, appSettings);
 
-            this.switchSettings = switchSettings;
+            this.appSettings = appSettings;
         }
 
         public void InvalidateSwitchSettings()
         {
             this.ThrowIfDisposed();
-            this.switchSettings = null;
+            this.appSettings = null;
         }
 
         public async ValueTask DisposeAsync()
@@ -77,12 +77,23 @@ namespace KeyboardSwitch.Common.Services
             }
         }
 
-        private SwitchSettings CreateDefaultSwitchSettings()
-            => new SwitchSettings
+        private AppSettings CreateDefaultAppSettings()
+            => new AppSettings
             {
-                Forward = 'X',
-                Backward = 'Z',
-                ModifierKeys = ModifierKeys.Ctrl | ModifierKeys.Shift,
+                HotKeySwitchSettings = new HotKeySwitchSettings
+                {
+                    Forward = 'X',
+                    Backward = 'Z',
+                    ModifierKeys = ModifierKeys.Ctrl | ModifierKeys.Shift
+                },
+                ModifierKeysSwitchSettings = new ModifierKeysSwitchSettings
+                {
+                    ForwardModifierKeys = ModifierKeys.Ctrl | ModifierKeys.Shift,
+                    BackwardModifierKeys = ModifierKeys.Alt | ModifierKeys.Ctrl | ModifierKeys.Shift,
+                    PressCount = 1,
+                    WaitMilliseconds = 300
+                },
+                SwitchMode = SwitchMode.ModifierKey,
                 CharsByKeyboardLayoutId = this.layoutService.GetKeyboardLayouts()
                     .ToDictionary(layout => layout.Id, this.GetCharsForLayout),
                 InstantSwitching = true,

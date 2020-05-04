@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Runtime.InteropServices;
@@ -22,21 +23,31 @@ namespace KeyboardSwitch.Common.Windows.Services
         private IntPtr hookId = IntPtr.Zero;
 
         private readonly object modifiersLock = new object();
+        private readonly TaskQueue taskQueue = new TaskQueue();
+
         private LowLevelKeyboardProc? hook;
 
         private readonly IKeysService keysService;
+        private readonly IScheduler scheduler;
         private readonly ILogger<KeyboardHookService> logger;
 
         private readonly HashSet<HotKey> hotKeys = new HashSet<HotKey>();
+        private readonly HashSet<ModifierKeys> hotModifierKeys = new HashSet<ModifierKeys>();
 
         private readonly Subject<HotKey> hotKeyPressedSubject = new Subject<HotKey>();
-        
+        private readonly Subject<ModifierKeys> hotModifierKeyPressedSubject = new Subject<ModifierKeys>();
+
         private ModifierKeys downModifierKeys;
         private HotKey? pressedHotKey;
+        private ModifierKeys? pressedModifierKeys;
 
-        public KeyboardHookService(IKeysService modiferKeysService, ILogger<KeyboardHookService> logger)
+        public KeyboardHookService(
+            IKeysService modiferKeysService,
+            IScheduler scheduler,
+            ILogger<KeyboardHookService> logger)
         {
             this.keysService = modiferKeysService;
+            this.scheduler = scheduler;
             this.logger = logger;
         }
 
@@ -64,8 +75,41 @@ namespace KeyboardSwitch.Common.Windows.Services
             return key;
         }
 
-        public void UnregisterHotKey(int virtualKeyCode)
-            => this.UnregisterHotKey(ModifierKeys.None, virtualKeyCode);
+        public void RegisterHotModifierKey(ModifierKeys modifierKeys, int pressedCount, int waitMilliseconds)
+        {
+            this.ThrowIfDisposed();
+
+            this.logger.LogDebug($"Registering a hot modifier key: {modifierKeys.ToFormattedString()}");
+
+            this.hotModifierKeys.Add(modifierKeys);
+
+            if (pressedCount == 1)
+            {
+                this.hotModifierKeyPressedSubject
+                    .Where(keys => keys == modifierKeys)
+                    .Select(keys => new HotKey(keys, 0))
+                    .Subscribe(this.hotKeyPressedSubject);
+            } else
+            {
+                var waitTime = TimeSpan.FromMilliseconds(waitMilliseconds);
+
+                this.hotModifierKeyPressedSubject
+                    .Where(keys => keys == modifierKeys)
+                    .Select(keys => new HotKey(keys, 0))
+                    .Buffer(this.hotModifierKeyPressedSubject
+                        .Scan(
+                            DateTimeOffset.MinValue,
+                            (lastPrimary, _) => scheduler.Now - lastPrimary > waitTime
+                                ? DateTimeOffset.Now
+                                : lastPrimary)
+                        .Delay(waitTime, scheduler))
+                    .Where(modifiers => modifiers.Count == pressedCount && modifiers.All(m => m == modifiers[0]))
+                    .Select(modifiers => modifiers[0])
+                    .Subscribe(this.hotKeyPressedSubject);
+            }
+
+            this.logger.LogDebug($"Registered a hot modifier key: {modifierKeys.ToFormattedString()}");
+        }
 
         public void UnregisterHotKey(ModifierKeys modifiers, int virtualKeyCode)
             => this.UnregisterHotKey(new HotKey(modifiers, virtualKeyCode));
@@ -87,12 +131,31 @@ namespace KeyboardSwitch.Common.Windows.Services
             this.logger.LogDebug($"Unregistered a hot key: {key}");
         }
 
+        public void UnregisterHotModifierKey(ModifierKeys modifierKeys)
+        {
+            this.ThrowIfDisposed();
+
+            this.logger.LogDebug($"Unregistering a hot modifier key: {modifierKeys.ToFormattedString()}");
+
+            if (!this.hotModifierKeys.Contains(modifierKeys))
+            {
+                this.logger.LogWarning($"Modifier key {modifierKeys.ToFormattedString()} not found");
+                return;
+            }
+
+            this.hotModifierKeys.Remove(modifierKeys);
+
+            this.logger.LogDebug($"Unregistered a hot modifier key: {modifierKeys.ToFormattedString()}");
+        }
+
         public void UnregisterAll()
         {
             this.logger.LogDebug("Unregistering all hot keys");
 
             this.ThrowIfDisposed();
+
             this.hotKeys.ForEach(this.UnregisterHotKey);
+            this.hotModifierKeys.ForEach(this.UnregisterHotModifierKey);
         }
 
         public Task WaitForMessagesAsync(CancellationToken token)
@@ -136,7 +199,7 @@ namespace KeyboardSwitch.Common.Windows.Services
             if (nCode >= 0)
             {
                 int vkCode = Marshal.ReadInt32(lParam);
-                Task.Run(() => this.HandleSingleKeyboardInput(wParam, vkCode));
+                this.taskQueue.EnqueueAndIgnore(() => Task.Run(() => this.HandleSingleKeyboardInput(wParam, vkCode)));
             }
 
             return CallNextHookEx(hookId, nCode, wParam, lParam);
@@ -148,41 +211,72 @@ namespace KeyboardSwitch.Common.Windows.Services
 
             if (wParam == WmKeyDown || wParam == WmSysKeyDown)
             {
-                if (modifierKey != null)
-                {
-                    lock (this.modifiersLock)
-                    {
-                        this.downModifierKeys |= modifierKey.Value;
-                    }
-                }
-
-                if (this.pressedHotKey == null)
-                {
-                    var currentKey = new HotKey(this.downModifierKeys, vkCode);
-
-                    if (this.hotKeys.Contains(currentKey))
-                    {
-                        this.pressedHotKey = currentKey;
-                    }
-                }
+                this.HandleKeyDown(modifierKey, vkCode);
             }
 
             if (wParam == WmKeyUp || wParam == WmSysKeyUp)
             {
-                if (modifierKey != null)
-                {
-                    lock (this.modifiersLock)
-                    {
-                        this.downModifierKeys &= ~modifierKey.Value;
-                    }
-                }
+                this.HandleKeyUp(modifierKey);
+            }
+        }
 
-                if (this.downModifierKeys == ModifierKeys.None && this.pressedHotKey != null)
+        private void HandleKeyDown(ModifierKeys? modifierKey, int vkCode)
+        {
+            if (modifierKey != null)
+            {
+                lock (this.modifiersLock)
+                {
+                    this.downModifierKeys |= modifierKey.Value;
+                }
+            }
+
+            if (this.pressedHotKey == null)
+            {
+                var currentKey = new HotKey(this.downModifierKeys, vkCode);
+
+                if (this.hotKeys.Contains(currentKey))
+                {
+                    this.pressedHotKey = currentKey;
+                }
+            }
+
+            if (this.hotModifierKeys.Contains(this.downModifierKeys))
+            {
+                this.pressedModifierKeys = this.downModifierKeys;
+            }
+
+            if (!this.hotModifierKeys.Contains(this.downModifierKeys) || modifierKey == null)
+            {
+                this.pressedModifierKeys = null;
+            }
+        }
+
+        private void HandleKeyUp(ModifierKeys? modifierKey)
+        {
+            if (modifierKey != null)
+            {
+                lock (this.modifiersLock)
+                {
+                    this.downModifierKeys &= ~modifierKey.Value;
+                }
+            }
+
+            if (this.downModifierKeys == ModifierKeys.None)
+            {
+                if (this.pressedHotKey != null)
                 {
                     var hotKey = this.pressedHotKey;
                     this.pressedHotKey = null;
 
                     this.hotKeyPressedSubject.OnNext(hotKey);
+                }
+
+                if (this.pressedModifierKeys != null)
+                {
+                    var modifierKeys = this.pressedModifierKeys.Value;
+                    this.pressedModifierKeys = null;
+
+                    this.hotModifierKeyPressedSubject.OnNext(modifierKeys);
                 }
             }
         }

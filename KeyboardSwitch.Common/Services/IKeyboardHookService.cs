@@ -10,10 +10,11 @@ namespace KeyboardSwitch.Common.Services
 
         HotKey RegisterHotKey(int virtualKeyCode);
         HotKey RegisterHotKey(ModifierKeys modifiers, int virtualKeyCode);
+        void RegisterHotModifierKey(ModifierKeys modifierKeys, int pressedCount, int waitMilliseconds);
 
-        void UnregisterHotKey(int virtualKeyCode);
         void UnregisterHotKey(ModifierKeys modifiers, int virtualKeyCode);
         void UnregisterHotKey(HotKey key);
+        void UnregisterHotModifierKey(ModifierKeys modifierKeys);
 
         void UnregisterAll();
 

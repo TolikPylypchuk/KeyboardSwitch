@@ -1,4 +1,5 @@
 using System;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -62,6 +63,7 @@ namespace KeyboardSwitch
             services.AddHostedService<Worker>()
                 .Configure<HostOptions>(o => o.ShutdownTimeout = TimeSpan.FromMilliseconds(100))
                 .Configure<GlobalSettings>(hostContext.Configuration.GetSection("Settings"))
+                .AddSingleton<IScheduler>(Scheduler.Default)
                 .AddKeyboardSwitchServices();
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))

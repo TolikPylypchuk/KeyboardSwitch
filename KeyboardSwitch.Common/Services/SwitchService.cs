@@ -33,7 +33,7 @@ namespace KeyboardSwitch.Common.Services
 
             string? textToSwitch = await this.textService.GetTextAsync();
 
-            var settings = await this.settingsService.GetSwitchSettingsAsync();
+            var settings = await this.settingsService.GetAppSettingsAsync();
 
             if (!String.IsNullOrEmpty(textToSwitch))
             {

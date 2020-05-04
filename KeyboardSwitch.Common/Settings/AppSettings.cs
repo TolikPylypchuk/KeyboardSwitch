@@ -4,19 +4,21 @@ using System.Runtime.Serialization;
 
 namespace KeyboardSwitch.Common.Settings
 {
+    public enum SwitchMode { HotKey, ModifierKey }
+
     [DataContract]
-    public sealed class SwitchSettings
+    public sealed class AppSettings
     {
-        public static readonly string CacheKey = "SwitchSettings";
+        public static readonly string CacheKey = "AppSettings";
 
         [DataMember]
-        public ModifierKeys ModifierKeys { get; set; }
+        public HotKeySwitchSettings? HotKeySwitchSettings { get; set; }
 
         [DataMember]
-        public char Forward { get; set; }
+        public ModifierKeysSwitchSettings? ModifierKeysSwitchSettings { get; set; }
 
         [DataMember]
-        public char Backward { get; set; }
+        public SwitchMode SwitchMode { get; set; }
 
         [DataMember]
         public Dictionary<int, string> CharsByKeyboardLayoutId { get; set; } = new Dictionary<int, string>();

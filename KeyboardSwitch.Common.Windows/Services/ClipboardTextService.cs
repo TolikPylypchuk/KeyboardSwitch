@@ -31,7 +31,7 @@ namespace KeyboardSwitch.Common.Windows.Services
         {
             this.logger.LogDebug("Getting the text from the clipboard");
 
-            var settings = await this.settingsService.GetSwitchSettingsAsync();
+            var settings = await this.settingsService.GetAppSettingsAsync();
 
             return await TaskUtils.RunSTATask(() =>
                 {
@@ -49,7 +49,7 @@ namespace KeyboardSwitch.Common.Windows.Services
         {
             this.logger.LogDebug("Setting the text into the clipboard");
 
-            var settings = await this.settingsService.GetSwitchSettingsAsync();
+            var settings = await this.settingsService.GetAppSettingsAsync();
 
             await TaskUtils.RunSTATask(() =>
                 {

@@ -81,7 +81,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         private async Task StartServiceAsync()
         {
-            var settings = await settingsService.GetSwitchSettingsAsync();
+            var settings = await settingsService.GetAppSettingsAsync();
             Process.Start(settings.ServicePath);
         }
 

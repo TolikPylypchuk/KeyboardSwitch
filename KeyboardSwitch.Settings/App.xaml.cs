@@ -51,7 +51,7 @@ namespace KeyboardSwitch.Settings
 
                 autoSuspendHelper.OnFrameworkInitializationCompleted();
 
-                var settings = await Locator.Current.GetService<ISettingsService>().GetSwitchSettingsAsync();
+                var settings = await Locator.Current.GetService<ISettingsService>().GetAppSettingsAsync();
 
                 var mainViewModel = new MainViewModel(settings);
 
