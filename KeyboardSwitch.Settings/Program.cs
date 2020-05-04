@@ -97,7 +97,6 @@ namespace KeyboardSwitch.Settings
                 if (newBuilder.Instance is App app)
                 {
                     var serviceProvider = services
-                        .AddSingleton(RxApp.MainThreadScheduler)
                         .BuildServiceProvider();
 
                     serviceProvider.UseMicrosoftDependencyResolver();
