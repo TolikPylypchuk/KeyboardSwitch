@@ -27,6 +27,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.ServiceViewModel = new ServiceViewModel();
 
             this.OpenExternally = ReactiveCommand.Create(() => { });
+
+            this.MainContentViewModel.Save
+                .InvokeCommand(this.ServiceViewModel.ReloadSettings);
         }
 
         public MainContentViewModel MainContentViewModel { get; }

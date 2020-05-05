@@ -36,6 +36,8 @@ namespace KeyboardSwitch.Common.Windows.Services
 
         private readonly Subject<HotKey> hotKeyPressedSubject = new Subject<HotKey>();
         private readonly Subject<ModifierKeys> hotModifierKeyPressedSubject = new Subject<ModifierKeys>();
+        private readonly Dictionary<ModifierKeys, IDisposable> hotModifierKeyPressedSubscriptions =
+            new Dictionary<ModifierKeys, IDisposable>();
 
         private ModifierKeys downModifierKeys;
         private HotKey? pressedHotKey;
@@ -83,9 +85,11 @@ namespace KeyboardSwitch.Common.Windows.Services
 
             this.hotModifierKeys.Add(modifierKeys);
 
+            IDisposable subscription;
+
             if (pressedCount == 1)
             {
-                this.hotModifierKeyPressedSubject
+                subscription = this.hotModifierKeyPressedSubject
                     .Where(keys => keys == modifierKeys)
                     .Select(keys => new HotKey(keys, 0))
                     .Subscribe(this.hotKeyPressedSubject);
@@ -93,7 +97,7 @@ namespace KeyboardSwitch.Common.Windows.Services
             {
                 var waitTime = TimeSpan.FromMilliseconds(waitMilliseconds);
 
-                this.hotModifierKeyPressedSubject
+                subscription = this.hotModifierKeyPressedSubject
                     .Where(keys => keys == modifierKeys)
                     .Select(keys => new HotKey(keys, 0))
                     .Buffer(this.hotModifierKeyPressedSubject
@@ -107,6 +111,8 @@ namespace KeyboardSwitch.Common.Windows.Services
                     .Select(modifiers => modifiers[0])
                     .Subscribe(this.hotKeyPressedSubject);
             }
+
+            this.hotModifierKeyPressedSubscriptions.Add(modifierKeys, subscription);
 
             this.logger.LogDebug($"Registered a hot modifier key: {modifierKeys.ToFormattedString()}");
         }
@@ -145,6 +151,9 @@ namespace KeyboardSwitch.Common.Windows.Services
 
             this.hotModifierKeys.Remove(modifierKeys);
 
+            this.hotModifierKeyPressedSubscriptions[modifierKeys].Dispose();
+            this.hotModifierKeyPressedSubscriptions.Remove(modifierKeys);
+
             this.logger.LogDebug($"Unregistered a hot modifier key: {modifierKeys.ToFormattedString()}");
         }
 
@@ -154,8 +163,13 @@ namespace KeyboardSwitch.Common.Windows.Services
 
             this.ThrowIfDisposed();
 
-            this.hotKeys.ForEach(this.UnregisterHotKey);
-            this.hotModifierKeys.ForEach(this.UnregisterHotModifierKey);
+            this.hotKeys.Clear();
+            this.hotModifierKeys.Clear();
+
+            this.hotModifierKeyPressedSubscriptions.Values.ForEach(subscription => subscription.Dispose());
+            this.hotModifierKeyPressedSubscriptions.Clear();
+
+            this.logger.LogDebug("Unregistered all hot keys");
         }
 
         public Task WaitForMessagesAsync(CancellationToken token)

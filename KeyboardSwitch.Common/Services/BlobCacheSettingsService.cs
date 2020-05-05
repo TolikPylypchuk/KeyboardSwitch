@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 
 using Akavache;
@@ -16,6 +18,7 @@ namespace KeyboardSwitch.Common.Services
         private readonly IBlobCache cache;
         private readonly ILayoutService layoutService;
         private readonly ILogger<BlobCacheSettingsService> logger;
+        private readonly Subject<Unit> settingsInvalidated = new Subject<Unit>();
 
         private AppSettings? appSettings;
 
@@ -28,6 +31,9 @@ namespace KeyboardSwitch.Common.Services
             this.layoutService = layoutService;
             this.logger = logger;
         }
+
+        public IObservable<Unit> SettingsInvalidated
+            => this.settingsInvalidated.AsObservable();
 
         public async ValueTask<AppSettings> GetAppSettingsAsync()
         {
@@ -62,10 +68,11 @@ namespace KeyboardSwitch.Common.Services
             this.appSettings = appSettings;
         }
 
-        public void InvalidateSwitchSettings()
+        public void InvalidateAppSettings()
         {
             this.ThrowIfDisposed();
             this.appSettings = null;
+            this.settingsInvalidated.OnNext(Unit.Default);
         }
 
         public async ValueTask DisposeAsync()
@@ -74,6 +81,7 @@ namespace KeyboardSwitch.Common.Services
             {
                 await BlobCache.Shutdown();
                 this.Disposed = true;
+                this.settingsInvalidated.OnCompleted();
             }
         }
 

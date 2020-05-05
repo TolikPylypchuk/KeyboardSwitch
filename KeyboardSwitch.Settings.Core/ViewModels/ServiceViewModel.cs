@@ -49,6 +49,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.StartService = ReactiveCommand.CreateFromTask(this.StartServiceAsync, canStartService);
             this.StopService = ReactiveCommand.Create(this.OnStopService, canStopService);
             this.KillService = ReactiveCommand.Create(this.OnKillService, canKillService);
+            this.ReloadSettings = ReactiveCommand.Create(this.OnReloadSettings);
 
             Observable.Interval(TimeSpan.FromSeconds(1), scheduler)
                 .Select(_ => this.CheckServiceStatus())
@@ -64,6 +65,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         public ReactiveCommand<Unit, Unit> StartService { get; }
         public ReactiveCommand<Unit, Unit> StopService { get; }
         public ReactiveCommand<Unit, Unit> KillService { get; }
+        public ReactiveCommand<Unit, Unit> ReloadSettings { get; }
 
         private ServiceStatus CheckServiceStatus()
         {
@@ -93,5 +95,13 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         private void OnKillService()
             => Process.GetProcessesByName(nameof(KeyboardSwitch)).ForEach(process => process.Kill());
+
+        private void OnReloadSettings()
+        {
+            if (this.ServiceStatus == ServiceStatus.Running)
+            {
+                this.namedPipeService.Write(ExternalCommand.ReloadSettings);
+            }
+        }
     }
 }

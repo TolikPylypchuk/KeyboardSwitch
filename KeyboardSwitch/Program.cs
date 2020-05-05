@@ -36,7 +36,9 @@ namespace KeyboardSwitch
 
             var logger = host.Services.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(Program));
 
-            var mutex = ConfigureSingleInstance(host, logger);
+            var mutex = ConfigureSingleInstance(host);
+
+            SubscribeToExternalCommands(host, logger);
 
             logger.LogInformation("KeyboardSwitch service execution started");
 
@@ -82,15 +84,20 @@ namespace KeyboardSwitch
                         .CreateLogger(),
                     dispose: true);
 
-        private static Mutex ConfigureSingleInstance(IHost host, ILogger logger)
+        private static Mutex ConfigureSingleInstance(IHost host)
         {
             var singleInstanceProvider = host.Services.GetRequiredService<ServiceProvider<ISingleInstanceService>>();
             var singleInstanceService = singleInstanceProvider(nameof(KeyboardSwitch));
 
-            var mutex = singleInstanceService.TryAcquireMutex();
+            return singleInstanceService.TryAcquireMutex();
+        }
 
+        private static void SubscribeToExternalCommands(IHost host, ILogger logger)
+        {
             var namedPipeProvider = host.Services.GetRequiredService<ServiceProvider<INamedPipeService>>();
             var namedPipeService = namedPipeProvider(nameof(KeyboardSwitch));
+
+            var settingsService = host.Services.GetRequiredService<ISettingsService>();
 
             namedPipeService.StartServer();
 
@@ -99,7 +106,14 @@ namespace KeyboardSwitch
                 .Do(_ => logger.LogInformation("Stopping the service by external request"))
                 .SubscribeAsync(async _ => await host.StopAsync());
 
-            return mutex;
+            namedPipeService.ReceivedString
+                .Where(command => command.IsCommand(ExternalCommand.ReloadSettings))
+                .Do(_ => logger.LogInformation("Invalidating the settings be external request"))
+                .Subscribe(_ => settingsService.InvalidateAppSettings());
+
+            namedPipeService.ReceivedString
+                .Where(command => command.IsUnknownCommand())
+                .Subscribe(command => logger.LogWarning($"External request '{command}' is not recognized"));
         }
     }
 }

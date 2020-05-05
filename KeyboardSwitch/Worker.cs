@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 using KeyboardSwitch.Common;
 using KeyboardSwitch.Common.Services;
-using KeyboardSwitch.Common.Services.Infrastructure;
 using KeyboardSwitch.Common.Settings;
 
 using Microsoft.Extensions.Hosting;
@@ -19,7 +18,6 @@ namespace KeyboardSwitch
         private readonly ISwitchService switchService;
         private readonly ISettingsService settingsService;
         private readonly IKeysService keysService;
-        private readonly INamedPipeService namedPipeService;
         private readonly ILogger<Worker> logger;
 
         public Worker(
@@ -27,14 +25,12 @@ namespace KeyboardSwitch
             ISwitchService switchService,
             ISettingsService settingsService,
             IKeysService keysService,
-            ServiceProvider<INamedPipeService> namedPipeProvider,
             ILogger<Worker> logger)
         {
             this.keyboardHookService = keyboardHookService;
             this.switchService = switchService;
             this.settingsService = settingsService;
             this.keysService = keysService;
-            this.namedPipeService = namedPipeProvider(nameof(KeyboardSwitch));
             this.logger = logger;
         }
 
@@ -42,8 +38,9 @@ namespace KeyboardSwitch
         {
             this.logger.LogDebug("Configuring the keyboard switch service");
 
-            this.SubscribeToExternalCommands();
             await this.RegisterHotKeysAsync();
+
+            this.settingsService.SettingsInvalidated.SubscribeAsync(this.RefreshHotKeysAsync);
 
             this.logger.LogDebug("Starting the service execution");
 
@@ -53,9 +50,18 @@ namespace KeyboardSwitch
         private async Task RegisterHotKeysAsync()
         {
             this.logger.LogDebug("Registering hot keys to switch forward and backward");
+            this.RegisterHotKeys(await this.settingsService.GetAppSettingsAsync());
+        }
 
-            var settings = await this.settingsService.GetAppSettingsAsync();
+        private async Task RefreshHotKeysAsync()
+        {
+            this.logger.LogDebug("Refreshing the hot key registration to switch forward and backward");
+            this.keyboardHookService.UnregisterAll();
+            this.RegisterHotKeys(await this.settingsService.GetAppSettingsAsync());
+        }
 
+        private void RegisterHotKeys(AppSettings settings)
+        {
             switch (settings.SwitchMode)
             {
                 case SwitchMode.HotKey when settings.HotKeySwitchSettings != null:
@@ -96,18 +102,6 @@ namespace KeyboardSwitch
                     ? SwitchDirection.Forward
                     : SwitchDirection.Backward)
                 .SubscribeAsync(this.switchService.SwitchTextAsync);
-        }
-
-        private void SubscribeToExternalCommands()
-        {
-            namedPipeService.ReceivedString
-                .Where(command => command.IsCommand(ExternalCommand.ReloadSettings))
-                .Do(_ => logger.LogInformation("Invalidating the settings be external request"))
-                .Subscribe(_ => this.settingsService.InvalidateSwitchSettings());
-
-            namedPipeService.ReceivedString
-                .Where(command => command.IsUnknownCommand())
-                .Subscribe(command => logger.LogWarning($"External request '{command}' is not recognized"));
         }
     }
 }
