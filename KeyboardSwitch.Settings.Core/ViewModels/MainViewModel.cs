@@ -13,17 +13,19 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 {
     public class MainViewModel : ReactiveObject
     {
-        private readonly AppSettings switchSettings;
+        private readonly AppSettings appSettings;
         private readonly ILayoutService layoutService;
 
         public MainViewModel(
-            AppSettings switchSettings,
+            AppSettings appSettings,
             ILayoutService? layoutService = null)
         {
-            this.switchSettings = switchSettings;
+            this.appSettings = appSettings;
             this.layoutService = layoutService ?? Locator.Current.GetService<ILayoutService>();
 
-            this.MainContentViewModel = new MainContentViewModel(this.CreateCharMappingModel(), new PreferencesModel());
+            this.MainContentViewModel = new MainContentViewModel(
+                this.CreateCharMappingModel(), new PreferencesModel(appSettings));
+
             this.ServiceViewModel = new ServiceViewModel();
 
             this.OpenExternally = ReactiveCommand.Create(() => { });
@@ -46,7 +48,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             var layoutIndices = layouts.Select((layout, index) => (layout.Id, Index: index))
                 .ToDictionary(item => item.Id, item => item.Index);
 
-            var layoutModels = this.switchSettings.CharsByKeyboardLayoutId
+            var layoutModels = this.appSettings.CharsByKeyboardLayoutId
                     .Select(chars => new LayoutModel
                     {
                         Id = chars.Key,

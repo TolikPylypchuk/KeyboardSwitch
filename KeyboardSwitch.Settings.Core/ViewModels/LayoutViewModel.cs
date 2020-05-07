@@ -1,6 +1,8 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Resources;
 using System.Threading.Tasks;
 
 using DynamicData;
@@ -19,7 +21,11 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         private readonly ReadOnlyObservableCollection<CharacterViewModel> characters;
 
-        public LayoutViewModel(LayoutModel layoutModel)
+        public LayoutViewModel(
+            LayoutModel layoutModel,
+            ResourceManager? resourceManager = null,
+            IScheduler? scheduler = null)
+            : base(resourceManager, scheduler)
         {
             this.LayoutModel = layoutModel;
 

@@ -61,6 +61,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Backward key is requeired.
+        /// </summary>
+        internal static string BackwardRequired {
+            get {
+                return ResourceManager.GetString("BackwardRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string Cancel {
@@ -75,6 +84,15 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string CharMapping {
             get {
                 return ResourceManager.GetString("CharMapping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Forward key is required.
+        /// </summary>
+        internal static string ForwardRequired {
+            get {
+                return ResourceManager.GetString("ForwardRequired", resourceCulture);
             }
         }
         
@@ -124,6 +142,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Press count should be between 1 and 10.
+        /// </summary>
+        internal static string PressCountInvalid {
+            get {
+                return ResourceManager.GetString("PressCountInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         internal static string Save {
@@ -147,6 +174,15 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string Stop {
             get {
                 return ResourceManager.GetString("Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wait time should be between 100 and 1000 milliseconds.
+        /// </summary>
+        internal static string WaitMillisecnds {
+            get {
+                return ResourceManager.GetString("WaitMillisecnds", resourceCulture);
             }
         }
     }

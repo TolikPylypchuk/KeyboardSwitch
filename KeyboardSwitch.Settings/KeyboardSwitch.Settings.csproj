@@ -22,8 +22,10 @@
   <ItemGroup>
     <AvaloniaResource Remove="Views\CharacterView.xaml" />
     <AvaloniaResource Remove="Views\CharMappingView.xaml" />
+    <AvaloniaResource Remove="Views\HotKeySwitchView.xaml" />
     <AvaloniaResource Remove="Views\LayoutView.xaml" />
     <AvaloniaResource Remove="Views\MainContentView.xaml" />
+    <AvaloniaResource Remove="Views\ModifierKeysSwitchView.xaml" />
     <AvaloniaResource Remove="Views\PreferencesView.xaml" />
     <AvaloniaResource Remove="Views\ServiceView.xaml" />
   </ItemGroup>
@@ -31,8 +33,10 @@
     <None Remove="appsettings.json" />
     <None Remove="Views\CharacterView.xaml" />
     <None Remove="Views\CharMappingView.xaml" />
+    <None Remove="Views\HotKeySwitchView.xaml" />
     <None Remove="Views\LayoutView.xaml" />
     <None Remove="Views\MainContentView.xaml" />
+    <None Remove="Views\ModifierKeysSwitchView.xaml" />
     <None Remove="Views\PreferencesView.xaml" />
     <None Remove="Views\ServiceView.xaml" />
   </ItemGroup>
@@ -42,10 +46,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.9.9" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.9.9" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.9" />
-    <PackageReference Include="DynamicData" Version="6.14.14" />
+    <PackageReference Include="Avalonia" Version="0.9.10" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.9.10" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.10" />
+    <PackageReference Include="DynamicData" Version="6.14.18" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.1.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.3" />
@@ -55,9 +59,9 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.3" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.3" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.3" />
-    <PackageReference Include="ReactiveUI" Version="11.3.8" />
-    <PackageReference Include="ReactiveUI.Fody" Version="11.3.8" />
-    <PackageReference Include="ReactiveUI.Validation" Version="1.4.13" />
+    <PackageReference Include="ReactiveUI" Version="11.4.1" />
+    <PackageReference Include="ReactiveUI.Fody" Version="11.4.1" />
+    <PackageReference Include="ReactiveUI.Validation" Version="1.4.15" />
     <PackageReference Include="Serilog" Version="2.9.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
@@ -100,6 +104,16 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\CharacterView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\HotKeySwitchView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\ModifierKeysSwitchView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>

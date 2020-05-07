@@ -1,3 +1,5 @@
+using System.Reactive.Concurrency;
+using System.Resources;
 using System.Threading.Tasks;
 
 using KeyboardSwitch.Settings.Core.Models;
@@ -8,7 +10,11 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 {
     public sealed class CharacterViewModel : FormBase<CharacterModel, CharacterViewModel>
     {
-        public CharacterViewModel(CharacterModel characterModel)
+        public CharacterViewModel(
+            CharacterModel characterModel,
+            ResourceManager? resourceManager = null,
+            IScheduler? scheduler = null)
+            : base(resourceManager, scheduler)
         {
             this.CharacterModel = characterModel;
 

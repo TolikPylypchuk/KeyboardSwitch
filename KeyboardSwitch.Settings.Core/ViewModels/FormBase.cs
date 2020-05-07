@@ -23,6 +23,8 @@ using Splat;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
+    public enum ValidationType { Valid, Required }
+
     public abstract class FormBase<TModel, TViewModel> : ReactiveValidationObject<TViewModel>, IForm
         where TModel : class
         where TViewModel : FormBase<TModel, TViewModel>
@@ -111,6 +113,23 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 .ToCollection()
                 .Select(vms => vms.Select(vm => vm.Valid).CombineLatest().AllTrue())
                 .Switch();
+
+        protected ValidationHelper ValidationRule<T>(
+            Expression<Func<TViewModel, T>> property,
+            Func<T, bool> predicate,
+            ValidationType validationType = ValidationType.Valid)
+        {
+            var propertyName = property.GetMemberName();
+            var messageSuffix = validationType switch
+            {
+                ValidationType.Valid => "Invalid",
+                ValidationType.Required => "Required",
+                _ => String.Empty
+            };
+
+            return this.Self.ValidationRule(
+                property, predicate, $"{this.ResourceManager.GetString(propertyName)}{messageSuffix}");
+        }
 
         protected virtual void EnableChangeTracking()
         {
