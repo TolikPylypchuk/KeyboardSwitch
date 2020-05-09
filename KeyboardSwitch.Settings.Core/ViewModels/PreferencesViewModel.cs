@@ -21,6 +21,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             : base(resourceManager, scheduler)
         {
             this.PreferencesModel = preferencesModel;
+            this.CopyProperties();
 
             this.WhenAnyValue(vm => vm.SwitchMode)
                 .Select<SwitchMode, ReactiveObject>(mode => mode switch
@@ -31,7 +32,6 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 })
                 .ToPropertyEx(this, vm => vm.Content);
 
-            this.CopyProperties();
             this.EnableChangeTracking();
         }
 

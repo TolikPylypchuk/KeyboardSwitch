@@ -47,5 +47,12 @@ namespace KeyboardSwitch.Common
 
         public static string AsString(this SwitchDirection direction)
             => direction == SwitchDirection.Forward ? "forward" : "backward";
+
+        public static IEnumerable<IEnumerable<T>> GetPowerSet<T>(this IList<T> list)
+            => from bit in Enumerable.Range(0, 1 << list.Count)
+                select
+                    from index in Enumerable.Range(0, list.Count)
+                    where (bit & (1 << index)) != 0
+                    select list[index];
     }
 }

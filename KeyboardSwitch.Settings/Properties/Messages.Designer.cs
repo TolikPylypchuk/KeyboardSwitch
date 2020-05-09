@@ -61,6 +61,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Backward.
+        /// </summary>
+        internal static string Backward {
+            get {
+                return ResourceManager.GetString("Backward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Backward key is requeired.
         /// </summary>
         internal static string BackwardRequired {
@@ -84,6 +93,15 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string CharMapping {
             get {
                 return ResourceManager.GetString("CharMapping", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Forward.
+        /// </summary>
+        internal static string Forward {
+            get {
+                return ResourceManager.GetString("Forward", resourceCulture);
             }
         }
         
@@ -133,11 +151,83 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Alt.
+        /// </summary>
+        internal static string ModifierKeyAlt {
+            get {
+                return ResourceManager.GetString("ModifierKeyAlt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ctrl.
+        /// </summary>
+        internal static string ModifierKeyCtrl {
+            get {
+                return ResourceManager.GetString("ModifierKeyCtrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string ModifierKeyNone {
+            get {
+                return ResourceManager.GetString("ModifierKeyNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shift.
+        /// </summary>
+        internal static string ModifierKeyShift {
+            get {
+                return ResourceManager.GetString("ModifierKeyShift", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to +.
+        /// </summary>
+        internal static string ModifierKeysSeparator {
+            get {
+                return ResourceManager.GetString("ModifierKeysSeparator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Win.
+        /// </summary>
+        internal static string ModifierKeyWin {
+            get {
+                return ResourceManager.GetString("ModifierKeyWin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Preferences.
         /// </summary>
         internal static string Preferences {
             get {
                 return ResourceManager.GetString("Preferences", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hot key.
+        /// </summary>
+        internal static string PreferencesHotKey {
+            get {
+                return ResourceManager.GetString("PreferencesHotKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modifier keys.
+        /// </summary>
+        internal static string PreferencesModifierKeys {
+            get {
+                return ResourceManager.GetString("PreferencesModifierKeys", resourceCulture);
             }
         }
         
@@ -174,6 +264,15 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string Stop {
             get {
                 return ResourceManager.GetString("Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Switch mode:.
+        /// </summary>
+        internal static string SwitchModeLabel {
+            get {
+                return ResourceManager.GetString("SwitchModeLabel", resourceCulture);
             }
         }
         
