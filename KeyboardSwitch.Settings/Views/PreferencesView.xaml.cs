@@ -50,7 +50,6 @@ namespace KeyboardSwitch.Settings.Views
         private ComboBox SwitchModeComboBox { get; set; } = null!;
         private ContentControl PreferencesContent { get; set; } = null!;
 
-
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);

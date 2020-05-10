@@ -121,7 +121,7 @@
     <value>Backward</value>
   </data>
   <data name="BackwardRequired" xml:space="preserve">
-    <value>Backward key is requeired</value>
+    <value>Backward key is required</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
@@ -174,8 +174,14 @@
   <data name="PreferencesModifierKeys" xml:space="preserve">
     <value>Modifier keys</value>
   </data>
+  <data name="PressCount" xml:space="preserve">
+    <value>Press count</value>
+  </data>
   <data name="PressCountInvalid" xml:space="preserve">
     <value>Press count should be between 1 and 10</value>
+  </data>
+  <data name="PressCountRequired" xml:space="preserve">
+    <value>Press cound is required</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
@@ -186,10 +192,16 @@
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
   </data>
-  <data name="SwitchModeLabel" xml:space="preserve">
-    <value>Switch mode:</value>
+  <data name="SwitchMode" xml:space="preserve">
+    <value>Switch mode</value>
   </data>
-  <data name="WaitMillisecnds" xml:space="preserve">
+  <data name="WaitMillisecndsInvalid" xml:space="preserve">
     <value>Wait time should be between 100 and 1000 milliseconds</value>
+  </data>
+  <data name="WaitMilliseconds" xml:space="preserve">
+    <value>Wait time (ms)</value>
+  </data>
+  <data name="WaitMillisecondsRequired" xml:space="preserve">
+    <value>Wait time is required</value>
   </data>
 </root>

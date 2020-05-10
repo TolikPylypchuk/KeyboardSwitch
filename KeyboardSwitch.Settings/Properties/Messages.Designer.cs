@@ -70,7 +70,7 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Backward key is requeired.
+        ///   Looks up a localized string similar to Backward key is required.
         /// </summary>
         internal static string BackwardRequired {
             get {
@@ -232,11 +232,29 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Press count.
+        /// </summary>
+        internal static string PressCount {
+            get {
+                return ResourceManager.GetString("PressCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Press count should be between 1 and 10.
         /// </summary>
         internal static string PressCountInvalid {
             get {
                 return ResourceManager.GetString("PressCountInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Press cound is required.
+        /// </summary>
+        internal static string PressCountRequired {
+            get {
+                return ResourceManager.GetString("PressCountRequired", resourceCulture);
             }
         }
         
@@ -268,20 +286,38 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Switch mode:.
+        ///   Looks up a localized string similar to Switch mode.
         /// </summary>
-        internal static string SwitchModeLabel {
+        internal static string SwitchMode {
             get {
-                return ResourceManager.GetString("SwitchModeLabel", resourceCulture);
+                return ResourceManager.GetString("SwitchMode", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Wait time should be between 100 and 1000 milliseconds.
         /// </summary>
-        internal static string WaitMillisecnds {
+        internal static string WaitMillisecndsInvalid {
             get {
-                return ResourceManager.GetString("WaitMillisecnds", resourceCulture);
+                return ResourceManager.GetString("WaitMillisecndsInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wait time (ms).
+        /// </summary>
+        internal static string WaitMilliseconds {
+            get {
+                return ResourceManager.GetString("WaitMilliseconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wait time is required.
+        /// </summary>
+        internal static string WaitMillisecondsRequired {
+            get {
+                return ResourceManager.GetString("WaitMillisecondsRequired", resourceCulture);
             }
         }
     }

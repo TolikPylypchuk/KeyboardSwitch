@@ -7,7 +7,7 @@
              x:Class="KeyboardSwitch.Settings.Views.PreferencesView">
     <StackPanel>
         <StackPanel Orientation="Horizontal" Margin="10">
-            <TextBlock Text="{l:Translate SwitchModeLabel}" VerticalAlignment="Center" Margin="0,0,10,0" />
+            <TextBlock Text="{l:Translate SwitchMode}" VerticalAlignment="Center" Margin="0,0,10,0" />
             <ComboBox x:Name="SwitchModeComboBox" />
         </StackPanel>
         <ContentControl x:Name="PreferencesContent" />

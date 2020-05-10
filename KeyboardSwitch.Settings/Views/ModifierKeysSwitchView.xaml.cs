@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
 
@@ -16,6 +17,7 @@ namespace KeyboardSwitch.Settings.Views
     public class ModifierKeysSwitchView : ReactiveUserControl<ModifierKeysSwitchViewModel>
     {
         private readonly ModifierKeyConverter modifierKeyConverter = new ModifierKeyConverter();
+        private readonly NumberConverter numberConverter = new NumberConverter();
 
         public ModifierKeysSwitchView()
         {
@@ -41,6 +43,24 @@ namespace KeyboardSwitch.Settings.Views
                         this.modifierKeyConverter,
                         this.modifierKeyConverter)
                     .DisposeWith(disposables);
+
+                this.Bind(
+                        this.ViewModel,
+                        vm => vm.PressCount,
+                        v => v.PressCountTextBox.Text,
+                        null,
+                        this.numberConverter,
+                        this.numberConverter)
+                    .DisposeWith(disposables);
+
+                this.Bind(
+                        this.ViewModel,
+                        vm => vm.WaitMilliseconds,
+                        v => v.WaitMillisecondsTextBox.Text,
+                        null,
+                        this.numberConverter,
+                        this.numberConverter)
+                    .DisposeWith(disposables);
             });
 
             this.InitializeComponent();
@@ -49,6 +69,9 @@ namespace KeyboardSwitch.Settings.Views
         private ComboBox ForwardComboBox { get; set; } = null!;
         private ComboBox BackwardComboBox { get; set; } = null!;
 
+        private TextBox PressCountTextBox { get; set; } = null!;
+        private TextBox WaitMillisecondsTextBox { get; set; } = null!;
+
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
@@ -56,9 +79,10 @@ namespace KeyboardSwitch.Settings.Views
             this.ForwardComboBox = this.FindControl<ComboBox>(nameof(this.ForwardComboBox));
             this.BackwardComboBox = this.FindControl<ComboBox>(nameof(this.BackwardComboBox));
 
-            var allModifiers = this.modifierKeyConverter.Baseline
-                .Where(modifier => modifier != ModifierKeys.Win)
-                .ToList()
+            this.PressCountTextBox = this.FindControl<TextBox>(nameof(this.PressCountTextBox));
+            this.WaitMillisecondsTextBox = this.FindControl<TextBox>(nameof(this.WaitMillisecondsTextBox));
+
+            var allModifiers = new List<ModifierKeys> { ModifierKeys.Alt, ModifierKeys.Ctrl, ModifierKeys.Shift }
                 .GetPowerSet()
                 .Select(modifiers => modifiers.ToList())
                 .OrderBy(modifiers => modifiers.Count)

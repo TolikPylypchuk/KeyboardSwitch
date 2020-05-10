@@ -20,8 +20,11 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.ModifierKeysSwitchSettings = settings;
             this.CopyProperties();
 
-            this.ValidationRule(vm => vm.PressCount, count => count > 0 && count <= 10);
-            this.ValidationRule(vm => vm.WaitMilliseconds, wait => wait > 100 && wait <= 1000);
+            this.ValidationRule(vm => vm.PressCount, count => count == null || count > 0 && count <= 10);
+            this.ValidationRule(vm => vm.PressCount, count => count != null, ValidationType.Required);
+
+            this.ValidationRule(vm => vm.WaitMilliseconds, wait => wait == null || wait > 100 && wait <= 1000);
+            this.ValidationRule(vm => vm.WaitMilliseconds, wait => wait != null, ValidationType.Required);
 
             this.EnableChangeTracking();
         }
@@ -35,10 +38,10 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         public ModifierKeys BackwardModifierKeys { get; set; }
 
         [Reactive]
-        public int PressCount { get; set; }
+        public int? PressCount { get; set; }
 
         [Reactive]
-        public int WaitMilliseconds { get; set; }
+        public int? WaitMilliseconds { get; set; }
 
         protected override void EnableChangeTracking()
         {
@@ -57,8 +60,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         {
             this.ModifierKeysSwitchSettings.ForwardModifierKeys = this.ForwardModifierKeys;
             this.ModifierKeysSwitchSettings.BackwardModifierKeys = this.BackwardModifierKeys;
-            this.ModifierKeysSwitchSettings.PressCount = this.PressCount;
-            this.ModifierKeysSwitchSettings.WaitMilliseconds = this.WaitMilliseconds;
+            this.ModifierKeysSwitchSettings.PressCount = this.PressCount ?? 0;
+            this.ModifierKeysSwitchSettings.WaitMilliseconds = this.WaitMilliseconds ?? 0;
 
             return Task.FromResult(this.ModifierKeysSwitchSettings);
         }
