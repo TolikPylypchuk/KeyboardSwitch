@@ -116,20 +116,22 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         protected ValidationHelper ValidationRule<T>(
             Expression<Func<TViewModel, T>> property,
-            Func<T, bool> predicate,
-            ValidationType validationType = ValidationType.Valid)
+            Func<T, bool> required,
+            Func<T, bool> valid)
         {
             var propertyName = property.GetMemberName();
-            var messageSuffix = validationType switch
-            {
-                ValidationType.Valid => "Invalid",
-                ValidationType.Required => "Required",
-                _ => String.Empty
-            };
-
             return this.Self.ValidationRule(
-                property, predicate, $"{this.ResourceManager.GetString(propertyName)}{messageSuffix}");
+                property,
+                value => required(value) && valid(value),
+                value => this.ResourceManager.GetString(required(value)
+                    ? $"{propertyName}Invalid"
+                    : $"{propertyName}Required"));
         }
+
+        protected ValidationHelper ValidationRule(IObservable<bool> validation, string errorMessage)
+            => this.Self.ValidationRule(
+                _ => validation,
+                (vm, valid) => valid ? String.Empty : this.ResourceManager.GetString(errorMessage));
 
         protected virtual void EnableChangeTracking()
         {

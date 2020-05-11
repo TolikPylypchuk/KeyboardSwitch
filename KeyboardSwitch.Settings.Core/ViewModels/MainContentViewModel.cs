@@ -50,6 +50,14 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                     layout => layout.Id,
                     layout => new string(layout.Chars.Select(ch => ch.Character).ToArray()));
 
+            settings.SwitchMode = this.PreferencesViewModel.SwitchMode;
+
+            settings.HotKeySwitchSettings =
+                this.PreferencesViewModel.HotKeySwitchViewModel.HotKeySwitchSettings;
+
+            settings.ModifierKeysSwitchSettings =
+                this.PreferencesViewModel.ModifierKeysSwitchModel.ModifierKeysSwitchSettings;
+
             await this.settingsService.SaveAppSettingsAsync(settings);
         }
     }

@@ -156,6 +156,9 @@
   <data name="ModifierKeyNone" xml:space="preserve">
     <value />
   </data>
+  <data name="ModifierKeysAreSame" xml:space="preserve">
+    <value>Modifier key combinations for forward and backward switching must be different</value>
+  </data>
   <data name="ModifierKeyShift" xml:space="preserve">
     <value>Shift</value>
   </data>
@@ -195,11 +198,11 @@
   <data name="SwitchMode" xml:space="preserve">
     <value>Switch mode</value>
   </data>
-  <data name="WaitMillisecndsInvalid" xml:space="preserve">
-    <value>Wait time should be between 100 and 1000 milliseconds</value>
-  </data>
   <data name="WaitMilliseconds" xml:space="preserve">
     <value>Wait time (ms)</value>
+  </data>
+  <data name="WaitMillisecondsInvalid" xml:space="preserve">
+    <value>Wait time should be between 100 and 1000 milliseconds</value>
   </data>
   <data name="WaitMillisecondsRequired" xml:space="preserve">
     <value>Wait time is required</value>

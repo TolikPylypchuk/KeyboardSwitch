@@ -11,6 +11,7 @@ using KeyboardSwitch.Settings.Converters;
 using KeyboardSwitch.Settings.Core.ViewModels;
 
 using ReactiveUI;
+using ReactiveUI.Validation.Extensions;
 
 namespace KeyboardSwitch.Settings.Views
 {
@@ -61,6 +62,20 @@ namespace KeyboardSwitch.Settings.Views
                         this.numberConverter,
                         this.numberConverter)
                     .DisposeWith(disposables);
+
+                this.BindValidation(
+                        this.ViewModel, vm => vm.PressCount, v => v.PressCountValidationTextBlock.Text)
+                    .DisposeWith(disposables);
+
+                this.BindValidation(
+                        this.ViewModel, vm => vm.WaitMilliseconds, v => v.WaitMillisecondsValidationTextBlock.Text)
+                    .DisposeWith(disposables);
+
+                this.BindValidation(
+                        this.ViewModel,
+                        vm => vm.ModifierKeysAreDifferentRule,
+                        v => v.ModifierKeysValidationTextBlock.Text)
+                    .DisposeWith(disposables);
             });
 
             this.InitializeComponent();
@@ -72,6 +87,10 @@ namespace KeyboardSwitch.Settings.Views
         private TextBox PressCountTextBox { get; set; } = null!;
         private TextBox WaitMillisecondsTextBox { get; set; } = null!;
 
+        private TextBlock PressCountValidationTextBlock { get; set; } = null!;
+        private TextBlock WaitMillisecondsValidationTextBlock { get; set; } = null!;
+        private TextBlock ModifierKeysValidationTextBlock { get; set; } = null!;
+
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
@@ -81,6 +100,15 @@ namespace KeyboardSwitch.Settings.Views
 
             this.PressCountTextBox = this.FindControl<TextBox>(nameof(this.PressCountTextBox));
             this.WaitMillisecondsTextBox = this.FindControl<TextBox>(nameof(this.WaitMillisecondsTextBox));
+
+            this.PressCountValidationTextBlock = this.FindControl<TextBlock>(
+                nameof(this.PressCountValidationTextBlock));
+
+            this.WaitMillisecondsValidationTextBlock = this.FindControl<TextBlock>(
+                nameof(this.WaitMillisecondsValidationTextBlock));
+
+            this.ModifierKeysValidationTextBlock = this.FindControl<TextBlock>(
+                nameof(this.ModifierKeysValidationTextBlock));
 
             var allModifiers = new List<ModifierKeys> { ModifierKeys.Alt, ModifierKeys.Ctrl, ModifierKeys.Shift }
                 .GetPowerSet()

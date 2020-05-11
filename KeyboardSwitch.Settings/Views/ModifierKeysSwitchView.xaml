@@ -5,27 +5,33 @@
              xmlns:l="clr-namespace:KeyboardSwitch.Settings.Localization"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="KeyboardSwitch.Settings.Views.ModifierKeysSwitchView">
-    <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,Auto,Auto,Auto" Margin="10">
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="{l:Translate Forward}" VerticalAlignment="Center"
-                   HorizontalAlignment="Right" Margin="0,0,10,0" />
-        
-        <ComboBox x:Name="ForwardComboBox" Grid.Row="0" Grid.Column="1" Margin="0,0,10,0" HorizontalAlignment="Left" />
+    <StackPanel>
+        <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,Auto,Auto,Auto" Margin="10">
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{l:Translate Forward}" VerticalAlignment="Center"
+                       HorizontalAlignment="Right" Margin="0,0,10,0" />
 
-        <TextBlock Grid.Row="0" Grid.Column="2" Text="{l:Translate Backward}" VerticalAlignment="Center"
-                   HorizontalAlignment="Right" Margin="0,0,10,0" />
-        
-        <ComboBox Grid.Row="0" Grid.Column="3" x:Name="BackwardComboBox" HorizontalAlignment="Left" />
+            <ComboBox x:Name="ForwardComboBox" Grid.Row="0" Grid.Column="1" Margin="0,0,10,0" HorizontalAlignment="Left" />
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="{l:Translate PressCount}" VerticalAlignment="Center"
-                   HorizontalAlignment="Right" Margin="0,10,10,0" />
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="{l:Translate Backward}" VerticalAlignment="Center"
+                       HorizontalAlignment="Right" Margin="0,0,10,0" />
 
-        <TextBox x:Name="PressCountTextBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"
-                 Margin="0,10,10,0" Width="50" />
+            <ComboBox Grid.Row="0" Grid.Column="3" x:Name="BackwardComboBox" HorizontalAlignment="Left" />
 
-        <TextBlock Grid.Row="1" Grid.Column="2" Text="{l:Translate WaitMilliseconds}" VerticalAlignment="Center"
-                   HorizontalAlignment="Right" Margin="0,10,10,0" />
-        
-        <TextBox x:Name="WaitMillisecondsTextBox" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Left"
-                 Margin="0,10,0,0" Width="50" />
-    </Grid>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="{l:Translate PressCount}" VerticalAlignment="Center"
+                       HorizontalAlignment="Right" Margin="0,10,10,0" />
+
+            <TextBox x:Name="PressCountTextBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"
+                     Margin="0,10,10,0" Width="50" />
+
+            <TextBlock Grid.Row="1" Grid.Column="2" Text="{l:Translate WaitMilliseconds}" VerticalAlignment="Center"
+                       HorizontalAlignment="Right" Margin="0,10,10,0" />
+
+            <TextBox x:Name="WaitMillisecondsTextBox" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Left"
+                     Margin="0,10,0,0" Width="50" />
+        </Grid>
+
+        <TextBlock x:Name="PressCountValidationTextBlock" Foreground="Red" Margin="10,2" />
+        <TextBlock x:Name="WaitMillisecondsValidationTextBlock" Foreground="Red" Margin="10,2" />
+        <TextBlock x:Name="ModifierKeysValidationTextBlock" Foreground="Red" Margin="10,2" />
+    </StackPanel>
 </UserControl>

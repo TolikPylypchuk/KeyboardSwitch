@@ -178,6 +178,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Modifier key combinations for forward and backward switching must be different.
+        /// </summary>
+        internal static string ModifierKeysAreSame {
+            get {
+                return ResourceManager.GetString("ModifierKeysAreSame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shift.
         /// </summary>
         internal static string ModifierKeyShift {
@@ -295,20 +304,20 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wait time should be between 100 and 1000 milliseconds.
-        /// </summary>
-        internal static string WaitMillisecndsInvalid {
-            get {
-                return ResourceManager.GetString("WaitMillisecndsInvalid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Wait time (ms).
         /// </summary>
         internal static string WaitMilliseconds {
             get {
                 return ResourceManager.GetString("WaitMilliseconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wait time should be between 100 and 1000 milliseconds.
+        /// </summary>
+        internal static string WaitMillisecondsInvalid {
+            get {
+                return ResourceManager.GetString("WaitMillisecondsInvalid", resourceCulture);
             }
         }
         

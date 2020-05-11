@@ -24,6 +24,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.CopyProperties();
 
             this.WhenAnyValue(vm => vm.SwitchMode)
+                .Merge(this.Cancel.Select(_ => this.SwitchMode))
                 .Select<SwitchMode, ReactiveObject>(mode => mode switch
                 {
                     SwitchMode.HotKey => this.HotKeySwitchViewModel,
@@ -54,10 +55,12 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         protected override void EnableChangeTracking()
         {
             this.TrackChanges(vm => vm.SwitchMode, vm => vm.PreferencesModel.SwitchMode);
-            this.TrackChanges(
-                this.WhenAnyValue(vm => vm.HotKeySwitchViewModel).Select(vm => vm.FormChanged).Switch());
-            this.TrackChanges(
-                this.WhenAnyValue(vm => vm.ModifierKeysSwitchModel).Select(vm => vm.FormChanged).Switch());
+
+            this.TrackChanges(this.WhenAnyObservable(vm => vm.HotKeySwitchViewModel.FormChanged));
+            this.TrackChanges(this.WhenAnyObservable(vm => vm.ModifierKeysSwitchModel.FormChanged));
+
+            this.TrackValidation(this.WhenAnyObservable(vm => vm.HotKeySwitchViewModel.Valid));
+            this.TrackValidation(this.WhenAnyObservable(vm => vm.ModifierKeysSwitchModel.Valid));
 
             base.EnableChangeTracking();
         }
@@ -74,10 +77,11 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         protected override void CopyProperties()
         {
-            this.SwitchMode = this.PreferencesModel.SwitchMode;
             this.HotKeySwitchViewModel = new HotKeySwitchViewModel(this.PreferencesModel.HotKeySwitchSettings);
             this.ModifierKeysSwitchModel = new ModifierKeysSwitchViewModel(
                 this.PreferencesModel.ModifierKeysSwitchSettings);
+
+            this.SwitchMode = this.PreferencesModel.SwitchMode;
         }
     }
 }

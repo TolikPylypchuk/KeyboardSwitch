@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Reactive.Disposables;
-
+using System.Reactive.Linq;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
@@ -35,12 +35,25 @@ namespace KeyboardSwitch.Settings.Views
                         this.switchModeConverter)
                     .DisposeWith(disposables);
 
-                this.WhenAnyObservable(v => v.ViewModel.FormChanged)
+                Observable.CombineLatest(
+                        this.WhenAnyObservable(v => v.ViewModel.HotKeySwitchViewModel.FormChanged),
+                        this.WhenAnyObservable(v => v.ViewModel.ModifierKeysSwitchModel.FormChanged))
+                    .AnyTrue()
                     .Invert()
                     .BindTo(this, v => v.SwitchModeComboBox.IsEnabled)
                     .DisposeWith(disposables);
 
                 this.OneWayBind(this.ViewModel, vm => vm.Content, v => v.PreferencesContent.Content)
+                    .DisposeWith(disposables);
+
+                this.BindCommand(this.ViewModel, vm => vm.Save, v => v.SaveButton)
+                    .DisposeWith(disposables);
+
+                this.BindCommand(this.ViewModel, vm => vm.Cancel, v => v.CancelButton)
+                    .DisposeWith(disposables);
+
+                this.WhenAnyObservable(v => v.ViewModel.Cancel.CanExecute)
+                    .BindTo(this, v => v.ActionPanel.IsVisible)
                     .DisposeWith(disposables);
             });
 
@@ -50,12 +63,20 @@ namespace KeyboardSwitch.Settings.Views
         private ComboBox SwitchModeComboBox { get; set; } = null!;
         private ContentControl PreferencesContent { get; set; } = null!;
 
+        private StackPanel ActionPanel { get; set; } = null!;
+        private Button SaveButton { get; set; } = null!;
+        private Button CancelButton { get; set; } = null!;
+
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
 
             this.SwitchModeComboBox = this.FindControl<ComboBox>(nameof(this.SwitchModeComboBox));
             this.PreferencesContent = this.FindControl<ContentControl>(nameof(this.PreferencesContent));
+
+            this.ActionPanel = this.FindControl<StackPanel>(nameof(this.ActionPanel));
+            this.SaveButton = this.FindControl<Button>(nameof(this.SaveButton));
+            this.CancelButton = this.FindControl<Button>(nameof(this.CancelButton));
 
             this.SwitchModeComboBox.Items = Enum.GetValues(typeof(SwitchMode))
                 .Cast<SwitchMode>()

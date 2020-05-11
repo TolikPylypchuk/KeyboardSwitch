@@ -5,11 +5,17 @@
              xmlns:l="clr-namespace:KeyboardSwitch.Settings.Localization"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="KeyboardSwitch.Settings.Views.PreferencesView">
-    <StackPanel>
-        <StackPanel Orientation="Horizontal" Margin="10">
+    <DockPanel>
+        <StackPanel Orientation="Horizontal" Margin="10" DockPanel.Dock="Top">
             <TextBlock Text="{l:Translate SwitchMode}" VerticalAlignment="Center" Margin="0,0,10,0" />
             <ComboBox x:Name="SwitchModeComboBox" />
         </StackPanel>
+        
+        <StackPanel x:Name="ActionPanel" Orientation="Horizontal" DockPanel.Dock="Bottom">
+            <Button x:Name="SaveButton" Content="{l:Translate Save}" Padding="10,4" Margin="5" />
+            <Button x:Name="CancelButton" Content="{l:Translate Cancel}" Padding="10,4" Margin="5" />
+        </StackPanel>
+        
         <ContentControl x:Name="PreferencesContent" />
-    </StackPanel>
+    </DockPanel>
 </UserControl>

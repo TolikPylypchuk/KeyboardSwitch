@@ -29,11 +29,15 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.HotKeySwitchSettings = settings;
             this.CopyProperties();
 
-            this.ValidationRule(vm => vm.Forward, vm => vm.Character != MissingCharacter, ValidationType.Required);
-            this.ValidationRule(vm => vm.Forward, vm => AllowedCharacters.Contains(vm.Character));
+            this.ValidationRule(
+                vm => vm.Forward,
+                vm => vm.Character != MissingCharacter,
+                vm => AllowedCharacters.Contains(vm.Character));
 
-            this.ValidationRule(vm => vm.Backward, vm => vm.Character != MissingCharacter, ValidationType.Required);
-            this.ValidationRule(vm => vm.Backward, vm => AllowedCharacters.Contains(vm.Character));
+            this.ValidationRule(
+                vm => vm.Backward,
+                vm => vm.Character != MissingCharacter,
+                vm => AllowedCharacters.Contains(vm.Character));
 
             this.EnableChangeTracking();
         }
