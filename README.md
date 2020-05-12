@@ -1,4 +1,4 @@
-# Keyboard Layout Switch
+# Keyboard Switch
 
 Version 3.0 (Work in progress)
 
@@ -31,10 +31,14 @@ deterministically.
 
 ## Languages
 
-The app uses the list of your input languages in the same order as defined by the system. You can switch both forward
-and backward through this list. The app also automaticly changes your input language, so you don't have to do it
-yourself. You can disable this as well if you so wish. You cannot add a language that's not present as one of
-the system's input languages. If you add/remove an input language while the app is running, you'll have to restart it.
+The app uses the list of your layouts in the same order as defined by the system. You can switch both forward
+and backward through this list. The app also automaticly changes your layouts, so you don't have to do it
+yourself. You can disable this as well if you so wish. You cannot add a layout that's not present as one of
+the system's layouts. If you add/remove a layout while the app is running, you'll have configure it in the settings
+to restart the service.
+
+This app is "Western-oriented". I developed it specifically to handle switching between Cyrillic and Latin scripts.
+I don't know how it will work (if at all) with Eastern languages/scripts.
 
 I hope this app will make your life at least 1% easier :)
 
@@ -47,7 +51,7 @@ instead of an app with a hidden window
   - The settings are now a separate app written in Avalonia instead of WPF
   - Tray icon was removed
   - Added the ability to switch between multiple layouts of the same language (e.g. QWERTY and Dvorak for English)
-  - Instant switching mode is not extermental anymore and enabled by default
+  - Instant switching mode is not experimental anymore and enabled by default
 
 ### What's new in version 2.1:
 
