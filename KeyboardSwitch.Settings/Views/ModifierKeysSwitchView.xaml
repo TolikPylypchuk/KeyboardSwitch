@@ -32,6 +32,6 @@
 
         <TextBlock x:Name="PressCountValidationTextBlock" Foreground="Red" Margin="10,2" />
         <TextBlock x:Name="WaitMillisecondsValidationTextBlock" Foreground="Red" Margin="10,2" />
-        <TextBlock x:Name="ModifierKeysValidationTextBlock" Foreground="Red" Margin="10,2" />
+        <TextBlock x:Name="SwitchMethodsValidationTextBlock" Foreground="Red" Margin="10,2" />
     </StackPanel>
 </UserControl>

@@ -10,6 +10,7 @@ using KeyboardSwitch.Settings.Core.Models;
 
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using ReactiveUI.Validation.Helpers;
 
 using static KeyboardSwitch.Common.Constants;
 
@@ -18,7 +19,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
     public sealed class HotKeySwitchViewModel : FormBase<HotKeySwitchSettings, HotKeySwitchViewModel>
     {
         private static readonly IImmutableSet<char> AllowedCharacters = ImmutableHashSet.CreateRange(
-            "QWERTYUIOP[]\\ASDFGHJKL;'ZXCVBNM,./1234567890-=");
+            "QWERTYUIOP[]\\ASDFGHJKL;'ZXCVBNM,./1234567890-=").Add(MissingCharacter);
 
         public HotKeySwitchViewModel(
             HotKeySwitchSettings settings,
@@ -29,15 +30,28 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.HotKeySwitchSettings = settings;
             this.CopyProperties();
 
-            this.ValidationRule(
-                vm => vm.Forward,
-                vm => vm.Character != MissingCharacter,
-                vm => AllowedCharacters.Contains(vm.Character));
+            var forwardIsPresent = this.WhenAnyValue(vm => vm.Forward.Character)
+                .Select(ch => ch != MissingCharacter);
 
-            this.ValidationRule(
-                vm => vm.Backward,
-                vm => vm.Character != MissingCharacter,
-                vm => AllowedCharacters.Contains(vm.Character));
+            var forwardIsValid = this.WhenAnyValue(vm => vm.Forward.Character)
+                .Select(AllowedCharacters.Contains);
+
+            this.ForwardIsRequiredRule = this.ValidationRule(forwardIsPresent, "ForwardRequired");
+            this.ForwardIsValidRule = this.ValidationRule(forwardIsValid, "ForwardInvalid");
+
+            var backwardIsPresent = this.WhenAnyValue(vm => vm.Backward.Character)
+                .Select(ch => ch != MissingCharacter);
+
+            var backwardIsValid = this.WhenAnyValue(vm => vm.Backward.Character)
+                .Select(AllowedCharacters.Contains);
+
+            this.BackwardIsRequiredRule = this.ValidationRule(backwardIsPresent, "BackwardRequired");
+            this.BackwardIsValidRule = this.ValidationRule(backwardIsValid, "BackwardInvalid");
+
+            var switchMethodsAreDifferent = 
+                this.WhenAnyValue(vm => vm.Forward.Character, vm => vm.Backward.Character, (f, b) => f != b);
+
+            this.SwitchMethodsAreDifferentRule = this.ValidationRule(switchMethodsAreDifferent, "SwitchMethodsAreSame");
 
             this.EnableChangeTracking();
         }
@@ -52,6 +66,14 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         [Reactive]
         public CharacterViewModel Backward { get; set; } = null!;
+
+        public ValidationHelper ForwardIsRequiredRule { get; }
+        public ValidationHelper ForwardIsValidRule { get; }
+
+        public ValidationHelper BackwardIsRequiredRule { get; }
+        public ValidationHelper BackwardIsValidRule { get; }
+
+        public ValidationHelper SwitchMethodsAreDifferentRule { get; }
 
         protected override HotKeySwitchViewModel Self
             => this;

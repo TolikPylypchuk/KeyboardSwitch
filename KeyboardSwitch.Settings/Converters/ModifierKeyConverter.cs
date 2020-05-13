@@ -14,9 +14,17 @@ namespace KeyboardSwitch.Settings.Converters
         private readonly Dictionary<ModifierKeys, string> modeToKeys;
         private readonly Dictionary<string, ModifierKeys> keysToMode;
 
+        private readonly List<ModifierKeys> baseline = new List<ModifierKeys>
+        {
+            ModifierKeys.Alt,
+            ModifierKeys.Ctrl,
+            ModifierKeys.Shift,
+            ModifierKeys.Win
+        };
+
         public ModifierKeyConverter()
         {
-            this.modeToKeys = this.Baseline.GetPowerSet()
+            this.modeToKeys = this.baseline.GetPowerSet()
                 .Select(modifiers => modifiers.ToList())
                 .Where(modifiers => modifiers.Count > 0)
                 .Select(modifiers => new
@@ -30,14 +38,6 @@ namespace KeyboardSwitch.Settings.Converters
 
             this.keysToMode = modeToKeys.ToDictionary(e => e.Value, e => e.Key);
         }
-
-        public List<ModifierKeys> Baseline { get; } = new List<ModifierKeys>
-        {
-            ModifierKeys.Alt,
-            ModifierKeys.Ctrl,
-            ModifierKeys.Shift,
-            ModifierKeys.Win
-        };
 
         public int GetAffinityForObjects(Type fromType, Type toType)
             => fromType == typeof(ModifierKeys) && toType == typeof(string) ||

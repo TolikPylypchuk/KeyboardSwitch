@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
@@ -35,6 +36,12 @@ namespace KeyboardSwitch.Settings.Views
                         this.switchModeConverter)
                     .DisposeWith(disposables);
 
+                this.Bind(this.ViewModel, vm => vm.InstantSwitching, v => v.InstantSwitchingCheckBox.IsChecked)
+                    .DisposeWith(disposables);
+
+                this.Bind(this.ViewModel, vm => vm.SwitchLayout, v => v.SwitchLayoutCheckBox.IsChecked)
+                    .DisposeWith(disposables);
+
                 Observable.CombineLatest(
                         this.WhenAnyObservable(v => v.ViewModel.HotKeySwitchViewModel.FormChanged),
                         this.WhenAnyObservable(v => v.ViewModel.ModifierKeysSwitchModel.FormChanged))
@@ -60,6 +67,9 @@ namespace KeyboardSwitch.Settings.Views
             this.InitializeComponent();
         }
 
+        private CheckBox InstantSwitchingCheckBox { get; set; } = null!;
+        private CheckBox SwitchLayoutCheckBox { get; set; } = null!;
+
         private ComboBox SwitchModeComboBox { get; set; } = null!;
         private ContentControl PreferencesContent { get; set; } = null!;
 
@@ -70,6 +80,9 @@ namespace KeyboardSwitch.Settings.Views
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+
+            this.InstantSwitchingCheckBox = this.FindControl<CheckBox>(nameof(this.InstantSwitchingCheckBox));
+            this.SwitchLayoutCheckBox = this.FindControl<CheckBox>(nameof(this.SwitchLayoutCheckBox));
 
             this.SwitchModeComboBox = this.FindControl<ComboBox>(nameof(this.SwitchModeComboBox));
             this.PreferencesContent = this.FindControl<ContentControl>(nameof(this.PreferencesContent));

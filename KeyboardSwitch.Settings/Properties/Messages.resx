@@ -120,6 +120,9 @@
   <data name="Backward" xml:space="preserve">
     <value>Backward</value>
   </data>
+  <data name="BackwardInvalid" xml:space="preserve">
+    <value>Backward key is invalid</value>
+  </data>
   <data name="BackwardRequired" xml:space="preserve">
     <value>Backward key is required</value>
   </data>
@@ -132,8 +135,17 @@
   <data name="Forward" xml:space="preserve">
     <value>Forward</value>
   </data>
+  <data name="ForwardInvalid" xml:space="preserve">
+    <value>Forward key is invalid</value>
+  </data>
   <data name="ForwardRequired" xml:space="preserve">
     <value>Forward key is required</value>
+  </data>
+  <data name="HotKey" xml:space="preserve">
+    <value>Hot key</value>
+  </data>
+  <data name="InstantSwitching" xml:space="preserve">
+    <value>Instant switching</value>
   </data>
   <data name="KeyboardSwitchServiceNotRunning" xml:space="preserve">
     <value>The Keyboard Switch service is not running</value>
@@ -156,8 +168,8 @@
   <data name="ModifierKeyNone" xml:space="preserve">
     <value />
   </data>
-  <data name="ModifierKeysAreSame" xml:space="preserve">
-    <value>Modifier key combinations for forward and backward switching must be different</value>
+  <data name="ModifierKeys" xml:space="preserve">
+    <value>Modifier keys</value>
   </data>
   <data name="ModifierKeyShift" xml:space="preserve">
     <value>Shift</value>
@@ -168,14 +180,11 @@
   <data name="ModifierKeyWin" xml:space="preserve">
     <value>Win</value>
   </data>
+  <data name="Modifiers" xml:space="preserve">
+    <value>Modifiers</value>
+  </data>
   <data name="Preferences" xml:space="preserve">
     <value>Preferences</value>
-  </data>
-  <data name="PreferencesHotKey" xml:space="preserve">
-    <value>Hot key</value>
-  </data>
-  <data name="PreferencesModifierKeys" xml:space="preserve">
-    <value>Modifier keys</value>
   </data>
   <data name="PressCount" xml:space="preserve">
     <value>Press count</value>
@@ -194,6 +203,12 @@
   </data>
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
+  </data>
+  <data name="SwitchLayout" xml:space="preserve">
+    <value>Switch layout</value>
+  </data>
+  <data name="SwitchMethodsAreSame" xml:space="preserve">
+    <value>Methods of forward and backward switching must be different</value>
   </data>
   <data name="SwitchMode" xml:space="preserve">
     <value>Switch mode</value>

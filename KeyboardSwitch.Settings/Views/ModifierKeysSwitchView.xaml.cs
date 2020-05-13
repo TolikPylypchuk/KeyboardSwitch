@@ -73,8 +73,8 @@ namespace KeyboardSwitch.Settings.Views
 
                 this.BindValidation(
                         this.ViewModel,
-                        vm => vm.ModifierKeysAreDifferentRule,
-                        v => v.ModifierKeysValidationTextBlock.Text)
+                        vm => vm.SwitchMethodsAreDifferentRule,
+                        v => v.SwitchMethodsValidationTextBlock.Text)
                     .DisposeWith(disposables);
             });
 
@@ -89,7 +89,7 @@ namespace KeyboardSwitch.Settings.Views
 
         private TextBlock PressCountValidationTextBlock { get; set; } = null!;
         private TextBlock WaitMillisecondsValidationTextBlock { get; set; } = null!;
-        private TextBlock ModifierKeysValidationTextBlock { get; set; } = null!;
+        private TextBlock SwitchMethodsValidationTextBlock { get; set; } = null!;
 
         private void InitializeComponent()
         {
@@ -107,8 +107,8 @@ namespace KeyboardSwitch.Settings.Views
             this.WaitMillisecondsValidationTextBlock = this.FindControl<TextBlock>(
                 nameof(this.WaitMillisecondsValidationTextBlock));
 
-            this.ModifierKeysValidationTextBlock = this.FindControl<TextBlock>(
-                nameof(this.ModifierKeysValidationTextBlock));
+            this.SwitchMethodsValidationTextBlock = this.FindControl<TextBlock>(
+                nameof(this.SwitchMethodsValidationTextBlock));
 
             var allModifiers = new List<ModifierKeys> { ModifierKeys.Alt, ModifierKeys.Ctrl, ModifierKeys.Shift }
                 .GetPowerSet()

@@ -58,6 +58,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             settings.ModifierKeysSwitchSettings =
                 this.PreferencesViewModel.ModifierKeysSwitchModel.ModifierKeysSwitchSettings;
 
+            settings.InstantSwitching = this.PreferencesViewModel.InstantSwitching;
+            settings.SwitchLayout = this.PreferencesViewModel.SwitchLayout;
+
             await this.settingsService.SaveAppSettingsAsync(settings);
         }
     }

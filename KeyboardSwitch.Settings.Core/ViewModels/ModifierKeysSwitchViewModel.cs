@@ -28,12 +28,12 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.ValidationRule(
                 vm => vm.WaitMilliseconds, wait => wait != null, wait => wait > 100 && wait <= 1000);
 
-            var modifierKeysAreDifferent = this.WhenAnyValue(
+            var switchMethodsAreDifferent = this.WhenAnyValue(
                 vm => vm.ForwardModifierKeys,
                 vm => vm.BackwardModifierKeys,
                 (forward, backward) => forward != backward);
 
-            this.ModifierKeysAreDifferentRule = this.ValidationRule(modifierKeysAreDifferent, "ModifierKeysAreSame");
+            this.SwitchMethodsAreDifferentRule = this.ValidationRule(switchMethodsAreDifferent, "SwitchMethodsAreSame");
 
             this.EnableChangeTracking();
         }
@@ -52,7 +52,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         [Reactive]
         public int? WaitMilliseconds { get; set; }
 
-        public ValidationHelper ModifierKeysAreDifferentRule { get; }
+        public ValidationHelper SwitchMethodsAreDifferentRule { get; }
 
         protected override void EnableChangeTracking()
         {

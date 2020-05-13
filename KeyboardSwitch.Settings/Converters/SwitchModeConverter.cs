@@ -18,8 +18,8 @@ namespace KeyboardSwitch.Settings.Converters
         {
             this.modeToString = new Dictionary<SwitchMode, string>
             {
-                [SwitchMode.HotKey] = Messages.PreferencesHotKey,
-                [SwitchMode.ModifierKey] = Messages.PreferencesModifierKeys
+                [SwitchMode.HotKey] = Messages.HotKey,
+                [SwitchMode.ModifierKey] = Messages.ModifierKeys
             };
 
             this.stringToMode = modeToString.ToDictionary(e => e.Value, e => e.Key);

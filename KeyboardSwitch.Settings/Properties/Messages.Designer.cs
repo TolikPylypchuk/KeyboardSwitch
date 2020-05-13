@@ -70,6 +70,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Backward key is invalid.
+        /// </summary>
+        internal static string BackwardInvalid {
+            get {
+                return ResourceManager.GetString("BackwardInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Backward key is required.
         /// </summary>
         internal static string BackwardRequired {
@@ -106,11 +115,38 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Forward key is invalid.
+        /// </summary>
+        internal static string ForwardInvalid {
+            get {
+                return ResourceManager.GetString("ForwardInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Forward key is required.
         /// </summary>
         internal static string ForwardRequired {
             get {
                 return ResourceManager.GetString("ForwardRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hot key.
+        /// </summary>
+        internal static string HotKey {
+            get {
+                return ResourceManager.GetString("HotKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Instant switching.
+        /// </summary>
+        internal static string InstantSwitching {
+            get {
+                return ResourceManager.GetString("InstantSwitching", resourceCulture);
             }
         }
         
@@ -178,11 +214,11 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Modifier key combinations for forward and backward switching must be different.
+        ///   Looks up a localized string similar to Modifier keys.
         /// </summary>
-        internal static string ModifierKeysAreSame {
+        internal static string ModifierKeys {
             get {
-                return ResourceManager.GetString("ModifierKeysAreSame", resourceCulture);
+                return ResourceManager.GetString("ModifierKeys", resourceCulture);
             }
         }
         
@@ -214,29 +250,20 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Modifiers.
+        /// </summary>
+        internal static string Modifiers {
+            get {
+                return ResourceManager.GetString("Modifiers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Preferences.
         /// </summary>
         internal static string Preferences {
             get {
                 return ResourceManager.GetString("Preferences", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Hot key.
-        /// </summary>
-        internal static string PreferencesHotKey {
-            get {
-                return ResourceManager.GetString("PreferencesHotKey", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Modifier keys.
-        /// </summary>
-        internal static string PreferencesModifierKeys {
-            get {
-                return ResourceManager.GetString("PreferencesModifierKeys", resourceCulture);
             }
         }
         
@@ -291,6 +318,24 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string Stop {
             get {
                 return ResourceManager.GetString("Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Switch layout.
+        /// </summary>
+        internal static string SwitchLayout {
+            get {
+                return ResourceManager.GetString("SwitchLayout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Methods of forward and backward switching must be different.
+        /// </summary>
+        internal static string SwitchMethodsAreSame {
+            get {
+                return ResourceManager.GetString("SwitchMethodsAreSame", resourceCulture);
             }
         }
         
