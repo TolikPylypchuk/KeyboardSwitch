@@ -20,6 +20,8 @@ namespace KeyboardSwitch
         private readonly IKeysService keysService;
         private readonly ILogger<Worker> logger;
 
+        private IDisposable? hookSubscription;
+
         public Worker(
             IKeyboardHookService keyboardHookService,
             ISwitchService switchService,
@@ -57,6 +59,7 @@ namespace KeyboardSwitch
         {
             this.logger.LogDebug("Refreshing the hot key registration to switch forward and backward");
             this.keyboardHookService.UnregisterAll();
+            this.hookSubscription?.Dispose();
             this.RegisterHotKeys(await this.settingsService.GetAppSettingsAsync());
         }
 
@@ -83,7 +86,7 @@ namespace KeyboardSwitch
             this.keyboardHookService.RegisterHotKey(settings.ModifierKeys, forwardKeyCode);
             this.keyboardHookService.RegisterHotKey(settings.ModifierKeys, backwardKeyCode);
 
-            this.keyboardHookService.HotKeyPressed
+            this.hookSubscription = this.keyboardHookService.HotKeyPressed
                 .Select(hotKey => hotKey.VirtualKeyCode == forwardKeyCode
                     ? SwitchDirection.Forward
                     : SwitchDirection.Backward)
@@ -97,7 +100,7 @@ namespace KeyboardSwitch
             this.keyboardHookService.RegisterHotModifierKey(
                 settings.BackwardModifierKeys, settings.PressCount, settings.WaitMilliseconds);
 
-            this.keyboardHookService.HotKeyPressed
+            this.hookSubscription = this.keyboardHookService.HotKeyPressed
                 .Select(hotKey => hotKey.Modifiers == settings.ForwardModifierKeys
                     ? SwitchDirection.Forward
                     : SwitchDirection.Backward)
