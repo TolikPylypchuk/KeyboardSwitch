@@ -10,6 +10,7 @@ using Akavache;
 using Avalonia;
 using Avalonia.Logging.Serilog;
 using Avalonia.ReactiveUI;
+using Avalonia.Threading;
 
 using KeyboardSwitch.Common;
 using KeyboardSwitch.Common.Services;
@@ -47,7 +48,6 @@ namespace KeyboardSwitch.Settings
             return AppBuilder.Configure<App>()
                 .UsePlatformDetect()
                 .LogToDebug()
-                .UseReactiveUI()
                 .Configure(services)
                 .StartWithClassicDesktopLifetime(args);
         }
@@ -89,6 +89,12 @@ namespace KeyboardSwitch.Settings
             Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
 
             Locator.CurrentMutable.RegisterConstant(RxApp.TaskpoolScheduler, TaskPoolKey);
+
+            RxApp.MainThreadScheduler = AvaloniaScheduler.Instance;
+
+            Locator.CurrentMutable.RegisterConstant(
+                new AvaloniaActivationForViewFetcher(), typeof(IActivationForViewFetcher));
+            Locator.CurrentMutable.RegisterConstant(new BindingHook(), typeof(IPropertyBindingHook));
         }
 
         private static AppBuilder Configure(this AppBuilder builder, IServiceCollection services)
@@ -96,8 +102,7 @@ namespace KeyboardSwitch.Settings
             {
                 if (newBuilder.Instance is App app)
                 {
-                    var serviceProvider = services
-                        .BuildServiceProvider();
+                    var serviceProvider = services.BuildServiceProvider();
 
                     serviceProvider.UseMicrosoftDependencyResolver();
 

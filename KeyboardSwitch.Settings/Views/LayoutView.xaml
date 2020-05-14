@@ -16,6 +16,6 @@
         </StackPanel>
 
         <TextBox x:Name="CharsTextBox" Grid.Column="1" FontFamily="Consolas" FontSize="16"
-                 VerticalAlignment="Center" HorizontalAlignment="Stretch" />
+                 VerticalAlignment="Center" HorizontalAlignment="Stretch" MinWidth="100" />
     </Grid>
 </UserControl>
