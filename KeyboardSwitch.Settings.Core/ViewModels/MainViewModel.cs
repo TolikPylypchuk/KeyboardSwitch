@@ -56,8 +56,6 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                         LanguageName = layoutsById[chars.Key].Culture.DisplayName,
                         KeyboardName = layoutsById[chars.Key].KeyboardName,
                         Chars = chars.Value
-                            .Select((ch, index) => new CharacterModel { Character = ch, Index = index })
-                            .ToList()
                     })
                     .ToList();
 

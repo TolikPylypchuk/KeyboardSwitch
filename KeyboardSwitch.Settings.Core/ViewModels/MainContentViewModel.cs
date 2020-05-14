@@ -46,9 +46,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             settings.CharsByKeyboardLayoutId = this.CharMappingViewModel
                 .CharMappingModel
                 .Layouts
-                .ToDictionary(
-                    layout => layout.Id,
-                    layout => new string(layout.Chars.Select(ch => ch.Character).ToArray()));
+                .ToDictionary(layout => layout.Id, layout => layout.Chars);
 
             settings.SwitchMode = this.PreferencesViewModel.SwitchMode;
 
