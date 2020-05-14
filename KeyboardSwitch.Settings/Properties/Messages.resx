@@ -195,6 +195,12 @@
   <data name="PressCountRequired" xml:space="preserve">
     <value>Press cound is required</value>
   </data>
+  <data name="Sandbox" xml:space="preserve">
+    <value>Sandbox</value>
+  </data>
+  <data name="SandboxInfo" xml:space="preserve">
+    <value>Sandbox is a where you can test out your changes in settings and preferences</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>

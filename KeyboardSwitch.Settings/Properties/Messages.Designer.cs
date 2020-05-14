@@ -295,6 +295,24 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sandbox.
+        /// </summary>
+        internal static string Sandbox {
+            get {
+                return ResourceManager.GetString("Sandbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sandbox is a where you can test out your changes in settings and preferences.
+        /// </summary>
+        internal static string SandboxInfo {
+            get {
+                return ResourceManager.GetString("SandboxInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         internal static string Save {

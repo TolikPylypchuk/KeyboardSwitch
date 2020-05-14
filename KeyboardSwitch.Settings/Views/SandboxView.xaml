@@ -1,0 +1,14 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:l="clr-namespace:KeyboardSwitch.Settings.Localization"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="KeyboardSwitch.Settings.Views.SandboxView">
+    <DockPanel>
+        <TextBlock Text="{l:Translate SandboxInfo}" Margin="10" DockPanel.Dock="Top" FontSize="14" />
+
+        <TextBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"
+                 AcceptsReturn="True" FontSize="14" />
+    </DockPanel>
+</UserControl>

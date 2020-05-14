@@ -27,6 +27,7 @@
     <AvaloniaResource Remove="Views\MainContentView.xaml" />
     <AvaloniaResource Remove="Views\ModifierKeysSwitchView.xaml" />
     <AvaloniaResource Remove="Views\PreferencesView.xaml" />
+    <AvaloniaResource Remove="Views\SandboxView.xaml" />
     <AvaloniaResource Remove="Views\ServiceView.xaml" />
   </ItemGroup>
   <ItemGroup>
@@ -38,6 +39,7 @@
     <None Remove="Views\MainContentView.xaml" />
     <None Remove="Views\ModifierKeysSwitchView.xaml" />
     <None Remove="Views\PreferencesView.xaml" />
+    <None Remove="Views\SandboxView.xaml" />
     <None Remove="Views\ServiceView.xaml" />
   </ItemGroup>
   <ItemGroup>
@@ -114,6 +116,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\ModifierKeysSwitchView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\SandboxView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>
