@@ -286,15 +286,6 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Press cound is required.
-        /// </summary>
-        internal static string PressCountRequired {
-            get {
-                return ResourceManager.GetString("PressCountRequired", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Sandbox.
         /// </summary>
         internal static string Sandbox {
@@ -381,15 +372,6 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string WaitMillisecondsInvalid {
             get {
                 return ResourceManager.GetString("WaitMillisecondsInvalid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Wait time is required.
-        /// </summary>
-        internal static string WaitMillisecondsRequired {
-            get {
-                return ResourceManager.GetString("WaitMillisecondsRequired", resourceCulture);
             }
         }
     }

@@ -20,14 +20,14 @@
             <TextBlock Grid.Row="1" Grid.Column="0" Text="{l:Translate PressCount}" VerticalAlignment="Center"
                        HorizontalAlignment="Right" Margin="0,10,10,0" />
 
-            <TextBox x:Name="PressCountTextBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"
-                     Margin="0,10,10,0" Width="50" />
+            <NumericUpDown x:Name="PressCountUpDown" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"
+                           Margin="0,10,10,0" Width="75" Minimum="1" Maximum="10" />
 
             <TextBlock Grid.Row="1" Grid.Column="2" Text="{l:Translate WaitMilliseconds}" VerticalAlignment="Center"
                        HorizontalAlignment="Right" Margin="0,10,10,0" />
 
-            <TextBox x:Name="WaitMillisecondsTextBox" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Left"
-                     Margin="0,10,0,0" Width="50" />
+            <NumericUpDown x:Name="WaitMillisecondsUpDown" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Left"
+                           Margin="0,10,0,0" Width="75" Increment="50" Minimum="100" Maximum="1000" />
         </Grid>
 
         <TextBlock x:Name="PressCountValidationTextBlock" Foreground="Red" Margin="10,2" />

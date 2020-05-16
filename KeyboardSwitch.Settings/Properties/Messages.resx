@@ -192,9 +192,6 @@
   <data name="PressCountInvalid" xml:space="preserve">
     <value>Press count should be between 1 and 10</value>
   </data>
-  <data name="PressCountRequired" xml:space="preserve">
-    <value>Press cound is required</value>
-  </data>
   <data name="Sandbox" xml:space="preserve">
     <value>Sandbox</value>
   </data>
@@ -224,8 +221,5 @@
   </data>
   <data name="WaitMillisecondsInvalid" xml:space="preserve">
     <value>Wait time should be between 100 and 1000 milliseconds</value>
-  </data>
-  <data name="WaitMillisecondsRequired" xml:space="preserve">
-    <value>Wait time is required</value>
   </data>
 </root>

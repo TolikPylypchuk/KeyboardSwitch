@@ -22,6 +22,7 @@ using KeyboardSwitch.Common.Services;
 using KeyboardSwitch.Common.Services.Infrastructure;
 using KeyboardSwitch.Common.Settings;
 using KeyboardSwitch.Common.Windows;
+using KeyboardSwitch.Settings.Converters;
 using KeyboardSwitch.Settings.Core;
 using KeyboardSwitch.Settings.Core.State;
 using KeyboardSwitch.Settings.Core.ViewModels;
@@ -129,6 +130,9 @@ namespace KeyboardSwitch.Settings
             Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
 
             Locator.CurrentMutable.RegisterConstant(RxApp.TaskpoolScheduler, TaskPoolKey);
+
+            Locator.CurrentMutable.RegisterConstant(new ModifierKeyConverter(), typeof(IBindingTypeConverter));
+            Locator.CurrentMutable.RegisterConstant(new SwitchModeConverter(), typeof(IBindingTypeConverter));
 
             RxApp.MainThreadScheduler = AvaloniaScheduler.Instance;
         }

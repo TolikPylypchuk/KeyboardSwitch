@@ -26,9 +26,8 @@ namespace KeyboardSwitch.Settings.Converters
         }
 
         public int GetAffinityForObjects(Type fromType, Type toType)
-            => fromType == typeof(SwitchMode) && toType == typeof(string) ||
-               fromType == typeof(string) && toType == typeof(SwitchMode)
-                ? 10
+            => fromType == typeof(SwitchMode) || toType == typeof(SwitchMode)
+                ? 10000
                 : 0;
 
         public bool TryConvert(object from, Type toType, object? conversionHint, out object? result)

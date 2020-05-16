@@ -7,7 +7,6 @@ using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 
 using KeyboardSwitch.Common;
-using KeyboardSwitch.Settings.Converters;
 using KeyboardSwitch.Settings.Core.ViewModels;
 
 using ReactiveUI;
@@ -17,8 +16,6 @@ namespace KeyboardSwitch.Settings.Views
 {
     public class HotKeySwitchView : ReactiveUserControl<HotKeySwitchViewModel>
     {
-        private readonly ModifierKeyConverter modifierKeyConverter = new ModifierKeyConverter();
-
         public HotKeySwitchView()
         {
             this.WhenActivated(disposables =>
@@ -26,13 +23,7 @@ namespace KeyboardSwitch.Settings.Views
                 this.OneWayBind(this, v => v.ViewModel, v => v.DataContext)
                     .DisposeWith(disposables);
 
-                this.Bind(
-                        this.ViewModel,
-                        vm => vm.ModifierKeys,
-                        v => v.ModifierKeysComboBox.SelectedItem,
-                        null,
-                        this.modifierKeyConverter,
-                        this.modifierKeyConverter)
+                this.Bind(this.ViewModel, vm => vm.ModifierKeys, v => v.ModifierKeysComboBox.SelectedItem)
                     .DisposeWith(disposables);
 
                 this.OneWayBind(this.ViewModel, vm => vm.Forward, v => v.ForwardContent.Content)
@@ -115,9 +106,7 @@ namespace KeyboardSwitch.Settings.Views
                 .Where(modifiers => modifiers.Count > 1)
                 .OrderBy(modifiers => modifiers.Count)
                 .Select(modifiers => modifiers.Flatten())
-                .Select(modifiers => this.modifierKeyConverter.TryConvert(modifiers, typeof(string), null, out var str)
-                    ? str?.ToString()
-                    : null)
+                .Select(Convert.ModifierKeysToString)
                 .Where(value => value != null)
                 .ToList();
         }

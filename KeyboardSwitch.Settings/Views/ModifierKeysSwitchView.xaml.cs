@@ -7,7 +7,6 @@ using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 
 using KeyboardSwitch.Common;
-using KeyboardSwitch.Settings.Converters;
 using KeyboardSwitch.Settings.Core.ViewModels;
 
 using ReactiveUI;
@@ -17,9 +16,6 @@ namespace KeyboardSwitch.Settings.Views
 {
     public class ModifierKeysSwitchView : ReactiveUserControl<ModifierKeysSwitchViewModel>
     {
-        private readonly ModifierKeyConverter modifierKeyConverter = new ModifierKeyConverter();
-        private readonly NumberConverter numberConverter = new NumberConverter();
-
         public ModifierKeysSwitchView()
         {
             this.WhenActivated(disposables =>
@@ -27,40 +23,16 @@ namespace KeyboardSwitch.Settings.Views
                 this.OneWayBind(this, v => v.ViewModel, v => v.DataContext)
                     .DisposeWith(disposables);
 
-                this.Bind(
-                    this.ViewModel,
-                    vm => vm.ForwardModifierKeys,
-                    v => v.ForwardComboBox.SelectedItem,
-                    null,
-                    this.modifierKeyConverter,
-                    this.modifierKeyConverter)
+                this.Bind(this.ViewModel, vm => vm.ForwardModifierKeys, v => v.ForwardComboBox.SelectedItem)
                     .DisposeWith(disposables);
 
-                this.Bind(
-                        this.ViewModel,
-                        vm => vm.BackwardModifierKeys,
-                        v => v.BackwardComboBox.SelectedItem,
-                        null,
-                        this.modifierKeyConverter,
-                        this.modifierKeyConverter)
+                this.Bind(this.ViewModel, vm => vm.BackwardModifierKeys, v => v.BackwardComboBox.SelectedItem)
                     .DisposeWith(disposables);
 
-                this.Bind(
-                        this.ViewModel,
-                        vm => vm.PressCount,
-                        v => v.PressCountTextBox.Text,
-                        null,
-                        this.numberConverter,
-                        this.numberConverter)
+                this.Bind(this.ViewModel, vm => vm.PressCount, v => v.PressCountUpDown.Value)
                     .DisposeWith(disposables);
 
-                this.Bind(
-                        this.ViewModel,
-                        vm => vm.WaitMilliseconds,
-                        v => v.WaitMillisecondsTextBox.Text,
-                        null,
-                        this.numberConverter,
-                        this.numberConverter)
+                this.Bind(this.ViewModel, vm => vm.WaitMilliseconds, v => v.WaitMillisecondsUpDown.Value)
                     .DisposeWith(disposables);
 
                 this.BindValidation(
@@ -84,8 +56,8 @@ namespace KeyboardSwitch.Settings.Views
         private ComboBox ForwardComboBox { get; set; } = null!;
         private ComboBox BackwardComboBox { get; set; } = null!;
 
-        private TextBox PressCountTextBox { get; set; } = null!;
-        private TextBox WaitMillisecondsTextBox { get; set; } = null!;
+        private NumericUpDown PressCountUpDown { get; set; } = null!;
+        private NumericUpDown WaitMillisecondsUpDown { get; set; } = null!;
 
         private TextBlock PressCountValidationTextBlock { get; set; } = null!;
         private TextBlock WaitMillisecondsValidationTextBlock { get; set; } = null!;
@@ -98,8 +70,8 @@ namespace KeyboardSwitch.Settings.Views
             this.ForwardComboBox = this.FindControl<ComboBox>(nameof(this.ForwardComboBox));
             this.BackwardComboBox = this.FindControl<ComboBox>(nameof(this.BackwardComboBox));
 
-            this.PressCountTextBox = this.FindControl<TextBox>(nameof(this.PressCountTextBox));
-            this.WaitMillisecondsTextBox = this.FindControl<TextBox>(nameof(this.WaitMillisecondsTextBox));
+            this.PressCountUpDown = this.FindControl<NumericUpDown>(nameof(this.PressCountUpDown));
+            this.WaitMillisecondsUpDown = this.FindControl<NumericUpDown>(nameof(this.WaitMillisecondsUpDown));
 
             this.PressCountValidationTextBlock = this.FindControl<TextBlock>(
                 nameof(this.PressCountValidationTextBlock));
@@ -116,9 +88,7 @@ namespace KeyboardSwitch.Settings.Views
                 .OrderBy(modifiers => modifiers.Count)
                 .Skip(1)
                 .Select(modifiers => modifiers.Flatten())
-                .Select(modifiers => this.modifierKeyConverter.TryConvert(modifiers, typeof(string), null, out var str)
-                    ? str?.ToString()
-                    : null)
+                .Select(Convert.ModifierKeysToString)
                 .Where(value => value != null)
                 .ToList();
 

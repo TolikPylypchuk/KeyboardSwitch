@@ -1,5 +1,4 @@
-using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
@@ -8,9 +7,8 @@ using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 
 using KeyboardSwitch.Common;
-using KeyboardSwitch.Common.Settings;
-using KeyboardSwitch.Settings.Converters;
 using KeyboardSwitch.Settings.Core.ViewModels;
+using KeyboardSwitch.Settings.Properties;
 
 using ReactiveUI;
 
@@ -18,8 +16,6 @@ namespace KeyboardSwitch.Settings.Views
 {
     public class PreferencesView : ReactiveUserControl<PreferencesViewModel>
     {
-        private readonly SwitchModeConverter switchModeConverter = new SwitchModeConverter();
-
         public PreferencesView()
         {
             this.WhenActivated(disposables =>
@@ -27,13 +23,7 @@ namespace KeyboardSwitch.Settings.Views
                 this.OneWayBind(this, v => v.ViewModel, v => v.DataContext)
                     .DisposeWith(disposables);
 
-                this.Bind(
-                        this.ViewModel,
-                        vm => vm.SwitchMode,
-                        v => v.SwitchModeComboBox.SelectedItem,
-                        null,
-                        this.switchModeConverter,
-                        this.switchModeConverter)
+                this.Bind(this.ViewModel, vm => vm.SwitchMode, v => v.SwitchModeComboBox.SelectedItem)
                     .DisposeWith(disposables);
 
                 this.Bind(this.ViewModel, vm => vm.InstantSwitching, v => v.InstantSwitchingCheckBox.IsChecked)
@@ -91,13 +81,7 @@ namespace KeyboardSwitch.Settings.Views
             this.SaveButton = this.FindControl<Button>(nameof(this.SaveButton));
             this.CancelButton = this.FindControl<Button>(nameof(this.CancelButton));
 
-            this.SwitchModeComboBox.Items = Enum.GetValues(typeof(SwitchMode))
-                .Cast<SwitchMode>()
-                .Select(mode => this.switchModeConverter.TryConvert(mode, typeof(string), null, out var result)
-                    ? result?.ToString()
-                    : null)
-                .Where(value => value != null)
-                .ToList();
+            this.SwitchModeComboBox.Items = new List<string> { Messages.HotKey, Messages.ModifierKeys };
         }
     }
 }

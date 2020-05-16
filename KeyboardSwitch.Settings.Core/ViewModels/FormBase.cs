@@ -114,18 +114,11 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 .Select(vms => vms.Select(vm => vm.Valid).CombineLatest().AllTrue())
                 .Switch();
 
-        protected ValidationHelper ValidationRule<T>(
-            Expression<Func<TViewModel, T>> property,
-            Func<T, bool> required,
-            Func<T, bool> valid)
+        protected ValidationHelper ValidationRule<T>(Expression<Func<TViewModel, T>> property, Func<T, bool> validate)
         {
             var propertyName = property.GetMemberName();
             return this.Self.ValidationRule(
-                property,
-                value => required(value) && valid(value),
-                value => this.ResourceManager.GetString(required(value)
-                    ? $"{propertyName}Invalid"
-                    : $"{propertyName}Required"));
+                property, validate, _ => this.ResourceManager.GetString($"{propertyName}Invalid"));
         }
 
         protected ValidationHelper ValidationRule(IObservable<bool> validation, string errorMessage)

@@ -22,11 +22,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.ModifierKeysSwitchSettings = settings;
             this.CopyProperties();
 
-            this.ValidationRule(
-                vm => vm.PressCount, count => count != null, count => count > 0 && count <= 10);
-
-            this.ValidationRule(
-                vm => vm.WaitMilliseconds, wait => wait != null, wait => wait > 100 && wait <= 1000);
+            this.ValidationRule(vm => vm.PressCount, count => count > 0 && count <= 10);
+            this.ValidationRule(vm => vm.WaitMilliseconds, wait => wait >= 100 && wait <= 1000);
 
             var switchMethodsAreDifferent = this.WhenAnyValue(
                 vm => vm.ForwardModifierKeys,
@@ -47,10 +44,10 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         public ModifierKeys BackwardModifierKeys { get; set; }
 
         [Reactive]
-        public int? PressCount { get; set; }
+        public int PressCount { get; set; }
 
         [Reactive]
-        public int? WaitMilliseconds { get; set; }
+        public int WaitMilliseconds { get; set; }
 
         public ValidationHelper SwitchMethodsAreDifferentRule { get; }
 
@@ -71,8 +68,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         {
             this.ModifierKeysSwitchSettings.ForwardModifierKeys = this.ForwardModifierKeys;
             this.ModifierKeysSwitchSettings.BackwardModifierKeys = this.BackwardModifierKeys;
-            this.ModifierKeysSwitchSettings.PressCount = this.PressCount ?? 0;
-            this.ModifierKeysSwitchSettings.WaitMilliseconds = this.WaitMilliseconds ?? 0;
+            this.ModifierKeysSwitchSettings.PressCount = this.PressCount;
+            this.ModifierKeysSwitchSettings.WaitMilliseconds = this.WaitMilliseconds;
 
             return Task.FromResult(this.ModifierKeysSwitchSettings);
         }
