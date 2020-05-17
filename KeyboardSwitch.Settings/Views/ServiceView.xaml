@@ -1,35 +1,28 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:l="clr-namespace:KeyboardSwitch.Settings.Localization"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="KeyboardSwitch.Settings.Views.ServiceView">
-    <Border BorderThickness="0,1,0,0" BorderBrush="LightGray">
+    <Border BorderThickness="0,1,0,0">
         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
             <StackPanel.Styles>
-                <Style Selector="TextBlock.status">
+                <Style Selector="TextBlock.Status">
                     <Setter Property="VerticalAlignment" Value="Center" />
                     <Setter Property="Margin" Value="10" />
                     <Setter Property="FontSize" Value="16" />
-                </Style>
-                <Style Selector="Button">
-                    <Setter Property="VerticalAlignment" Value="Center" />
-                    <Setter Property="Margin" Value="30,10" />
-                    <Setter Property="Padding" Value="10,4" />
+                    <Setter Property="Width" Value="350" />
                 </Style>
             </StackPanel.Styles>
 
-            <TextBlock x:Name="ServiceRunningTextBlock" Classes="status"
+            <TextBlock x:Name="ServiceRunningTextBlock" Classes="Status"
                        Text="{l:Translate KeyboardSwitchServiceRunning}" />
 
-            <TextBlock x:Name="ServiceNotRunningTextBlock" Classes="status"
+            <TextBlock x:Name="ServiceNotRunningTextBlock" Classes="Status"
                        Text="{l:Translate KeyboardSwitchServiceNotRunning}" />
 
-            <TextBlock x:Name="ServiceShuttingDownTextBlock" Classes="status"
+            <TextBlock x:Name="ServiceShuttingDownTextBlock" Classes="Status"
                        Text="{l:Translate KeyboardSwitchServiceShuttingDown}" />
 
-            <Button x:Name="StartServiceButton" Content="{l:Translate Start}" />
+            <Button x:Name="StartServiceButton" Content="{l:Translate Start}" Classes="Primary" />
             <Button x:Name="StopServiceButton" Content="{l:Translate Stop}" />
             <Button x:Name="KillServiceButton" Content="{l:Translate Kill}" />
         </StackPanel>

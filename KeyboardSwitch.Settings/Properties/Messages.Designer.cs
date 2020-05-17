@@ -374,5 +374,14 @@ namespace KeyboardSwitch.Settings.Properties {
                 return ResourceManager.GetString("WaitMillisecondsInvalid", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keyboard Switch Settings.
+        /// </summary>
+        internal static string WindowTitle {
+            get {
+                return ResourceManager.GetString("WindowTitle", resourceCulture);
+            }
+        }
     }
 }

@@ -1,37 +1,26 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:l="clr-namespace:KeyboardSwitch.Settings.Localization"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="KeyboardSwitch.Settings.Views.ModifierKeysSwitchView">
     <StackPanel>
         <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,Auto,Auto,Auto" Margin="10">
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="{l:Translate Forward}" VerticalAlignment="Center"
-                       HorizontalAlignment="Right" Margin="0,0,10,0" />
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="{l:Translate Forward}" Classes="Label" />
+            <ComboBox x:Name="ForwardComboBox" Grid.Row="0" Grid.Column="1" Classes="FormControl ModifierKeys" />
 
-            <ComboBox x:Name="ForwardComboBox" Grid.Row="0" Grid.Column="1" Margin="0,0,10,0" HorizontalAlignment="Left" />
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="{l:Translate PressCount}" Classes="Label" />
+            <NumericUpDown x:Name="PressCountUpDown" Grid.Row="0" Grid.Column="3" Classes="FormControl"
+                           Minimum="1" Maximum="10" />
 
-            <TextBlock Grid.Row="0" Grid.Column="2" Text="{l:Translate Backward}" VerticalAlignment="Center"
-                       HorizontalAlignment="Right" Margin="0,0,10,0" />
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="{l:Translate Backward}" Classes="Label" />
+            <ComboBox x:Name="BackwardComboBox" Grid.Row="1" Grid.Column="1" Classes="FormControl ModifierKeys" />
 
-            <ComboBox Grid.Row="0" Grid.Column="3" x:Name="BackwardComboBox" HorizontalAlignment="Left" />
-
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="{l:Translate PressCount}" VerticalAlignment="Center"
-                       HorizontalAlignment="Right" Margin="0,10,10,0" />
-
-            <NumericUpDown x:Name="PressCountUpDown" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"
-                           Margin="0,10,10,0" Width="75" Minimum="1" Maximum="10" />
-
-            <TextBlock Grid.Row="1" Grid.Column="2" Text="{l:Translate WaitMilliseconds}" VerticalAlignment="Center"
-                       HorizontalAlignment="Right" Margin="0,10,10,0" />
-
-            <NumericUpDown x:Name="WaitMillisecondsUpDown" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Left"
-                           Margin="0,10,0,0" Width="75" Increment="50" Minimum="100" Maximum="1000" />
+            <TextBlock Grid.Row="1" Grid.Column="2" Text="{l:Translate WaitMilliseconds}" Classes="Label" />
+            <NumericUpDown x:Name="WaitMillisecondsUpDown" Grid.Row="1" Grid.Column="3" Classes="FormControl"
+                           Increment="50" Minimum="100" Maximum="1000" />
         </Grid>
 
-        <TextBlock x:Name="PressCountValidationTextBlock" Foreground="Red" Margin="10,2" />
-        <TextBlock x:Name="WaitMillisecondsValidationTextBlock" Foreground="Red" Margin="10,2" />
-        <TextBlock x:Name="SwitchMethodsValidationTextBlock" Foreground="Red" Margin="10,2" />
+        <TextBlock x:Name="PressCountValidationTextBlock" Classes="Error" />
+        <TextBlock x:Name="WaitMillisecondsValidationTextBlock" Classes="Error" />
+        <TextBlock x:Name="SwitchMethodsValidationTextBlock" Classes="Error" />
     </StackPanel>
 </UserControl>

@@ -1,26 +1,25 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:l="clr-namespace:KeyboardSwitch.Settings.Localization"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="KeyboardSwitch.Settings.Views.PreferencesView">
     <DockPanel>
         <StackPanel Orientation="Horizontal" Margin="10,10,0,0" DockPanel.Dock="Top">
-            <CheckBox x:Name="InstantSwitchingCheckBox" Content="{l:Translate InstantSwitching}" Margin="0,0,5,0" />
-            <CheckBox x:Name="SwitchLayoutCheckBox" Content="{l:Translate SwitchLayout}" Margin="5,0,0,0" />
+            <CheckBox x:Name="InstantSwitchingCheckBox" Content="{l:Translate InstantSwitching}"
+                      Classes="FormControl" />
+            <CheckBox x:Name="SwitchLayoutCheckBox" Content="{l:Translate SwitchLayout}"
+                      Classes="FormControl" />
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Margin="10,10,0,0" DockPanel.Dock="Top">
-            <TextBlock Text="{l:Translate SwitchMode}" VerticalAlignment="Center" Margin="0,0,10,0" />
-            <ComboBox x:Name="SwitchModeComboBox" />
+            <TextBlock Text="{l:Translate SwitchMode}" Classes="Label" />
+            <ComboBox x:Name="SwitchModeComboBox" Classes="FormControl" />
         </StackPanel>
 
-        <StackPanel x:Name="ActionPanel" Orientation="Horizontal" DockPanel.Dock="Bottom">
-            <Button x:Name="SaveButton" Content="{l:Translate Save}" Padding="10,4" Margin="5" />
-            <Button x:Name="CancelButton" Content="{l:Translate Cancel}" Padding="10,4" Margin="5" />
+        <StackPanel x:Name="ActionPanel">
+            <Button x:Name="SaveButton" Content="{l:Translate Save}" Classes="Primary" />
+            <Button x:Name="CancelButton" Content="{l:Translate Cancel}" />
         </StackPanel>
-        
+
         <ContentControl x:Name="PreferencesContent" />
     </DockPanel>
 </UserControl>

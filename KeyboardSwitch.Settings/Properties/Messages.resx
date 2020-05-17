@@ -222,4 +222,7 @@
   <data name="WaitMillisecondsInvalid" xml:space="preserve">
     <value>Wait time should be between 100 and 1000 milliseconds</value>
   </data>
+  <data name="WindowTitle" xml:space="preserve">
+    <value>Keyboard Switch Settings</value>
+  </data>
 </root>

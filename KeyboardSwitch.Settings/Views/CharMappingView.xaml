@@ -1,18 +1,16 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:l="clr-namespace:KeyboardSwitch.Settings.Localization"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="KeyboardSwitch.Settings.Views.CharMappingView">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
         <DockPanel>
-            <StackPanel x:Name="ActionPanel" DockPanel.Dock="Bottom" Orientation="Horizontal">
-                <Button x:Name="SaveButton" Content="{l:Translate Save}" Padding="10,4" Margin="5" />
-                <Button x:Name="CancelButton" Content="{l:Translate Cancel}" Padding="10,4" Margin="5" />
+            <StackPanel x:Name="ActionPanel">
+                <Button x:Name="SaveButton" Content="{l:Translate Save}" Classes="Primary" />
+                <Button x:Name="CancelButton" Content="{l:Translate Cancel}" />
             </StackPanel>
-            
-            <ItemsControl x:Name="Layouts" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.IsSharedSizeScope="True" />
+
+            <ItemsControl x:Name="Layouts" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                          Grid.IsSharedSizeScope="True" />
         </DockPanel>
     </ScrollViewer>
 </UserControl>
