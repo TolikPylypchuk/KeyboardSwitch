@@ -132,6 +132,9 @@
   <data name="CharMapping" xml:space="preserve">
     <value>Character Mappings</value>
   </data>
+  <data name="CharsDuplicatedFormat" xml:space="preserve">
+    <value>Duplicate characters are not allowed: {0}</value>
+  </data>
   <data name="Forward" xml:space="preserve">
     <value>Forward</value>
   </data>

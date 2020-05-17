@@ -106,6 +106,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Duplicate characters are not allowed: {0}.
+        /// </summary>
+        internal static string CharsDuplicatedFormat {
+            get {
+                return ResourceManager.GetString("CharsDuplicatedFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Forward.
         /// </summary>
         internal static string Forward {

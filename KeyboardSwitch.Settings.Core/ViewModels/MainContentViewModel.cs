@@ -43,10 +43,15 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         {
             var settings = await this.settingsService.GetAppSettingsAsync();
 
+            int maxLength = this.CharMappingViewModel
+                .CharMappingModel
+                .Layouts
+                .Max(layout => layout.Chars.Length);
+
             settings.CharsByKeyboardLayoutId = this.CharMappingViewModel
                 .CharMappingModel
                 .Layouts
-                .ToDictionary(layout => layout.Id, layout => layout.Chars);
+                .ToDictionary(layout => layout.Id, layout => layout.Chars.PadRight(maxLength));
 
             settings.SwitchMode = this.PreferencesViewModel.SwitchMode;
 

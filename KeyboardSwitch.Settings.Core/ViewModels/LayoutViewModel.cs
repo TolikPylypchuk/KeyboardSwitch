@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reactive.Concurrency;
 using System.Resources;
 using System.Threading.Tasks;
@@ -6,6 +7,9 @@ using System.Threading.Tasks;
 using KeyboardSwitch.Settings.Core.Models;
 
 using ReactiveUI.Fody.Helpers;
+using ReactiveUI.Validation.Extensions;
+
+using static KeyboardSwitch.Common.Constants;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
@@ -18,6 +22,19 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             : base(resourceManager, scheduler)
         {
             this.LayoutModel = layoutModel;
+
+            this.ValidationRule(
+                vm => vm.Chars,
+                chars => chars.Distinct().Count(ch => ch != MissingCharacter) ==
+                         chars.Count(ch => ch != MissingCharacter),
+                chars => String.Format(
+                    this.CharsDuplicatedFormat,
+                    chars
+                        .Where(ch => ch != MissingCharacter)
+                        .GroupBy(ch => ch)
+                        .Where(chs => chs.Count() > 1)
+                        .Select(chs => chs.Key.ToString())
+                        .Aggregate((acc, ch) => $"{acc}, {ch}")));
 
             this.CopyProperties();
             this.EnableChangeTracking();
@@ -42,6 +59,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         protected override LayoutViewModel Self
             => this;
+
+        private string CharsDuplicatedFormat
+            => this.ResourceManager.GetString("CharsDuplicatedFormat") ?? String.Empty;
 
         protected override void EnableChangeTracking()
         {
