@@ -8,7 +8,7 @@
                 <Style Selector="TextBlock.Status">
                     <Setter Property="VerticalAlignment" Value="Center" />
                     <Setter Property="Margin" Value="10" />
-                    <Setter Property="FontSize" Value="16" />
+                    <Setter Property="FontSize" Value="{DynamicResource FontSizeLarge}" />
                     <Setter Property="Width" Value="350" />
                 </Style>
             </StackPanel.Styles>
