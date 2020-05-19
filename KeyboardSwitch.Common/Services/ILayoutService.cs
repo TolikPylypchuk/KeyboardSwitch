@@ -4,8 +4,8 @@ namespace KeyboardSwitch.Common.Services
 {
     public interface ILayoutService
     {
-        KeyboardLayout GetForegroundProcessKeyboardLayout();
-        void SwitchForegroundProcessLayout(SwitchDirection direction);
+        KeyboardLayout GetCurrentKeyboardLayout();
+        void SwitchCurrentLayout(SwitchDirection direction);
         List<KeyboardLayout> GetKeyboardLayouts();
     }
 }

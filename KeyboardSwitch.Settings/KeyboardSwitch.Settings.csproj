@@ -22,6 +22,7 @@
   <ItemGroup>
     <AvaloniaResource Remove="Views\CharacterView.xaml" />
     <AvaloniaResource Remove="Views\CharMappingView.xaml" />
+    <AvaloniaResource Remove="Views\ConverterView.xaml" />
     <AvaloniaResource Remove="Views\HotKeySwitchView.xaml" />
     <AvaloniaResource Remove="Views\LayoutView.xaml" />
     <AvaloniaResource Remove="Views\MainContentView.xaml" />
@@ -34,6 +35,7 @@
     <None Remove="appsettings.json" />
     <None Remove="Views\CharacterView.xaml" />
     <None Remove="Views\CharMappingView.xaml" />
+    <None Remove="Views\ConverterView.xaml" />
     <None Remove="Views\HotKeySwitchView.xaml" />
     <None Remove="Views\LayoutView.xaml" />
     <None Remove="Views\MainContentView.xaml" />
@@ -124,6 +126,11 @@
     <EmbeddedResource Include="Views\SandboxView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Views\ConverterView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KeyboardSwitch.Common.Windows\KeyboardSwitch.Common.Windows.csproj" />

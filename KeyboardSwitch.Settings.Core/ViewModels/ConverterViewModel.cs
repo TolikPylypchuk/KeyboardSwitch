@@ -2,7 +2,12 @@ using System.Reactive;
 using System.Resources;
 using System.Threading.Tasks;
 
+using KeyboardSwitch.Common;
+using KeyboardSwitch.Common.Services;
 using KeyboardSwitch.Settings.Core.Models;
+using KeyboardSwitch.Settings.Core.Services;
+
+using Microsoft.Extensions.Logging;
 
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -13,22 +18,39 @@ using Splat;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
-    public sealed class ConverterViewModel : ReactiveValidationObject<ConverterViewModel>
+    public sealed class ConverterViewModel : ReactiveValidationObject<ConverterViewModel>, ITextService
     {
-        public ConverterViewModel(ConverterModel converterModel, ResourceManager? resourceManager = null)
+        private readonly ISwitchService switchService;
+
+        public ConverterViewModel(
+            ConverterModel converterModel,
+            ISwitchService? switchService = null,
+            ResourceManager? resourceManager = null)
         {
             this.ConverterModel = converterModel;
+
+            this.switchService = switchService ?? this.CreateDefaultSwitchService();
+
             resourceManager ??= Locator.Current.GetService<ResourceManager>();
 
             this.LayoutsAreDifferentRule = this.ValidationRule(
                 vm => vm.WhenAnyValue(v => v.SourceLayout, v => v.TargetLayout, (s, t) => s != t),
                 (vm, state) => resourceManager.GetString("CustomLayoutsAreSame"));
 
-            this.Convert = ReactiveCommand.CreateFromTask<string, string>(this.ConvertAsync);
+            var canConvert = this.WhenAnyValue(
+                vm => vm.SourceLayout, vm => vm.TargetLayout, (s, t) => s != null && t != null);
+
+            this.Convert = ReactiveCommand.CreateFromTask(this.ConvertAsync, canConvert);
             this.ReverseLayouts = ReactiveCommand.Create(this.OnReverseLayouts);
         }
 
         public ConverterModel ConverterModel { get; }
+
+        [Reactive]
+        public string? SourceText { get; set; }
+
+        [Reactive]
+        public string? TargetText { get; set; }
 
         [Reactive]
         public CustomLayoutModel? SourceLayout { get; set; }
@@ -38,15 +60,37 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         public ValidationHelper LayoutsAreDifferentRule { get; }
 
-        public ReactiveCommand<string, string> Convert { get; }
+        public ReactiveCommand<Unit, Unit> Convert { get; }
         public ReactiveCommand<Unit, Unit> ReverseLayouts { get; }
 
-        private Task<string> ConvertAsync(string text)
-        {
-            return Task.FromResult(text);
-        }
+        private Task ConvertAsync()
+            => this.switchService.SwitchTextAsync(SwitchDirection.Forward);
 
         private void OnReverseLayouts()
-            => (this.SourceLayout, this.TargetLayout) = (this.TargetLayout, this.SourceLayout);
+        {
+            (this.SourceLayout, this.TargetLayout) = (this.TargetLayout, this.SourceLayout);
+            (this.SourceText, this.TargetText) = (this.TargetText, this.SourceText);
+        }
+
+        private ISwitchService CreateDefaultSwitchService()
+        {
+            var sourceLayout = this.WhenAnyValue(vm => vm.SourceLayout).WhereNotNull();
+            var targetLayout = this.WhenAnyValue(vm => vm.TargetLayout).WhereNotNull();
+
+            return new SwitchService(
+                this,
+                new ConverterLayoutService(sourceLayout, targetLayout),
+                new ConverterSettingsService(sourceLayout, targetLayout),
+                Locator.Current.GetService<ILogger<SwitchService>>());
+        }
+
+        Task<string?> ITextService.GetTextAsync()
+            => Task.FromResult(this.SourceText);
+
+        Task ITextService.SetTextAsync(string text)
+        {
+            this.TargetText = text;
+            return Task.CompletedTask;
+        }
     }
 }

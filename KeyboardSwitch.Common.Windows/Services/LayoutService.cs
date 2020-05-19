@@ -25,13 +25,13 @@ namespace KeyboardSwitch.Common.Windows.Services
         public LayoutService(ILogger<LayoutService> logger)
             => this.logger = logger;
 
-        public KeyboardLayout GetForegroundProcessKeyboardLayout()
+        public KeyboardLayout GetCurrentKeyboardLayout()
         {
             this.logger.LogDebug("Getting the keyboard layout of the foreground process");
             return this.GetThreadKeyboardLayout(GetWindowThreadProcessId(GetForegroundWindow(), IntPtr.Zero));
         }
 
-        public void SwitchForegroundProcessLayout(SwitchDirection direction)
+        public void SwitchCurrentLayout(SwitchDirection direction)
         {
             this.logger.LogDebug($"Switching the keyboard layout of the foregound process {direction.AsString()}");
 

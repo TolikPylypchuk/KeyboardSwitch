@@ -8,7 +8,7 @@ using static KeyboardSwitch.Common.Constants;
 
 namespace KeyboardSwitch.Common.Services
 {
-    internal class SwitchService : ISwitchService
+    public class SwitchService : ISwitchService
     {
         private readonly ITextService textService;
         private readonly ILayoutService layoutService;
@@ -16,12 +16,12 @@ namespace KeyboardSwitch.Common.Services
         private readonly ILogger<SwitchService> logger;
 
         public SwitchService(
-            ITextService text,
+            ITextService textService,
             ILayoutService layoutService,
             ISettingsService settingsService,
             ILogger<SwitchService> logger)
         {
-            this.textService = text;
+            this.textService = textService;
             this.layoutService = layoutService;
             this.settingsService = settingsService;
             this.logger = logger;
@@ -44,7 +44,7 @@ namespace KeyboardSwitch.Common.Services
                     allLayouts.Reverse();
                 }
 
-                var currentLayout = layoutService.GetForegroundProcessKeyboardLayout();
+                var currentLayout = layoutService.GetCurrentKeyboardLayout();
 
                 var newLayout = allLayouts.SkipWhile(layout => layout != currentLayout)
                     .Skip(1)
@@ -63,7 +63,7 @@ namespace KeyboardSwitch.Common.Services
 
             if (settings.SwitchLayout)
             {
-                layoutService.SwitchForegroundProcessLayout(direction);
+                layoutService.SwitchCurrentLayout(direction);
             }
         }
     }
