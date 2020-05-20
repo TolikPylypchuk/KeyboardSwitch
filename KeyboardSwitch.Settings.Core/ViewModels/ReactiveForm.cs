@@ -25,9 +25,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 {
     public enum ValidationType { Valid, Required }
 
-    public abstract class FormBase<TModel, TViewModel> : ReactiveValidationObject<TViewModel>, IForm
+    public abstract class ReactiveForm<TModel, TViewModel> : ReactiveValidationObject<TViewModel>, IReactiveForm
         where TModel : class
-        where TViewModel : FormBase<TModel, TViewModel>
+        where TViewModel : ReactiveForm<TModel, TViewModel>
     {
         private readonly BehaviorSubject<bool> formChangedSubject = new BehaviorSubject<bool>(false);
         private readonly BehaviorSubject<bool> validSubject = new BehaviorSubject<bool>(true);
@@ -36,7 +36,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         private readonly List<IObservable<bool>> changesToTrack = new List<IObservable<bool>>();
         private readonly List<IObservable<bool>> validationsToTrack = new List<IObservable<bool>>();
 
-        protected FormBase(ResourceManager? resourceManager = null, IScheduler? scheduler = null)
+        protected ReactiveForm(ResourceManager? resourceManager = null, IScheduler? scheduler = null)
         {
             this.ResourceManager = resourceManager ?? Locator.Current.GetService<ResourceManager>();
             this.Scheduler = scheduler ?? RxApp.MainThreadScheduler;
@@ -91,7 +91,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         protected IObservable<bool> IsCollectionChanged<TVm, TM>(
             Expression<Func<TViewModel, ReadOnlyObservableCollection<TVm>>> property,
             Func<TViewModel, ICollection<TM>> itemCollection)
-            where TVm : FormBase<TM, TVm>
+            where TVm : ReactiveForm<TM, TVm>
             where TM : class
         {
             string propertyName = property.GetMemberName();
@@ -106,7 +106,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         }
 
         protected IObservable<bool> IsCollectionValid<TVm, TM>(ReadOnlyObservableCollection<TVm> viewModels)
-            where TVm : FormBase<TM, TVm>
+            where TVm : ReactiveForm<TM, TVm>
             where TM : class
             => viewModels.ToObservableChangeSet()
                 .AutoRefreshOnObservable(vm => vm.Valid)

@@ -12,7 +12,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
-    public sealed class PreferencesViewModel : FormBase<PreferencesModel, PreferencesViewModel>
+    public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, PreferencesViewModel>
     {
         public PreferencesViewModel(
             PreferencesModel preferencesModel,

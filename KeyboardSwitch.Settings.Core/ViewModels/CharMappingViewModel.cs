@@ -12,7 +12,7 @@ using KeyboardSwitch.Settings.Core.Models;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
-    public sealed class CharMappingViewModel : FormBase<CharMappingModel, CharMappingViewModel>
+    public sealed class CharMappingViewModel : ReactiveForm<CharMappingModel, CharMappingViewModel>
     {
         private readonly SourceCache<LayoutModel, int> layoutsSource =
             new SourceCache<LayoutModel, int>(layout => layout.Id);

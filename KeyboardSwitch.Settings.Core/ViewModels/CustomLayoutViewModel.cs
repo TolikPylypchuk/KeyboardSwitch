@@ -9,7 +9,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
-    public sealed class CustomLayoutViewModel : FormBase<CustomLayoutModel, CustomLayoutViewModel>
+    public sealed class CustomLayoutViewModel : ReactiveForm<CustomLayoutModel, CustomLayoutViewModel>
     {
         public CustomLayoutViewModel(
             CustomLayoutModel customLayoutModel,

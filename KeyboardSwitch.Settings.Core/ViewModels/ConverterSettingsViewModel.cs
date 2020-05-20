@@ -12,7 +12,7 @@ using KeyboardSwitch.Settings.Core.Models;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
-    public sealed class ConverterSettingsViewModel : FormBase<ConverterModel, ConverterSettingsViewModel>
+    public sealed class ConverterSettingsViewModel : ReactiveForm<ConverterModel, ConverterSettingsViewModel>
     {
         private readonly SourceList<CustomLayoutModel> customLayoutsSource = new SourceList<CustomLayoutModel>();
         private readonly ReadOnlyObservableCollection<CustomLayoutViewModel> customLayouts;

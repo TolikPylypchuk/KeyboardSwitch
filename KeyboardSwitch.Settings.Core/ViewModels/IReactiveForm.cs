@@ -4,7 +4,7 @@ using ReactiveUI;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
-    public interface IForm : IReactiveObject
+    public interface IReactiveForm : IReactiveObject
     {
         IObservable<bool> FormChanged { get; }
         bool IsFormChanged { get; }

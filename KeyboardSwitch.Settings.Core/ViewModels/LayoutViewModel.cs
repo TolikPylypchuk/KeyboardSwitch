@@ -13,7 +13,7 @@ using static KeyboardSwitch.Common.Constants;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
-    public sealed class LayoutViewModel : FormBase<LayoutModel, LayoutViewModel>
+    public sealed class LayoutViewModel : ReactiveForm<LayoutModel, LayoutViewModel>
     {
         public LayoutViewModel(
             LayoutModel layoutModel,

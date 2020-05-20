@@ -8,7 +8,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
-    public sealed class CharacterViewModel : FormBase<CharacterModel, CharacterViewModel>
+    public sealed class CharacterViewModel : ReactiveForm<CharacterModel, CharacterViewModel>
     {
         public CharacterViewModel(
             CharacterModel characterModel,

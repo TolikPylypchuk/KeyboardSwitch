@@ -16,7 +16,7 @@ using static KeyboardSwitch.Common.Constants;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
-    public sealed class HotKeySwitchViewModel : FormBase<HotKeySwitchSettings, HotKeySwitchViewModel>
+    public sealed class HotKeySwitchViewModel : ReactiveForm<HotKeySwitchSettings, HotKeySwitchViewModel>
     {
         private static readonly IImmutableSet<char> AllowedCharacters = ImmutableHashSet.CreateRange(
             "QWERTYUIOP[]\\ASDFGHJKL;'ZXCVBNM,./1234567890-=").Add(MissingCharacter);

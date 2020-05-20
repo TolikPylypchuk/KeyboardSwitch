@@ -11,7 +11,7 @@ using ReactiveUI.Validation.Helpers;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
-    public sealed class ModifierKeysSwitchViewModel : FormBase<ModifierKeysSwitchSettings, ModifierKeysSwitchViewModel>
+    public sealed class ModifierKeysSwitchViewModel : ReactiveForm<ModifierKeysSwitchSettings, ModifierKeysSwitchViewModel>
     {
         public ModifierKeysSwitchViewModel(
             ModifierKeysSwitchSettings settings,
