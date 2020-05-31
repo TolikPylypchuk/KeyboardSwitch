@@ -222,6 +222,9 @@
   <data name="SwitchMode" xml:space="preserve">
     <value>Switch mode</value>
   </data>
+  <data name="ValidationNameEmpty" xml:space="preserve">
+    <value>Name is required</value>
+  </data>
   <data name="WaitMilliseconds" xml:space="preserve">
     <value>Wait time (ms)</value>
   </data>

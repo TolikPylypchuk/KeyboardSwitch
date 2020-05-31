@@ -26,7 +26,8 @@ namespace KeyboardSwitch.Settings
             true);
 
         public bool ExecuteHook(
-            object source, object target,
+            object source,
+            object target,
             Func<IObservedChange<object, object>[]> getCurrentViewModelProperties,
             Func<IObservedChange<object, object>[]> getCurrentViewProperties,
             BindingDirection direction)

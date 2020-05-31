@@ -12,33 +12,34 @@
 
         <Style Selector="TextBlock.Error">
             <Setter Property="Foreground" Value="{DynamicResource ErrorBrush}" />
-            <Setter Property="Margin" Value="10,2" />
+            <Setter Property="Margin" Value="10 2" />
         </Style>
 
         <Style Selector="TextBlock.Label">
             <Setter Property="HorizontalAlignment" Value="Right" />
             <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Margin" Value="0,0,10,0" />
+            <Setter Property="Margin" Value="0 0 10 0" />
         </Style>
 
         <Style Selector=":is(Control).FormControl">
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Margin" Value="0,0,10,0" />
+            <Setter Property="Margin" Value="0 0 10 0" />
         </Style>
 
         <Style Selector="ComboBox.ModifierKeys">
             <Setter Property="MaxDropDownHeight" Value="300" />
         </Style>
 
-        <Style Selector="NumericUpDown">
+        <Style Selector="NumericUpDown.FormControl">
             <Setter Property="Width" Value="75" />
+            <Setter Property="Margin" Value="0 0 10 5" />
         </Style>
 
         <Style Selector="Button">
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Margin" Value="5" />
-            <Setter Property="Padding" Value="10,5" />
+            <Setter Property="Padding" Value="10 5" />
         </Style>
 
         <Style Selector="StackPanel#ActionPanel">

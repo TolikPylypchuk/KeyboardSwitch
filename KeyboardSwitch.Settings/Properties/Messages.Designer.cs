@@ -376,6 +376,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name is required.
+        /// </summary>
+        internal static string ValidationNameEmpty {
+            get {
+                return ResourceManager.GetString("ValidationNameEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Wait time (ms).
         /// </summary>
         internal static string WaitMilliseconds {

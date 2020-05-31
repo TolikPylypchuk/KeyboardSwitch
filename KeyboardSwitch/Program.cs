@@ -34,9 +34,9 @@ namespace KeyboardSwitch
                 .UseConsoleLifetime()
                 .Build();
 
-            var logger = host.Services.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(Program));
+            var mutex = ConfigureSingleInstance(host.Services);
 
-            var mutex = ConfigureSingleInstance(host);
+            var logger = host.Services.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(Program));
 
             SubscribeToExternalCommands(host, logger);
 
@@ -84,9 +84,9 @@ namespace KeyboardSwitch
                         .CreateLogger(),
                     dispose: true);
 
-        private static Mutex ConfigureSingleInstance(IHost host)
+        private static Mutex ConfigureSingleInstance(IServiceProvider services)
         {
-            var singleInstanceProvider = host.Services.GetRequiredService<ServiceProvider<ISingleInstanceService>>();
+            var singleInstanceProvider = services.GetRequiredService<ServiceProvider<ISingleInstanceService>>();
             var singleInstanceService = singleInstanceProvider(nameof(KeyboardSwitch));
 
             return singleInstanceService.TryAcquireMutex();

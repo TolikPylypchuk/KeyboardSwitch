@@ -1,4 +1,5 @@
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Resources;
 using System.Threading.Tasks;
 
@@ -24,12 +25,13 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         public ConverterViewModel(
             ConverterModel converterModel,
-            ISwitchService? switchService = null,
+            ILayoutService? layoutService = null,
+            ISettingsService? settingsService = null,
             ResourceManager? resourceManager = null)
         {
             this.ConverterModel = converterModel;
 
-            this.switchService = switchService ?? this.CreateDefaultSwitchService();
+            this.switchService = this.CreateSwitchService(layoutService, settingsService);
 
             resourceManager ??= Locator.Current.GetService<ResourceManager>();
 
@@ -38,7 +40,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 (vm, state) => resourceManager.GetString("CustomLayoutsAreSame"));
 
             var canConvert = this.WhenAnyValue(
-                vm => vm.SourceLayout, vm => vm.TargetLayout, (s, t) => s != null && t != null);
+                vm => vm.SourceLayout, vm => vm.TargetLayout, (s, t) => s != null && t != null)
+                .CombineLatest(this.IsValid(), (a, b) => a && b);
 
             this.Convert = ReactiveCommand.CreateFromTask(this.ConvertAsync, canConvert);
             this.ReverseLayouts = ReactiveCommand.Create(this.OnReverseLayouts);
@@ -72,15 +75,17 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             (this.SourceText, this.TargetText) = (this.TargetText, this.SourceText);
         }
 
-        private ISwitchService CreateDefaultSwitchService()
+        private ISwitchService CreateSwitchService(
+            ILayoutService? layoutService = null,
+            ISettingsService? settingsService = null)
         {
             var sourceLayout = this.WhenAnyValue(vm => vm.SourceLayout).WhereNotNull();
             var targetLayout = this.WhenAnyValue(vm => vm.TargetLayout).WhereNotNull();
 
             return new SwitchService(
                 this,
-                new ConverterLayoutService(sourceLayout, targetLayout),
-                new ConverterSettingsService(sourceLayout, targetLayout),
+                layoutService ?? new ConverterLayoutService(sourceLayout, targetLayout),
+                settingsService ?? new ConverterSettingsService(sourceLayout, targetLayout),
                 Locator.Current.GetService<ILogger<SwitchService>>());
         }
 

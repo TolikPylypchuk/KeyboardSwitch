@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using KeyboardSwitch.Settings.Core.Models;
 
 using ReactiveUI.Fody.Helpers;
+using ReactiveUI.Validation.Extensions;
+using ReactiveUI.Validation.Helpers;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
@@ -19,6 +21,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         {
             this.CustomLayoutModel = customLayoutModel;
 
+            this.NameRule = this.ValidationRule(vm => vm.Name, name => !String.IsNullOrWhiteSpace(name), "NameEmpty");
+
             this.CopyProperties();
             this.EnableChangeTracking();
         }
@@ -30,6 +34,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         [Reactive]
         public string Chars { get; set; } = String.Empty;
+
+        public ValidationHelper NameRule { get; }
 
         protected override CustomLayoutViewModel Self
             => this;

@@ -3,14 +3,14 @@
              xmlns:l="clr-namespace:KeyboardSwitch.Settings.Localization"
              x:Class="KeyboardSwitch.Settings.Views.PreferencesView">
     <DockPanel>
-        <StackPanel Orientation="Horizontal" Margin="10,10,0,0" DockPanel.Dock="Top">
+        <StackPanel Orientation="Horizontal" Margin="10 10 0 0" DockPanel.Dock="Top">
             <CheckBox x:Name="InstantSwitchingCheckBox" Content="{l:Translate InstantSwitching}"
                       Classes="FormControl" />
             <CheckBox x:Name="SwitchLayoutCheckBox" Content="{l:Translate SwitchLayout}"
                       Classes="FormControl" />
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" Margin="10,10,0,0" DockPanel.Dock="Top">
+        <StackPanel Orientation="Horizontal" Margin="10 10 0 0" DockPanel.Dock="Top">
             <TextBlock Text="{l:Translate SwitchMode}" Classes="Label" />
             <ComboBox x:Name="SwitchModeComboBox" Classes="FormControl" />
         </StackPanel>
