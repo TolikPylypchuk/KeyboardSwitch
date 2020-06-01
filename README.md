@@ -32,7 +32,7 @@ deterministically.
 ## Languages
 
 The app uses the list of your layouts in the same order as defined by the system. You can switch both forward
-and backward through this list. The app also automaticly changes your layouts, so you don't have to do it
+and backward through this list. The app also automatically changes your layouts, so you don't have to do it
 yourself. You can disable this as well if you so wish. You cannot add a layout that's not present as one of
 the system's layouts. If you add/remove a layout while the app is running, you'll have configure it in the settings
 to restart the service.
@@ -55,22 +55,21 @@ instead of an app with a hidden window
 
 ### What's new in version 2.1:
 
-- Minor bug fixes.
+- Minor bug fixes
 
 ### What's new in version 2.0:
 
-- Brand new installer for the app.
-- Instant switching mode.
-- Updated readme.
+- Brand new installer for the app
+- Instant switching mode
+- Updated readme
 - Updated configuration
-- Minor UI updates.
-- Minor bug fixes.
+- Minor UI updates
+- Minor bug fixes
 
 ### What's new in version 1.1:
 
-- Minor bug fixes.
+- Minor bug fixes
 
 ## Icon
 
-Icon made by [ultimatearm](https://www.flaticon.com/authors/ultimatearm)
-from [www.flaticon.com](https://www.flaticon.com/).
+Icon made by [Smashicons](https://smashicons.com/) from [www.flaticon.com](https://www.flaticon.com/).
