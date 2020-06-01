@@ -16,11 +16,11 @@ using static KeyboardSwitch.Settings.Core.Constants;
 
 namespace KeyboardSwitch.Settings.Core.Services
 {
-    public class ConverterSettingsService : ReactiveObject, ISettingsService
+    public class ConverterAppSettingsService : ReactiveObject, IAppSettingsService
     {
         private readonly Subject<Unit> settingsInvalidated = new Subject<Unit>();
 
-        public ConverterSettingsService(
+        public ConverterAppSettingsService(
             IObservable<CustomLayoutModel> sourceLayout,
             IObservable<CustomLayoutModel> targetLayout)
         {

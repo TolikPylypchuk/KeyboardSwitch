@@ -7,6 +7,9 @@ namespace KeyboardSwitch.Settings.Core.Models
     public sealed class CustomLayoutModel : IEquatable<CustomLayoutModel>
     {
         [Reactive]
+        public int SequenceNumber { get; set; }
+
+        [Reactive]
         public string Name { get; set; } = String.Empty;
 
         [Reactive]

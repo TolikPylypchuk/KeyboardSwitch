@@ -97,7 +97,7 @@ namespace KeyboardSwitch
             var namedPipeProvider = host.Services.GetRequiredService<ServiceProvider<INamedPipeService>>();
             var namedPipeService = namedPipeProvider(nameof(KeyboardSwitch));
 
-            var settingsService = host.Services.GetRequiredService<ISettingsService>();
+            var settingsService = host.Services.GetRequiredService<IAppSettingsService>();
 
             namedPipeService.StartServer();
 

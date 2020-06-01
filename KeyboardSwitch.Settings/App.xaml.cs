@@ -77,9 +77,11 @@ namespace KeyboardSwitch.Settings
                 this.ConfigureSingleInstance(serviceProvider);
                 this.ConfigureSuspensionDriver();
 
-                var settings = await Locator.Current.GetService<ISettingsService>().GetAppSettingsAsync();
+                var appSettings = await Locator.Current.GetService<IAppSettingsService>().GetAppSettingsAsync();
+                var converterSettings = await Locator.Current.GetService<IConverterSettingsService>()
+                    .GetConverterSettingsAsync();
 
-                var mainViewModel = new MainViewModel(settings);
+                var mainViewModel = new MainViewModel(appSettings, converterSettings);
 
                 this.openExternally.InvokeCommand(mainViewModel.OpenExternally);
 

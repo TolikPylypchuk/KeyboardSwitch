@@ -1,6 +1,10 @@
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
 
+using DynamicData;
+
+using KeyboardSwitch.Common;
 using KeyboardSwitch.Common.Services;
 using KeyboardSwitch.Common.Settings;
 using KeyboardSwitch.Settings.Core.Models;
@@ -18,19 +22,24 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         public MainViewModel(
             AppSettings appSettings,
+            ConverterSettings converterSettings,
             ILayoutService? layoutService = null)
         {
             this.appSettings = appSettings;
             this.layoutService = layoutService ?? Locator.Current.GetService<ILayoutService>();
 
             this.MainContentViewModel = new MainContentViewModel(
-                this.CreateCharMappingModel(), new PreferencesModel(appSettings));
+                this.CreateCharMappingModel(),
+                new PreferencesModel(appSettings),
+                this.CreateConverterModel(converterSettings));
 
             this.ServiceViewModel = new ServiceViewModel();
 
             this.OpenExternally = ReactiveCommand.Create(() => { });
 
-            this.MainContentViewModel.Save
+            this.MainContentViewModel.SaveCharMappingSettings
+                .Discard()
+                .Merge(this.MainContentViewModel.SavePreferences.Discard())
                 .InvokeCommand(this.ServiceViewModel.ReloadSettings);
         }
 
@@ -60,6 +69,20 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                     .ToList();
 
             return new CharMappingModel { Layouts = layoutModels };
+        }
+
+        private ConverterModel CreateConverterModel(ConverterSettings settings)
+        {
+            var model = new ConverterModel();
+            model.Layouts.AddRange(settings.Layouts.Select(layout =>
+                new CustomLayoutModel
+                {
+                    SequenceNumber = layout.SequenceNumber,
+                    Name = layout.Name,
+                    Chars = layout.Chars
+                }));
+
+            return model;
         }
     }
 }

@@ -26,7 +26,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         public ConverterViewModel(
             ConverterModel converterModel,
             ILayoutService? layoutService = null,
-            ISettingsService? settingsService = null,
+            IAppSettingsService? settingsService = null,
             ResourceManager? resourceManager = null)
         {
             this.ConverterModel = converterModel;
@@ -77,7 +77,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         private ISwitchService CreateSwitchService(
             ILayoutService? layoutService = null,
-            ISettingsService? settingsService = null)
+            IAppSettingsService? settingsService = null)
         {
             var sourceLayout = this.WhenAnyValue(vm => vm.SourceLayout).WhereNotNull();
             var targetLayout = this.WhenAnyValue(vm => vm.TargetLayout).WhereNotNull();
@@ -85,7 +85,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             return new SwitchService(
                 this,
                 layoutService ?? new ConverterLayoutService(sourceLayout, targetLayout),
-                settingsService ?? new ConverterSettingsService(sourceLayout, targetLayout),
+                settingsService ?? new ConverterAppSettingsService(sourceLayout, targetLayout),
                 Locator.Current.GetService<ILogger<SwitchService>>());
         }
 

@@ -12,13 +12,13 @@ namespace KeyboardSwitch.Common.Services
     {
         private readonly ITextService textService;
         private readonly ILayoutService layoutService;
-        private readonly ISettingsService settingsService;
+        private readonly IAppSettingsService settingsService;
         private readonly ILogger<SwitchService> logger;
 
         public SwitchService(
             ITextService textService,
             ILayoutService layoutService,
-            ISettingsService settingsService,
+            IAppSettingsService settingsService,
             ILogger<SwitchService> logger)
         {
             this.textService = textService;

@@ -13,7 +13,8 @@ using Microsoft.Extensions.Logging;
 
 namespace KeyboardSwitch.Common.Services
 {
-    internal sealed class BlobCacheSettingsService : DisposableService, ISettingsService, IAsyncDisposable
+    internal sealed class BlobCacheSettingsService
+        : DisposableService, IAppSettingsService, IConverterSettingsService, IAsyncDisposable
     {
         private readonly IBlobCache cache;
         private readonly ILayoutService layoutService;
@@ -21,6 +22,7 @@ namespace KeyboardSwitch.Common.Services
         private readonly Subject<Unit> settingsInvalidated = new Subject<Unit>();
 
         private AppSettings? appSettings;
+        private ConverterSettings? converterSettings;
 
         public BlobCacheSettingsService(
             IBlobCache cache,
@@ -75,6 +77,39 @@ namespace KeyboardSwitch.Common.Services
             this.settingsInvalidated.OnNext(Unit.Default);
         }
 
+        public async ValueTask<ConverterSettings> GetConverterSettingsAsync()
+        {
+            this.ThrowIfDisposed();
+
+            if (this.converterSettings == null)
+            {
+                this.logger.LogDebug("Getting the converter settings");
+
+                if (await this.cache.ContainsKey(ConverterSettings.CacheKey))
+                {
+                    this.converterSettings = await this.cache.GetObject<ConverterSettings>(ConverterSettings.CacheKey);
+                } else
+                {
+                    this.logger.LogInformation("Converter settings not found - creating default settings");
+
+                    this.converterSettings = new ConverterSettings();
+                    await this.cache.InsertObject(ConverterSettings.CacheKey, this.converterSettings);
+                }
+            }
+
+            return this.converterSettings;
+        }
+
+        public async Task SaveConverterSettingsAsync(ConverterSettings converterSettings)
+        {
+            this.ThrowIfDisposed();
+
+            this.logger.LogDebug("Saving the converter settings");
+            await this.cache.InsertObject(ConverterSettings.CacheKey, converterSettings);
+
+            this.converterSettings = converterSettings;
+        }
+
         public async ValueTask DisposeAsync()
         {
             if (!this.Disposed)
@@ -103,7 +138,13 @@ namespace KeyboardSwitch.Common.Services
                 },
                 SwitchMode = SwitchMode.ModifierKey,
                 CharsByKeyboardLayoutId = this.layoutService.GetKeyboardLayouts()
-                    .ToDictionary(layout => layout.Id, this.GetCharsForLayout),
+                    .ToDictionary(
+                        layout => layout.Id,
+#if DEBUG
+                        this.GetCharsForLayout),
+#else
+                        _ => String.Empty),
+#endif
                 InstantSwitching = true,
                 SwitchLayout = true,
 #if DEBUG

@@ -14,12 +14,12 @@ namespace KeyboardSwitch.Common.Windows.Services
     internal class ClipboardTextService : ITextService
     {
         private readonly IInputSimulator input;
-        private readonly ISettingsService settingsService;
+        private readonly IAppSettingsService settingsService;
         private readonly ILogger<ClipboardTextService> logger;
 
         public ClipboardTextService(
             IInputSimulator input,
-            ISettingsService settingsService,
+            IAppSettingsService settingsService,
             ILogger<ClipboardTextService> logger)
         {
             this.input = input;

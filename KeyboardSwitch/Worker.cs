@@ -16,7 +16,7 @@ namespace KeyboardSwitch
     {
         private readonly IKeyboardHookService keyboardHookService;
         private readonly ISwitchService switchService;
-        private readonly ISettingsService settingsService;
+        private readonly IAppSettingsService settingsService;
         private readonly IKeysService keysService;
         private readonly ILogger<Worker> logger;
 
@@ -25,7 +25,7 @@ namespace KeyboardSwitch
         public Worker(
             IKeyboardHookService keyboardHookService,
             ISwitchService switchService,
-            ISettingsService settingsService,
+            IAppSettingsService settingsService,
             IKeysService keysService,
             ILogger<Worker> logger)
         {

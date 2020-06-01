@@ -22,17 +22,17 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
     public sealed class ServiceViewModel : ReactiveObject
     {
-        private readonly ISettingsService settingsService;
+        private readonly IAppSettingsService settingsService;
         private readonly INamedPipeService namedPipeService;
 
         private bool isShutdownRequested = false;
 
         public ServiceViewModel(
-            ISettingsService? settingsService = null,
+            IAppSettingsService? settingsService = null,
             INamedPipeService? namedPipeService = null,
             IScheduler? scheduler = null)
         {
-            this.settingsService = settingsService ?? Locator.Current.GetService<ISettingsService>();
+            this.settingsService = settingsService ?? Locator.Current.GetService<IAppSettingsService>();
             this.namedPipeService = namedPipeService ??
                 Locator.Current.GetService<ServiceProvider<INamedPipeService>>()(nameof(KeyboardSwitch));
 

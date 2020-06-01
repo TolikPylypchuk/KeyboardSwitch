@@ -6,7 +6,7 @@ using KeyboardSwitch.Common.Settings;
 
 namespace KeyboardSwitch.Common.Services
 {
-    public interface ISettingsService
+    public interface IAppSettingsService
     {
         IObservable<Unit> SettingsInvalidated { get; }
 
