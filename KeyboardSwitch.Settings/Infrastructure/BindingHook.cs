@@ -9,7 +9,7 @@ using Avalonia.ReactiveUI;
 
 using ReactiveUI;
 
-namespace KeyboardSwitch.Settings
+namespace KeyboardSwitch.Settings.Infrastructure
 {
     public sealed class BindingHook : IPropertyBindingHook
     {

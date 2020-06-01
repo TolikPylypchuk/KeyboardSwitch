@@ -5,7 +5,7 @@ using System.Linq;
 using KeyboardSwitch.Common;
 using KeyboardSwitch.Settings.Properties;
 
-namespace KeyboardSwitch.Settings
+namespace KeyboardSwitch.Settings.Converters
 {
     public static class Convert
     {

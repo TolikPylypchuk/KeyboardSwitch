@@ -8,6 +8,7 @@ using Avalonia.ReactiveUI;
 
 using KeyboardSwitch.Common;
 using KeyboardSwitch.Settings.Core.ViewModels;
+using KeyboardSwitch.Settings.Converters;
 
 using ReactiveUI;
 using ReactiveUI.Validation.Extensions;
