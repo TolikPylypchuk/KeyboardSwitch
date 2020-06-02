@@ -5,11 +5,12 @@ using System.Windows;
 using GregsStack.InputSimulatorStandard;
 using GregsStack.InputSimulatorStandard.Native;
 
+using KeyboardSwitch.Common;
 using KeyboardSwitch.Common.Services;
 
 using Microsoft.Extensions.Logging;
 
-namespace KeyboardSwitch.Common.Windows.Services
+namespace KeyboardSwitch.Windows.Services
 {
     internal class ClipboardTextService : ITextService
     {

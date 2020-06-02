@@ -19,9 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Common", "Ke
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Settings.Core", "KeyboardSwitch.Settings.Core\KeyboardSwitch.Settings.Core.csproj", "{1BC312D4-F82A-4F5A-BB26-1DC93C008714}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Common.Windows", "KeyboardSwitch.Common.Windows\KeyboardSwitch.Common.Windows.csproj", "{ED51CEDE-B35C-4CCA-A950-F740799C150E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Windows", "KeyboardSwitch.Windows\KeyboardSwitch.Windows.csproj", "{ED51CEDE-B35C-4CCA-A950-F740799C150E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardSwitch.Settings", "KeyboardSwitch.Settings\KeyboardSwitch.Settings.csproj", "{CE74E7BE-00D2-450A-ADAC-5A32A6D3C874}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Settings", "KeyboardSwitch.Settings\KeyboardSwitch.Settings.csproj", "{CE74E7BE-00D2-450A-ADAC-5A32A6D3C874}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

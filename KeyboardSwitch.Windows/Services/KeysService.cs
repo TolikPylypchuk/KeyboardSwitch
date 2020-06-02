@@ -1,9 +1,11 @@
 using System;
+
+using KeyboardSwitch.Common;
 using KeyboardSwitch.Common.Services;
 
-using static KeyboardSwitch.Common.Windows.Interop.Native;
+using static KeyboardSwitch.Windows.Interop.Native;
 
-namespace KeyboardSwitch.Common.Windows.Services
+namespace KeyboardSwitch.Windows.Services
 {
     internal sealed class KeysService : IKeysService
     {

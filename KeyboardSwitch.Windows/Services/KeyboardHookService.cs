@@ -8,13 +8,14 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
+using KeyboardSwitch.Common;
 using KeyboardSwitch.Common.Services;
 
 using Microsoft.Extensions.Logging;
 
-using static KeyboardSwitch.Common.Windows.Interop.Native;
+using static KeyboardSwitch.Windows.Interop.Native;
 
-namespace KeyboardSwitch.Common.Windows.Services
+namespace KeyboardSwitch.Windows.Services
 {
     internal delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 

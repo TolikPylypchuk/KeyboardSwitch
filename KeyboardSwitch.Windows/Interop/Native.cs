@@ -3,9 +3,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Interop;
 
-using KeyboardSwitch.Common.Windows.Services;
+using KeyboardSwitch.Windows.Services;
 
-namespace KeyboardSwitch.Common.Windows.Interop
+namespace KeyboardSwitch.Windows.Interop
 {
     internal static class Native
     {

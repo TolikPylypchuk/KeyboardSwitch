@@ -21,7 +21,6 @@ using KeyboardSwitch.Common;
 using KeyboardSwitch.Common.Services;
 using KeyboardSwitch.Common.Services.Infrastructure;
 using KeyboardSwitch.Common.Settings;
-using KeyboardSwitch.Common.Windows;
 using KeyboardSwitch.Settings.Converters;
 using KeyboardSwitch.Settings.Core;
 using KeyboardSwitch.Settings.Core.State;
@@ -29,6 +28,7 @@ using KeyboardSwitch.Settings.Core.ViewModels;
 using KeyboardSwitch.Settings.Infrastructure;
 using KeyboardSwitch.Settings.Properties;
 using KeyboardSwitch.Settings.Views;
+using KeyboardSwitch.Windows;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;

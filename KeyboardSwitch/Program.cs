@@ -10,7 +10,7 @@ using KeyboardSwitch.Common;
 using KeyboardSwitch.Common.Services;
 using KeyboardSwitch.Common.Services.Infrastructure;
 using KeyboardSwitch.Common.Settings;
-using KeyboardSwitch.Common.Windows;
+using KeyboardSwitch.Windows;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

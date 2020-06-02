@@ -4,14 +4,15 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
+using KeyboardSwitch.Common;
 using KeyboardSwitch.Common.Services;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 
-using static KeyboardSwitch.Common.Windows.Interop.Native;
+using static KeyboardSwitch.Windows.Interop.Native;
 
-namespace KeyboardSwitch.Common.Windows.Services
+namespace KeyboardSwitch.Windows.Services
 {
     public sealed class LayoutService : ILayoutService
     {

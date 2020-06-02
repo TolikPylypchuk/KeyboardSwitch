@@ -9,13 +9,13 @@ using GregsStack.InputSimulatorStandard;
 
 using KeyboardSwitch.Common.Services;
 using KeyboardSwitch.Common.Settings;
-using KeyboardSwitch.Common.Windows.Services;
+using KeyboardSwitch.Windows.Services;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace KeyboardSwitch.Common.Windows
+namespace KeyboardSwitch.Windows
 {
     public static class SerivceExtensions
     {
