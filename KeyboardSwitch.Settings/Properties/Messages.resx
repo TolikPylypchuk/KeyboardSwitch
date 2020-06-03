@@ -135,6 +135,12 @@
   <data name="CharsDuplicatedFormat" xml:space="preserve">
     <value>Duplicate characters are not allowed: {0}</value>
   </data>
+  <data name="Converter" xml:space="preserve">
+    <value>Converter</value>
+  </data>
+  <data name="ConverterSettings" xml:space="preserve">
+    <value>Converter Settings</value>
+  </data>
   <data name="CustomLayoutsAreSame" xml:space="preserve">
     <value>Layouts must be different</value>
   </data>

@@ -6,6 +6,8 @@
     <TabControl>
         <TabItem x:Name="CharMappingTabItem" Header="{l:Translate CharMapping}" />
         <TabItem x:Name="PreferencesTabItem" Header="{l:Translate Preferences}" />
+        <TabItem x:Name="ConverterTabItem" Header="{l:Translate Converter}" />
+        <TabItem x:Name="ConverterSettingsTabItem" Header="{l:Translate ConverterSettings}" />
         <TabItem x:Name="SandboxTabItem" Header="{l:Translate Sandbox}">
             <local:SandboxView />
         </TabItem>

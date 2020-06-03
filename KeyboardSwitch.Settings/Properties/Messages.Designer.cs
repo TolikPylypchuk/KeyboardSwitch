@@ -115,6 +115,24 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Converter.
+        /// </summary>
+        internal static string Converter {
+            get {
+                return ResourceManager.GetString("Converter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Converter Settings.
+        /// </summary>
+        internal static string ConverterSettings {
+            get {
+                return ResourceManager.GetString("ConverterSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Layouts must be different.
         /// </summary>
         internal static string CustomLayoutsAreSame {

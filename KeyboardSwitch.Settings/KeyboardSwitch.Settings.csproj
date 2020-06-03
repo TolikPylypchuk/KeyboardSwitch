@@ -22,8 +22,8 @@
   <ItemGroup>
     <AvaloniaResource Remove="Views\CharacterView.xaml" />
     <AvaloniaResource Remove="Views\CharMappingView.xaml" />
-    <AvaloniaResource Remove="Views\ConverterView - Copy.xaml" />
     <AvaloniaResource Remove="Views\ConverterView.xaml" />
+    <AvaloniaResource Remove="Views\ConverterSettingsView.xaml" />
     <AvaloniaResource Remove="Views\HotKeySwitchView.xaml" />
     <AvaloniaResource Remove="Views\LayoutView.xaml" />
     <AvaloniaResource Remove="Views\MainContentView.xaml" />
@@ -36,8 +36,8 @@
     <None Remove="appsettings.json" />
     <None Remove="Views\CharacterView.xaml" />
     <None Remove="Views\CharMappingView.xaml" />
-    <None Remove="Views\ConverterView - Copy.xaml" />
     <None Remove="Views\ConverterView.xaml" />
+    <None Remove="Views\ConverterSettingsView.xaml" />
     <None Remove="Views\HotKeySwitchView.xaml" />
     <None Remove="Views\LayoutView.xaml" />
     <None Remove="Views\MainContentView.xaml" />
@@ -130,12 +130,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\ConverterView - Copy.xaml">
+    <EmbeddedResource Include="Views\ConverterView.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ConverterView.xaml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ConverterSettingsView.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KeyboardSwitch.Windows\KeyboardSwitch.Windows.csproj" />
@@ -147,12 +147,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Messages.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Views\PreferencesView.xaml.cs">
-      <DependentUpon>PreferencesView.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\CharMappingView.xaml.cs">
-      <DependentUpon>CharMappingView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

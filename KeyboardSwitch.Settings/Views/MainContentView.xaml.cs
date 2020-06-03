@@ -24,6 +24,13 @@ namespace KeyboardSwitch.Settings.Views
 
                 this.OneWayBind(this.ViewModel, vm => vm.PreferencesViewModel, v => v.PreferencesTabItem.Content)
                     .DisposeWith(disposables);
+
+                this.OneWayBind(this.ViewModel, vm => vm.ConverterViewModel, v => v.ConverterTabItem.Content)
+                    .DisposeWith(disposables);
+
+                this.OneWayBind(
+                    this.ViewModel, vm => vm.ConverterSettingsViewModel, v => v.ConverterSettingsTabItem.Content)
+                    .DisposeWith(disposables);
             });
 
             this.InitializeComponent();
@@ -31,6 +38,8 @@ namespace KeyboardSwitch.Settings.Views
 
         private TabItem CharMappingTabItem { get; set; } = null!;
         private TabItem PreferencesTabItem { get; set; } = null!;
+        private TabItem ConverterTabItem { get; set; } = null!;
+        private TabItem ConverterSettingsTabItem { get; set; } = null!;
 
         private void InitializeComponent()
         {
@@ -38,6 +47,8 @@ namespace KeyboardSwitch.Settings.Views
 
             this.CharMappingTabItem = this.FindControl<TabItem>(nameof(this.CharMappingTabItem));
             this.PreferencesTabItem = this.FindControl<TabItem>(nameof(this.PreferencesTabItem));
+            this.ConverterTabItem = this.FindControl<TabItem>(nameof(this.ConverterTabItem));
+            this.ConverterSettingsTabItem = this.FindControl<TabItem>(nameof(this.ConverterSettingsTabItem));
         }
     }
 }
