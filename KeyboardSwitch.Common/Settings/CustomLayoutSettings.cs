@@ -7,7 +7,7 @@ namespace KeyboardSwitch.Common.Settings
     public sealed class CustomLayoutSettings
     {
         [DataMember]
-        public int SequenceNumber { get; set; }
+        public int Id { get; set; }
 
         [DataMember]
         public string Name { get; set; } = String.Empty;

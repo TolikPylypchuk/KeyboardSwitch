@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Resources;
@@ -8,7 +10,10 @@ using System.Threading.Tasks;
 
 using DynamicData;
 
+using KeyboardSwitch.Common;
 using KeyboardSwitch.Settings.Core.Models;
+
+using ReactiveUI;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
@@ -16,6 +21,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
     {
         private readonly SourceList<CustomLayoutModel> customLayoutsSource = new SourceList<CustomLayoutModel>();
         private readonly ReadOnlyObservableCollection<CustomLayoutViewModel> customLayouts;
+        private readonly Dictionary<CustomLayoutViewModel, IDisposable> customLayoutSubscriptions =
+            new Dictionary<CustomLayoutViewModel, IDisposable>();
 
         public ConverterSettingsViewModel(
             ConverterModel converterModel,
@@ -26,9 +33,11 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.ConverterModel = converterModel;
 
             this.customLayoutsSource.Connect()
-                .Transform(model => new CustomLayoutViewModel(model, this.ResourceManager, this.Scheduler))
+                .Transform(model => this.CreateCustomLayoutViewModel(model, isNew: false))
                 .Bind(out this.customLayouts)
                 .Subscribe();
+
+            this.AddCustomLayout = ReactiveCommand.Create(this.OnAddCustomLayout);
 
             this.CopyProperties();
             this.EnableChangeTracking();
@@ -38,6 +47,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         public ReadOnlyObservableCollection<CustomLayoutViewModel> CustomLayouts
             => this.customLayouts;
+
+        public ReactiveCommand<Unit, Unit> AddCustomLayout { get; set; }
 
         protected override ConverterSettingsViewModel Self
             => this;
@@ -63,11 +74,42 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         protected override void CopyProperties()
         {
+            foreach (var subscription in this.customLayoutSubscriptions)
+            {
+                subscription.Value.Dispose();
+            }
+
+            this.customLayoutSubscriptions.Clear();
+
             this.customLayoutsSource.Edit(list =>
             {
                 list.Clear();
                 list.AddRange(this.ConverterModel.Layouts);
             });
         }
+
+        private CustomLayoutViewModel CreateCustomLayoutViewModel(CustomLayoutModel model, bool isNew)
+        {
+            var viewModel = new CustomLayoutViewModel(model, isNew, this.ResourceManager, this.Scheduler);
+
+            var deleteSubscription = viewModel.Delete
+                .WhereNotNull()
+                .Subscribe(deletedLayout =>
+                {
+                    this.customLayoutsSource.Remove(deletedLayout);
+                    this.customLayoutSubscriptions[viewModel].Dispose();
+                    this.customLayoutSubscriptions.Remove(viewModel);
+                });
+
+            this.customLayoutSubscriptions.Add(viewModel, deleteSubscription);
+
+            return viewModel;
+        }
+
+        private void OnAddCustomLayout()
+            => this.customLayoutsSource.Add(new CustomLayoutModel
+            {
+                Id = this.customLayoutsSource.Items.Max(model => (int?)model.Id) ?? 1
+            });
     }
 }

@@ -77,7 +77,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             model.Layouts.AddRange(settings.Layouts.Select(layout =>
                 new CustomLayoutModel
                 {
-                    SequenceNumber = layout.SequenceNumber,
+                    Id = layout.Id,
                     Name = layout.Name,
                     Chars = layout.Chars
                 }));

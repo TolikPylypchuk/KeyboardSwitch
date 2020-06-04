@@ -24,6 +24,7 @@
     <AvaloniaResource Remove="Views\CharMappingView.xaml" />
     <AvaloniaResource Remove="Views\ConverterView.xaml" />
     <AvaloniaResource Remove="Views\ConverterSettingsView.xaml" />
+    <AvaloniaResource Remove="Views\CustomLayoutView.xaml" />
     <AvaloniaResource Remove="Views\HotKeySwitchView.xaml" />
     <AvaloniaResource Remove="Views\LayoutView.xaml" />
     <AvaloniaResource Remove="Views\MainContentView.xaml" />
@@ -38,6 +39,7 @@
     <None Remove="Views\CharMappingView.xaml" />
     <None Remove="Views\ConverterView.xaml" />
     <None Remove="Views\ConverterSettingsView.xaml" />
+    <None Remove="Views\CustomLayoutView.xaml" />
     <None Remove="Views\HotKeySwitchView.xaml" />
     <None Remove="Views\LayoutView.xaml" />
     <None Remove="Views\MainContentView.xaml" />
@@ -133,7 +135,14 @@
     <EmbeddedResource Include="Views\ConverterView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="Views\ConverterSettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\CustomLayoutView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>

@@ -86,7 +86,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             settings.Layouts = converterModel.Layouts
                 .Select(layout => new CustomLayoutSettings
                 {
-                    SequenceNumber = layout.SequenceNumber,
+                    Id = layout.Id,
                     Name = layout.Name,
                     Chars = layout.Chars
                 })

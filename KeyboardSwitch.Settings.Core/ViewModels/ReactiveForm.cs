@@ -62,8 +62,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         public IObservable<bool> Valid { get; }
 
-        public virtual bool IsNew
-            => false;
+        public bool IsNew { get; protected set; } = false;
+        public bool IsDeleted { get; protected set; } = false;
 
         public ReactiveCommand<Unit, TModel> Save { get; }
         public ReactiveCommand<Unit, Unit> Cancel { get; }

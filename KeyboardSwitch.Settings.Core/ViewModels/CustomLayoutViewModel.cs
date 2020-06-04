@@ -15,15 +15,18 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
     {
         public CustomLayoutViewModel(
             CustomLayoutModel customLayoutModel,
+            bool isNew,
             ResourceManager? resourceManager = null,
             IScheduler? scheduler = null)
             : base(resourceManager, scheduler)
         {
             this.CustomLayoutModel = customLayoutModel;
+            this.IsNew = isNew;
 
             this.NameRule = this.ValidationRule(vm => vm.Name, name => !String.IsNullOrWhiteSpace(name), "NameEmpty");
 
             this.CopyProperties();
+            this.CanDeleteWhenNotChanged();
             this.EnableChangeTracking();
         }
 
@@ -52,8 +55,15 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         {
             this.CustomLayoutModel.Name = this.Name;
             this.CustomLayoutModel.Chars = this.Chars;
+            this.IsNew = false;
 
             return Task.FromResult(this.CustomLayoutModel);
+        }
+
+        protected override Task<CustomLayoutModel?> OnDeleteAsync()
+        {
+            this.IsDeleted = true;
+            return Task.FromResult<CustomLayoutModel?>(this.CustomLayoutModel);
         }
 
         protected override void CopyProperties()
