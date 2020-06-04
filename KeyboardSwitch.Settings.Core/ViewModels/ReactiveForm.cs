@@ -32,6 +32,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         private readonly BehaviorSubject<bool> formChangedSubject = new BehaviorSubject<bool>(false);
         private readonly BehaviorSubject<bool> validSubject = new BehaviorSubject<bool>(true);
         private readonly BehaviorSubject<bool> canSaveSubject = new BehaviorSubject<bool>(false);
+        private readonly BehaviorSubject<bool> canDeleteSubject = new BehaviorSubject<bool>(false);
 
         private readonly List<IObservable<bool>> changesToTrack = new List<IObservable<bool>>();
         private readonly List<IObservable<bool>> validationsToTrack = new List<IObservable<bool>>();
@@ -50,6 +51,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
             this.Save = ReactiveCommand.CreateFromTask(this.OnSaveAsync, canSave);
             this.Cancel = ReactiveCommand.Create(this.CopyProperties, this.formChangedSubject);
+            this.Delete = ReactiveCommand.CreateFromTask(this.OnDeleteAsync, this.canDeleteSubject);
         }
 
         public IObservable<bool> FormChanged
@@ -60,8 +62,12 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         public IObservable<bool> Valid { get; }
 
+        public virtual bool IsNew
+            => false;
+
         public ReactiveCommand<Unit, TModel> Save { get; }
         public ReactiveCommand<Unit, Unit> Cancel { get; }
+        public ReactiveCommand<Unit, TModel?> Delete { get; }
 
         protected ResourceManager ResourceManager { get; }
         protected IScheduler Scheduler { get; }
@@ -100,7 +106,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 .AutoRefreshOnObservable(vm => vm.FormChanged)
                 .ToCollection()
                 .Select(vms =>
-                    vms.Count != itemCollection(this.Self).Count || vms.Any(vm => vm.IsFormChanged))
+                    vms.Count != itemCollection(this.Self).Count ||
+                    vms.Any(vm => vm.IsFormChanged || !this.IsNew && vm.IsNew))
                 .Do(changed => this.Log().Debug(
                     changed ? $"{propertyName} are changed" : $"{propertyName} are unchanged"));
         }
@@ -125,6 +132,18 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 _ => validation,
                 (vm, valid) => valid ? String.Empty : this.ResourceManager.GetString(errorMessage));
 
+        protected void CanDeleteWhen(IObservable<bool> canDelete)
+            => canDelete.Subscribe(this.canDeleteSubject);
+
+        protected void CanDeleteWhenNotChanged()
+            => this.CanDeleteWhen(Observable.Return(!this.IsNew).Merge(this.FormChanged.Invert()));
+
+        protected void CanAlwaysDelete()
+            => this.CanDeleteWhen(Observable.Return(true));
+
+        protected void CanNeverDelete()
+            => this.CanDeleteWhen(Observable.Return(false));
+
         protected virtual void EnableChangeTracking()
         {
             var falseWhenSave = this.Save.Select(_ => false);
@@ -137,7 +156,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 .Merge(falseWhenCancel)
                 .Subscribe(this.formChangedSubject);
 
-            falseWhenSave.Subscribe(this.canSaveSubject);
+            Observable.Return(this.IsNew)
+                .Merge(falseWhenSave)
+                .Subscribe(this.canSaveSubject);
 
             this.validationsToTrack
                 .CombineLatest()
@@ -146,6 +167,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         }
 
         protected abstract Task<TModel> OnSaveAsync();
+
+        protected virtual Task<TModel?> OnDeleteAsync()
+            => Task.FromResult<TModel?>(null);
 
         protected abstract void CopyProperties();
     }
