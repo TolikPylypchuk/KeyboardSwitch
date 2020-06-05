@@ -13,20 +13,19 @@ using KeyboardSwitch.Common.Services;
 
 using Microsoft.Extensions.Logging;
 
-using static KeyboardSwitch.Windows.Interop.Native;
+using static Vanara.PInvoke.User32;
+
+using GC = System.GC;
 
 namespace KeyboardSwitch.Windows.Services
 {
-    internal delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
-
     internal sealed class KeyboardHookService : DisposableService, IKeyboardHookService
     {
-        private IntPtr hookId = IntPtr.Zero;
-
         private readonly object modifiersLock = new object();
         private readonly TaskQueue taskQueue = new TaskQueue();
 
-        private LowLevelKeyboardProc? hook;
+        private SafeHHOOK? hookId;
+        private HookProc? hook;
 
         private readonly IKeysService keysService;
         private readonly IScheduler scheduler;
@@ -182,8 +181,8 @@ namespace KeyboardSwitch.Windows.Services
 
                     while (GetMessage(out var msg, IntPtr.Zero, 0, 0) && !token.IsCancellationRequested)
                     {
-                        TranslateMessage(ref msg);
-                        DispatchMessage(ref msg);
+                        TranslateMessage(msg);
+                        DispatchMessage(msg);
                     }
                 },
                 token);
@@ -206,7 +205,7 @@ namespace KeyboardSwitch.Windows.Services
             var hMod = Marshal.GetHINSTANCE(typeof(KeyboardHookService).Module);
 
             this.hook = this.OnMessageReceived;
-            this.hookId = SetWindowsHookEx(WhKeyboardLL, this.hook, hMod, 0);
+            this.hookId = SetWindowsHookEx(HookType.WH_KEYBOARD_LL, this.hook, hMod, 0);
         }
 
         private IntPtr OnMessageReceived(int nCode, IntPtr wParam, IntPtr lParam)
@@ -223,13 +222,14 @@ namespace KeyboardSwitch.Windows.Services
         private void HandleSingleKeyboardInput(IntPtr wParam, int vkCode)
         {
             var modifierKey = this.keysService.GetModifierKeyFromCode(vkCode);
+            var message = (WindowMessage)wParam;
 
-            if (wParam == WmKeyDown || wParam == WmSysKeyDown)
+            if (message == WindowMessage.WM_KEYDOWN || message == WindowMessage.WM_SYSKEYDOWN)
             {
                 this.HandleKeyDown(modifierKey, vkCode);
             }
 
-            if (wParam == WmKeyUp || wParam == WmSysKeyUp)
+            if (message == WindowMessage.WM_KEYUP || message == WindowMessage.WM_SYSKEYUP)
             {
                 this.HandleKeyUp(modifierKey);
             }

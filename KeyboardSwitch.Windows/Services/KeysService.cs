@@ -3,14 +3,14 @@ using System;
 using KeyboardSwitch.Common;
 using KeyboardSwitch.Common.Services;
 
-using static KeyboardSwitch.Windows.Interop.Native;
+using static Vanara.PInvoke.User32;
 
 namespace KeyboardSwitch.Windows.Services
 {
     internal sealed class KeysService : IKeysService
     {
         public int GetVirtualKeyCode(char ch)
-            => VkKeyScan(Char.ToLower(ch));
+            => VkKeyScanW(Char.ToLower(ch));
 
         public int GetModifierKeysCode(ModifierKeys keys)
             => (int)keys;

@@ -10,14 +10,19 @@ using KeyboardSwitch.Common.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 
-using static KeyboardSwitch.Windows.Interop.Native;
+using static Vanara.PInvoke.User32;
 
 namespace KeyboardSwitch.Windows.Services
 {
     public sealed class LayoutService : ILayoutService
     {
-        private const string KeyboardLayoutNameRegistryKeyFormat = @"SYSTEM\CurrentControlSet\Control\Keyboard Layouts\{0}";
+        private const string KeyboardLayoutNameRegistryKeyFormat =
+            @"SYSTEM\CurrentControlSet\Control\Keyboard Layouts\{0}";
         private const string LayoutText = "Layout Text";
+
+        private static readonly IntPtr HklNext = (IntPtr)1;
+        private static readonly IntPtr HklPrev = (IntPtr)0;
+        public const int KlNameLength = 9;
 
         private readonly ILogger<LayoutService> logger;
 
@@ -29,7 +34,8 @@ namespace KeyboardSwitch.Windows.Services
         public KeyboardLayout GetCurrentKeyboardLayout()
         {
             this.logger.LogDebug("Getting the keyboard layout of the foreground process");
-            return this.GetThreadKeyboardLayout(GetWindowThreadProcessId(GetForegroundWindow(), IntPtr.Zero));
+            GetWindowThreadProcessId(GetForegroundWindow(), out uint id);
+            return this.GetThreadKeyboardLayout(id);
         }
 
         public void SwitchCurrentLayout(SwitchDirection direction)
@@ -37,16 +43,20 @@ namespace KeyboardSwitch.Windows.Services
             this.logger.LogDebug($"Switching the keyboard layout of the foregound process {direction.AsString()}");
 
             var foregroundWindowHandle = GetForegroundWindow();
-            int foregroundWindowThreadId = GetWindowThreadProcessId(foregroundWindowHandle, IntPtr.Zero);
+            GetWindowThreadProcessId(foregroundWindowHandle, out uint foregroundWindowThreadId);
 
-            int keyboardLayoutId = GetKeyboardLayout(foregroundWindowThreadId);
+            var keyboardLayoutId = GetKeyboardLayout(foregroundWindowThreadId);
 
             SetThreadKeyboardLayout(keyboardLayoutId);
             SetThreadKeyboardLayout(direction == SwitchDirection.Forward ? HklNext : HklPrev);
 
-            var layout = LoadKeyboardLayout(this.GetCurrentLayoutName(), KlfActivate);
-
-            PostMessage(foregroundWindowHandle, WmInputLangChangeRequest, IntPtr.Zero, layout);
+            var layout = LoadKeyboardLayout(this.GetCurrentLayoutName(), KLF.KLF_ACTIVATE);
+            
+            PostMessage(
+                foregroundWindowHandle,
+                (uint)WindowMessage.WM_INPUTLANGCHANGEREQUEST,
+                IntPtr.Zero,
+                layout.DangerousGetHandle());
         }
 
         public List<KeyboardLayout> GetKeyboardLayouts()
@@ -59,30 +69,33 @@ namespace KeyboardSwitch.Windows.Services
             this.logger.LogDebug("Getting the list of keyboard layouts in the system");
 
             int count = GetKeyboardLayoutList(0, null);
-            var keyboardLayoutIds = new IntPtr[count];
+            var keyboardLayoutIds = new HKL[count];
 
             GetKeyboardLayoutList(keyboardLayoutIds.Length, keyboardLayoutIds);
 
             this.systemLayouts = keyboardLayoutIds
-                .Select(keyboardLayoutId => this.CreateKeyboardLayout((int)keyboardLayoutId))
+                .Select(keyboardLayoutId => this.CreateKeyboardLayout(keyboardLayoutId))
                 .ToList();
 
             return this.systemLayouts;
         }
 
-        private KeyboardLayout GetThreadKeyboardLayout(int threadId)
+        private KeyboardLayout GetThreadKeyboardLayout(uint threadId)
             => this.CreateKeyboardLayout(GetKeyboardLayout(threadId));
 
-        private void SetThreadKeyboardLayout(int keyboardLayoutId)
+        private void SetThreadKeyboardLayout(HKL keyboardLayoutId)
             => ActivateKeyboardLayout(keyboardLayoutId, 0);
 
-        private KeyboardLayout CreateKeyboardLayout(int keyboardLayoutId)
-            => new KeyboardLayout(
-                keyboardLayoutId,
-                CultureInfo.GetCultureInfo(keyboardLayoutId & 0xFFFF),
+        private KeyboardLayout CreateKeyboardLayout(HKL keyboardLayoutId)
+        {
+            int id = (int)keyboardLayoutId.DangerousGetHandle();
+            return new KeyboardLayout(
+                id,
+                CultureInfo.GetCultureInfo(id & 0xFFFF),
                 this.GetLayoutDisplayName(keyboardLayoutId));
+        }
 
-        private string GetLayoutDisplayName(int keyboardLayoutId)
+        private string GetLayoutDisplayName(HKL keyboardLayoutId)
         {
             SetThreadKeyboardLayout(keyboardLayoutId);
             string name = this.GetCurrentLayoutName();
