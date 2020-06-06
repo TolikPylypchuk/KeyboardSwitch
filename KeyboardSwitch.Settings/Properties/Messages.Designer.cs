@@ -61,6 +61,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add custom layout.
+        /// </summary>
+        internal static string AddCustomLayout {
+            get {
+                return ResourceManager.GetString("AddCustomLayout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Backward.
         /// </summary>
         internal static string Backward {
@@ -97,6 +106,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Characters.
+        /// </summary>
+        internal static string Characters {
+            get {
+                return ResourceManager.GetString("Characters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Character Mappings.
         /// </summary>
         internal static string CharMapping {
@@ -124,6 +142,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Converter lets you map characters between custom layouts that are independent from those defined in your system.
+        /// </summary>
+        internal static string ConverterInfo {
+            get {
+                return ResourceManager.GetString("ConverterInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Converter Settings.
         /// </summary>
         internal static string ConverterSettings {
@@ -138,6 +165,15 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string CustomLayoutsAreSame {
             get {
                 return ResourceManager.GetString("CustomLayoutsAreSame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
             }
         }
         
@@ -291,6 +327,15 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string Modifiers {
             get {
                 return ResourceManager.GetString("Modifiers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
             }
         }
         

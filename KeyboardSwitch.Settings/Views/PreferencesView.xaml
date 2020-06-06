@@ -15,7 +15,7 @@
             <ComboBox x:Name="SwitchModeComboBox" Classes="FormControl" />
         </StackPanel>
 
-        <StackPanel x:Name="ActionPanel">
+        <StackPanel x:Name="ActionPanel" DockPanel.Dock="Bottom">
             <Button x:Name="SaveButton" Content="{l:Translate Save}" Classes="Primary" />
             <Button x:Name="CancelButton" Content="{l:Translate Cancel}" />
         </StackPanel>

@@ -18,7 +18,7 @@
         </StackPanel>
 
         <TextBox x:Name="CharsTextBox" Grid.Row="0" Grid.Column="1" FontFamily="Consolas" FontSize="16"
-                 VerticalAlignment="Center" HorizontalAlignment="Stretch" MinWidth="100" />
+                 VerticalAlignment="Center" HorizontalAlignment="Stretch" MinWidth="300" />
 
         <TextBlock x:Name="DuplicateCharsTextBlock" Grid.Row="1" Grid.Column="1" Classes="Error" />
     </Grid>

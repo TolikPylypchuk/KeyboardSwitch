@@ -26,7 +26,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.NameRule = this.ValidationRule(vm => vm.Name, name => !String.IsNullOrWhiteSpace(name), "NameEmpty");
 
             this.CopyProperties();
-            this.CanDeleteWhenNotChanged();
+            this.CanAlwaysDelete();
             this.EnableChangeTracking();
         }
 
