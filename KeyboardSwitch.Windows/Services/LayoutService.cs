@@ -97,8 +97,12 @@ namespace KeyboardSwitch.Windows.Services
 
         private string GetLayoutDisplayName(HKL keyboardLayoutId)
         {
+            var currentLayout = GetKeyboardLayout(0);
+
             SetThreadKeyboardLayout(keyboardLayoutId);
             string name = this.GetCurrentLayoutName();
+
+            SetThreadKeyboardLayout(currentLayout);
 
             using var key = Registry.LocalMachine.OpenSubKey(String.Format(KeyboardLayoutNameRegistryKeyFormat, name));
 
