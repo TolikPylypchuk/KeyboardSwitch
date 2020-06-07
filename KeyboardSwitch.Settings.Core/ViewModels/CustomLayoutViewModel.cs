@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reactive.Concurrency;
 using System.Resources;
 using System.Threading.Tasks;
@@ -7,7 +8,8 @@ using KeyboardSwitch.Settings.Core.Models;
 
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Validation.Extensions;
-using ReactiveUI.Validation.Helpers;
+
+using static KeyboardSwitch.Common.Constants;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
@@ -23,7 +25,21 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.CustomLayoutModel = customLayoutModel;
             this.IsNew = isNew;
 
-            this.NameRule = this.ValidationRule(vm => vm.Name, name => !String.IsNullOrWhiteSpace(name), "NameEmpty");
+            this.ValidationRule(
+                vm => vm.Name, name => !String.IsNullOrWhiteSpace(name), this.ResourceManager.GetString("NameEmpty"));
+
+            this.ValidationRule(
+                vm => vm.Chars,
+                chars => chars.Distinct().Count(ch => ch != MissingCharacter) ==
+                    chars.Count(ch => ch != MissingCharacter),
+                chars => String.Format(
+                    this.ResourceManager.GetString("CharsDuplicatedFormat") ?? String.Empty,
+                    chars
+                        .Where(ch => ch != MissingCharacter)
+                        .GroupBy(ch => ch)
+                        .Where(chs => chs.Count() > 1)
+                        .Select(chs => chs.Key.ToString())
+                        .Aggregate((acc, ch) => $"{acc}, {ch}")));
 
             this.CopyProperties();
             this.CanAlwaysDelete();
@@ -37,8 +53,6 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         [Reactive]
         public string Chars { get; set; } = String.Empty;
-
-        public ValidationHelper NameRule { get; }
 
         protected override CustomLayoutViewModel Self
             => this;

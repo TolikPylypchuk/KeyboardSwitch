@@ -26,9 +26,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.ValidationRule(
                 vm => vm.Chars,
                 chars => chars.Distinct().Count(ch => ch != MissingCharacter) ==
-                         chars.Count(ch => ch != MissingCharacter),
+                    chars.Count(ch => ch != MissingCharacter),
                 chars => String.Format(
-                    this.CharsDuplicatedFormat,
+                    this.ResourceManager.GetString("CharsDuplicatedFormat") ?? String.Empty,
                     chars
                         .Where(ch => ch != MissingCharacter)
                         .GroupBy(ch => ch)
@@ -59,9 +59,6 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         protected override LayoutViewModel Self
             => this;
-
-        private string CharsDuplicatedFormat
-            => this.ResourceManager.GetString("CharsDuplicatedFormat") ?? String.Empty;
 
         protected override void EnableChangeTracking()
         {

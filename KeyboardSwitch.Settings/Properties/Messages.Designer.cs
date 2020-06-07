@@ -133,6 +133,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Convert.
+        /// </summary>
+        internal static string Convert {
+            get {
+                return ResourceManager.GetString("Convert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Converter.
         /// </summary>
         internal static string Converter {
@@ -156,6 +165,24 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string ConverterSettings {
             get {
                 return ResourceManager.GetString("ConverterSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The converter requires at least 2 cusom layouts.
+        /// </summary>
+        internal static string ConverterTooFewCustomLayouts {
+            get {
+                return ResourceManager.GetString("ConverterTooFewCustomLayouts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Or press Ctrl+Enter.
+        /// </summary>
+        internal static string ConvertInfo {
+            get {
+                return ResourceManager.GetString("ConvertInfo", resourceCulture);
             }
         }
         
@@ -340,6 +367,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name is required.
+        /// </summary>
+        internal static string NameEmpty {
+            get {
+                return ResourceManager.GetString("NameEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Preferences.
         /// </summary>
         internal static string Preferences {
@@ -394,6 +430,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Source text.
+        /// </summary>
+        internal static string SourceText {
+            get {
+                return ResourceManager.GetString("SourceText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
         internal static string Start {
@@ -408,6 +453,15 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string Stop {
             get {
                 return ResourceManager.GetString("Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Swap.
+        /// </summary>
+        internal static string Swap {
+            get {
+                return ResourceManager.GetString("Swap", resourceCulture);
             }
         }
         
@@ -435,6 +489,15 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string SwitchMode {
             get {
                 return ResourceManager.GetString("SwitchMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target text.
+        /// </summary>
+        internal static string TargetText {
+            get {
+                return ResourceManager.GetString("TargetText", resourceCulture);
             }
         }
         

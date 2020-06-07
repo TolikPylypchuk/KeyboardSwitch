@@ -56,6 +56,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         protected override void EnableChangeTracking()
         {
             this.TrackChanges(this.IsCollectionChanged(vm => vm.CustomLayouts, vm => vm.ConverterModel.Layouts));
+            this.TrackValidation(this.IsCollectionValid(this.CustomLayouts));
+
             base.EnableChangeTracking();
         }
 

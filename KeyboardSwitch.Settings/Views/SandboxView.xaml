@@ -3,7 +3,8 @@
              xmlns:l="clr-namespace:KeyboardSwitch.Settings.Localization"
              x:Class="KeyboardSwitch.Settings.Views.SandboxView">
     <DockPanel>
-        <TextBlock Text="{l:Translate SandboxInfo}" Margin="10" DockPanel.Dock="Top" FontSize="14" />
+        <TextBlock Text="{l:Translate SandboxInfo}" Margin="10" DockPanel.Dock="Top"
+                   FontSize="{DynamicResource FontSizeNormal}" TextWrapping="Wrap" />
 
         <TextBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"
                  AcceptsReturn="True" FontSize="14" />

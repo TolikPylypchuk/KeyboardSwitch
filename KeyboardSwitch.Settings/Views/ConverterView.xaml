@@ -1,8 +1,48 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:l="clr-namespace:KeyboardSwitch.Settings.Localization"
+             xmlns:vm="clr-namespace:KeyboardSwitch.Settings.Core.Models;assembly=KeyboardSwitch.Settings.Core"
              x:Class="KeyboardSwitch.Settings.Views.ConverterView">
-    <StackPanel>
-        <TextBlock Text="{l:Translate ConverterInfo}" Margin="10" FontSize="14" />
-    </StackPanel>
+    <UserControl.Resources>
+        <DataTemplate x:Key="LayoutNameTemplate" DataType="vm:CustomLayoutModel">
+            <TextBlock Text="{Binding Name}" TextWrapping="Wrap" />
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <DockPanel>
+        <TextBlock Text="{l:Translate ConverterInfo}" Margin="10" DockPanel.Dock="Top"
+                   FontSize="{DynamicResource FontSizeNormal}" TextWrapping="Wrap" />
+
+        <TextBlock x:Name="TooFewLayoutsTextBlock" Text="{l:Translate ConverterTooFewCustomLayouts}"
+                   Margin="10" FontSize="{DynamicResource FontSizeLarge}" DockPanel.Dock="Top" TextWrapping="Wrap" />
+
+        <Grid x:Name="ConverterGrid" RowDefinitions="*,*" ColumnDefinitions="Auto,*">
+            <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="0">
+                <ComboBox x:Name="SourceLayoutComboBox" HorizontalAlignment="Stretch" Margin="10" MinWidth="200"
+                          ItemTemplate="{StaticResource LayoutNameTemplate}" />
+                
+                <Button x:Name="SwapButton" Content="{l:Translate Swap}" Margin="10 0" HorizontalAlignment="Left" />
+                
+                <ComboBox x:Name="TargetLayoutComboBox" HorizontalAlignment="Stretch" Margin="10" MinWidth="200"
+                          ItemTemplate="{StaticResource LayoutNameTemplate}" />
+
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="ConvertButton" Content="{l:Translate Convert}" Margin="10 0" Classes="Primary"
+                            HorizontalAlignment="Left" />
+                    <TextBlock Text="{l:Translate ConvertInfo}" FontSize="{DynamicResource FontSizeSmall}"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+
+                <TextBlock x:Name="LayoutsValidationTextBlock" Classes="Error" Margin="10" />
+            </StackPanel>
+
+            <TextBox x:Name="SourceTextBox" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch"
+                     VerticalAlignment="Stretch" Margin="10" AcceptsReturn="True" AcceptsTab="True"
+                     Watermark="{l:Translate SourceText}" />
+
+            <TextBox x:Name="TargetTextBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch"
+                     VerticalAlignment="Stretch" Margin="10" IsReadOnly="True"
+                     Watermark="{l:Translate TargetText}" />
+        </Grid>
+    </DockPanel>
 </UserControl>

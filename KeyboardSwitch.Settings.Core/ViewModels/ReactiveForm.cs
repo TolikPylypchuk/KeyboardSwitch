@@ -23,8 +23,6 @@ using Splat;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
-    public enum ValidationType { Valid, Required }
-
     public abstract class ReactiveForm<TModel, TForm> : ReactiveValidationObject<TForm>, IReactiveForm
         where TModel : class
         where TForm : ReactiveForm<TModel, TForm>

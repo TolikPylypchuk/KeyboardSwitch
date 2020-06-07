@@ -141,6 +141,9 @@
   <data name="CharsDuplicatedFormat" xml:space="preserve">
     <value>Duplicate characters are not allowed: {0}</value>
   </data>
+  <data name="Convert" xml:space="preserve">
+    <value>Convert</value>
+  </data>
   <data name="Converter" xml:space="preserve">
     <value>Converter</value>
   </data>
@@ -149,6 +152,12 @@
   </data>
   <data name="ConverterSettings" xml:space="preserve">
     <value>Converter Settings</value>
+  </data>
+  <data name="ConverterTooFewCustomLayouts" xml:space="preserve">
+    <value>The converter requires at least 2 cusom layouts</value>
+  </data>
+  <data name="ConvertInfo" xml:space="preserve">
+    <value>Or press Ctrl+Enter</value>
   </data>
   <data name="CustomLayoutsAreSame" xml:space="preserve">
     <value>Layouts must be different</value>
@@ -210,6 +219,9 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="NameEmpty" xml:space="preserve">
+    <value>Name is required</value>
+  </data>
   <data name="Preferences" xml:space="preserve">
     <value>Preferences</value>
   </data>
@@ -228,11 +240,17 @@
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="SourceText" xml:space="preserve">
+    <value>Source text</value>
+  </data>
   <data name="Start" xml:space="preserve">
     <value>Start</value>
   </data>
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
+  </data>
+  <data name="Swap" xml:space="preserve">
+    <value>Swap</value>
   </data>
   <data name="SwitchLayout" xml:space="preserve">
     <value>Switch layout</value>
@@ -242,6 +260,9 @@
   </data>
   <data name="SwitchMode" xml:space="preserve">
     <value>Switch mode</value>
+  </data>
+  <data name="TargetText" xml:space="preserve">
+    <value>Target text</value>
   </data>
   <data name="ValidationNameEmpty" xml:space="preserve">
     <value>Name is required</value>

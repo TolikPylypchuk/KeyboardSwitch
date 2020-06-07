@@ -2,19 +2,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:l="clr-namespace:KeyboardSwitch.Settings.Localization"
              x:Class="KeyboardSwitch.Settings.Views.ConverterSettingsView">
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
-        <DockPanel>
-            <StackPanel x:Name="ActionPanel" DockPanel.Dock="Bottom">
-                <Button x:Name="SaveButton" Content="{l:Translate Save}" Classes="Primary" />
-                <Button x:Name="CancelButton" Content="{l:Translate Cancel}" />
-            </StackPanel>
+    <DockPanel>
+        <StackPanel x:Name="ActionPanel" DockPanel.Dock="Bottom">
+            <Button x:Name="SaveButton" Content="{l:Translate Save}" Classes="Primary" />
+            <Button x:Name="CancelButton" Content="{l:Translate Cancel}" />
+        </StackPanel>
 
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
             <DockPanel VerticalAlignment="Top">
                 <Button x:Name="AddLayoutButton" DockPanel.Dock="Bottom" Margin="10" Classes="Primary"
                         HorizontalAlignment="Left" Content="{l:Translate AddCustomLayout}" />
                 
                 <ItemsControl x:Name="Layouts" />
             </DockPanel>
-        </DockPanel>
-    </ScrollViewer>
+        </ScrollViewer>
+    </DockPanel>
 </UserControl>
