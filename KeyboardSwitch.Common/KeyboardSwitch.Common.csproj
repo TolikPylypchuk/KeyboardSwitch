@@ -9,6 +9,10 @@
     <FileVersion>3.0.0.0</FileVersion>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <OutputPath>$(SolutionDir)\bin\$(Platform)\$(Configuration)</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="akavache" Version="6.10.17" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.4" />

@@ -10,6 +10,11 @@
     <FileVersion>3.0.0.0</FileVersion>
     <AssemblyName>KeyboardSwitchSettings</AssemblyName>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <OutputPath>$(SolutionDir)\bin\$(Platform)\$(Configuration)</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Update="**\*.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
@@ -19,6 +24,7 @@
     </AvaloniaResource>
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
+
   <ItemGroup>
     <AvaloniaResource Remove="Views\CharacterView.xaml" />
     <AvaloniaResource Remove="Views\CharMappingView.xaml" />
@@ -33,6 +39,7 @@
     <AvaloniaResource Remove="Views\SandboxView.xaml" />
     <AvaloniaResource Remove="Views\ServiceView.xaml" />
   </ItemGroup>
+
   <ItemGroup>
     <None Remove="appsettings.json" />
     <None Remove="Views\CharacterView.xaml" />
@@ -48,11 +55,13 @@
     <None Remove="Views\SandboxView.xaml" />
     <None Remove="Views\ServiceView.xaml" />
   </ItemGroup>
+
   <ItemGroup>
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.9.10" />
     <PackageReference Include="Avalonia.Desktop" Version="0.9.10" />
@@ -86,6 +95,7 @@
     <PackageReference Include="System.Interactive.Async" Version="4.1.1" />
     <PackageReference Include="System.Reactive" Version="4.4.1" />
   </ItemGroup>
+
   <ItemGroup>
     <EmbeddedResource Include="Views\ServiceView.xaml">
       <Generator>MSBuild:Compile</Generator>

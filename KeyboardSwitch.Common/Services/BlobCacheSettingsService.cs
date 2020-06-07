@@ -138,33 +138,10 @@ namespace KeyboardSwitch.Common.Services
                 },
                 SwitchMode = SwitchMode.ModifierKey,
                 CharsByKeyboardLayoutId = this.layoutService.GetKeyboardLayouts()
-                    .ToDictionary(
-                        layout => layout.Id,
-#if DEBUG
-                        this.GetCharsForLayout),
-#else
-                        _ => String.Empty),
-#endif
+                    .ToDictionary(layout => layout.Id, _ => String.Empty),
                 InstantSwitching = true,
                 SwitchLayout = true,
-#if DEBUG
-                ServicePath = @"..\..\..\..\..\KeyboardSwitch\bin\x64\Debug\netcoreapp3.1\KeyboardSwitch",
-#else
-                ServicePath = nameof(KeyboardSwitch),
-#endif
-            };
-
-        private string GetCharsForLayout(KeyboardLayout layout)
-            => layout.Culture.TwoLetterISOLanguageName switch
-            {
-                "en" => @"qwertyuiop[]\asdfghjkl;'zxcvbnm,./QWERTYUIOP{}|ASDFGHJKL:""ZXCVBNM<>?`1234567890-=~!@#$%^&*()_+",
-                "uk" => @"йцукенгшщзхї\фівапролджєячсмитьбю.ЙЦУКЕНГШЩЗХЇ/ФІВАПРОЛДЖЄЯЧСМИТЬБЮ,'1234567890-=₴!""№;%:?*()_+",
-                "ru" => @"йцукенгшщзхъ\фывапролджэячсмитьбю.ЙЦУКЕНГШЩЗХЪ/ФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,ё1234567890-=Ё!""№;%:?*()_+",
-                "pl" => @"qwertyuiop[]\asdfghjkl;'zxcvbnm,./QWERTYUIOP{}|ASDFGHJKL:""ZXCVBNM<>?`1234567890-=~!@#$%^&*()_+",
-                "de" => @"qwertzuiopü+#asdfghjklöäyxcvbnm,.-QWERTZUIOPÜ*'ASDFGHJKLÖÄYXCVBNM;:_^1234567890ß´°!""§$%&/()=?`",
-                "fr" => @"azertyuiop^$*qsdfghjklmùwxcvbn,;:!AZERTYUIOP¨£µQSDFGHJKLM%WXCVBN?./§²&é""'(-è_çà)=~1234567890°+",
-                "es" => @"qwertyuiop`+çasdfghjklñ´zxcvbnm,.-QWERTYUIOP^*ÇASDFGHJKLÑ¨ZXCVBNM;:_º1234567890'¡ª!""·$%&/()=?¿",
-                _ => String.Empty
+                ServicePath = nameof(KeyboardSwitch)
             };
     }
 }

@@ -9,6 +9,10 @@
     <AssemblyVersion>3.0.0.0</AssemblyVersion>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <OutputPath>$(SolutionDir)\bin\$(Platform)\$(Configuration)</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="akavache" Version="6.10.17" />
     <PackageReference Include="GregsStack.InputSimulatorStandard" Version="1.1.1" />
@@ -25,5 +29,4 @@
   <ItemGroup>
     <ProjectReference Include="..\KeyboardSwitch.Common\KeyboardSwitch.Common.csproj" />
   </ItemGroup>
-
 </Project>
