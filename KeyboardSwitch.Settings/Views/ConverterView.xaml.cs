@@ -76,13 +76,13 @@ namespace KeyboardSwitch.Settings.Views
             var enoughLayouts = this.ViewModel.Layouts
                     .ToObservableChangeSet()
                     .Count()
+                    .StartWith(this.ViewModel.Layouts.Count)
                     .Select(count => count >= 2);
 
             enoughLayouts.BindTo(this, v => v.ConverterGrid.IsVisible)
                 .DisposeWith(disposables);
 
-            enoughLayouts
-                .Invert()
+            enoughLayouts.Invert()
                 .BindTo(this, v => v.TooFewLayoutsTextBlock.IsVisible)
                 .DisposeWith(disposables);
         }
