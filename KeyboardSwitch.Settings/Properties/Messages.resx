@@ -120,6 +120,9 @@
   <data name="AddCustomLayout" xml:space="preserve">
     <value>Add custom layout</value>
   </data>
+  <data name="AutoConfigure" xml:space="preserve">
+    <value>Auto-configure</value>
+  </data>
   <data name="Backward" xml:space="preserve">
     <value>Backward</value>
   </data>

@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using KeyboardSwitch.Common;
+using KeyboardSwitch.Common.Keyboard;
 using KeyboardSwitch.Common.Services;
 
 using Microsoft.Extensions.Logging;

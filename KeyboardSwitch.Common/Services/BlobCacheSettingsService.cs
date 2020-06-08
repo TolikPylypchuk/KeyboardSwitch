@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using Akavache;
 
+using KeyboardSwitch.Common.Keyboard;
 using KeyboardSwitch.Common.Settings;
 
 using Microsoft.Extensions.Logging;

@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace KeyboardSwitch.Common
+namespace KeyboardSwitch.Common.Keyboard
 {
     public class KeyboardLayout : IEquatable<KeyboardLayout>
     {

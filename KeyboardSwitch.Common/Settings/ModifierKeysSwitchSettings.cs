@@ -1,5 +1,7 @@
 using System.Runtime.Serialization;
 
+using KeyboardSwitch.Common.Keyboard;
+
 namespace KeyboardSwitch.Common.Settings
 {
     [DataContract]

@@ -7,8 +7,9 @@ using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 
 using KeyboardSwitch.Common;
-using KeyboardSwitch.Settings.Core.ViewModels;
+using KeyboardSwitch.Common.Keyboard;
 using KeyboardSwitch.Settings.Converters;
+using KeyboardSwitch.Settings.Core.ViewModels;
 
 using ReactiveUI;
 using ReactiveUI.Validation.Extensions;

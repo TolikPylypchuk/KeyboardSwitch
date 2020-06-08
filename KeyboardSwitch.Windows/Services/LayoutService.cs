@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 
 using KeyboardSwitch.Common;
+using KeyboardSwitch.Common.Keyboard;
 using KeyboardSwitch.Common.Services;
 
 using Microsoft.Extensions.Logging;

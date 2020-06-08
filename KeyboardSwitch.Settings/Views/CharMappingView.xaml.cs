@@ -22,6 +22,13 @@ namespace KeyboardSwitch.Settings.Views
                 this.OneWayBind(this.ViewModel, vm => vm.Layouts, v => v.Layouts.Items)
                     .DisposeWith(disposables);
 
+                this.BindCommand(this.ViewModel, vm => vm.AutoConfigure, v => v.AutoConfigureButton)
+                    .DisposeWith(disposables);
+
+                this.WhenAnyObservable(v => v.ViewModel.AutoConfigure.CanExecute)
+                    .BindTo(this, v => v.AutoConfigureButton.IsVisible)
+                    .DisposeWith(disposables);
+
                 this.BindCommand(this.ViewModel, vm => vm.Save, v => v.SaveButton)
                     .DisposeWith(disposables);
 
@@ -37,6 +44,8 @@ namespace KeyboardSwitch.Settings.Views
         }
 
         private ItemsControl Layouts { get; set; } = null!;
+        private Button AutoConfigureButton { get; set; } = null!;
+
         private StackPanel ActionPanel { get; set; } = null!;
         private Button SaveButton { get; set; } = null!;
         private Button CancelButton { get; set; } = null!;
@@ -46,6 +55,8 @@ namespace KeyboardSwitch.Settings.Views
             AvaloniaXamlLoader.Load(this);
 
             this.Layouts = this.FindControl<ItemsControl>(nameof(Layouts));
+            this.AutoConfigureButton = this.FindControl<Button>(nameof(this.AutoConfigureButton));
+
             this.ActionPanel = this.FindControl<StackPanel>(nameof(ActionPanel));
             this.SaveButton = this.FindControl<Button>(nameof(this.SaveButton));
             this.CancelButton = this.FindControl<Button>(nameof(this.CancelButton));

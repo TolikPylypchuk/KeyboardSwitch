@@ -1,6 +1,6 @@
 using System;
 
-namespace KeyboardSwitch.Common
+namespace KeyboardSwitch.Common.Keyboard
 {
     public class HotKey : IEquatable<HotKey>
     {

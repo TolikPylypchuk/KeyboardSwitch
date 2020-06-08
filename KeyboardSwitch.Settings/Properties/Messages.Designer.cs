@@ -70,6 +70,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Auto-configure.
+        /// </summary>
+        internal static string AutoConfigure {
+            get {
+                return ResourceManager.GetString("AutoConfigure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Backward.
         /// </summary>
         internal static string Backward {

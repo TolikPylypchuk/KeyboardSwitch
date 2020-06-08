@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Reactive.Linq;
 
 using KeyboardSwitch.Common;
+using KeyboardSwitch.Common.Keyboard;
 using KeyboardSwitch.Common.Services;
 using KeyboardSwitch.Settings.Core.Models;
 

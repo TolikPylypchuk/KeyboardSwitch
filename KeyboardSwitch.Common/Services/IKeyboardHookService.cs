@@ -2,6 +2,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+using KeyboardSwitch.Common.Keyboard;
+
 namespace KeyboardSwitch.Common.Services
 {
     public interface IKeyboardHookService : IDisposable

@@ -10,8 +10,14 @@
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
                       VerticalAlignment="Stretch">
-            <ItemsControl x:Name="Layouts" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                        Grid.IsSharedSizeScope="True" />
+            <DockPanel VerticalAlignment="Top">
+                <Button x:Name="AutoConfigureButton" DockPanel.Dock="Bottom" Content="{l:Translate AutoConfigure}"
+                        FontSize="{DynamicResource FontSizeLarge}" Classes="Primary" Margin="10"
+                        HorizontalAlignment="Center" />
+                
+                <ItemsControl x:Name="Layouts" HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                              Grid.IsSharedSizeScope="True" />
+            </DockPanel>
         </ScrollViewer>
     </DockPanel>
 </UserControl>
