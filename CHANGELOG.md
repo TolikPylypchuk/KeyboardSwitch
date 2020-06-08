@@ -2,10 +2,11 @@
 
   - A completely rewritten app based on .NET Core and working as a truly UI-less app
 instead of an app with a hidden window
-  - The settings are now a separate app written in Avalonia instead of WPF
+  - The settings are now a separate app written with Avalonia instead of WPF
   - Tray icon was removed
   - Added the ability to switch between multiple layouts of the same language (e.g. QWERTY and Dvorak for English)
   - Instant switching mode is not experimental anymore and enabled by default
+  - Added the ability to auto-configure character mappings
 
 # [v2.1](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v2.1) (1 April 2018)
 
