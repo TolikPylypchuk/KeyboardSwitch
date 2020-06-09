@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reactive.Linq;
 
-using KeyboardSwitch.Common;
 using KeyboardSwitch.Common.Keyboard;
 using KeyboardSwitch.Common.Services;
 using KeyboardSwitch.Settings.Core.Models;
@@ -43,6 +42,6 @@ namespace KeyboardSwitch.Settings.Core.Services
         { }
 
         private KeyboardLayout CreateFakeKeyboardLayout(CustomLayoutModel layout, int index)
-            => new KeyboardLayout(index, CultureInfo.InvariantCulture, layout.Name);
+            => new KeyboardLayout(index, CultureInfo.InvariantCulture, layout.Name, index.ToString());
     }
 }

@@ -5,17 +5,19 @@ namespace KeyboardSwitch.Common.Keyboard
 {
     public class KeyboardLayout : IEquatable<KeyboardLayout>
     {
-        public KeyboardLayout(int id, CultureInfo culture, string keyboardName)
+        public KeyboardLayout(int id, CultureInfo culture, string keyboardName, string tag)
         {
             this.Id = id;
             this.Culture = culture;
             this.KeyboardName = keyboardName;
+            this.Tag = tag;
         }
 
         public int Id { get; }
 
         public CultureInfo Culture { get; }
         public string KeyboardName { get; }
+        public string Tag { get; }
 
         public override bool Equals(object? obj)
             => obj is KeyboardLayout other && this.Equals(other);

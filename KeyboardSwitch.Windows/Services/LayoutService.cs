@@ -15,10 +15,10 @@ using static Vanara.PInvoke.User32;
 
 namespace KeyboardSwitch.Windows.Services
 {
-    public sealed class LayoutService : ILayoutService
+    public sealed class LayoutService : ILayoutService, ILayoutLoaderSrevice
     {
-        private const string KeyboardLayoutNameRegistryKeyFormat =
-            @"SYSTEM\CurrentControlSet\Control\Keyboard Layouts\{0}";
+        private const string KeyboardLayoutsRegistryKey = @"SYSTEM\CurrentControlSet\Control\Keyboard Layouts";
+        private static readonly string KeyboardLayoutNameRegistryKeyFormat = $@"{KeyboardLayoutsRegistryKey}\{0}";
         private const string LayoutText = "Layout Text";
 
         private static readonly IntPtr HklNext = (IntPtr)1;
@@ -31,6 +31,9 @@ namespace KeyboardSwitch.Windows.Services
 
         public LayoutService(ILogger<LayoutService> logger)
             => this.logger = logger;
+
+        public bool CanGetAllSystemLayouts
+            => true;
 
         public KeyboardLayout GetCurrentKeyboardLayout()
         {
@@ -81,6 +84,33 @@ namespace KeyboardSwitch.Windows.Services
             return this.systemLayouts;
         }
 
+        public Dictionary<string, string> GetAllSystemLayouts()
+        {
+            var layouts = Registry.LocalMachine.OpenSubKey(KeyboardLayoutsRegistryKey);
+
+            return layouts
+                .GetSubKeyNames()
+                .ToDictionary(
+                    layoutKey => layoutKey,
+                    layoutKey => layouts.OpenSubKey(layoutKey).GetValue(LayoutText).ToString() ?? String.Empty);
+        }
+
+        public DisposableLayouts LoadLayouts(Dictionary<string, string> layouts)
+        {
+            var loadedLayouts = this.GetKeyboardLayouts();
+
+            var allLayouts = layouts
+                .Where(layout => !loadedLayouts.Any(loadedLayout => loadedLayout.Tag == layout.Key))
+                .Select(layout =>
+                {
+                    int id = (int)LoadKeyboardLayout(layout.Key, KLF.KLF_NOTELLSHELL).DangerousGetHandle();
+                    return new KeyboardLayout(id, this.GetCultureInfo(id), layout.Value, layout.Key);
+                })
+                .Concat(loadedLayouts);
+
+            return new UnloadableLayouts(allLayouts, loadedLayouts);
+        }
+
         private KeyboardLayout GetThreadKeyboardLayout(uint threadId)
             => this.CreateKeyboardLayout(GetKeyboardLayout(threadId));
 
@@ -90,13 +120,12 @@ namespace KeyboardSwitch.Windows.Services
         private KeyboardLayout CreateKeyboardLayout(HKL keyboardLayoutId)
         {
             int id = (int)keyboardLayoutId.DangerousGetHandle();
-            return new KeyboardLayout(
-                id,
-                CultureInfo.GetCultureInfo(id & 0xFFFF),
-                this.GetLayoutDisplayName(keyboardLayoutId));
+            var (name, tag) = this.GetLayoutDisplayNameAndTag(keyboardLayoutId);
+
+            return new KeyboardLayout(id, this.GetCultureInfo(id), name, tag);
         }
 
-        private string GetLayoutDisplayName(HKL keyboardLayoutId)
+        private (string DisplayName, string Tag) GetLayoutDisplayNameAndTag(HKL keyboardLayoutId)
         {
             var currentLayout = GetKeyboardLayout(0);
 
@@ -107,7 +136,7 @@ namespace KeyboardSwitch.Windows.Services
 
             using var key = Registry.LocalMachine.OpenSubKey(String.Format(KeyboardLayoutNameRegistryKeyFormat, name));
 
-            return key?.GetValue(LayoutText)?.ToString() ?? String.Empty;
+            return (key?.GetValue(LayoutText)?.ToString() ?? String.Empty, name);
         }
 
         private string GetCurrentLayoutName()
@@ -116,5 +145,8 @@ namespace KeyboardSwitch.Windows.Services
             GetKeyboardLayoutName(name);
             return name.ToString();
         }
+
+        private CultureInfo GetCultureInfo(int keyboardLayoutId)
+            => CultureInfo.GetCultureInfo(keyboardLayoutId & 0xFFFF);
     }
 }

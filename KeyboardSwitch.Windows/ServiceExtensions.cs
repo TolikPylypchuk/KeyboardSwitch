@@ -26,7 +26,9 @@ namespace KeyboardSwitch.Windows
                 .AddSingleton<IKeysService, KeysService>()
                 .AddSingleton<IKeyboardHookService, KeyboardHookService>()
                 .AddSingleton<ITextService, ClipboardTextService>()
-                .AddSingleton<ILayoutService, LayoutService>()
+                .AddSingleton<LayoutService>()
+                .AddSingleton<ILayoutService>(provider => provider.GetRequiredService<LayoutService>())
+                .AddSingleton<ILayoutLoaderSrevice>(provider => provider.GetRequiredService<LayoutService>())
                 .AddSingleton<IAutoConfigurationService, AutoConfigurationService>();
 
         private static IBlobCache CreateBlobCache(IServiceProvider services)
