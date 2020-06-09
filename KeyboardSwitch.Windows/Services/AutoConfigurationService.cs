@@ -67,6 +67,10 @@ namespace KeyboardSwitch.Windows.Services
         private const int VkAlt = 0x12;
         private const int Pressed = 0x80;
 
+        private const int ResultSuccess = 1;
+        private const int ResultNotMapped = 0;
+        private const int ResultDeadKey = -1;
+
         private static readonly List<KeyCode> KeyCodesToMap = new List<KeyCode>
         {
             KeyCode.VcQ,
@@ -173,23 +177,37 @@ namespace KeyboardSwitch.Windows.Services
                 keyboardState[VkAlt] = Pressed;
             }
 
-            uint scanCode = (uint)keyCode;
-            uint virtualKeyCode = MapVirtualKey(scanCode, MAPVK.MAPVK_VSC_TO_VK_EX);
+            uint virtualKeyCode = MapToVirtualKey(keyCode);
 
             if (virtualKeyCode == 0)
             {
                 return KeyToCharResult.NotMapped();
             }
 
-            int result = ToUnicodeEx(virtualKeyCode, scanCode, keyboardState, buffer, bufferSize, 0, layoutId);
+            int result = ToUnicodeEx(virtualKeyCode, (uint)keyCode, keyboardState, buffer, bufferSize, 0, layoutId);
+
+            if (result == ResultDeadKey)
+            {
+                result = ToUnicodeEx(
+                    MapToVirtualKey(KeyCode.VcSpace),
+                    (uint)KeyCode.VcSpace,
+                    keyboardState,
+                    buffer,
+                    bufferSize,
+                    0,
+                    layoutId);
+            }
 
             return result switch
             {
-                1 => KeyToCharResult.Success(buffer.ToString()[0], layoutId),
-                0 => KeyToCharResult.NotMapped(),
-                -1 => KeyToCharResult.DeadKey(),
+                ResultSuccess => KeyToCharResult.Success(buffer.ToString()[0], layoutId),
+                ResultNotMapped => KeyToCharResult.NotMapped(),
+                ResultDeadKey => KeyToCharResult.DeadKey(),
                 _ => KeyToCharResult.MultipleChars()
             };
         }
+
+        private uint MapToVirtualKey(KeyCode keyCode)
+            => MapVirtualKey((uint)keyCode, MAPVK.MAPVK_VSC_TO_VK_EX);
     }
 }
