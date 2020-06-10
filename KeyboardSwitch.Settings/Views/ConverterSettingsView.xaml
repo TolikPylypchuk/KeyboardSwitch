@@ -2,19 +2,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:l="clr-namespace:KeyboardSwitch.Settings.Localization"
              x:Class="KeyboardSwitch.Settings.Views.ConverterSettingsView">
-    <DockPanel>
-        <StackPanel x:Name="ActionPanel" DockPanel.Dock="Bottom">
-            <Button x:Name="SaveButton" Content="{l:Translate Save}" Classes="Primary" />
-            <Button x:Name="CancelButton" Content="{l:Translate Cancel}" />
-        </StackPanel>
+    <Grid>
+        <DockPanel x:Name="MainPanel" Grid.Row="0" Grid.Column="0">
+            <StackPanel x:Name="ActionPanel" DockPanel.Dock="Bottom">
+                <Button x:Name="SaveButton" Content="{l:Translate Save}" Classes="Primary" />
+                <Button x:Name="CancelButton" Content="{l:Translate Cancel}" />
+            </StackPanel>
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
-            <DockPanel VerticalAlignment="Top">
-                <Button x:Name="AddLayoutButton" DockPanel.Dock="Bottom" Margin="10" Classes="Primary"
-                        HorizontalAlignment="Left" Content="{l:Translate AddCustomLayout}" />
-                
-                <ItemsControl x:Name="Layouts" />
-            </DockPanel>
-        </ScrollViewer>
-    </DockPanel>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
+                <DockPanel VerticalAlignment="Top">
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
+                        <Button x:Name="AddLayoutButton" Margin="10 10 0 10" Classes="Primary"
+                                HorizontalAlignment="Left" Content="{l:Translate AddCustomLayout}" />
+                        <Button x:Name="AutoConfigureButton" Margin="10" Classes="Primary"
+                                HorizontalAlignment="Left" Content="{l:Translate AutoConfigureCustomLayouts}" />
+                    </StackPanel>
+
+                    <ItemsControl x:Name="Layouts" />
+                </DockPanel>
+            </ScrollViewer>
+        </DockPanel>
+
+        <DockPanel x:Name="AutoConfigurationPanel">
+            <TextBlock DockPanel.Dock="Top" Text="{l:Translate AddLayoutsToAutoConfigure}" Margin="10"
+                       FontSize="{DynamicResource FontSizeNormal}" />
+        </DockPanel>
+    </Grid>
 </UserControl>

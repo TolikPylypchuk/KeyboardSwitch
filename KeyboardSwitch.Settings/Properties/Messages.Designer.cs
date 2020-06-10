@@ -70,11 +70,29 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add layouts to auto-configure.
+        /// </summary>
+        internal static string AddLayoutsToAutoConfigure {
+            get {
+                return ResourceManager.GetString("AddLayoutsToAutoConfigure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto-configure.
         /// </summary>
         internal static string AutoConfigure {
             get {
                 return ResourceManager.GetString("AutoConfigure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auto-configure custom layouts.
+        /// </summary>
+        internal static string AutoConfigureCustomLayouts {
+            get {
+                return ResourceManager.GetString("AutoConfigureCustomLayouts", resourceCulture);
             }
         }
         
@@ -192,6 +210,15 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string ConvertInfo {
             get {
                 return ResourceManager.GetString("ConvertInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Layout names must be unique.
+        /// </summary>
+        internal static string CustomLayoutNamesAreSame {
+            get {
+                return ResourceManager.GetString("CustomLayoutNamesAreSame", resourceCulture);
             }
         }
         

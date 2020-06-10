@@ -29,8 +29,8 @@ namespace KeyboardSwitch.Settings.Core.Services
                 .ToPropertyEx(this, vm => vm.TargetLayout);
         }
 
-        private KeyboardLayout SourceLayout { [ObservableAsProperty]get; } = null!;
-        private KeyboardLayout TargetLayout { [ObservableAsProperty]get; } = null!;
+        private KeyboardLayout SourceLayout { [ObservableAsProperty] get; } = null!;
+        private KeyboardLayout TargetLayout { [ObservableAsProperty] get; } = null!;
 
         public KeyboardLayout GetCurrentKeyboardLayout()
             => this.SourceLayout;

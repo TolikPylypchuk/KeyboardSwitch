@@ -84,27 +84,32 @@ namespace KeyboardSwitch.Windows.Services
             return this.systemLayouts;
         }
 
-        public Dictionary<string, string> GetAllSystemLayouts()
+        public List<LoadableKeyboardLayout> GetAllSystemLayouts()
         {
-            var layouts = Registry.LocalMachine.OpenSubKey(KeyboardLayoutsRegistryKey);
+            using var layouts = Registry.LocalMachine.OpenSubKey(KeyboardLayoutsRegistryKey);
 
             return layouts
                 .GetSubKeyNames()
-                .ToDictionary(
-                    layoutKey => layoutKey,
-                    layoutKey => layouts.OpenSubKey(layoutKey).GetValue(LayoutText).ToString() ?? String.Empty);
+                .Select(layoutKey =>
+                {
+                    using var subKey = layouts.OpenSubKey(layoutKey);
+                    return new LoadableKeyboardLayout(
+                        layoutKey,
+                        subKey.GetValue(LayoutText).ToString() ?? String.Empty);
+                })
+                .ToList();
         }
 
-        public DisposableLayouts LoadLayouts(Dictionary<string, string> layouts)
+        public DisposableLayouts LoadLayouts(IEnumerable<LoadableKeyboardLayout> loadableLayouts)
         {
             var loadedLayouts = this.GetKeyboardLayouts();
 
-            var allLayouts = layouts
-                .Where(layout => !loadedLayouts.Any(loadedLayout => loadedLayout.Tag == layout.Key))
-                .Select(layout =>
+            var allLayouts = loadableLayouts
+                .Where(loadableLayout => !loadedLayouts.Any(loadedLayout => loadedLayout.Tag == loadableLayout.Tag))
+                .Select(loadableLayout =>
                 {
-                    int id = (int)LoadKeyboardLayout(layout.Key, KLF.KLF_NOTELLSHELL).DangerousGetHandle();
-                    return new KeyboardLayout(id, this.GetCultureInfo(id), layout.Value, layout.Key);
+                    int id = (int)LoadKeyboardLayout(loadableLayout.Tag, KLF.KLF_NOTELLSHELL).DangerousGetHandle();
+                    return new KeyboardLayout(id, this.GetCultureInfo(id), loadableLayout.Name, loadableLayout.Tag);
                 })
                 .Concat(loadedLayouts);
 

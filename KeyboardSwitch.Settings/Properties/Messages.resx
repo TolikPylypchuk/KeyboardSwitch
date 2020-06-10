@@ -120,8 +120,14 @@
   <data name="AddCustomLayout" xml:space="preserve">
     <value>Add custom layout</value>
   </data>
+  <data name="AddLayoutsToAutoConfigure" xml:space="preserve">
+    <value>Add layouts to auto-configure</value>
+  </data>
   <data name="AutoConfigure" xml:space="preserve">
     <value>Auto-configure</value>
+  </data>
+  <data name="AutoConfigureCustomLayouts" xml:space="preserve">
+    <value>Auto-configure custom layouts</value>
   </data>
   <data name="Backward" xml:space="preserve">
     <value>Backward</value>
@@ -161,6 +167,9 @@
   </data>
   <data name="ConvertInfo" xml:space="preserve">
     <value>Or press Ctrl+Enter</value>
+  </data>
+  <data name="CustomLayoutNamesAreSame" xml:space="preserve">
+    <value>Layout names must be unique</value>
   </data>
   <data name="CustomLayoutsAreSame" xml:space="preserve">
     <value>Layouts must be different</value>

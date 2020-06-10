@@ -28,8 +28,8 @@ namespace KeyboardSwitch.Settings.Core.Services
             targetLayout.ToPropertyEx(this, vm => vm.TargetLayout);
         }
 
-        private CustomLayoutModel SourceLayout { [ObservableAsProperty]get; } = null!;
-        private CustomLayoutModel TargetLayout { [ObservableAsProperty]get; } = null!;
+        private CustomLayoutModel SourceLayout { [ObservableAsProperty] get; } = null!;
+        private CustomLayoutModel TargetLayout { [ObservableAsProperty] get; } = null!;
 
         public IObservable<Unit> SettingsInvalidated
             => this.settingsInvalidated.AsObservable();
