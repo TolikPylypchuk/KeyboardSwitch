@@ -22,9 +22,6 @@ namespace KeyboardSwitch.Settings.Views
         {
             this.WhenActivated(disposables =>
             {
-                this.OneWayBind(this, v => v.ViewModel, v => v.DataContext)
-                    .DisposeWith(disposables);
-
                 this.Bind(this.ViewModel, vm => vm.ModifierKeys, v => v.ModifierKeysComboBox.SelectedItem)
                     .DisposeWith(disposables);
 

@@ -17,9 +17,6 @@ namespace KeyboardSwitch.Settings.Views
         {
             this.WhenActivated(disposables =>
             {
-                this.OneWayBind(this, v => v.ViewModel, v => v.DataContext)
-                    .DisposeWith(disposables);
-
                 this.WhenAnyValue(v => v.ViewModel.ServiceStatus)
                     .Select(status => status == ServiceStatus.Running)
                     .BindTo(this, v => v.ServiceRunningTextBlock.IsVisible)

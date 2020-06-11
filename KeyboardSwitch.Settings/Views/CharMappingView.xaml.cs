@@ -16,16 +16,13 @@ namespace KeyboardSwitch.Settings.Views
         {
             this.WhenActivated(disposables =>
             {
-                this.OneWayBind(this, v => v.ViewModel, v => v.DataContext)
-                    .DisposeWith(disposables);
-
                 this.OneWayBind(this.ViewModel, vm => vm.Layouts, v => v.Layouts.Items)
                     .DisposeWith(disposables);
 
                 this.BindCommand(this.ViewModel, vm => vm.AutoConfigure, v => v.AutoConfigureButton)
                     .DisposeWith(disposables);
 
-                this.WhenAnyObservable(v => v.ViewModel.AutoConfigure.CanExecute)
+                this.ViewModel.AutoConfigure.CanExecute
                     .BindTo(this, v => v.AutoConfigureButton.IsVisible)
                     .DisposeWith(disposables);
 
@@ -35,7 +32,7 @@ namespace KeyboardSwitch.Settings.Views
                 this.BindCommand(this.ViewModel, vm => vm.Cancel, v => v.CancelButton)
                     .DisposeWith(disposables);
 
-                this.WhenAnyObservable(v => v.ViewModel.Cancel.CanExecute)
+                this.ViewModel.Cancel.CanExecute
                     .BindTo(this, v => v.ActionPanel.IsVisible)
                     .DisposeWith(disposables);
             });

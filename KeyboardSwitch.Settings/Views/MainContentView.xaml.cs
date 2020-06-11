@@ -16,9 +16,6 @@ namespace KeyboardSwitch.Settings.Views
         {
             this.WhenActivated(disposables =>
             {
-                this.OneWayBind(this, v => v.ViewModel, v => v.DataContext)
-                    .DisposeWith(disposables);
-
                 this.OneWayBind(this.ViewModel, vm => vm.CharMappingViewModel, v => v.CharMappingTabItem.Content)
                     .DisposeWith(disposables);
 

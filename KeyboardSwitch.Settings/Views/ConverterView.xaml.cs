@@ -27,9 +27,6 @@ namespace KeyboardSwitch.Settings.Views
         {
             this.WhenActivated(disposables =>
             {
-                this.OneWayBind(this, v => v.ViewModel, v => v.DataContext)
-                    .DisposeWith(disposables);
-
                 this.BindConverterVisibility(disposables);
                 this.BindControls(disposables);
                 this.BindCommands(disposables);
