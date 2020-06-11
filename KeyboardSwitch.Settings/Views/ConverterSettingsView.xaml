@@ -18,6 +18,9 @@
                                 HorizontalAlignment="Left" Content="{l:Translate AutoConfigureCustomLayouts}" />
                     </StackPanel>
 
+                    <TextBlock x:Name="CustomLayoutsValidationTextBlock" Text="{l:Translate CustomLayoutNamesAreSame}"
+                               DockPanel.Dock="Bottom" Classes="Error" Margin="10" />
+
                     <ItemsControl x:Name="Layouts" />
                 </DockPanel>
             </ScrollViewer>

@@ -223,15 +223,6 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Layouts must be different.
-        /// </summary>
-        internal static string CustomLayoutsAreSame {
-            get {
-                return ResourceManager.GetString("CustomLayoutsAreSame", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         internal static string Delete {

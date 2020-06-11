@@ -8,6 +8,7 @@ using KeyboardSwitch.Common;
 using KeyboardSwitch.Settings.Core.ViewModels;
 
 using ReactiveUI;
+using ReactiveUI.Validation.Extensions;
 
 namespace KeyboardSwitch.Settings.Views
 {
@@ -21,6 +22,10 @@ namespace KeyboardSwitch.Settings.Views
                     .DisposeWith(disposables);
 
                 this.OneWayBind(this.ViewModel, vm => vm.CustomLayouts, v => v.Layouts.Items)
+                    .DisposeWith(disposables);
+
+                this.BindValidation(
+                    this.ViewModel, vm => vm.LayoutNamesAreUniqueRule, v => v.CustomLayoutsValidationTextBlock.Text)
                     .DisposeWith(disposables);
 
                 this.BindCommand(this.ViewModel, vm => vm.AddCustomLayout, v => v.AddLayoutButton)
@@ -56,6 +61,8 @@ namespace KeyboardSwitch.Settings.Views
         private Button AddLayoutButton { get; set; } = null!;
         private Button AutoConfigureButton { get; set; } = null!;
 
+        private TextBlock CustomLayoutsValidationTextBlock { get; set; } = null!;
+
         private StackPanel ActionPanel { get; set; } = null!;
         private Button SaveButton { get; set; } = null!;
         private Button CancelButton { get; set; } = null!;
@@ -70,6 +77,9 @@ namespace KeyboardSwitch.Settings.Views
             this.Layouts = this.FindControl<ItemsControl>(nameof(this.Layouts));
             this.AddLayoutButton = this.FindControl<Button>(nameof(this.AddLayoutButton));
             this.AutoConfigureButton = this.FindControl<Button>(nameof(this.AutoConfigureButton));
+
+            this.CustomLayoutsValidationTextBlock = this.FindControl<TextBlock>(
+                nameof(this.CustomLayoutsValidationTextBlock));
 
             this.ActionPanel = this.FindControl<StackPanel>(nameof(this.ActionPanel));
             this.SaveButton = this.FindControl<Button>(nameof(this.SaveButton));

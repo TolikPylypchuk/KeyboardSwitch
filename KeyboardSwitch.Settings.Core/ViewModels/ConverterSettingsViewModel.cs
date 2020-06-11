@@ -11,6 +11,7 @@ using System.Resources;
 using System.Threading.Tasks;
 
 using DynamicData;
+using DynamicData.Binding;
 
 using KeyboardSwitch.Common;
 using KeyboardSwitch.Common.Services;
@@ -18,6 +19,7 @@ using KeyboardSwitch.Settings.Core.Models;
 
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using ReactiveUI.Validation.Helpers;
 
 using Splat;
 
@@ -58,6 +60,14 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.isAutoConfiguringLayoutsSubject
                 .ToPropertyEx(this, vm => vm.IsAutoConfiguringLayouts);
 
+            var namesAreUnique = this.customLayouts.ToObservableChangeSet()
+                .AutoRefresh()
+                .ToCollection()
+                .Select(layouts => layouts.Select(layout => layout.Name).Distinct().Count() == layouts.Count)
+                .StartWith(true);
+
+            this.LayoutNamesAreUniqueRule = this.ValidationRule(namesAreUnique, "CustomLayoutNamesAreSame");
+
             this.AddCustomLayout = ReactiveCommand.Create(this.OnAddCustomLayout);
             this.AutoConfigureCustomLayouts = ReactiveCommand.Create(this.OnAutoConfigureCustomLayouts);
 
@@ -78,6 +88,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         [Reactive]
         public LoadableLayoutsSettingsViewModel? LoadableLayoutsSettingsViewModel { get; private set; }
+
+        public ValidationHelper LayoutNamesAreUniqueRule { get; }
 
         public ReactiveCommand<Unit, Unit> AddCustomLayout { get; set; }
         public ReactiveCommand<Unit, Unit> AutoConfigureCustomLayouts { get; set; }

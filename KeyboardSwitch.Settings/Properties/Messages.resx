@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -170,9 +170,6 @@
   </data>
   <data name="CustomLayoutNamesAreSame" xml:space="preserve">
     <value>Layout names must be unique</value>
-  </data>
-  <data name="CustomLayoutsAreSame" xml:space="preserve">
-    <value>Layouts must be different</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
