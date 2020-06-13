@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="clr-namespace:KeyboardSwitch.Settings.Localization"
+             xmlns:vm="clr-namespace:KeyboardSwitch.Settings.Core.ViewModels;assembly=KeyboardSwitch.Settings.Core"
+             x:Class="KeyboardSwitch.Settings.Views.LoadableLayoutsSettingsView">
+    <DockPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="10">
+            <Button x:Name="SaveButton" Content="{l:Translate Save}" Classes="Primary" />
+            <Button x:Name="CancelButton" Content="{l:Translate Cancel}" />
+        </StackPanel>
+
+        <StackPanel>
+            <ItemsControl x:Name="Layouts" Margin="10 0">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Background="Transparent" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{l:Translate NewLayoutHint}" Margin="10" VerticalAlignment="Center" />
+
+                <ComboBox x:Name="NewLayoutComboBox" Margin="0 10" MinWidth="100" VerticalAlignment="Center"
+                          HorizontalAlignment="Left">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate DataType="vm:LoadableLayoutViewModel">
+                            <TextBlock Text="{Binding Path=Layout.Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </StackPanel>
+        </StackPanel>
+    </DockPanel>
+</UserControl>

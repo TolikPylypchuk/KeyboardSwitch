@@ -70,15 +70,6 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add layouts to auto-configure.
-        /// </summary>
-        internal static string AddLayoutsToAutoConfigure {
-            get {
-                return ResourceManager.GetString("AddLayoutsToAutoConfigure", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Auto-configure.
         /// </summary>
         internal static string AutoConfigure {
@@ -399,6 +390,15 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string NameEmpty {
             get {
                 return ResourceManager.GetString("NameEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add a layout to auto-configure:.
+        /// </summary>
+        internal static string NewLayoutHint {
+            get {
+                return ResourceManager.GetString("NewLayoutHint", resourceCulture);
             }
         }
         

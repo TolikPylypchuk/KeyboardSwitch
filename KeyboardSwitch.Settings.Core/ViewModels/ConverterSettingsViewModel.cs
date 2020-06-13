@@ -178,7 +178,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             if (shouldLoad && this.LoadableLayoutsSettingsViewModel != null)
             {
                 using var disposableLayouts = this.layoutLoaderService.LoadLayouts(
-                    this.LoadableLayoutsSettingsViewModel.AddedLayouts);
+                    this.LoadableLayoutsSettingsViewModel.AddedLayouts.Select(vm => vm.Layout));
 
                 var configuredMappings = this.autoConfigurationService.CreateCharMappings(disposableLayouts.Layouts);
 

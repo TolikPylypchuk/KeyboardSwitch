@@ -46,8 +46,8 @@ namespace KeyboardSwitch.Settings.Views
                     .BindTo(this, v => v.MainPanel.IsVisible)
                     .DisposeWith(disposables);
 
-                this.WhenAnyValue(v => v.ViewModel.IsAutoConfiguringLayouts)
-                    .BindTo(this, v => v.AutoConfigurationPanel.IsVisible)
+                this.OneWayBind(
+                    this.ViewModel, vm => vm.LoadableLayoutsSettingsViewModel, v => v.LoadableLayoutsControl.Content)
                     .DisposeWith(disposables);
             });
 
@@ -65,7 +65,7 @@ namespace KeyboardSwitch.Settings.Views
         private Button CancelButton { get; set; } = null!;
 
         private DockPanel MainPanel { get; set; } = null!;
-        private DockPanel AutoConfigurationPanel { get; set; } = null!;
+        private ContentControl LoadableLayoutsControl { get; set; } = null!;
 
         private void InitializeComponent()
         {
@@ -83,7 +83,7 @@ namespace KeyboardSwitch.Settings.Views
             this.CancelButton = this.FindControl<Button>(nameof(this.CancelButton));
 
             this.MainPanel = this.FindControl<DockPanel>(nameof(this.MainPanel));
-            this.AutoConfigurationPanel = this.FindControl<DockPanel>(nameof(this.AutoConfigurationPanel));
+            this.LoadableLayoutsControl = this.FindControl<ContentControl>(nameof(this.LoadableLayoutsControl));
         }
     }
 }

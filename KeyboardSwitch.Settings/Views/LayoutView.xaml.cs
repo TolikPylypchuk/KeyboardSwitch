@@ -28,7 +28,6 @@ namespace KeyboardSwitch.Settings.Views
 
                 this.BindValidation(this.ViewModel, vm => vm.Chars, v => v.DuplicateCharsTextBlock.Text)
                     .DisposeWith(disposables);
-
             });
 
             this.InitializeComponent();

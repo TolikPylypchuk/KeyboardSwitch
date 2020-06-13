@@ -120,9 +120,6 @@
   <data name="AddCustomLayout" xml:space="preserve">
     <value>Add custom layout</value>
   </data>
-  <data name="AddLayoutsToAutoConfigure" xml:space="preserve">
-    <value>Add layouts to auto-configure</value>
-  </data>
   <data name="AutoConfigure" xml:space="preserve">
     <value>Auto-configure</value>
   </data>
@@ -230,6 +227,9 @@
   </data>
   <data name="NameEmpty" xml:space="preserve">
     <value>Name is required</value>
+  </data>
+  <data name="NewLayoutHint" xml:space="preserve">
+    <value>Add a layout to auto-configure:</value>
   </data>
   <data name="Preferences" xml:space="preserve">
     <value>Preferences</value>

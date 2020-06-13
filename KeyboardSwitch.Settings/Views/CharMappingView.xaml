@@ -3,7 +3,7 @@
              xmlns:l="clr-namespace:KeyboardSwitch.Settings.Localization"
              x:Class="KeyboardSwitch.Settings.Views.CharMappingView">
     <DockPanel>
-        <StackPanel x:Name="ActionPanel">
+        <StackPanel x:Name="ActionPanel" DockPanel.Dock="Bottom">
             <Button x:Name="SaveButton" Content="{l:Translate Save}" Classes="Primary" />
             <Button x:Name="CancelButton" Content="{l:Translate Cancel}" />
         </StackPanel>

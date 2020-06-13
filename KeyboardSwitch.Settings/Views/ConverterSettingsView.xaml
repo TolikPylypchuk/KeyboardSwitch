@@ -26,9 +26,6 @@
             </ScrollViewer>
         </DockPanel>
 
-        <DockPanel x:Name="AutoConfigurationPanel">
-            <TextBlock DockPanel.Dock="Top" Text="{l:Translate AddLayoutsToAutoConfigure}" Margin="10"
-                       FontSize="{DynamicResource FontSizeNormal}" />
-        </DockPanel>
+        <ContentControl x:Name="LoadableLayoutsControl" Grid.Row="0" Grid.Column="0" />
     </Grid>
 </UserControl>

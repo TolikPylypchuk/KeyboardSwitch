@@ -18,7 +18,7 @@ namespace KeyboardSwitch.Windows.Services
     public sealed class LayoutService : ILayoutService, ILayoutLoaderSrevice
     {
         private const string KeyboardLayoutsRegistryKey = @"SYSTEM\CurrentControlSet\Control\Keyboard Layouts";
-        private static readonly string KeyboardLayoutNameRegistryKeyFormat = $@"{KeyboardLayoutsRegistryKey}\{0}";
+        private const string KeyboardLayoutNameRegistryKeyFormat = KeyboardLayoutsRegistryKey + @"\{0}";
         private const string LayoutText = "Layout Text";
 
         private static readonly IntPtr HklNext = (IntPtr)1;
@@ -31,9 +31,6 @@ namespace KeyboardSwitch.Windows.Services
 
         public LayoutService(ILogger<LayoutService> logger)
             => this.logger = logger;
-
-        public bool CanGetAllSystemLayouts
-            => true;
 
         public KeyboardLayout GetCurrentKeyboardLayout()
         {
@@ -105,13 +102,18 @@ namespace KeyboardSwitch.Windows.Services
             var loadedLayouts = this.GetKeyboardLayouts();
 
             var allLayouts = loadableLayouts
-                .Where(loadableLayout => !loadedLayouts.Any(loadedLayout => loadedLayout.Tag == loadableLayout.Tag))
                 .Select(loadableLayout =>
                 {
+                    var loadedLayout = loadedLayouts.FirstOrDefault(layout => layout.Tag == loadableLayout.Tag);
+                    if (loadedLayout != null)
+                    {
+                        return loadedLayout;
+                    }
+
                     int id = (int)LoadKeyboardLayout(loadableLayout.Tag, KLF.KLF_NOTELLSHELL).DangerousGetHandle();
                     return new KeyboardLayout(id, this.GetCultureInfo(id), loadableLayout.Name, loadableLayout.Tag);
                 })
-                .Concat(loadedLayouts);
+                .ToList();
 
             return new UnloadableLayouts(allLayouts, loadedLayouts);
         }

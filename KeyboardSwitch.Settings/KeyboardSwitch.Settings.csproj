@@ -33,27 +33,13 @@
     <AvaloniaResource Remove="Views\CustomLayoutView.xaml" />
     <AvaloniaResource Remove="Views\HotKeySwitchView.xaml" />
     <AvaloniaResource Remove="Views\LayoutView.xaml" />
+    <AvaloniaResource Remove="Views\LoadableLayoutsSettingsView.xaml" />
+    <AvaloniaResource Remove="Views\LoadableLayoutView.xaml" />
     <AvaloniaResource Remove="Views\MainContentView.xaml" />
     <AvaloniaResource Remove="Views\ModifierKeysSwitchView.xaml" />
     <AvaloniaResource Remove="Views\PreferencesView.xaml" />
     <AvaloniaResource Remove="Views\SandboxView.xaml" />
     <AvaloniaResource Remove="Views\ServiceView.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="appsettings.json" />
-    <None Remove="Views\CharacterView.xaml" />
-    <None Remove="Views\CharMappingView.xaml" />
-    <None Remove="Views\ConverterView.xaml" />
-    <None Remove="Views\ConverterSettingsView.xaml" />
-    <None Remove="Views\CustomLayoutView.xaml" />
-    <None Remove="Views\HotKeySwitchView.xaml" />
-    <None Remove="Views\LayoutView.xaml" />
-    <None Remove="Views\MainContentView.xaml" />
-    <None Remove="Views\ModifierKeysSwitchView.xaml" />
-    <None Remove="Views\PreferencesView.xaml" />
-    <None Remove="Views\SandboxView.xaml" />
-    <None Remove="Views\ServiceView.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -158,9 +144,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KeyboardSwitch.Common\KeyboardSwitch.Common.csproj" />
-    <ProjectReference Include="..\KeyboardSwitch.Settings.Core\KeyboardSwitch.Settings.Core.csproj" />
-    <ProjectReference Include="..\KeyboardSwitch.Windows\KeyboardSwitch.Windows.csproj" />
+    <EmbeddedResource Include="Views\LoadableLayoutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\LoadableLayoutsSettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Messages.Designer.cs">
@@ -174,5 +165,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KeyboardSwitch.Common\KeyboardSwitch.Common.csproj" />
+    <ProjectReference Include="..\KeyboardSwitch.Settings.Core\KeyboardSwitch.Settings.Core.csproj" />
+    <ProjectReference Include="..\KeyboardSwitch.Windows\KeyboardSwitch.Windows.csproj" />
   </ItemGroup>
 </Project>
