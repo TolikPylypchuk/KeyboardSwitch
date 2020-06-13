@@ -59,6 +59,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
             this.Convert = ReactiveCommand.CreateFromTask(this.ConvertAsync, canConvert);
             this.SwapLayouts = ReactiveCommand.Create(this.OnSwapLayouts);
+            this.Clear = ReactiveCommand.Create(this.OnClear);
         }
 
         public ConverterModel ConverterModel { get; }
@@ -82,6 +83,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         public ReactiveCommand<Unit, Unit> Convert { get; }
         public ReactiveCommand<Unit, Unit> SwapLayouts { get; }
+        public ReactiveCommand<Unit, Unit> Clear { get; }
 
         private Task ConvertAsync()
             => this.switchService.SwitchTextAsync(SwitchDirection.Forward);
@@ -91,6 +93,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             (this.SourceLayout, this.TargetLayout) = (this.TargetLayout, this.SourceLayout);
             (this.SourceText, this.TargetText) = (this.TargetText, this.SourceText);
         }
+
+        private void OnClear()
+            => this.SourceText = this.TargetText = String.Empty;
 
         private ISwitchService CreateSwitchService(
             ILayoutService? layoutService = null,

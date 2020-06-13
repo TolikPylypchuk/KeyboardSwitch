@@ -151,6 +151,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear.
+        /// </summary>
+        internal static string Clear {
+            get {
+                return ResourceManager.GetString("Clear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Convert.
         /// </summary>
         internal static string Convert {
@@ -165,6 +174,15 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string Converter {
             get {
                 return ResourceManager.GetString("Converter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Or press Ctrl+Delete.
+        /// </summary>
+        internal static string ConverterClearHint {
+            get {
+                return ResourceManager.GetString("ConverterClearHint", resourceCulture);
             }
         }
         
@@ -198,9 +216,9 @@ namespace KeyboardSwitch.Settings.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Or press Ctrl+Enter.
         /// </summary>
-        internal static string ConvertInfo {
+        internal static string ConvertHint {
             get {
-                return ResourceManager.GetString("ConvertInfo", resourceCulture);
+                return ResourceManager.GetString("ConvertHint", resourceCulture);
             }
         }
         

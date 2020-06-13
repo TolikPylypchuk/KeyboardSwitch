@@ -147,11 +147,17 @@
   <data name="CharsDuplicatedFormat" xml:space="preserve">
     <value>Duplicate characters are not allowed: {0}</value>
   </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
   <data name="Convert" xml:space="preserve">
     <value>Convert</value>
   </data>
   <data name="Converter" xml:space="preserve">
     <value>Converter</value>
+  </data>
+  <data name="ConverterClearHint" xml:space="preserve">
+    <value>Or press Ctrl+Delete</value>
   </data>
   <data name="ConverterInfo" xml:space="preserve">
     <value>Converter lets you map characters between custom layouts that are independent from those defined in your system</value>
@@ -162,7 +168,7 @@
   <data name="ConverterTooFewCustomLayouts" xml:space="preserve">
     <value>The converter requires at least 2 cusom layouts</value>
   </data>
-  <data name="ConvertInfo" xml:space="preserve">
+  <data name="ConvertHint" xml:space="preserve">
     <value>Or press Ctrl+Enter</value>
   </data>
   <data name="CustomLayoutNamesAreSame" xml:space="preserve">

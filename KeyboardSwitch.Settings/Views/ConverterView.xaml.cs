@@ -46,6 +46,7 @@ namespace KeyboardSwitch.Settings.Views
 
         private Button SwapButton { get; set; } = null!;
         private Button ConvertButton { get; set; } = null!;
+        private Button ClearButton { get; set; } = null!;
 
         private TextBlock LayoutsValidationTextBlock { get; set; } = null!;
 
@@ -64,6 +65,7 @@ namespace KeyboardSwitch.Settings.Views
 
             this.SwapButton = this.FindControl<Button>(nameof(this.SwapButton));
             this.ConvertButton = this.FindControl<Button>(nameof(this.ConvertButton));
+            this.ClearButton = this.FindControl<Button>(nameof(this.ClearButton));
 
             this.LayoutsValidationTextBlock = this.FindControl<TextBlock>(nameof(this.LayoutsValidationTextBlock));
         }
@@ -128,11 +130,21 @@ namespace KeyboardSwitch.Settings.Views
             this.BindCommand(this.ViewModel, vm => vm.Convert, v => v.ConvertButton)
                 .DisposeWith(disposables);
 
+            this.BindCommand(this.ViewModel, vm => vm.Clear, v => v.ClearButton)
+                .DisposeWith(disposables);
+
             this.GetObservable(KeyDownEvent, RoutingStrategies.Tunnel)
                 .Where(e => e.Key == Key.Enter && e.KeyModifiers == KeyModifiers.Control)
                 .Do(e => e.Handled = true)
                 .Discard()
                 .InvokeCommand(this.ViewModel.Convert)
+                .DisposeWith(disposables);
+
+            this.GetObservable(KeyDownEvent, RoutingStrategies.Tunnel)
+                .Where(e => e.Key == Key.Delete && e.KeyModifiers == KeyModifiers.Control)
+                .Do(e => e.Handled = true)
+                .Discard()
+                .InvokeCommand(this.ViewModel.Clear)
                 .DisposeWith(disposables);
         }
     }

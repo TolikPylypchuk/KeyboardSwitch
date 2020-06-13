@@ -26,12 +26,19 @@
                 <ComboBox x:Name="TargetLayoutComboBox" HorizontalAlignment="Stretch" Margin="10" MinWidth="200"
                           ItemTemplate="{StaticResource LayoutNameTemplate}" />
 
-                <StackPanel Orientation="Horizontal">
-                    <Button x:Name="ConvertButton" Content="{l:Translate Convert}" Margin="10 0" Classes="Primary"
-                            HorizontalAlignment="Left" />
-                    <TextBlock Text="{l:Translate ConvertInfo}" FontSize="{DynamicResource FontSizeSmall}"
-                               VerticalAlignment="Center" />
-                </StackPanel>
+                <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto" Margin="0 10 0 0">
+                    <Button x:Name="ConvertButton" Content="{l:Translate Convert}" Grid.Row="0" Grid.Column="0"
+                            Margin="10 0" Classes="Primary" HorizontalAlignment="Left" />
+
+                    <TextBlock Text="{l:Translate ConvertHint}" Grid.Row="0" Grid.Column="1"
+                               FontSize="{DynamicResource FontSizeSmall}" VerticalAlignment="Center" />
+
+                    <Button x:Name="ClearButton" Content="{l:Translate Clear}" Grid.Row="1" Grid.Column="0"
+                            Margin="10" HorizontalAlignment="Stretch" />
+
+                    <TextBlock Text="{l:Translate ConverterClearHint}" Grid.Row="1" Grid.Column="1"
+                               FontSize="{DynamicResource FontSizeSmall}" VerticalAlignment="Center" />
+                </Grid>
 
                 <TextBlock x:Name="LayoutsValidationTextBlock" Classes="Error" Margin="10" />
             </StackPanel>
