@@ -11,6 +11,7 @@ namespace KeyboardSwitch.Settings.Core.Models
             this.ModifierKeysSwitchSettings = appSettings.ModifierKeysSwitchSettings;
             this.InstantSwitching = appSettings.InstantSwitching;
             this.SwitchLayout = appSettings.SwitchLayout;
+            this.ShowUninstalledLayoutsMessage = appSettings.ShowUninstalledLayoutsMessage;
         }
 
         public SwitchMode SwitchMode { get; set; }
@@ -19,5 +20,6 @@ namespace KeyboardSwitch.Settings.Core.Models
 
         public bool InstantSwitching { get; set; }
         public bool SwitchLayout { get; set; }
+        public bool ShowUninstalledLayoutsMessage { get; set; }
     }
 }

@@ -2,22 +2,41 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:l="clr-namespace:KeyboardSwitch.Settings.Localization"
              x:Class="KeyboardSwitch.Settings.Views.CharMappingView">
+    <UserControl.Styles>
+        <Style Selector="TextBlock.Hint">
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+    </UserControl.Styles>
+
     <DockPanel>
         <StackPanel x:Name="ActionPanel" DockPanel.Dock="Bottom">
             <Button x:Name="SaveButton" Content="{l:Translate Save}" Classes="Primary" />
             <Button x:Name="CancelButton" Content="{l:Translate Cancel}" />
+
+            <TextBlock x:Name="RestartServiceTextBlock" Text="{l:Translate RestartServiceHint}" Margin="10"
+                       VerticalAlignment="Center" />
         </StackPanel>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
                       VerticalAlignment="Stretch">
-            <DockPanel VerticalAlignment="Top">
-                <Button x:Name="AutoConfigureButton" DockPanel.Dock="Bottom" Content="{l:Translate AutoConfigure}"
-                        FontSize="{DynamicResource FontSizeLarge}" Classes="Primary" Margin="10"
-                        HorizontalAlignment="Center" />
-                
+            <StackPanel VerticalAlignment="Top">
                 <ItemsControl x:Name="Layouts" HorizontalAlignment="Stretch" VerticalAlignment="Top"
                               Grid.IsSharedSizeScope="True" />
-            </DockPanel>
+
+                <Button x:Name="AutoConfigureButton" Content="{l:Translate AutoConfigure}" Classes="Primary"
+                        FontSize="{DynamicResource FontSizeLarge}" Margin="10" HorizontalAlignment="Center" />
+
+                <TextBlock x:Name="NewLayoutsTextBlock" Text="{l:Translate NewLayoutsHint}" Classes="Hint" />
+
+                <StackPanel x:Name="RemoveLayoutsPanel" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="{l:Translate RemoveLayoutsHint}" Classes="Hint" MaxWidth="500" />
+                    <Button x:Name="RemoveLayoutsButton" Content="{l:Translate DeleteLayoutConfiguration}"
+                            Margin="0 10" VerticalAlignment="Center" />
+                </StackPanel>
+            </StackPanel>
         </ScrollViewer>
     </DockPanel>
 </UserControl>

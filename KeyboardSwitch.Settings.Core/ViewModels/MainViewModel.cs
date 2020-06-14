@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -52,23 +54,25 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         {
             var layouts = this.layoutService.GetKeyboardLayouts();
 
-            var layoutsById = layouts.ToDictionary(layout => layout.Id, layout => layout);
+            var charsByLayoutId = this.appSettings.CharsByKeyboardLayoutId;
 
-            var layoutIndices = layouts.Select((layout, index) => (layout.Id, Index: index))
-                .ToDictionary(item => item.Id, item => item.Index);
+            var layoutModels = layouts
+                .Select((layout, index) => new LayoutModel
+                {
+                    Id = layout.Id,
+                    Index = index,
+                    LanguageName = layout.Culture.EnglishName,
+                    KeyboardName = layout.KeyboardName,
+                    IsNew = charsByLayoutId.Count != 0 && !charsByLayoutId.ContainsKey(layout.Id),
+                    Chars = charsByLayoutId.GetValueOrDefault(layout.Id, String.Empty)!
+                })
+                .ToList();
 
-            var layoutModels = this.appSettings.CharsByKeyboardLayoutId
-                    .Select(chars => new LayoutModel
-                    {
-                        Id = chars.Key,
-                        Index = layoutIndices[chars.Key],
-                        LanguageName = layoutsById[chars.Key].Culture.DisplayName,
-                        KeyboardName = layoutsById[chars.Key].KeyboardName,
-                        Chars = chars.Value
-                    })
-                    .ToList();
+            var missingLayoutIds = charsByLayoutId.Keys
+                .Where(id => !layoutModels.Any(layoutModel => layoutModel.Id == id))
+                .ToList();
 
-            return new CharMappingModel { Layouts = layoutModels };
+            return new CharMappingModel { Layouts = layoutModels, RemovableLayoutIds = missingLayoutIds };
         }
 
         private ConverterModel CreateConverterModel(ConverterSettings settings)

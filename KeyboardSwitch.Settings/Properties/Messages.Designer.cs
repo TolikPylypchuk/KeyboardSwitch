@@ -241,6 +241,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete layout configuration.
+        /// </summary>
+        internal static string DeleteLayoutConfiguration {
+            get {
+                return ResourceManager.GetString("DeleteLayoutConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Forward.
         /// </summary>
         internal static string Forward {
@@ -421,6 +430,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Looks like you have installed one or more new layouts. You should configure and save them.
+        /// </summary>
+        internal static string NewLayoutsHint {
+            get {
+                return ResourceManager.GetString("NewLayoutsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Preferences.
         /// </summary>
         internal static string Preferences {
@@ -448,6 +466,24 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to It appears that you have uninstalled one or more layouts. You can delete their configuration from the app&apos;s settings.
+        /// </summary>
+        internal static string RemoveLayoutsHint {
+            get {
+                return ResourceManager.GetString("RemoveLayoutsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If you save these changes, you should restart the Keyboard Switch service.
+        /// </summary>
+        internal static string RestartServiceHint {
+            get {
+                return ResourceManager.GetString("RestartServiceHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sandbox.
         /// </summary>
         internal static string Sandbox {
@@ -471,6 +507,15 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show a message about uninstalled layouts.
+        /// </summary>
+        internal static string ShowUninstalledLayoutsMessage {
+            get {
+                return ResourceManager.GetString("ShowUninstalledLayoutsMessage", resourceCulture);
             }
         }
         
@@ -511,11 +556,11 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Switch layout.
+        ///   Looks up a localized string similar to Switch layouts.
         /// </summary>
-        internal static string SwitchLayout {
+        internal static string SwitchLayouts {
             get {
-                return ResourceManager.GetString("SwitchLayout", resourceCulture);
+                return ResourceManager.GetString("SwitchLayouts", resourceCulture);
             }
         }
         

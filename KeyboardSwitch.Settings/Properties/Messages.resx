@@ -177,6 +177,9 @@
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="DeleteLayoutConfiguration" xml:space="preserve">
+    <value>Delete layout configuration</value>
+  </data>
   <data name="Forward" xml:space="preserve">
     <value>Forward</value>
   </data>
@@ -237,6 +240,9 @@
   <data name="NewLayoutHint" xml:space="preserve">
     <value>Add a layout to auto-configure:</value>
   </data>
+  <data name="NewLayoutsHint" xml:space="preserve">
+    <value>Looks like you have installed one or more new layouts. You should configure and save them</value>
+  </data>
   <data name="Preferences" xml:space="preserve">
     <value>Preferences</value>
   </data>
@@ -246,6 +252,12 @@
   <data name="PressCountInvalid" xml:space="preserve">
     <value>Press count should be between 1 and 10</value>
   </data>
+  <data name="RemoveLayoutsHint" xml:space="preserve">
+    <value>It appears that you have uninstalled one or more layouts. You can delete their configuration from the app's settings</value>
+  </data>
+  <data name="RestartServiceHint" xml:space="preserve">
+    <value>If you save these changes, you should restart the Keyboard Switch service</value>
+  </data>
   <data name="Sandbox" xml:space="preserve">
     <value>Sandbox</value>
   </data>
@@ -254,6 +266,9 @@
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
+  </data>
+  <data name="ShowUninstalledLayoutsMessage" xml:space="preserve">
+    <value>Show a message about uninstalled layouts</value>
   </data>
   <data name="SourceText" xml:space="preserve">
     <value>Source text</value>
@@ -267,8 +282,8 @@
   <data name="Swap" xml:space="preserve">
     <value>Swap</value>
   </data>
-  <data name="SwitchLayout" xml:space="preserve">
-    <value>Switch layout</value>
+  <data name="SwitchLayouts" xml:space="preserve">
+    <value>Switch layouts</value>
   </data>
   <data name="SwitchMethodsAreSame" xml:space="preserve">
     <value>Methods of forward and backward switching must be different</value>

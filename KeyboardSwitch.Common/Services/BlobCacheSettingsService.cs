@@ -142,6 +142,7 @@ namespace KeyboardSwitch.Common.Services
                     .ToDictionary(layout => layout.Id, _ => String.Empty),
                 InstantSwitching = true,
                 SwitchLayout = true,
+                ShowUninstalledLayoutsMessage = true,
                 ServicePath = nameof(KeyboardSwitch)
             };
     }

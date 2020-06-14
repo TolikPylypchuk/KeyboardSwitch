@@ -1,5 +1,7 @@
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 
 using KeyboardSwitch.Common.Services;
@@ -17,6 +19,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         private readonly IAppSettingsService appSettingsService;
         private readonly IConverterSettingsService converterSettingsService;
 
+        private readonly BehaviorSubject<bool> removeLayoutsEnabled;
+
         public MainContentViewModel(
             CharMappingModel charMappingModel,
             PreferencesModel preferencesModel,
@@ -24,7 +28,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             IAppSettingsService? appSettingsService = null,
             IConverterSettingsService? converterSettingsService = null)
         {
-            this.CharMappingViewModel = new CharMappingViewModel(charMappingModel);
+            this.removeLayoutsEnabled = new BehaviorSubject<bool>(preferencesModel.ShowUninstalledLayoutsMessage);
+
+            this.CharMappingViewModel = new CharMappingViewModel(charMappingModel, this.removeLayoutsEnabled);
             this.PreferencesViewModel = new PreferencesViewModel(preferencesModel);
             this.ConverterViewModel = new ConverterViewModel(converterModel);
             this.ConverterSettingsViewModel = new ConverterSettingsViewModel(converterModel);
@@ -43,6 +49,10 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.CharMappingViewModel.Save.InvokeCommand(this.SaveCharMappingSettings);
             this.PreferencesViewModel.Save.InvokeCommand(this.SavePreferences);
             this.ConverterSettingsViewModel.Save.InvokeCommand(this.SaveConverterSettings);
+
+            this.PreferencesViewModel.Save
+                .Select(model => model.ShowUninstalledLayoutsMessage)
+                .Subscribe(this.removeLayoutsEnabled);
         }
 
         public CharMappingViewModel CharMappingViewModel { get; }
@@ -63,6 +73,17 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             settings.CharsByKeyboardLayoutId = charMappingModel.Layouts
                 .ToDictionary(layout => layout.Id, layout => layout.Chars.PadRight(maxLength));
 
+            if (charMappingModel.ShouldRemoveLayouts)
+            {
+                foreach (var id in charMappingModel.RemovableLayoutIds)
+                {
+                    settings.CharsByKeyboardLayoutId.Remove(id);
+                }
+
+                charMappingModel.ShouldRemoveLayouts = false;
+                charMappingModel.RemovableLayoutIds.Clear();
+            }
+
             await this.appSettingsService.SaveAppSettingsAsync(settings);
         }
 
@@ -75,6 +96,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             settings.ModifierKeysSwitchSettings = preferencesModel.ModifierKeysSwitchSettings;
             settings.InstantSwitching = preferencesModel.InstantSwitching;
             settings.SwitchLayout = preferencesModel.SwitchLayout;
+            settings.ShowUninstalledLayoutsMessage = preferencesModel.ShowUninstalledLayoutsMessage;
 
             await this.appSettingsService.SaveAppSettingsAsync(settings);
         }

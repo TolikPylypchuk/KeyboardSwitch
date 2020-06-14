@@ -53,6 +53,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         [Reactive]
         public bool SwitchLayout { get; set; }
 
+        [Reactive]
+        public bool ShowUninstalledLayoutsMessage { get; set; }
+
         public ReactiveObject? Content { [ObservableAsProperty] get; }
 
         protected override PreferencesViewModel Self
@@ -63,6 +66,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.TrackChanges(vm => vm.SwitchMode, vm => vm.PreferencesModel.SwitchMode);
             this.TrackChanges(vm => vm.InstantSwitching, vm => vm.PreferencesModel.InstantSwitching);
             this.TrackChanges(vm => vm.SwitchLayout, vm => vm.PreferencesModel.SwitchLayout);
+            this.TrackChanges(
+                vm => vm.ShowUninstalledLayoutsMessage, vm => vm.PreferencesModel.ShowUninstalledLayoutsMessage);
 
             this.TrackChanges(this.WhenAnyObservable(vm => vm.HotKeySwitchViewModel.FormChanged));
             this.TrackChanges(this.WhenAnyObservable(vm => vm.ModifierKeysSwitchModel.FormChanged));
@@ -78,6 +83,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.PreferencesModel.SwitchMode = this.SwitchMode;
             this.PreferencesModel.InstantSwitching = this.InstantSwitching;
             this.PreferencesModel.SwitchLayout = this.SwitchLayout;
+            this.PreferencesModel.ShowUninstalledLayoutsMessage = this.ShowUninstalledLayoutsMessage;
 
             await this.HotKeySwitchViewModel.Save.Execute();
             await this.ModifierKeysSwitchModel.Save.Execute();
@@ -94,6 +100,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.SwitchMode = this.PreferencesModel.SwitchMode;
             this.InstantSwitching = this.PreferencesModel.InstantSwitching;
             this.SwitchLayout = this.PreferencesModel.SwitchLayout;
+            this.ShowUninstalledLayoutsMessage = this.PreferencesModel.ShowUninstalledLayoutsMessage;
         }
     }
 }

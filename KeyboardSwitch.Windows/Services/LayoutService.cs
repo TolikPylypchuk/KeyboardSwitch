@@ -111,11 +111,14 @@ namespace KeyboardSwitch.Windows.Services
                     }
 
                     int id = (int)LoadKeyboardLayout(loadableLayout.Tag, KLF.KLF_NOTELLSHELL).DangerousGetHandle();
-                    return new KeyboardLayout(id, this.GetCultureInfo(id), loadableLayout.Name, loadableLayout.Tag);
+                    this.logger.LogInformation($"Loaded layout: {loadableLayout.Name}");
+
+                    return new KeyboardLayout(
+                        id, this.GetCultureInfo(id, loadableLayout.Name), loadableLayout.Name, loadableLayout.Tag);
                 })
                 .ToList();
 
-            return new UnloadableLayouts(allLayouts, loadedLayouts);
+            return new UnloadableLayouts(allLayouts, loadedLayouts, this.logger);
         }
 
         private KeyboardLayout GetThreadKeyboardLayout(uint threadId)
@@ -129,7 +132,7 @@ namespace KeyboardSwitch.Windows.Services
             int id = (int)keyboardLayoutId.DangerousGetHandle();
             var (name, tag) = this.GetLayoutDisplayNameAndTag(keyboardLayoutId);
 
-            return new KeyboardLayout(id, this.GetCultureInfo(id), name, tag);
+            return new KeyboardLayout(id, this.GetCultureInfo(id, name), name, tag);
         }
 
         private (string DisplayName, string Tag) GetLayoutDisplayNameAndTag(HKL keyboardLayoutId)
@@ -153,7 +156,18 @@ namespace KeyboardSwitch.Windows.Services
             return name.ToString();
         }
 
-        private CultureInfo GetCultureInfo(int keyboardLayoutId)
-            => CultureInfo.GetCultureInfo(keyboardLayoutId & 0xFFFF);
+        private CultureInfo GetCultureInfo(int keyboardLayoutId, string layoutName)
+        {
+            int lcid = keyboardLayoutId & 0xFFFF;
+
+            try
+            {
+                return CultureInfo.GetCultureInfo(lcid);
+            } catch (CultureNotFoundException e)
+            {
+                this.logger.LogError(e, $"Did not find culture for layout: {layoutName} (LCID {lcid})");
+                return CultureInfo.InvariantCulture;
+            }
+        }
     }
 }

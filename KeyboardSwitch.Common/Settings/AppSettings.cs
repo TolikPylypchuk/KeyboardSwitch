@@ -30,6 +30,9 @@ namespace KeyboardSwitch.Common.Settings
         public bool SwitchLayout { get; set; }
 
         [DataMember]
+        public bool ShowUninstalledLayoutsMessage { get; set; }
+
+        [DataMember]
         public string ServicePath { get; set; } = String.Empty;
     }
 }

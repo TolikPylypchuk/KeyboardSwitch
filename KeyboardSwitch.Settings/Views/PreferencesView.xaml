@@ -6,7 +6,9 @@
         <StackPanel Orientation="Horizontal" Margin="10 10 0 0" DockPanel.Dock="Top">
             <CheckBox x:Name="InstantSwitchingCheckBox" Content="{l:Translate InstantSwitching}"
                       Classes="FormControl" />
-            <CheckBox x:Name="SwitchLayoutCheckBox" Content="{l:Translate SwitchLayout}"
+            <CheckBox x:Name="SwitchLayoutCheckBox" Content="{l:Translate SwitchLayouts}"
+                      Classes="FormControl" />
+            <CheckBox x:Name="ShowRemovedLayoutsMessageCheckBox" Content="{l:Translate ShowUninstalledLayoutsMessage}"
                       Classes="FormControl" />
         </StackPanel>
 

@@ -78,6 +78,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.LayoutModel.Id = this.Id;
             this.LayoutModel.Index = this.Index;
             this.LayoutModel.Chars = this.Chars;
+            this.LayoutModel.IsNew = this.IsNew = false;
 
             return Task.FromResult(this.LayoutModel);
         }
@@ -88,6 +89,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.KeyboardName = this.LayoutModel.KeyboardName;
             this.Id = this.LayoutModel.Id;
             this.Index = this.LayoutModel.Index;
+            this.IsNew = this.LayoutModel.IsNew;
             this.Chars = this.LayoutModel.Chars;
         }
     }
