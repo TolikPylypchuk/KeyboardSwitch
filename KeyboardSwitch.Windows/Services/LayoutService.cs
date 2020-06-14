@@ -14,6 +14,8 @@ using Microsoft.Win32;
 
 using static Vanara.PInvoke.User32;
 
+using GC = System.GC;
+
 namespace KeyboardSwitch.Windows.Services
 {
     public sealed class LayoutService : ILayoutService, ILayoutLoaderSrevice
@@ -52,13 +54,19 @@ namespace KeyboardSwitch.Windows.Services
             SetThreadKeyboardLayout(keyboardLayoutId);
             SetThreadKeyboardLayout(direction == SwitchDirection.Forward ? HklNext : HklPrev);
 
-            var layout = LoadKeyboardLayout(this.GetCurrentLayoutName(), KLF.KLF_ACTIVATE);
-            
-            PostMessage(
+            bool success = PostMessage(
                 foregroundWindowHandle,
                 (uint)WindowMessage.WM_INPUTLANGCHANGEREQUEST,
                 IntPtr.Zero,
-                layout.DangerousGetHandle());
+                GetKeyboardLayout(0).DangerousGetHandle());
+
+            if (success)
+            {
+                this.logger.LogDebug("Posted the input lang change message to the foreground window");
+            } else
+            {
+                this.logger.LogError("Failed to post the input lang change message to the foreground window");
+            }
         }
 
         public List<KeyboardLayout> GetKeyboardLayouts()
@@ -68,7 +76,7 @@ namespace KeyboardSwitch.Windows.Services
                 return this.systemLayouts;
             }
 
-            this.logger.LogDebug("Getting the list of keyboard layouts in the system");
+            this.logger.LogDebug("Getting the list of installed keyboard layouts");
 
             int count = GetKeyboardLayoutList(0, null);
             var keyboardLayoutIds = new HKL[count];
@@ -77,7 +85,7 @@ namespace KeyboardSwitch.Windows.Services
 
             if (result == 0)
             {
-                this.logger.LogError($"Could not get the list of keyboard layouts");
+                this.logger.LogCritical($"Could not get the list of installed keyboard layouts");
                 throw new Win32Exception(result);
             }
 
@@ -90,6 +98,8 @@ namespace KeyboardSwitch.Windows.Services
 
         public List<LoadableKeyboardLayout> GetAllSystemLayouts()
         {
+            this.logger.LogDebug("Getting the list of all keyboard layouts in the system");
+
             using var layouts = Registry.LocalMachine.OpenSubKey(KeyboardLayoutsRegistryKey);
 
             return layouts
@@ -106,6 +116,8 @@ namespace KeyboardSwitch.Windows.Services
 
         public DisposableLayouts LoadLayouts(IEnumerable<LoadableKeyboardLayout> loadableLayouts)
         {
+            this.logger.LogDebug("Loading additional keyboard layouts");
+
             var loadedLayouts = this.GetKeyboardLayouts();
 
             var allLayouts = loadableLayouts
