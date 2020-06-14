@@ -68,7 +68,7 @@ namespace KeyboardSwitch.Common.Services.Infrastructure
 
             string arg = Environment.GetCommandLineArgs()[1];
 
-            if (arg.StartsWith("--"))
+            if (arg.StartsWith("--", StringComparison.InvariantCulture))
             {
                 return arg[2..];
             }

@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 
 using KeyboardSwitch.Common.Keyboard;
 using KeyboardSwitch.Common.Services;
@@ -10,7 +11,7 @@ namespace KeyboardSwitch.Windows.Services
     internal sealed class KeysService : IKeysService
     {
         public int GetVirtualKeyCode(char ch)
-            => VkKeyScanW(Char.ToLower(ch));
+            => VkKeyScanW(Char.ToLower(ch, CultureInfo.InvariantCulture));
 
         public int GetModifierKeysCode(ModifierKeys keys)
             => (int)keys;

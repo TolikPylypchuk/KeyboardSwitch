@@ -20,7 +20,7 @@ using GC = System.GC;
 
 namespace KeyboardSwitch.Windows.Services
 {
-    internal sealed class KeyboardHookService : DisposableService, IKeyboardHookService
+    internal sealed class KeyboardHookService : Disposable, IKeyboardHookService
     {
         private readonly object modifiersLock = new object();
         private readonly TaskQueue taskQueue = new TaskQueue();
@@ -188,14 +188,24 @@ namespace KeyboardSwitch.Windows.Services
                 },
                 token);
 
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            if (!this.Disposed)
+            if (disposing)
             {
-                UnhookWindowsHookEx(hookId);
-                GC.SuppressFinalize(this);
+                this.hookId?.Dispose();
+                this.taskQueue.Dispose();
 
-                this.Disposed = true;
+                this.hotKeyPressedSubject.OnCompleted();
+                this.hotKeyPressedSubject.Dispose();
+                this.hotModifierKeyPressedSubject.OnCompleted();
+                this.hotModifierKeyPressedSubject.Dispose();
+
+                foreach (var subscription in this.hotModifierKeyPressedSubscriptions.Values)
+                {
+                    subscription.Dispose();
+                }
+
+                this.hotModifierKeyPressedSubscriptions.Clear();
             }
         }
 

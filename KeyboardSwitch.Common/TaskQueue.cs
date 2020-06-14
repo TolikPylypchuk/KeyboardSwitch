@@ -4,12 +4,14 @@ using System.Threading.Tasks;
 
 namespace KeyboardSwitch.Common
 {
-    public class TaskQueue
+    public sealed class TaskQueue : Disposable
     {
         private readonly SemaphoreSlim semaphore = new SemaphoreSlim(1);
 
         public async Task<T> Enqueue<T>(Func<Task<T>> taskGenerator)
         {
+            this.ThrowIfDisposed();
+
             await semaphore.WaitAsync();
 
             try
@@ -23,6 +25,8 @@ namespace KeyboardSwitch.Common
 
         public async Task Enqueue(Func<Task> taskGenerator)
         {
+            this.ThrowIfDisposed();
+
             await semaphore.WaitAsync();
 
             try
@@ -36,6 +40,8 @@ namespace KeyboardSwitch.Common
 
         public async void EnqueueAndIgnore(Func<Task> taskGenerator)
         {
+            this.ThrowIfDisposed();
+
             await semaphore.WaitAsync();
 
             try
@@ -44,6 +50,14 @@ namespace KeyboardSwitch.Common
             } finally
             {
                 semaphore.Release();
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                this.semaphore.Dispose();
             }
         }
     }

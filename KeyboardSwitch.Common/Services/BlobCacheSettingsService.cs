@@ -14,8 +14,7 @@ using Microsoft.Extensions.Logging;
 
 namespace KeyboardSwitch.Common.Services
 {
-    internal sealed class BlobCacheSettingsService
-        : DisposableService, IAppSettingsService, IConverterSettingsService, IAsyncDisposable
+    internal sealed class BlobCacheSettingsService : AsyncDisposable, IAppSettingsService, IConverterSettingsService
     {
         private readonly IBlobCache cache;
         private readonly ILayoutService layoutService;
@@ -111,13 +110,14 @@ namespace KeyboardSwitch.Common.Services
             this.converterSettings = converterSettings;
         }
 
-        public async ValueTask DisposeAsync()
+        protected override async ValueTask DisposeAsyncCore()
         {
             if (!this.Disposed)
             {
                 await BlobCache.Shutdown();
                 this.Disposed = true;
                 this.settingsInvalidated.OnCompleted();
+                this.settingsInvalidated.Dispose();
             }
         }
 

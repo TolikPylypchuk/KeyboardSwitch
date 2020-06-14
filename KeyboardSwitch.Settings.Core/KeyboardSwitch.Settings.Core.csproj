@@ -14,9 +14,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="akavache" Version="6.10.17" />
+    <PackageReference Include="akavache" Version="6.10.20" />
     <PackageReference Include="DynamicData" Version="6.15.1" />
     <PackageReference Include="Fody" Version="6.2.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

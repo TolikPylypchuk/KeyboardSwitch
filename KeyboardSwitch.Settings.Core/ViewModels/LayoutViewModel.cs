@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Resources;
@@ -28,6 +29,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 chars => chars.Distinct().Count(ch => ch != MissingCharacter) ==
                     chars.Count(ch => ch != MissingCharacter),
                 chars => String.Format(
+                    CultureInfo.InvariantCulture,
                     this.ResourceManager.GetString("CharsDuplicatedFormat") ?? String.Empty,
                     chars
                         .Where(ch => ch != MissingCharacter)

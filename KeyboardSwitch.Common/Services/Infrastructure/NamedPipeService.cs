@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Pipes;
 using System.Reactive.Linq;
@@ -10,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace KeyboardSwitch.Common.Services.Infrastructure
 {
-    internal sealed class NamedPipeService : INamedPipeService
+    internal sealed class NamedPipeService : Disposable, INamedPipeService
     {
         private readonly Subject<string> receivedString = new Subject<string>();
         private readonly ILogger<NamedPipeService> logger;
@@ -55,10 +54,15 @@ namespace KeyboardSwitch.Common.Services.Infrastructure
             return true;
         }
 
-        [SuppressMessage("ReSharper", "FunctionNeverReturns")]
+        protected override void Dispose(bool disposing)
+        {
+            this.receivedString.OnCompleted();
+            this.receivedString.Dispose();
+        }
+
         private void WaitForMessages()
         {
-            while (true)
+            while (!this.Disposed)
             {
                 string text;
                 using (var server = new NamedPipeServerStream(this.NamedPipeName, PipeDirection.InOut, 10))

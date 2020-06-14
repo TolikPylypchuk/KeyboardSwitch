@@ -25,7 +25,7 @@ namespace KeyboardSwitch.Common.Keyboard
                 .Aggregate(
                     String.Empty,
                     (acc, item) => $"{acc}+{item}",
-                    result => result.TrimStart('+').Replace("++", "+"));
+                    result => result.TrimStart('+').Replace("++", "+", StringComparison.InvariantCulture));
 
     }
 }

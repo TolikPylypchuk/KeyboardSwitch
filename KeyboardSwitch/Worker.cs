@@ -49,6 +49,12 @@ namespace KeyboardSwitch
             await this.keyboardHookService.WaitForMessagesAsync(token);
         }
 
+        public override void Dispose()
+        {
+            this.hookSubscription?.Dispose();
+            base.Dispose();
+        }
+
         private async Task RegisterHotKeysAsync()
         {
             this.logger.LogDebug("Registering hot keys to switch forward and backward");

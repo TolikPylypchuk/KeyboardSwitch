@@ -14,7 +14,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="akavache" Version="6.10.17" />
+    <PackageReference Include="akavache" Version="6.10.20" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.5" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.5" />
     <PackageReference Include="System.Interactive" Version="4.1.1" />

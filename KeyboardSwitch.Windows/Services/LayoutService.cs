@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -72,7 +73,13 @@ namespace KeyboardSwitch.Windows.Services
             int count = GetKeyboardLayoutList(0, null);
             var keyboardLayoutIds = new HKL[count];
 
-            GetKeyboardLayoutList(keyboardLayoutIds.Length, keyboardLayoutIds);
+            int result = GetKeyboardLayoutList(keyboardLayoutIds.Length, keyboardLayoutIds);
+
+            if (result == 0)
+            {
+                this.logger.LogError($"Could not get the list of keyboard layouts");
+                throw new Win32Exception(result);
+            }
 
             this.systemLayouts = keyboardLayoutIds
                 .Select(keyboardLayoutId => this.CreateKeyboardLayout(keyboardLayoutId))
@@ -144,7 +151,8 @@ namespace KeyboardSwitch.Windows.Services
 
             SetThreadKeyboardLayout(currentLayout);
 
-            using var key = Registry.LocalMachine.OpenSubKey(String.Format(KeyboardLayoutNameRegistryKeyFormat, name));
+            using var key = Registry.LocalMachine.OpenSubKey(String.Format(
+                CultureInfo.InvariantCulture, KeyboardLayoutNameRegistryKeyFormat, name));
 
             return (key?.GetValue(LayoutText)?.ToString() ?? String.Empty, name);
         }

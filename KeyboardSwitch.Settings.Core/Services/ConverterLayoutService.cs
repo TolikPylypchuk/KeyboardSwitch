@@ -42,6 +42,7 @@ namespace KeyboardSwitch.Settings.Core.Services
         { }
 
         private KeyboardLayout CreateFakeKeyboardLayout(CustomLayoutModel layout, int index)
-            => new KeyboardLayout(index, CultureInfo.InvariantCulture, layout.Name, index.ToString());
+            => new KeyboardLayout(
+                index, CultureInfo.InvariantCulture, layout.Name, index.ToString(CultureInfo.InvariantCulture));
     }
 }
