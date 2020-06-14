@@ -52,6 +52,28 @@ to restart the service.
 This app is "Western-oriented". I developed it specifically to handle switching between Cyrillic and Latin scripts.
 I don't know how it will work (if at all) with Eastern languages/scripts.
 
+## Project Status
+
+I'm currently working on [version 3](https://github.com/TolikPylypchuk/KeyboardSwitch/milestone/2). Version 2 is
+currently available, but it's not really user-friendly.
+
+The app itself is mostly feature-complete, but there are still several things I must do before shipping v3.0:
+
+ - Create an installer for the app ([#26](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/26))
+ - Create a portable version of the app ([#30](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/30))
+ - Implement starting the service on system startup for the installed version
+(also [#26](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/26))
+ - Implement checking for updates and possibly auto-updating as well
+([#27](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/27))
+ - Create docs which thoroughly describe the app's functionality and probably host them on GitHub pages
+([#29](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/29))
+
+Version 3.0 will work only on Windows 10. It will probably work on earlier versions of Windows as well, but I'm not
+going to test it there. [Version 4.0](https://github.com/TolikPylypchuk/KeyboardSwitch/milestone/3) on the other hand
+will be cross-platform - I'm planning on making it work on macOS and on Linux (via X11), though the details of this plan
+may change when I'll start looking into all that after releasing v3.0. The app will most probably use
+[libuiohook](https://github.com/kwhat/libuiohook) for the cross-platform keyboard hook.
+
 I hope this app will make your life at least 1% easier :)
 
 ## Changes
