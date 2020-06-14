@@ -195,9 +195,7 @@ namespace KeyboardSwitch.Windows.Services
                 this.hookId?.Dispose();
                 this.taskQueue.Dispose();
 
-                this.hotKeyPressedSubject.OnCompleted();
                 this.hotKeyPressedSubject.Dispose();
-                this.hotModifierKeyPressedSubject.OnCompleted();
                 this.hotModifierKeyPressedSubject.Dispose();
 
                 foreach (var subscription in this.hotModifierKeyPressedSubscriptions.Values)

@@ -116,7 +116,6 @@ namespace KeyboardSwitch.Common.Services
             {
                 await BlobCache.Shutdown();
                 this.Disposed = true;
-                this.settingsInvalidated.OnCompleted();
                 this.settingsInvalidated.Dispose();
             }
         }

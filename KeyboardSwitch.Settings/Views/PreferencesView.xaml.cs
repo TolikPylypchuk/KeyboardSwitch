@@ -36,10 +36,9 @@ namespace KeyboardSwitch.Settings.Views
                     .DisposeWith(disposables);
 
                 Observable.CombineLatest(
-                        this.ViewModel.HotKeySwitchViewModel.FormChanged,
-                        this.ViewModel.ModifierKeysSwitchModel.FormChanged)
-                    .AnyTrue()
-                    .Invert()
+                        this.WhenAnyObservable(v => v.ViewModel.HotKeySwitchViewModel.Valid),
+                        this.WhenAnyObservable(v => v.ViewModel.ModifierKeysSwitchModel.Valid))
+                    .AllTrue()
                     .BindTo(this, v => v.SwitchModeComboBox.IsEnabled)
                     .DisposeWith(disposables);
 
@@ -87,7 +86,7 @@ namespace KeyboardSwitch.Settings.Views
             this.SaveButton = this.FindControl<Button>(nameof(this.SaveButton));
             this.CancelButton = this.FindControl<Button>(nameof(this.CancelButton));
 
-            this.SwitchModeComboBox.Items = new List<string> { Messages.HotKey, Messages.ModifierKeys };
+            this.SwitchModeComboBox.Items = new List<string> { Messages.ModifierKeys, Messages.HotKey };
         }
     }
 }

@@ -56,7 +56,6 @@ namespace KeyboardSwitch.Common.Services.Infrastructure
 
         protected override void Dispose(bool disposing)
         {
-            this.receivedString.OnCompleted();
             this.receivedString.Dispose();
         }
 
