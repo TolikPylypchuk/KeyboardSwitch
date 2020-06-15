@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Text;
 
 using KeyboardSwitch.Common;
@@ -13,8 +15,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 
 using static Vanara.PInvoke.User32;
-
-using GC = System.GC;
 
 namespace KeyboardSwitch.Windows.Services
 {
@@ -119,25 +119,30 @@ namespace KeyboardSwitch.Windows.Services
             this.logger.LogDebug("Loading additional keyboard layouts");
 
             var loadedLayouts = this.GetKeyboardLayouts();
+            var unloadDisposable = new CompositeDisposable();
+            var allLayouts = new List<KeyboardLayout>();
 
-            var allLayouts = loadableLayouts
-                .Select(loadableLayout =>
+            foreach (var loadableLayout in loadableLayouts)
+            {
+                var loadedLayout = loadedLayouts.FirstOrDefault(layout => layout.Tag == loadableLayout.Tag);
+                if (loadedLayout != null)
                 {
-                    var loadedLayout = loadedLayouts.FirstOrDefault(layout => layout.Tag == loadableLayout.Tag);
-                    if (loadedLayout != null)
-                    {
-                        return loadedLayout;
-                    }
+                    allLayouts.Add(loadedLayout);
+                    continue;
+                }
 
-                    int id = (int)LoadKeyboardLayout(loadableLayout.Tag, KLF.KLF_NOTELLSHELL).DangerousGetHandle();
-                    this.logger.LogInformation($"Loaded layout: {loadableLayout.Name}");
+                var layout = LoadKeyboardLayout(loadableLayout.Tag, KLF.KLF_NOTELLSHELL);
+                unloadDisposable.Add(layout);
 
-                    return new KeyboardLayout(
-                        id, this.GetCultureInfo(id, loadableLayout.Name), loadableLayout.Name, loadableLayout.Tag);
-                })
-                .ToList();
+                this.logger.LogDebug($"Loaded layout: {loadableLayout.Name}");
 
-            return new UnloadableLayouts(allLayouts, loadedLayouts, this.logger);
+                int id = (int)layout.DangerousGetHandle();
+                var culture = this.GetCultureInfo(id, loadableLayout.Name);
+
+                allLayouts.Add(new KeyboardLayout(id, culture, loadableLayout.Name, loadableLayout.Tag));
+            }
+
+            return new DisposableLayouts(allLayouts, unloadDisposable);
         }
 
         private KeyboardLayout GetThreadKeyboardLayout(uint threadId)

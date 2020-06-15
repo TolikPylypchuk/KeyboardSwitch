@@ -3,22 +3,24 @@ using System.Collections.Generic;
 
 namespace KeyboardSwitch.Common.Keyboard
 {
-    public abstract class DisposableLayouts : IDisposable
+    public sealed class DisposableLayouts : Disposable
     {
-        protected DisposableLayouts(IEnumerable<KeyboardLayout> layouts)
-            => this.Layouts = new List<KeyboardLayout>(layouts).AsReadOnly();
+        private readonly IDisposable layoutDisposable;
 
-        ~DisposableLayouts()
-            => this.Dispose(false);
+        public DisposableLayouts(IEnumerable<KeyboardLayout> layouts, IDisposable layoutDisposable)
+        {
+            this.Layouts = new List<KeyboardLayout>(layouts).AsReadOnly();
+            this.layoutDisposable = layoutDisposable;
+        }
 
         public IReadOnlyList<KeyboardLayout> Layouts { get; }
 
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
+            if (disposing)
+            {
+                this.layoutDisposable.Dispose();
+            }
         }
-
-        protected abstract void Dispose(bool disposing);
     }
 }
