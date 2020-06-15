@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AvaloniaResource Remove="Views\AboutView.xaml" />
     <AvaloniaResource Remove="Views\CharacterView.xaml" />
     <AvaloniaResource Remove="Views\CharMappingView.xaml" />
     <AvaloniaResource Remove="Views\ConverterView.xaml" />
@@ -154,6 +155,11 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Views\AboutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Update="Properties\Messages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -170,5 +176,10 @@
     <ProjectReference Include="..\KeyboardSwitch.Common\KeyboardSwitch.Common.csproj" />
     <ProjectReference Include="..\KeyboardSwitch.Settings.Core\KeyboardSwitch.Settings.Core.csproj" />
     <ProjectReference Include="..\KeyboardSwitch.Windows\KeyboardSwitch.Windows.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Views\AboutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
 </Project>

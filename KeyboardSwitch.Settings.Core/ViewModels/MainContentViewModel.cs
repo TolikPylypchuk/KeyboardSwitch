@@ -34,6 +34,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.PreferencesViewModel = new PreferencesViewModel(preferencesModel);
             this.ConverterViewModel = new ConverterViewModel(converterModel);
             this.ConverterSettingsViewModel = new ConverterSettingsViewModel(converterModel);
+            this.AboutViewModel = new AboutViewModel();
 
             this.appSettingsService = appSettingsService ?? Locator.Current.GetService<IAppSettingsService>();
             this.converterSettingsService =
@@ -59,6 +60,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         public PreferencesViewModel PreferencesViewModel { get; }
         public ConverterViewModel ConverterViewModel { get; }
         public ConverterSettingsViewModel ConverterSettingsViewModel { get; }
+        public AboutViewModel AboutViewModel { get; }
 
         public ReactiveCommand<CharMappingModel, Unit> SaveCharMappingSettings { get; }
         public ReactiveCommand<PreferencesModel, Unit> SavePreferences { get; }

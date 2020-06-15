@@ -11,5 +11,6 @@
         <TabItem x:Name="SandboxTabItem" Header="{l:Translate Sandbox}">
             <local:SandboxView />
         </TabItem>
+        <TabItem x:Name="AboutTabItem" Header="{l:Translate About}" />
     </TabControl>
 </UserControl>

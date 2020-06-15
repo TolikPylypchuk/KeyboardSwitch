@@ -53,5 +53,6 @@
         <sys:Double x:Key="FontSizeSmall">10</sys:Double>
         <sys:Double x:Key="FontSizeNormal">14</sys:Double>
         <sys:Double x:Key="FontSizeLarge">16</sys:Double>
+        <sys:Double x:Key="FontSizeHuge">24</sys:Double>
     </Application.Resources>
 </Application>

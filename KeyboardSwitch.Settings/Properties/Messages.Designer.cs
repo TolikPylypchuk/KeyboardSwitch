@@ -61,6 +61,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        internal static string About {
+            get {
+                return ResourceManager.GetString("About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add custom layout.
         /// </summary>
         internal static string AddCustomLayout {
@@ -223,6 +232,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Created by Tolik Pylypchuk.
+        /// </summary>
+        internal static string CreatedBy {
+            get {
+                return ResourceManager.GetString("CreatedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Layout names must be unique.
         /// </summary>
         internal static string CustomLayoutNamesAreSame {
@@ -291,6 +309,15 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string InstantSwitching {
             get {
                 return ResourceManager.GetString("InstantSwitching", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keyboard Switch.
+        /// </summary>
+        internal static string KeyboardSwitch {
+            get {
+                return ResourceManager.GetString("KeyboardSwitch", resourceCulture);
             }
         }
         
@@ -597,6 +624,15 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string ValidationNameEmpty {
             get {
                 return ResourceManager.GetString("ValidationNameEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version {0}.
+        /// </summary>
+        internal static string VersionFormat {
+            get {
+                return ResourceManager.GetString("VersionFormat", resourceCulture);
             }
         }
         

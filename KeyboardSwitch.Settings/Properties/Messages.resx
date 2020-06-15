@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About" xml:space="preserve">
+    <value>About</value>
+  </data>
   <data name="AddCustomLayout" xml:space="preserve">
     <value>Add custom layout</value>
   </data>
@@ -171,6 +174,9 @@
   <data name="ConvertHint" xml:space="preserve">
     <value>Or press Ctrl+Enter</value>
   </data>
+  <data name="CreatedBy" xml:space="preserve">
+    <value>Created by Tolik Pylypchuk</value>
+  </data>
   <data name="CustomLayoutNamesAreSame" xml:space="preserve">
     <value>Layout names must be unique</value>
   </data>
@@ -194,6 +200,9 @@
   </data>
   <data name="InstantSwitching" xml:space="preserve">
     <value>Instant switching</value>
+  </data>
+  <data name="KeyboardSwitch" xml:space="preserve">
+    <value>Keyboard Switch</value>
   </data>
   <data name="KeyboardSwitchServiceNotRunning" xml:space="preserve">
     <value>The Keyboard Switch service is not running</value>
@@ -296,6 +305,9 @@
   </data>
   <data name="ValidationNameEmpty" xml:space="preserve">
     <value>Name is required</value>
+  </data>
+  <data name="VersionFormat" xml:space="preserve">
+    <value>Version {0}</value>
   </data>
   <data name="WaitMilliseconds" xml:space="preserve">
     <value>Wait time (ms)</value>
