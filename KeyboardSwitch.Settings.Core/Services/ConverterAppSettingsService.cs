@@ -34,8 +34,8 @@ namespace KeyboardSwitch.Settings.Core.Services
         public IObservable<Unit> SettingsInvalidated
             => this.settingsInvalidated.AsObservable();
 
-        public ValueTask<AppSettings> GetAppSettingsAsync()
-            => new ValueTask<AppSettings>(new AppSettings
+        public Task<AppSettings> GetAppSettingsAsync()
+            => Task.FromResult(new AppSettings
             {
                 CharsByKeyboardLayoutId = new Dictionary<int, string>
                 {

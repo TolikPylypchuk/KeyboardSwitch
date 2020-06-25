@@ -28,36 +28,29 @@ namespace KeyboardSwitch
         {
             BlobCache.ApplicationName = nameof(KeyboardSwitch);
 
-            var host = Host.CreateDefaultBuilder(args)
+            using var host = Host.CreateDefaultBuilder(args)
                 .ConfigureServices(ConfigureServices)
                 .ConfigureLogging(ConfigureLogging)
                 .UseConsoleLifetime()
                 .Build();
 
-            var mutex = ConfigureSingleInstance(host.Services);
-
-            var logger = host.Services.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(Program));
-
-            SubscribeToExternalCommands(host, logger);
-
-            logger.LogInformation("KeyboardSwitch service execution started");
+            using var mutex = ConfigureSingleInstance(host.Services);
 
             try
             {
-                host.Run();
-            } catch (OperationCanceledException)
-            {
-                logger.LogInformation("KeyboardSwitch service execution was cancelled");
-            } catch (Exception e)
-            {
-                logger.LogError(e, "Unknown error");
+                var logger = host.Services.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(Program));
+
+                SubscribeToExternalCommands(host, logger);
+
+                logger.LogInformation("KeyboardSwitch service execution started");
+
+                host.RunAsync().Wait();
+
+                logger.LogInformation("KeyboardSwitch service execution stopped");
             } finally
             {
                 mutex.ReleaseMutex();
-                mutex.Dispose();
             }
-
-            logger.LogInformation("KeyboardSwitch service execution stopped");
         }
 
         private static void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)

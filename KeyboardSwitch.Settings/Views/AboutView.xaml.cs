@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -17,7 +18,8 @@ namespace KeyboardSwitch.Settings.Views
         {
             this.WhenActivated(disposables =>
             {
-                this.VersionTextBlock.Text = String.Format(Messages.VersionFormat, this.ViewModel.AppVersion);
+                this.VersionTextBlock.Text = String.Format(
+                    CultureInfo.InvariantCulture, Messages.VersionFormat, this.ViewModel.AppVersion);
             });
 
             this.InitializeComponent();

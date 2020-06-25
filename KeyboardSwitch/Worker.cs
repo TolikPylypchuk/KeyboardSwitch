@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using KeyboardSwitch.Common.Settings;
 
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace KeyboardSwitch
 {
@@ -18,6 +20,8 @@ namespace KeyboardSwitch
         private readonly ISwitchService switchService;
         private readonly IAppSettingsService settingsService;
         private readonly IKeysService keysService;
+        private readonly IHost host;
+        private readonly GlobalSettings globalSettings;
         private readonly ILogger<Worker> logger;
 
         private IDisposable? hookSubscription;
@@ -27,26 +31,50 @@ namespace KeyboardSwitch
             ISwitchService switchService,
             IAppSettingsService settingsService,
             IKeysService keysService,
+            IHost host,
+            IOptions<GlobalSettings> globalSettings,
             ILogger<Worker> logger)
         {
             this.keyboardHookService = keyboardHookService;
             this.switchService = switchService;
             this.settingsService = settingsService;
             this.keysService = keysService;
+            this.host = host;
+            this.globalSettings = globalSettings.Value;
             this.logger = logger;
         }
 
         protected override async Task ExecuteAsync(CancellationToken token)
         {
-            this.logger.LogDebug("Configuring the keyboard switch service");
+            try
+            {
+                this.logger.LogDebug("Configuring the keyboard switch service");
 
-            await this.RegisterHotKeysAsync();
+                await this.RegisterHotKeysAsync();
 
-            this.settingsService.SettingsInvalidated.SubscribeAsync(this.RefreshHotKeysAsync);
+                this.settingsService.SettingsInvalidated.SubscribeAsync(this.RefreshHotKeysAsync);
 
-            this.logger.LogDebug("Starting the service execution");
+                this.logger.LogDebug("Starting the service execution");
 
-            await this.keyboardHookService.WaitForMessagesAsync(token);
+                await this.keyboardHookService.WaitForMessagesAsync(token);
+            } catch (OperationCanceledException)
+            {
+                this.logger.LogInformation("The Keyboard Switch service execution was cancelled");
+            } catch (IncompatibleAppVersionException e)
+            {
+                var settingsPath = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    this.globalSettings.Path);
+
+                this.logger.LogError(e, $"Incompatible app version found in settings: {e.Version}. " +
+                    $"Delete the settings at '{settingsPath}' and let the app recreate a compatible version");
+            } catch (Exception e)
+            {
+                this.logger.LogError(e, "Unknown error");
+            } finally
+            {
+                await this.host.StopAsync();
+            }
         }
 
         public override void Dispose()

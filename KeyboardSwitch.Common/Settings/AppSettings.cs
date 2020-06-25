@@ -34,5 +34,8 @@ namespace KeyboardSwitch.Common.Settings
 
         [DataMember]
         public string ServicePath { get; set; } = String.Empty;
+
+        [DataMember]
+        public Version AppVersion { get; set; } = null!;
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Reflection;
 using System.Threading.Tasks;
 
 using Akavache;
@@ -37,7 +38,7 @@ namespace KeyboardSwitch.Common.Services
         public IObservable<Unit> SettingsInvalidated
             => this.settingsInvalidated.AsObservable();
 
-        public async ValueTask<AppSettings> GetAppSettingsAsync()
+        public async Task<AppSettings> GetAppSettingsAsync()
         {
             this.ThrowIfDisposed();
 
@@ -54,6 +55,14 @@ namespace KeyboardSwitch.Common.Services
 
                     this.appSettings = this.CreateDefaultAppSettings();
                     await this.cache.InsertObject(AppSettings.CacheKey, this.appSettings);
+                }
+
+                if (appSettings.AppVersion == null ||
+                    appSettings.AppVersion > Assembly.GetEntryAssembly()?.GetName().Version)
+                {
+                    var version = this.appSettings.AppVersion;
+                    this.appSettings = null;
+                    throw new IncompatibleAppVersionException(version);
                 }
             }
 
@@ -142,6 +151,7 @@ namespace KeyboardSwitch.Common.Services
                 InstantSwitching = true,
                 SwitchLayout = true,
                 ShowUninstalledLayoutsMessage = true,
+                AppVersion = Assembly.GetEntryAssembly()?.GetName().Version ?? new Version(0, 0),
                 ServicePath = nameof(KeyboardSwitch)
             };
     }

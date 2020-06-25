@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -34,6 +35,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
 
 using ReactiveUI;
 
@@ -77,18 +79,32 @@ namespace KeyboardSwitch.Settings
                 this.ConfigureSingleInstance(serviceProvider);
                 this.ConfigureSuspensionDriver();
 
-                var appSettings = await Locator.Current.GetService<IAppSettingsService>().GetAppSettingsAsync();
-                var converterSettings = await Locator.Current.GetService<IConverterSettingsService>()
-                    .GetConverterSettingsAsync();
+                try
+                {
+                    var appSettings = await Locator.Current.GetService<IAppSettingsService>().GetAppSettingsAsync();
 
-                var mainViewModel = new MainViewModel(appSettings, converterSettings);
+                    var converterSettings = await Locator.Current.GetService<IConverterSettingsService>()
+                        .GetConverterSettingsAsync();
 
-                this.openExternally.InvokeCommand(mainViewModel.OpenExternally);
+                    var mainViewModel = new MainViewModel(appSettings, converterSettings);
 
-                desktop.MainWindow = await this.CreateMainWindow(mainViewModel);
-                desktop.MainWindow.Show();
+                    this.openExternally.InvokeCommand(mainViewModel.OpenExternally);
 
-                desktop.Exit += this.OnExit;
+                    desktop.MainWindow = await this.CreateMainWindow(mainViewModel);
+                    desktop.MainWindow.Show();
+
+                    desktop.Exit += this.OnExit;
+                } catch (IncompatibleAppVersionException e)
+                {
+                    var settingsPath = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                        Locator.Current.GetService<IOptions<GlobalSettings>>().Value.Path);
+
+                    this.Log().Error(e, $"Incompatible app version found in settings: {e.Version}. " +
+                        $"Delete the settings at '{settingsPath}' and let the app recreate a compatible version");
+
+                    this.desktop.Shutdown(1);
+                }
             }
 
             base.OnFrameworkInitializationCompleted();

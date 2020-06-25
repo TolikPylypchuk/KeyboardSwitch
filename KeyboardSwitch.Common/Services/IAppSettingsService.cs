@@ -10,7 +10,7 @@ namespace KeyboardSwitch.Common.Services
     {
         IObservable<Unit> SettingsInvalidated { get; }
 
-        ValueTask<AppSettings> GetAppSettingsAsync();
+        Task<AppSettings> GetAppSettingsAsync();
         Task SaveAppSettingsAsync(AppSettings appSettings);
 
         void InvalidateAppSettings();
