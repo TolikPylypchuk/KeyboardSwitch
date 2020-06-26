@@ -37,14 +37,14 @@ namespace KeyboardSwitch.Common.Services
 
             if (!String.IsNullOrEmpty(textToSwitch))
             {
-                var allLayouts = layoutService.GetKeyboardLayouts();
+                var allLayouts = this.layoutService.GetKeyboardLayouts();
 
                 if (direction == SwitchDirection.Backward)
                 {
                     allLayouts.Reverse();
                 }
 
-                var currentLayout = layoutService.GetCurrentKeyboardLayout();
+                var currentLayout = this.layoutService.GetCurrentKeyboardLayout();
 
                 var newLayout = allLayouts.SkipWhile(layout => layout != currentLayout)
                     .Skip(1)
@@ -63,7 +63,7 @@ namespace KeyboardSwitch.Common.Services
 
             if (settings.SwitchLayout)
             {
-                layoutService.SwitchCurrentLayout(direction);
+                this.layoutService.SwitchCurrentLayout(direction);
             }
         }
     }
