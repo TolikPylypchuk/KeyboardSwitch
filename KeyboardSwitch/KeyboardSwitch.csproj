@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <OutputPath>$(SolutionDir)\bin\$(Platform)\$(Configuration)</OutputPath>
+    <OutputPath>$(MSBuildProjectDirectory)\..\bin\$(Platform)\$(Configuration)</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

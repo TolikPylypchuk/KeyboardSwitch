@@ -8,7 +8,7 @@
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform>x64</Platform>
     <ProjectGuid>{C9A243E5-6443-4A00-ACAC-C20A61286264}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -125,4 +125,8 @@
   </Target>
   <Import Project="..\packages\WixSharp.bin.1.14.6\build\WixSharp.bin.targets" Condition="Exists('..\packages\WixSharp.bin.1.14.6\build\WixSharp.bin.targets')" />
   <Import Project="..\packages\WixSharp.1.14.6\build\WixSharp.targets" Condition="Exists('..\packages\WixSharp.1.14.6\build\WixSharp.targets')" />
+  <PropertyGroup>
+    <PreBuildEvent>call dotnet publish $(MSBuildProjectDirectory)\..\KeyboardSwitch\ --configuration Release --runtime win10-x64 --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=x64
+call dotnet publish $(MSBuildProjectDirectory)\..\KeyboardSwitch.Settings\ --configuration Release --runtime win10-x64 --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=x64</PreBuildEvent>
+  </PropertyGroup>
 </Project>
