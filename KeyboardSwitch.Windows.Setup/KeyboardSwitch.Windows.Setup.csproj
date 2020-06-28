@@ -81,6 +81,9 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="License.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="wix\$(ProjectName).g.wxs" />
   </ItemGroup>
@@ -110,6 +113,17 @@
     <Analyzer Include="..\packages\Microsoft.NetFramework.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.NetFramework.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.NetFramework.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.NetFramework.CSharp.Analyzers.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Banner.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dialog.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -126,7 +140,7 @@
   <Import Project="..\packages\WixSharp.bin.1.14.6\build\WixSharp.bin.targets" Condition="Exists('..\packages\WixSharp.bin.1.14.6\build\WixSharp.bin.targets')" />
   <Import Project="..\packages\WixSharp.1.14.6\build\WixSharp.targets" Condition="Exists('..\packages\WixSharp.1.14.6\build\WixSharp.targets')" />
   <PropertyGroup>
-    <PreBuildEvent>call dotnet publish $(MSBuildProjectDirectory)\..\KeyboardSwitch\ --configuration Release --runtime win10-x64 --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=x64
-call dotnet publish $(MSBuildProjectDirectory)\..\KeyboardSwitch.Settings\ --configuration Release --runtime win10-x64 --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=x64</PreBuildEvent>
+    <PreBuildEvent>call dotnet publish $(MSBuildProjectDirectory)\..\KeyboardSwitch\ --configuration Release --runtime win10-x64 --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=x64 -p:PublishTrimmed=true
+call dotnet publish $(MSBuildProjectDirectory)\..\KeyboardSwitch.Settings\ --configuration Release --runtime win10-x64 --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=x64 -p:PublishTrimmed=true</PreBuildEvent>
   </PropertyGroup>
 </Project>
