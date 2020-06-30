@@ -39,10 +39,7 @@ namespace KeyboardSwitch.Windows
 
             var options = services.GetRequiredService<IOptions<GlobalSettings>>();
             var scheduler = services.GetService<IScheduler>();
-
-            var path = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                options.Value.Path);
+            var path = Environment.ExpandEnvironmentVariables(options.Value.Path);
 
             if (!File.Exists(path))
             {

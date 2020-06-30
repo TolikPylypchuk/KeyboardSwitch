@@ -96,8 +96,7 @@ namespace KeyboardSwitch.Settings
                     desktop.Exit += this.OnExit;
                 } catch (IncompatibleAppVersionException e)
                 {
-                    var settingsPath = Path.Combine(
-                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    var settingsPath = Environment.ExpandEnvironmentVariables(
                         Locator.Current.GetService<IOptions<GlobalSettings>>().Value.Path);
 
                     this.Log().Error(e, $"Incompatible app version found in settings: {e.Version}. " +
