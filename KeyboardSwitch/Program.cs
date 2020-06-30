@@ -34,12 +34,12 @@ namespace KeyboardSwitch
                 .UseConsoleLifetime()
                 .Build();
 
+            var logger = host.Services.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(Program));
+
             using var mutex = ConfigureSingleInstance(host.Services);
 
             try
             {
-                var logger = host.Services.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(Program));
-
                 SubscribeToExternalCommands(host, logger);
 
                 logger.LogInformation("KeyboardSwitch service execution started");
@@ -47,6 +47,9 @@ namespace KeyboardSwitch
                 host.RunAsync().Wait();
 
                 logger.LogInformation("KeyboardSwitch service execution stopped");
+            } catch (OperationCanceledException)
+            {
+                logger.LogInformation("The Keyboard Switch service execution was cancelled");
             } finally
             {
                 mutex.ReleaseMutex();

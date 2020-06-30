@@ -57,9 +57,6 @@ namespace KeyboardSwitch
                 this.logger.LogDebug("Starting the service execution");
 
                 await this.keyboardHookService.WaitForMessagesAsync(token);
-            } catch (OperationCanceledException)
-            {
-                this.logger.LogInformation("The Keyboard Switch service execution was cancelled");
             } catch (IncompatibleAppVersionException e)
             {
                 var settingsPath = Path.Combine(
@@ -68,11 +65,11 @@ namespace KeyboardSwitch
 
                 this.logger.LogError(e, $"Incompatible app version found in settings: {e.Version}. " +
                     $"Delete the settings at '{settingsPath}' and let the app recreate a compatible version");
+
+                await this.host.StopAsync();
             } catch (Exception e)
             {
                 this.logger.LogError(e, "Unknown error");
-            } finally
-            {
                 await this.host.StopAsync();
             }
         }
