@@ -1,8 +1,11 @@
 using System;
+using System.IO;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 
 using Akavache;
 
@@ -26,6 +29,7 @@ namespace KeyboardSwitch
     {
         public static void Main(string[] args)
         {
+            Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             BlobCache.ApplicationName = nameof(KeyboardSwitch);
 
             using var host = Host.CreateDefaultBuilder(args)
@@ -44,10 +48,10 @@ namespace KeyboardSwitch
 
                 logger.LogInformation("KeyboardSwitch service execution started");
 
-                host.RunAsync().Wait();
+                host.Run();
 
                 logger.LogInformation("KeyboardSwitch service execution stopped");
-            } catch (OperationCanceledException)
+            } catch (Exception e) when (e is OperationCanceledException || e is TaskCanceledException)
             {
                 logger.LogInformation("The Keyboard Switch service execution was cancelled");
             } finally

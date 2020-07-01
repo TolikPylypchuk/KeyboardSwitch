@@ -16,15 +16,18 @@ namespace KeyboardSwitch.Windows.Setup
         private const string ProductSettingsName = "Keyboard Switch Settings";
 
         private const string BuildDirectory = @"..\bin\publish\*.*";
-        private static readonly string TargetDirectory = @$"%ProgramFiles64%\{nameof(KeyboardSwitch)}";
+        private static readonly string TargetDirectory = @$"%ProgramFiles%\{nameof(KeyboardSwitch)}";
         private const string InstallationDirectory = "[INSTALLDIR]";
         private const string StartMenuDirectory = "%ProgramMenu%";
+
+        private readonly static string ExplorerPath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.Windows), "explorer.exe");
 
         private const string SettingsAppName = "KeyboardSwitchSettings.exe";
 
         private static void Main()
         {
-            var target = new Dir(TargetDirectory, new Files(BuildDirectory));
+            var files = new Dir(TargetDirectory, new Files(BuildDirectory));
 
             var startMenuShortcut = new Dir(
                 StartMenuDirectory,
@@ -36,7 +39,7 @@ namespace KeyboardSwitch.Windows.Setup
 
             var currentAssembly = Assembly.GetExecutingAssembly();
 
-            var project = new ManagedProject(ProductName, target, startMenuShortcut)
+            var project = new ManagedProject(ProductName, files, startMenuShortcut)
             {
                 GUID = new Guid("6fe30b47-2577-43ad-9095-1861ba25889b"),
                 InstallScope = InstallScope.perMachine,
@@ -64,6 +67,8 @@ namespace KeyboardSwitch.Windows.Setup
                 .First()
                 .Company;
 
+            project.MajorUpgradeStrategy.RemoveExistingProductAfter = Step.InstallInitialize;
+
             project.AfterInstall += AfterInstall;
 
             project.BuildMsi();
@@ -77,7 +82,8 @@ namespace KeyboardSwitch.Windows.Setup
                 {
                     Process.Start(new ProcessStartInfo
                     {
-                        FileName = Path.Combine(e.InstallDir, SettingsAppName),
+                        FileName = ExplorerPath,
+                        Arguments = $"\"{Path.Combine(e.InstallDir, SettingsAppName)}\"",
                         WorkingDirectory = e.InstallDir
                     });
                 } catch (Exception exp)

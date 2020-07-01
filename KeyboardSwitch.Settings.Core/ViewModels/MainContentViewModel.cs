@@ -18,6 +18,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
     {
         private readonly IAppSettingsService appSettingsService;
         private readonly IConverterSettingsService converterSettingsService;
+        private readonly IStartupService startupService;
 
         private readonly BehaviorSubject<bool> removeLayoutsEnabled;
 
@@ -26,7 +27,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             PreferencesModel preferencesModel,
             ConverterModel converterModel,
             IAppSettingsService? appSettingsService = null,
-            IConverterSettingsService? converterSettingsService = null)
+            IConverterSettingsService? converterSettingsService = null,
+            IStartupService? startupService = null)
         {
             this.removeLayoutsEnabled = new BehaviorSubject<bool>(preferencesModel.ShowUninstalledLayoutsMessage);
 
@@ -39,6 +41,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.appSettingsService = appSettingsService ?? Locator.Current.GetService<IAppSettingsService>();
             this.converterSettingsService =
                 converterSettingsService ?? Locator.Current.GetService<IConverterSettingsService>();
+            this.startupService = startupService ?? Locator.Current.GetService<IStartupService>();
 
             this.SaveCharMappingSettings = ReactiveCommand.CreateFromTask<CharMappingModel>(
                 this.SaveCharMappingSettingsAsync);
@@ -101,6 +104,11 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             settings.ShowUninstalledLayoutsMessage = preferencesModel.ShowUninstalledLayoutsMessage;
 
             await this.appSettingsService.SaveAppSettingsAsync(settings);
+
+            if (this.startupService.IsStartupConfigured() != preferencesModel.Startup)
+            {
+                await this.startupService.ConfigureStartupAsync(preferencesModel.Startup);
+            }
         }
 
         private async Task SaveConverterSettingsAsync(ConverterModel converterModel)

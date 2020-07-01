@@ -8,6 +8,8 @@
                       Classes="FormControl" />
             <CheckBox x:Name="SwitchLayoutCheckBox" Content="{l:Translate SwitchLayouts}"
                       Classes="FormControl" />
+            <CheckBox x:Name="StartupCheckBox" Content="{l:Translate StartOnLogIn}"
+                      Classes="FormControl" />
             <CheckBox x:Name="ShowRemovedLayoutsMessageCheckBox" Content="{l:Translate ShowUninstalledLayoutsMessage}"
                       Classes="FormControl" />
         </WrapPanel>

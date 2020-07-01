@@ -25,14 +25,16 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         public MainViewModel(
             AppSettings appSettings,
             ConverterSettings converterSettings,
-            ILayoutService? layoutService = null)
+            ILayoutService? layoutService = null,
+            IStartupService? startupService = null)
         {
             this.appSettings = appSettings;
             this.layoutService = layoutService ?? Locator.Current.GetService<ILayoutService>();
+            startupService ??= Locator.Current.GetService<IStartupService>();
 
             this.MainContentViewModel = new MainContentViewModel(
                 this.CreateCharMappingModel(),
-                new PreferencesModel(appSettings),
+                new PreferencesModel(appSettings, startupService.IsStartupConfigured()),
                 this.CreateConverterModel(converterSettings));
 
             this.ServiceViewModel = new ServiceViewModel();

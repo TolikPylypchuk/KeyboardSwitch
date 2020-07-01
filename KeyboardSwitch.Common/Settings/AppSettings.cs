@@ -12,6 +12,9 @@ namespace KeyboardSwitch.Common.Settings
         public static readonly string CacheKey = "AppSettings";
 
         [DataMember]
+        public bool IsAppInitilized { get; set; }
+
+        [DataMember]
         public HotKeySwitchSettings HotKeySwitchSettings { get; set; } = null!;
 
         [DataMember]

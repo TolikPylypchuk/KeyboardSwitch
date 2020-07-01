@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -81,7 +80,16 @@ namespace KeyboardSwitch.Settings
 
                 try
                 {
-                    var appSettings = await Locator.Current.GetService<IAppSettingsService>().GetAppSettingsAsync();
+                    var appSettingsService = Locator.Current.GetService<IAppSettingsService>();
+                    var appSettings = await appSettingsService.GetAppSettingsAsync();
+
+                    if (!appSettings.IsAppInitilized)
+                    {
+                        this.Log().Info("Setting the app to run at system startup");
+                        await Locator.Current.GetService<IStartupService>().ConfigureStartupAsync(true);
+                        appSettings.IsAppInitilized = true;
+                        await appSettingsService.SaveAppSettingsAsync(appSettings);
+                    }
 
                     var converterSettings = await Locator.Current.GetService<IConverterSettingsService>()
                         .GetConverterSettingsAsync();
@@ -90,10 +98,10 @@ namespace KeyboardSwitch.Settings
 
                     this.openExternally.InvokeCommand(mainViewModel.OpenExternally);
 
+                    desktop.Exit += this.OnExit;
+
                     desktop.MainWindow = await this.CreateMainWindow(mainViewModel);
                     desktop.MainWindow.Show();
-
-                    desktop.Exit += this.OnExit;
                 } catch (IncompatibleAppVersionException e)
                 {
                     var settingsPath = Environment.ExpandEnvironmentVariables(

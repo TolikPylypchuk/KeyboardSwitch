@@ -565,6 +565,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start the service when you log in.
+        /// </summary>
+        internal static string StartOnLogIn {
+            get {
+                return ResourceManager.GetString("StartOnLogIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stop.
         /// </summary>
         internal static string Stop {
