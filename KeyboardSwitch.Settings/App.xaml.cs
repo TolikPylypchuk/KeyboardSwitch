@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -51,6 +52,8 @@ namespace KeyboardSwitch.Settings
 {
     public class App : Application, IEnableLogger
     {
+        private const string SetStartupFile = "set-startup";
+
         private IClassicDesktopStyleApplicationLifetime desktop = null!;
         private Mutex? mutex;
         private ServiceProvider? serviceProvider;
@@ -80,16 +83,14 @@ namespace KeyboardSwitch.Settings
 
                 try
                 {
-                    var appSettingsService = Locator.Current.GetService<IAppSettingsService>();
-                    var appSettings = await appSettingsService.GetAppSettingsAsync();
-
-                    if (!appSettings.IsAppInitilized)
+                    if (File.Exists(SetStartupFile))
                     {
                         this.Log().Info("Setting the app to run at system startup");
                         await Locator.Current.GetService<IStartupService>().ConfigureStartupAsync(true);
-                        appSettings.IsAppInitilized = true;
-                        await appSettingsService.SaveAppSettingsAsync(appSettings);
+                        File.Delete(SetStartupFile);
                     }
+
+                    var appSettings = await Locator.Current.GetService<IAppSettingsService>().GetAppSettingsAsync();
 
                     var converterSettings = await Locator.Current.GetService<IConverterSettingsService>()
                         .GetConverterSettingsAsync();

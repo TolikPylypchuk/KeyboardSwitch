@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.AccessControl;
+using System.Security.Principal;
 
 using WixSharp;
 
@@ -24,6 +26,8 @@ namespace KeyboardSwitch.Windows.Setup
             Environment.GetFolderPath(Environment.SpecialFolder.Windows), "explorer.exe");
 
         private const string SettingsAppName = "KeyboardSwitchSettings.exe";
+
+        private const string SetStartupFile = "set-startup";
 
         private static void Main()
         {
@@ -80,6 +84,20 @@ namespace KeyboardSwitch.Windows.Setup
             {
                 try
                 {
+                    string fileName = Path.Combine(e.InstallDir, SetStartupFile);
+                    var file = new FileInfo(fileName);
+                    file.Create().Close();
+
+                    var accessControl = file.GetAccessControl();
+                    accessControl.AddAccessRule(new FileSystemAccessRule(
+                        new SecurityIdentifier(WellKnownSidType.WorldSid, null),
+                        FileSystemRights.FullControl,
+                        InheritanceFlags.None,
+                        PropagationFlags.NoPropagateInherit,
+                        AccessControlType.Allow));
+
+                    file.SetAccessControl(accessControl);
+
                     Process.Start(new ProcessStartInfo
                     {
                         FileName = ExplorerPath,
