@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -19,6 +20,9 @@ namespace KeyboardSwitch.Windows.Setup
 
         private const string BuildDirectory = @"..\bin\publish\*.*";
         private static readonly string TargetDirectory = @$"%ProgramFiles%\{nameof(KeyboardSwitch)}";
+
+        private static readonly List<string> ExcludedFileExtensions = new List<string> { ".pdb", ".xml" };
+
         private const string InstallationDirectory = "[INSTALLDIR]";
         private const string StartMenuDirectory = "%ProgramMenu%";
 
@@ -31,7 +35,9 @@ namespace KeyboardSwitch.Windows.Setup
 
         private static void Main()
         {
-            var files = new Dir(TargetDirectory, new Files(BuildDirectory));
+            var files = new Dir(
+                TargetDirectory,
+                new Files(BuildDirectory, file => !ExcludedFileExtensions.Any(file.EndsWith)));
 
             var startMenuShortcut = new Dir(
                 StartMenuDirectory,
