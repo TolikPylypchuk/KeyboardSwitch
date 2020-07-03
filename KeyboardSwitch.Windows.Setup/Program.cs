@@ -7,6 +7,8 @@ using System.Reflection;
 using System.Security.AccessControl;
 using System.Security.Principal;
 
+using Microsoft.Deployment.WindowsInstaller;
+
 using WixSharp;
 
 using Assembly = System.Reflection.Assembly;
@@ -30,8 +32,13 @@ namespace KeyboardSwitch.Windows.Setup
             Environment.GetFolderPath(Environment.SpecialFolder.Windows), "explorer.exe");
 
         private const string SettingsAppName = "KeyboardSwitchSettings.exe";
-
         private const string SetStartupFile = "set-startup";
+
+        private const string DeleteConfigKey = "9000";
+
+        private static readonly string DefaultDataDirectory = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "KeyboardSwitch");
 
         private static void Main()
         {
@@ -47,9 +54,11 @@ namespace KeyboardSwitch.Windows.Setup
                     WorkingDirectory = InstallationDirectory
                 });
 
+            var deleteConfigMessage = new Error(DeleteConfigKey, "Do you want to delete the app's configuration?");
+
             var currentAssembly = Assembly.GetExecutingAssembly();
 
-            var project = new ManagedProject(ProductName, files, startMenuShortcut)
+            var project = new ManagedProject(ProductName, files, startMenuShortcut, deleteConfigMessage)
             {
                 GUID = new Guid("6fe30b47-2577-43ad-9095-1861ba25889b"),
                 InstallScope = InstallScope.perMachine,
@@ -79,9 +88,34 @@ namespace KeyboardSwitch.Windows.Setup
 
             project.MajorUpgradeStrategy.RemoveExistingProductAfter = Step.InstallInitialize;
 
+            project.BeforeInstall += BeforeInstall;
             project.AfterInstall += AfterInstall;
 
             project.BuildMsi();
+        }
+
+        private static void BeforeInstall(SetupEventArgs e)
+        {
+            if (e.IsUninstalling)
+            {
+                try
+                {
+                    using var record = new Record(1);
+                    record[1] = DeleteConfigKey;
+
+                    var messageType = InstallMessage.User |
+                        (InstallMessage)MessageButtons.YesNo |
+                        (InstallMessage)MessageIcon.Question;
+
+                    if (e.Session.Message(messageType, record) == MessageResult.Yes)
+                    {
+                        Directory.Delete(DefaultDataDirectory, recursive: true);
+                    }
+                } catch (Exception exp)
+                {
+                    e.Session.Log($"An exception occured when trying to ask about deleting the configuration: {exp}");
+                }
+            }
         }
 
         private static void AfterInstall(SetupEventArgs e)
