@@ -57,12 +57,8 @@ I don't know how it will work (if at all) with Eastern languages/scripts.
 I'm currently working on [version 3](https://github.com/TolikPylypchuk/KeyboardSwitch/milestone/2). Version 2 is
 currently available, but it's not really user-friendly.
 
-The app itself is mostly feature-complete, but there are still several things I must do before shipping v3.0:
+The app itself is mostly feature-complete, but there are still a couple things I must do before shipping v3.0:
 
- - Create an installer for the app ([#26](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/26))
- - Create a portable version of the app ([#30](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/30))
- - Implement starting the service on system startup for the installed version
-(also [#26](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/26))
  - Implement checking for updates and possibly auto-updating as well
 ([#27](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/27))
  - Create docs which thoroughly describe the app's functionality and probably host them on GitHub pages
@@ -73,6 +69,45 @@ going to test it there. [Version 4.0](https://github.com/TolikPylypchuk/Keyboard
 will be cross-platform - I'm planning on making it work on macOS and on Linux (via X11), though the details of this plan
 may change when I'll start looking into all that after releasing v3.0. The app will most probably use
 [libuiohook](https://github.com/kwhat/libuiohook) for the cross-platform keyboard hook.
+
+## Building from Source
+
+While version 3 of the app is not done yet, you can use it now if you really want to. To do that, you should clone or
+download this repository and build the app. All projects (except the Windows installer) require .NET Core 3.1 or later.
+
+### Building the App Itself
+
+Building the service app and the settings app is quite straightforward. You can simply use the `Build-Portable`
+script located in the solution root. It will create the `KeyboardSwitch-Portable.zip` file in the `bin` folder
+which you can then unpack into wherever you like.
+
+Alternatively, you can build the projects using Visual Studio 2019 or later, or with the `dotnet` tool. Note however
+that you you have to build the whole solution. The startup project is `KeyboardSwitch.Settings` (the settings app),
+and if you build it, it won't actually build the `KeyboardSwitch` project (ther service app), because the settings
+app doesn't directly depend on the service app.
+
+All projects (except the installer) are built into a shared `bin` folder located in the solution root. Again, this is
+because the settings app needs the service app to be in the same folder, but the projects don't depend on each other.
+
+It's better to use `dotnet publish` than simply using the raw build results. You can look into how the
+`Build-Portable` script calls `publish`.
+
+The installer project is excluded from the solution build sequence as it's not always needed.
+
+### Building the Windows Installer
+
+If you want to properly install the app, you can build the installer. Unlike the other projects, this one requires
+.NET Framework 4.8. This is because it's built with [WixSharp](https://github.com/oleg-shilo/wixsharp), which
+in turn is based on [the WiX toolset](https://wixtoolset.org/), and as of version 3.11.2 WiX doesn't support
+.NET Core or .NET 5.
+
+Simply run the build, and it will generate the MSI installer in the project's `bin` folder. Before the build, it calls
+`dotnet publish` to use its output. That's why the build may appear to be stuck - it's simply executing `publish`.
+
+After installation the settings app is started, and it automatically configures the service to run at system startup.
+Currently the app's startup time is quite long, so it may appear after a couple of seconds.
+
+---
 
 I hope this app will make your life at least 1% easier :)
 
