@@ -198,6 +198,12 @@
   <data name="ForwardRequired" xml:space="preserve">
     <value>Forward key is required</value>
   </data>
+  <data name="GetNewVersion" xml:space="preserve">
+    <value>Get new version</value>
+  </data>
+  <data name="GetNewVersionHint" xml:space="preserve">
+    <value>Don't forget to stop the Keyboard Switch service before installing the new version</value>
+  </data>
   <data name="HotKey" xml:space="preserve">
     <value>Hot key</value>
   </data>
@@ -254,6 +260,12 @@
   </data>
   <data name="NewLayoutsHint" xml:space="preserve">
     <value>Looks like you have installed one or more new layouts. You should configure and save them</value>
+  </data>
+  <data name="NewVersionAvailable" xml:space="preserve">
+    <value>New version available: {0}</value>
+  </data>
+  <data name="NoNewVersions" xml:space="preserve">
+    <value>You have the latest version!</value>
   </data>
   <data name="Preferences" xml:space="preserve">
     <value>Preferences</value>

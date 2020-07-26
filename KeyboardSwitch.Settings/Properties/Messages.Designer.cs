@@ -304,6 +304,24 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Get new version.
+        /// </summary>
+        internal static string GetNewVersion {
+            get {
+                return ResourceManager.GetString("GetNewVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t forget to stop the Keyboard Switch service before installing the new version.
+        /// </summary>
+        internal static string GetNewVersionHint {
+            get {
+                return ResourceManager.GetString("GetNewVersionHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hot key.
         /// </summary>
         internal static string HotKey {
@@ -471,6 +489,24 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string NewLayoutsHint {
             get {
                 return ResourceManager.GetString("NewLayoutsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New version available: {0}.
+        /// </summary>
+        internal static string NewVersionAvailable {
+            get {
+                return ResourceManager.GetString("NewVersionAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have the latest version!.
+        /// </summary>
+        internal static string NoNewVersions {
+            get {
+                return ResourceManager.GetString("NoNewVersions", resourceCulture);
             }
         }
         
