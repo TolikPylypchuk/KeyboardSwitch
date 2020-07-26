@@ -36,6 +36,7 @@
     <PackageReference Include="System.Interactive" Version="4.1.1" />
     <PackageReference Include="System.Interactive.Async" Version="4.1.1" />
     <PackageReference Include="System.Reactive" Version="4.4.1" />
+    <PackageReference Include="System.Text.Json" Version="4.7.2" />
   </ItemGroup>
 
   <ItemGroup>

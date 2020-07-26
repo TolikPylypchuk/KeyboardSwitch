@@ -6,5 +6,8 @@
         <TextBlock Text="{l:Translate KeyboardSwitch}" Margin="10" FontSize="{DynamicResource FontSizeHuge}" />
         <TextBlock Text="{l:Translate CreatedBy}" Margin="10" FontSize="{DynamicResource FontSizeNormal}" />
         <TextBlock x:Name="VersionTextBlock" Margin="10 0 10 10" FontSize="{DynamicResource FontSizeNormal}" />
+
+        <Button x:Name="CheckForUpdatesButton" Content="{l:Translate CheckForUpdates}" Classes="Primary"
+                HorizontalAlignment="Left" />
     </StackPanel>
 </UserControl>
