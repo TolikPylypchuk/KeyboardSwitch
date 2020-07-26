@@ -7,6 +7,7 @@ instead of an app with a hidden window
   - Added the ability to switch between multiple layouts of the same language (e.g. QWERTY and Dvorak for English)
   - Instant switching mode is not experimental anymore and enabled by default
   - Added the ability to auto-configure character mappings
+  - Added checking for updates
 
 # [v2.1](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v2.1) (1 April 2018)
 

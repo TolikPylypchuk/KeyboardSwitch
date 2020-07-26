@@ -122,6 +122,7 @@ instead of an app with a hidden window
   - Added the ability to switch between multiple layouts of the same language (e.g. QWERTY and Dvorak for English)
   - Instant switching mode is not experimental anymore and enabled by default
   - Added the ability to auto-configure character mappings
+  - Added checking for updates
 
 ### What's new in version 2.1:
 
