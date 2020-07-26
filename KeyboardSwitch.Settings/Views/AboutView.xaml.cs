@@ -29,7 +29,7 @@ namespace KeyboardSwitch.Settings.Views
                 this.BindCommand(this.ViewModel, vm => vm.CheckForUpdates, v => v.CheckForUpdatesButton)
                     .DisposeWith(disposables);
 
-                this.BindCommand(this.ViewModel, vm => vm.CheckForUpdates, v => v.CheckForUpdatesButton)
+                this.BindCommand(this.ViewModel, vm => vm.GetNewVersion, v => v.GetNewVersionButton)
                     .DisposeWith(disposables);
 
                 this.WhenAnyValue(v => v.ViewModel.LatestVersion)

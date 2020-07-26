@@ -19,6 +19,6 @@
                 HorizontalAlignment="Left" />
 
         <TextBlock x:Name="GetNewVersionHintTextBlock" Text="{l:Translate GetNewVersionHint}" Margin="10"
-                   FontSize="{DynamicResource FontSizeNormal}" />
+                   FontSize="{DynamicResource FontSizeNormal}" TextWrapping="Wrap" />
     </StackPanel>
 </UserControl>
