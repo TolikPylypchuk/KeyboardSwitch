@@ -57,12 +57,7 @@ I don't know how it will work (if at all) with Eastern languages/scripts.
 I'm currently working on [version 3](https://github.com/TolikPylypchuk/KeyboardSwitch/milestone/2). Version 2 is
 currently available, but it's not really user-friendly.
 
-The app itself is mostly feature-complete, but there are still a couple things I must do before shipping v3.0:
-
- - Implement checking for updates and possibly auto-updating as well
-([#27](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/27))
- - Create docs which thoroughly describe the app's functionality and probably host them on GitHub pages
-([#29](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/29))
+The app itself is feature-complete, but I should first write extensive documentation before shipping v3.0.
 
 Version 3.0 will work only on Windows 10. It will probably work on earlier versions of Windows as well, but I'm not
 going to test it there. [Version 4.0](https://github.com/TolikPylypchuk/KeyboardSwitch/milestone/3) on the other hand
