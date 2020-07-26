@@ -1,4 +1,4 @@
-name: Build and deploy the Jekyll site to GitHub Pages
+name: Build and deploy the docs to GitHub Pages
 
 on:
   push:
@@ -13,7 +13,5 @@ jobs:
 
     - name: Jekyll Actions
       uses: helaili/jekyll-action@2.0.3
-      with:
-        jekyll_src: "docs"
       env:
         JEKYLL_PAT: ${{ secrets.JEKYLL_PAT }}
