@@ -1,0 +1,25 @@
+title: Keyboard Switch
+title_separator: "|"
+email: pylypchuk.tolik@gmail.com
+description: An application which switches typed text as if it were typed with another keyboard layout
+baseurl: KeyboardSwitch
+github_username:  TolikPylypchuk
+repository: TolikPylypchuk/KeyboardSwitch
+
+theme: minimal-mistakes-jekyll
+
+plugins:
+  - jekyll-feed
+
+search: true
+
+collections:
+  v3_0:
+    output: true
+    permalink: /v3.0/:path/
+
+footer:
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: https://github.com/TolikPylypchuk
