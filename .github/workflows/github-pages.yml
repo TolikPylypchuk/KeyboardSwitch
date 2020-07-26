@@ -1,0 +1,19 @@
+name: Build and deploy Jekyll site to GitHub Pages
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Jekyll Actions
+      uses: helaili/jekyll-action@2.0.3
+      with:
+        jekyll_src: /docs
+      env:
+        JEKYLL_PAT: ${{ secrets.JEKYLL_PAT }}
