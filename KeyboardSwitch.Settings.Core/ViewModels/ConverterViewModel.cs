@@ -51,7 +51,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.LayoutsAreDifferentRule = this.ValidationRule(
                 vm => vm.WhenAnyValue(
                     v => v.SourceLayout, v => v.TargetLayout, (s, t) => s == null || t == null || s != t),
-                (vm, isValid) => isValid ? String.Empty : resourceManager.GetString("CustomLayoutsAreSame"));
+                (vm, isValid) => isValid
+                    ? String.Empty
+                    : resourceManager.GetString("CustomLayoutsAreSame") ?? String.Empty);
 
             var canConvert = this.WhenAnyValue(
                 vm => vm.SourceLayout, vm => vm.TargetLayout, (s, t) => s != null && t != null)

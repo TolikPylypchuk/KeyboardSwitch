@@ -27,7 +27,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.IsNew = isNew;
 
             this.ValidationRule(
-                vm => vm.Name, name => !String.IsNullOrWhiteSpace(name), this.ResourceManager.GetString("NameEmpty"));
+                vm => vm.Name,
+                name => !String.IsNullOrWhiteSpace(name),
+                this.ResourceManager.GetString("NameEmpty") ?? String.Empty);
 
             this.ValidationRule(
                 vm => vm.Chars,

@@ -122,13 +122,13 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         {
             var propertyName = property.GetMemberName();
             return this.Self.ValidationRule(
-                property, validate, _ => this.ResourceManager.GetString($"{propertyName}Invalid"));
+                property, validate, _ => this.ResourceManager.GetString($"{propertyName}Invalid") ?? String.Empty);
         }
 
         protected ValidationHelper ValidationRule(IObservable<bool> validation, string errorMessage)
             => this.Self.ValidationRule(
                 _ => validation,
-                (vm, valid) => valid ? String.Empty : this.ResourceManager.GetString(errorMessage));
+                (vm, valid) => valid ? String.Empty : this.ResourceManager.GetString(errorMessage) ?? String.Empty);
 
         protected void CanDeleteWhen(IObservable<bool> canDelete)
             => canDelete.Subscribe(this.canDeleteSubject);
