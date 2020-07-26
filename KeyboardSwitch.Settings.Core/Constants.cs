@@ -6,5 +6,8 @@ namespace KeyboardSwitch.Settings.Core
 
         public const int SourceLayoutId = 0;
         public const int TargetLayoutId = 1;
+
+        public const string VersionInfoLocation =
+            "https://raw.githubusercontent.com/TolikPylypchuk/KeyboardSwitch/master/version";
     }
 }

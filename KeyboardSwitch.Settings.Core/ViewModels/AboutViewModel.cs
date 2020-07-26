@@ -1,13 +1,13 @@
 using System;
 using System.Net;
 using System.Reactive;
-using System.Reactive.Linq;
 using System.Reflection;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+
+using static KeyboardSwitch.Settings.Core.Constants;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
@@ -30,9 +30,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         public async Task<Version> OnCheckForUpdates()
         {
             using var webClient = new WebClient();
-            string content = await Task.Run(() => webClient.DownloadStringTaskAsync(
-                new Uri("https://raw.githubusercontent.com/TolikPylypchuk/KeyboardSwitch/master/version-info.json")));
-            return JsonSerializer.Deserialize<Version>(content);
+            string version = await Task.Run(() => webClient.DownloadStringTaskAsync(new Uri(VersionInfoLocation)));
+            return Version.Parse(version.Trim());
         }
     }
 }
