@@ -18,6 +18,17 @@ collections:
     output: true
     permalink: /v3.0/:path/
 
+defaults:
+  -
+    scope:
+      path: ""
+      type: "v3_0"
+    values:
+      layout: single
+      sidebar:
+        nav: "v3_0"
+      toc: true
+
 footer:
   links:
     - label: "GitHub"

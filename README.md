@@ -14,17 +14,17 @@ press the key combination (the defaults are Ctrl+Shift+X to switch forward and C
 
 **Note:** A few things to consider:
 
- - The app simulates pressing Ctrl+C to copy and Ctrl+V to paste text. This is the default behaviour for most
+- The app simulates pressing Ctrl+C to copy and Ctrl+V to paste text. This is the default behaviour for most
 (if not all) applications. But if you are working in an app which behaves differently on those key presses, this app
 will not be able to instantly switch text. You can disable this behaviour, and copy/paste the text manually.
 
- - Ctrl+Shift work best as the modifier keys for instant switching because pressing Alt will change the focus
+- Ctrl+Shift work best as the modifier keys for instant switching because pressing Alt will change the focus
 to some kind of a menu in most apps.
 
 ## Settings
 
-The app is completely customizable. Common layouts for a couple languages are built-in. Before using this app
-you should make sure the characters are mapped correctly according to the physical layout of keys on your keyboard.
+The app is completely customizable. Before using this app you should make sure the characters are mapped correctly
+according to the physical layout of keys on your keyboard.
 
 If you don't want to map a character into a certain layout, you can map it to the space character. The space character
 is used as a _don't map this character_ instruction.
@@ -47,7 +47,7 @@ The app uses the list of your layouts in the same order as defined by the system
 and backward through this list. The app also automatically changes your layouts, so you don't have to do it
 yourself. You can disable this as well if you so wish. You cannot add a layout that's not present as one of
 the system's layouts. If you add/remove a layout while the app is running, you'll have configure it in the settings
-to restart the service.
+and restart the service.
 
 This app is "Western-oriented". I developed it specifically to handle switching between Cyrillic and Latin scripts.
 I don't know how it will work (if at all) with Eastern languages/scripts.
@@ -110,20 +110,20 @@ I hope this app will make your life at least 1% easier :)
 
 ### What's new in version 3.0 (Work in progress)
 
-  - A completely rewritten app based on .NET Core and working as a truly UI-less app
+- A completely rewritten app based on .NET Core and working as a truly UI-less app
 instead of an app with a hidden window
-  - The settings are now a separate app written with Avalonia instead of WPF
-  - Tray icon was removed
-  - Added the ability to switch between multiple layouts of the same language (e.g. QWERTY and Dvorak for English)
-  - Instant switching mode is not experimental anymore and enabled by default
-  - Added the ability to auto-configure character mappings
-  - Added checking for updates
+- The settings are now a separate app written with Avalonia instead of WPF
+- Tray icon was removed
+- Added the ability to switch between multiple layouts of the same language (e.g. QWERTY and Dvorak for English)
+- Instant switching mode is not experimental anymore and enabled by default
+- Added the ability to auto-configure character mappings
+- Added checking for updates
 
-### What's new in version 2.1:
+### What's new in version 2.1
 
 - Minor bug fixes
 
-### What's new in version 2.0:
+### What's new in version 2.0
 
 - Brand new installer for the app
 - Instant switching mode
@@ -132,7 +132,7 @@ instead of an app with a hidden window
 - Minor UI updates
 - Minor bug fixes
 
-### What's new in version 1.1:
+### What's new in version 1.1
 
 - Minor bug fixes
 
