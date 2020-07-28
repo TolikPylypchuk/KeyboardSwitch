@@ -1,7 +1,10 @@
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 
@@ -26,6 +29,13 @@ namespace KeyboardSwitch.Settings.Views
 
                 this.ViewModel.OpenExternally
                     .Subscribe(this.BringToForeground)
+                    .DisposeWith(disposables);
+
+                this.GetObservable(KeyUpEvent)
+                    .Select(e => e.Key)
+                    .Where(key => key == Key.F1)
+                    .Discard()
+                    .InvokeCommand(this.ViewModel.OpenAboutTab)
                     .DisposeWith(disposables);
             });
 

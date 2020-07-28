@@ -1,3 +1,4 @@
+using System;
 using System.Reactive.Disposables;
 
 using Avalonia.Controls;
@@ -30,6 +31,10 @@ namespace KeyboardSwitch.Settings.Views
                     .DisposeWith(disposables);
 
                 this.OneWayBind(this.ViewModel, vm => vm.AboutViewModel, v => v.AboutTabItem.Content)
+                    .DisposeWith(disposables);
+
+                this.ViewModel.OpenAboutTab
+                    .Subscribe(_ => this.AboutTabItem.IsSelected = true)
                     .DisposeWith(disposables);
             });
 

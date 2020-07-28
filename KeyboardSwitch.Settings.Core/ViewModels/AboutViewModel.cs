@@ -1,10 +1,11 @@
 using System;
-using System.Diagnostics;
+using System.Globalization;
 using System.Net;
 using System.Reactive;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+
+using KeyboardSwitch.Common;
 
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -22,6 +23,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.AppVersion = Assembly.GetExecutingAssembly().GetName().Version!;
             this.CheckForUpdates = ReactiveCommand.CreateFromTask(this.OnCheckForUpdates);
             this.GetNewVersion = ReactiveCommand.Create(this.OnGetNewVersion);
+            this.OpenDocs = ReactiveCommand.Create(this.OnOpenDocs);
 
             this.CheckForUpdates.ToPropertyEx(this, vm => vm.LatestVersion, initialValue: this.AppVersion);
         }
@@ -31,6 +33,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         public ReactiveCommand<Unit, Version> CheckForUpdates { get; }
         public ReactiveCommand<Unit, Unit> GetNewVersion { get; }
+        public ReactiveCommand<Unit, Unit> OpenDocs { get; }
 
         public async Task<Version> OnCheckForUpdates()
         {
@@ -47,17 +50,11 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         }
 
         public void OnGetNewVersion()
-        {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                Process.Start(new ProcessStartInfo { FileName = AppReleasesLocation, UseShellExecute = true });
-            } else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                Process.Start("xdg-open", AppReleasesLocation);
-            } else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                Process.Start("open", AppReleasesLocation);
-            }
-        }
+            => new Uri(AppReleasesLocation).OpenInBrowser();
+
+        public void OnOpenDocs()
+            => new Uri(String.Format(
+                CultureInfo.InvariantCulture, DocsLocationFormat, this.AppVersion.Major, this.AppVersion.Minor))
+                .OpenInBrowser();
     }
 }

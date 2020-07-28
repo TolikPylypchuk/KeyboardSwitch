@@ -11,5 +11,7 @@ namespace KeyboardSwitch.Settings.Core
             "https://raw.githubusercontent.com/TolikPylypchuk/KeyboardSwitch/master/version";
 
         public const string AppReleasesLocation = "https://github.com/TolikPylypchuk/KeyboardSwitch/releases";
+
+        public const string DocsLocationFormat = "https://tolikpylypchuk.github.io/KeyboardSwitch/v{0}.{1}/";
     }
 }

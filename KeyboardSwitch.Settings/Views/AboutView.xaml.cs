@@ -29,11 +29,15 @@ namespace KeyboardSwitch.Settings.Views
                 this.BindCommand(this.ViewModel, vm => vm.CheckForUpdates, v => v.CheckForUpdatesButton)
                     .DisposeWith(disposables);
 
+                this.BindCommand(this.ViewModel, vm => vm.OpenDocs, v => v.ViewDocsButton)
+                    .DisposeWith(disposables);
+
                 this.BindCommand(this.ViewModel, vm => vm.GetNewVersion, v => v.GetNewVersionButton)
                     .DisposeWith(disposables);
 
                 this.WhenAnyValue(v => v.ViewModel.LatestVersion)
-                    .Select(version => String.Format(Messages.NewVersionAvailable, this.FormatVersion(version)))
+                    .Select(version => String.Format(
+                        CultureInfo.InvariantCulture, Messages.NewVersionAvailable, this.FormatVersion(version)))
                     .BindTo(this, v => v.NewVersionTextBlock.Text)
                     .DisposeWith(disposables);
 
@@ -46,6 +50,7 @@ namespace KeyboardSwitch.Settings.Views
         private TextBlock VersionTextBlock { get; set; } = null!;
         private Button CheckForUpdatesButton { get; set; } = null!;
         private TextBlock NoNewVersionsTextBlock { get; set; } = null!;
+        private Button ViewDocsButton { get; set; } = null!;
 
         private TextBlock NewVersionTextBlock { get; set; } = null!;
         private Button GetNewVersionButton { get; set; } = null!;
@@ -57,6 +62,7 @@ namespace KeyboardSwitch.Settings.Views
             this.VersionTextBlock = this.FindControl<TextBlock>(nameof(this.VersionTextBlock));
             this.CheckForUpdatesButton = this.FindControl<Button>(nameof(this.CheckForUpdatesButton));
             this.NoNewVersionsTextBlock = this.FindControl<TextBlock>(nameof(this.NoNewVersionsTextBlock));
+            this.ViewDocsButton = this.FindControl<Button>(nameof(this.ViewDocsButton));
 
             this.NewVersionTextBlock = this.FindControl<TextBlock>(nameof(this.NewVersionTextBlock));
             this.GetNewVersionButton = this.FindControl<Button>(nameof(this.GetNewVersionButton));

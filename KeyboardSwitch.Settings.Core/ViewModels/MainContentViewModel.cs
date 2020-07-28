@@ -49,6 +49,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 this.SavePreferencesAsync);
             this.SaveConverterSettings = ReactiveCommand.CreateFromTask<ConverterModel>(
                 this.SaveConverterSettingsAsync);
+            this.OpenAboutTab = ReactiveCommand.Create(() => { });
 
             this.CharMappingViewModel.Save.InvokeCommand(this.SaveCharMappingSettings);
             this.PreferencesViewModel.Save.InvokeCommand(this.SavePreferences);
@@ -68,6 +69,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         public ReactiveCommand<CharMappingModel, Unit> SaveCharMappingSettings { get; }
         public ReactiveCommand<PreferencesModel, Unit> SavePreferences { get; }
         public ReactiveCommand<ConverterModel, Unit> SaveConverterSettings { get; }
+        public ReactiveCommand<Unit, Unit> OpenAboutTab { get; }
 
         private async Task SaveCharMappingSettingsAsync(CharMappingModel charMappingModel)
         {

@@ -142,7 +142,7 @@ namespace KeyboardSwitch.Common.Services
                 {
                     ForwardModifierKeys = ModifierKeys.Ctrl | ModifierKeys.Shift,
                     BackwardModifierKeys = ModifierKeys.Alt | ModifierKeys.Ctrl | ModifierKeys.Shift,
-                    PressCount = 1,
+                    PressCount = 2,
                     WaitMilliseconds = 300
                 },
                 SwitchMode = SwitchMode.ModifierKey,

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 
 using KeyboardSwitch.Common.Services;
 
@@ -33,5 +35,19 @@ namespace KeyboardSwitch.Common
                     from index in Enumerable.Range(0, list.Count)
                     where (bit & (1 << index)) != 0
                     select list[index];
+
+        public static void OpenInBrowser(this Uri uri)
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                Process.Start(new ProcessStartInfo { FileName = uri.ToString(), UseShellExecute = true });
+            } else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                Process.Start("xdg-open", uri.ToString());
+            } else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                Process.Start("open", uri.ToString());
+            }
+        }
     }
 }

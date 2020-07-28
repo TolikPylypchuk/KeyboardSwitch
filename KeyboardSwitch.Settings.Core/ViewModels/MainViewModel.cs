@@ -40,17 +40,21 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.ServiceViewModel = new ServiceViewModel();
 
             this.OpenExternally = ReactiveCommand.Create(() => { });
+            this.OpenAboutTab = ReactiveCommand.Create(() => { });
 
             this.MainContentViewModel.SaveCharMappingSettings
                 .Discard()
                 .Merge(this.MainContentViewModel.SavePreferences.Discard())
                 .InvokeCommand(this.ServiceViewModel.ReloadSettings);
+
+            this.OpenAboutTab.InvokeCommand(this.MainContentViewModel.OpenAboutTab);
         }
 
         public MainContentViewModel MainContentViewModel { get; }
         public ServiceViewModel ServiceViewModel { get; }
 
         public ReactiveCommand<Unit, Unit> OpenExternally { get; }
+        public ReactiveCommand<Unit, Unit> OpenAboutTab { get; }
 
         private CharMappingModel CreateCharMappingModel()
         {

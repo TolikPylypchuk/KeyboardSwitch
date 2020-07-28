@@ -7,16 +7,21 @@
         <TextBlock Text="{l:Translate CreatedBy}" Margin="10" FontSize="{DynamicResource FontSizeNormal}" />
         <TextBlock x:Name="VersionTextBlock" Margin="10 0 10 10" FontSize="{DynamicResource FontSizeNormal}" />
 
-        <Button x:Name="CheckForUpdatesButton" Content="{l:Translate CheckForUpdates}" Classes="Primary"
-                HorizontalAlignment="Left" />
+        <TextBlock x:Name="NewVersionTextBlock" Margin="10" FontSize="{DynamicResource FontSizeNormal}" />
+
+        <WrapPanel Background="Transparent">
+            <Button x:Name="ViewDocsButton" Margin="10 0" Content="{l:Translate ViewDocs}" Classes="Primary"
+                    HorizontalAlignment="Left" />
+
+            <Button x:Name="CheckForUpdatesButton" Content="{l:Translate CheckForUpdates}" Classes="Primary"
+                    HorizontalAlignment="Left" />
+
+            <Button x:Name="GetNewVersionButton" Content="{l:Translate GetNewVersion}" Classes="Primary"
+                    HorizontalAlignment="Left" />
+        </WrapPanel>
 
         <TextBlock x:Name="NoNewVersionsTextBlock" Text="{l:Translate NoNewVersions}" Margin="10"
                    FontSize="{DynamicResource FontSizeNormal}" IsVisible="False" />
-
-        <TextBlock x:Name="NewVersionTextBlock" Margin="10" FontSize="{DynamicResource FontSizeNormal}" />
-        
-        <Button x:Name="GetNewVersionButton" Content="{l:Translate GetNewVersion}" Classes="Primary"
-                HorizontalAlignment="Left" />
 
         <TextBlock x:Name="GetNewVersionHintTextBlock" Text="{l:Translate GetNewVersionHint}" Margin="10"
                    FontSize="{DynamicResource FontSizeNormal}" TextWrapping="Wrap" />

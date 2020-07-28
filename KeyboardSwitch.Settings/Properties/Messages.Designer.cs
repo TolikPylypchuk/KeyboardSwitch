@@ -691,6 +691,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View the docs.
+        /// </summary>
+        internal static string ViewDocs {
+            get {
+                return ResourceManager.GetString("ViewDocs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Wait time (ms).
         /// </summary>
         internal static string WaitMilliseconds {

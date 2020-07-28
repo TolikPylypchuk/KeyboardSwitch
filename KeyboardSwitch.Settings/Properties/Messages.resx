@@ -327,6 +327,9 @@
   <data name="VersionFormat" xml:space="preserve">
     <value>Version {0}</value>
   </data>
+  <data name="ViewDocs" xml:space="preserve">
+    <value>View the docs</value>
+  </data>
   <data name="WaitMilliseconds" xml:space="preserve">
     <value>Wait time (ms)</value>
   </data>
