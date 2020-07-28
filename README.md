@@ -6,20 +6,17 @@ Created by Tolik Pylypchuk
 
 This application switches typed text as if it were typed with another keyboard layout.
 
+## Docs
+
+If you want to know more about the Keyboard Switch app and how to use it, check out the docs:
+[https://tolikpylypchuk.github.io/KeyboardSwitch](https://tolikpylypchuk.github.io/KeyboardSwitch).
+
 ## Switching
 
 Instead of manually retyping all that text that you have mistyped, you can switch it using this app.
 It will copy the text, switch it and paste it instantly. You just have to select the text and
-press the key combination (the defaults are Ctrl+Shift+X to switch forward and Ctrl+Shift+Z to switch backward).
-
-**Note:** A few things to consider:
-
-- The app simulates pressing Ctrl+C to copy and Ctrl+V to paste text. This is the default behaviour for most
-(if not all) applications. But if you are working in an app which behaves differently on those key presses, this app
-will not be able to instantly switch text. You can disable this behaviour, and copy/paste the text manually.
-
-- Ctrl+Shift work best as the modifier keys for instant switching because pressing Alt will change the focus
-to some kind of a menu in most apps.
+press the key combination (the defaults are pressing Ctrl+Shift twice to switch forward and Alt+Ctrl+Shift twice to
+switch backward).
 
 ## Settings
 
@@ -49,8 +46,8 @@ yourself. You can disable this as well if you so wish. You cannot add a layout t
 the system's layouts. If you add/remove a layout while the app is running, you'll have configure it in the settings
 and restart the service.
 
-This app is "Western-oriented". I developed it specifically to handle switching between Cyrillic and Latin scripts.
-I don't know how it will work (if at all) with Eastern languages/scripts.
+**Note:** This app is "Western-oriented". I developed it specifically to handle switching between Cyrillic and Latin
+scripts. I don't know how it will work (if at all) with Eastern languages/scripts.
 
 ## Project Status
 
@@ -59,10 +56,10 @@ currently available, but it's not really user-friendly.
 
 The app itself is feature-complete, but I should first write extensive documentation before shipping v3.0.
 
-Version 3.0 will work only on Windows 10. It will probably work on earlier versions of Windows as well, but I'm not
-going to test it there. [Version 4.0](https://github.com/TolikPylypchuk/KeyboardSwitch/milestone/3) on the other hand
-will be cross-platform - I'm planning on making it work on macOS and on Linux (via X11), though the details of this plan
-may change when I'll start looking into all that after releasing v3.0. The app will most probably use
+Version 3.0 will work only on Windows 10. It can probably work on earlier versions of Windows as well, but I'm not
+going to build or test it for them. [Version 4.0](https://github.com/TolikPylypchuk/KeyboardSwitch/milestone/3) on the
+other hand will be cross-platform - I'm planning on making it work on macOS and on Linux (via X11), though the details
+of this plan may change when I'll start looking into all that after releasing v3.0. The app will most probably use
 [libuiohook](https://github.com/kwhat/libuiohook) for the cross-platform keyboard hook.
 
 ## Building from Source
@@ -97,14 +94,10 @@ in turn is based on [the WiX toolset](https://wixtoolset.org/), and as of versio
 .NET Core or .NET 5.
 
 Simply run the build, and it will generate the MSI installer in the project's `bin` folder. Before the build, it calls
-`dotnet publish` to use its output. That's why the build may appear to be stuck - it's simply executing `publish`.
+`dotnet publish` to use its output.
 
 After installation the settings app is started, and it automatically configures the service to run at system startup.
 Currently the app's startup time is quite long, so it may appear after a couple of seconds.
-
----
-
-I hope this app will make your life at least 1% easier :)
 
 ## Changes
 

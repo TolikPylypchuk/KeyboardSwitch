@@ -12,8 +12,11 @@ Created by [Tolik Pylypchuk](https://github.com/TolikPylypchuk).
 Icon made by [Smashicons](https://smashicons.com/) from [www.flaticon.com](https://www.flaticon.com/).
 
 The UI for the settings app was created using [Avalonia](https://avaloniaui.net/) with
-[ReactiveUI](https://www.reactiveui.net/). The UI theme used in the settings app is
-[Citrus](https://github.com/worldbeater/Citrus.Avalonia) by [worldbeater](https://github.com/worldbeater).
+[ReactiveUI](https://www.reactiveui.net/) and the [Citrus theme](https://github.com/worldbeater/Citrus.Avalonia)
+by [worldbeater](https://github.com/worldbeater).
+
+Docs are built using [Jekyll](https://jekyllrb.com) with the
+[Minimal Mistakes theme](https://mmistakes.github.io/minimal-mistakes) by [Michael Rose](https://github.com/mmistakes).
 
 ## Changelog
 

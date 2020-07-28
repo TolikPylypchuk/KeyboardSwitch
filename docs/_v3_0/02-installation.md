@@ -22,7 +22,7 @@ article). After you configured the character mappings and possibly some other pr
 
 ## Uninstalling the App
 
-You can uninstall the app using the Settings app just like you would uninstall any other app. 
+You can uninstall the app using the Settings app just like you would uninstall any other app.
 
 **Note:** The installer will not delete the registry entry which says that your app should start when you log in! If
 you want to keep your registry clean, you have to disable it in the settings app before uninstalling it.
