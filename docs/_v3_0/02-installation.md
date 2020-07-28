@@ -20,6 +20,13 @@ After the settings app starts up you should configure the character mappings (yo
 article). After you configured the character mappings and possibly some other preferences, start the app using the
 'Start' button at the bottom of the window. That's it! Now you're ready to use the Keyboard Switch service.
 
+**Note:** This app might mildly infuriate your anti-virus. This is because the app sets up a global keyboard hook,
+which means that it can react to all keyboard events in the entire system, and the anti-virus might think that it's a
+key logger. I can assure you, it's not - the app only reacts to the magic key combinations, and completely ignores
+all other keyboard events. If you don't trust me on this one, you can look through the app's code and even build it
+yourself :)
+{: .notice--primary}
+
 ## Uninstalling the App
 
 You can uninstall the app using the Settings app just like you would uninstall any other app.

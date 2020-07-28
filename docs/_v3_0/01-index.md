@@ -23,11 +23,11 @@ Here are the basic steps you should take to switch the text:
 
 - Type some text using an incorrect layout
 - Realise your mistake
-- Select the text (you can press Ctrl+A to select all text)
-- Press the magic key combination (the default is pressing Ctrl+Shift twice)
+- Select the text (you can press _Ctrl+A_ to select all text)
+- Press the magic key combination (the default is pressing _Ctrl+Shift_ twice)
 - Profit
 
-**Note:** The app simulates pressing Ctrl+C to copy and Ctrl+V to paste text. This is the default behaviour for most
+**Note:** The app simulates pressing _Ctrl+C_ to copy and _Ctrl+V_ to paste text. This is the default behaviour for most
 (if not all) applications. But if you are working in an app which behaves differently on those key presses, this app
 will not be able to instantly switch text. You can disable this behaviour, and copy/paste the text manually.
 {: .notice--primary}
@@ -38,19 +38,7 @@ This app works only on Windows 10. It can probably work on older versions of Win
 support them. Future versions of the app will be supported on other platforms, so if you don't use Windows then
 stay tuned!
 
-## Limitations
-
-You can map every character only once per language. Otherwise, it would be impossible to map characters
-deterministically.
-
-Characters are always mapped one to one. You cannot map one character to several characters.
-
-Dead keys are not supported (becuase of the previous limitation).
-
-The space character cannot be mapped to other characters. This is not really a limitation, because the space character
-is the same in every layout (at least that's the assumption).
-
-## Languages
+## Layouts
 
 The app uses the list of your layouts in the same order as defined by the system. You can switch both forward
 and backward through this list. The app also automatically changes your layouts, so you don't have to do it

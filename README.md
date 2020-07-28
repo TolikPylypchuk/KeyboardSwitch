@@ -26,19 +26,7 @@ according to the physical layout of keys on your keyboard.
 If you don't want to map a character into a certain layout, you can map it to the space character. The space character
 is used as a _don't map this character_ instruction.
 
-## Limitations
-
-You can map every character only once per language. Otherwise, it would be impossible to map characters
-deterministically.
-
-Characters are always mapped one to one. You cannot map one character to several characters.
-
-Dead keys are not supported (becuase of the previous limitation).
-
-The space character cannot be mapped to other characters. This is not really a limitation, because the space character
-is the same in every layout (at least that's the assumption).
-
-## Languages
+## Layouts
 
 The app uses the list of your layouts in the same order as defined by the system. You can switch both forward
 and backward through this list. The app also automatically changes your layouts, so you don't have to do it
@@ -48,6 +36,17 @@ and restart the service.
 
 **Note:** This app is "Western-oriented". I developed it specifically to handle switching between Cyrillic and Latin
 scripts. I don't know how it will work (if at all) with Eastern languages/scripts.
+
+## Limitations
+
+You can map every character only once per layout. Otherwise, it would be impossible to map characters deterministically.
+
+Characters are always mapped one to one. You cannot map one character to several characters.
+
+Dead keys are not supported (because of the previous limitation).
+
+The space character cannot be mapped to other characters. This is not really a limitation, because the space character
+is the same in every layout (at least that's the assumption).
 
 ## Project Status
 
