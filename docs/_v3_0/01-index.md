@@ -27,6 +27,11 @@ Here are the basic steps you should take to switch the text:
 - Press the magic key combination (the default is pressing _Ctrl+Shift_ twice)
 - Profit
 
+**Note:** The app uses the clipboard to get the text to transform, and then puts the transformed text back into the
+clipboard. Bear this in mind when you use it - if you have anything else in the clipboard, it will be lost. This isn't
+that big of an issue since Windows 10 October 2019 Update, because you can enable multiple items in the clipboard.
+{: .notice--primary}
+
 **Note:** The app simulates pressing _Ctrl+C_ to copy and _Ctrl+V_ to paste text. This is the default behaviour for most
 (if not all) applications. But if you are working in an app which behaves differently on those key presses, this app
 will not be able to instantly switch text. You can disable this behaviour, and copy/paste the text manually.

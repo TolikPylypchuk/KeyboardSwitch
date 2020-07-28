@@ -100,3 +100,6 @@ Dead keys are not supported (because of the previous limitation).
 
 The space character cannot be mapped to other characters. This is not really a limitation, because the space character
 is the same in every layout (at least that's the assumption).
+
+The app doesn't play nicely with text if you switched the layout yourself in the middle of typing. If that's the case,
+the app will not switch it correctly, and you will have to fix some of it yourself.

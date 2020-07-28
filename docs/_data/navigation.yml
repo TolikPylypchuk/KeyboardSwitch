@@ -20,6 +20,8 @@ v3_0:
         url: /v3.0/settings-app
       - title: "Character Mappings"
         url: /v3.0/char-mappings
+      - title: "Preferences"
+        url: /v3.0/preferences
 
   - title: "Other"
     children:
