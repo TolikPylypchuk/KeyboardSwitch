@@ -7,9 +7,9 @@ The Preferences tab contains other settings which control the behavior of the Ke
 
 It has two main looks, based on the switch mode setting:
 
-![screen-preferences-1]({{ '/assets/images/screen-preferences-1.png' | absolute_url }})
+![screen-preferences-1]({{ '/assets/images/v3.0/screen-preferences-1.png' | absolute_url }})
 
-![screen-preferences-2]({{ '/assets/images/screen-preferences-2.png' | absolute_url }})
+![screen-preferences-2]({{ '/assets/images/v3.0/screen-preferences-2.png' | absolute_url }})
 
 Following is the discussion on the many fields that are in this tab.
 
@@ -46,8 +46,8 @@ configuration. If you want to ignore this warning for whatever reason, then unch
 
 ## Switch Mode
 
-The service app supports two switching modes in relation to the magic key combinations you press to switch the text.
-These are: modifier keys (the default), and hot key.
+The service app supports two switching modes in relation to the magic key combinations you press to switch the text:
+modifier keys (the default), and hot key.
 
 ### Modifier Keys
 
@@ -70,20 +70,23 @@ for this field is 10, but even that is way too much. Min value is 1, but be care
 would be easy to press it by accident.
 
 Wait time controls how much time the service app waits before deciding that you're not intending on switching text. For
-example, let's say that the press count is 3, and wait time is 300 ms (which is the default value). You press the key
-combination. The app then waits for 300 ms to see whether you will press the key combination again. If you don't, then
-it realizes that you don't want to switch text. If you press the key combination again within this time, the app will
-then wait again for 300 ms. You then press the key combination for the third time, and the app realizes that you want
-to switch the text. The min value for this field is 100 ms (which in my opinion makes the app give up waiting much too
-fast), and the max value for this field is 1000 ms (so, 1 full second, which as for me is too slow). 300 ms is the sweet
-spot for me, but maybe it won't be for you. You should play around with this setting to figure out which value works
-best for you.
+example, let's say that the press count is 3, and wait time is 300&nbsp;ms (which is the default value). You press the
+key combination. The app then waits for 300&nbsp;ms to see whether you will press the key combination again. If you
+don't, then it realizes that you don't want to switch text. If you press the key combination again within this time,
+the app will then wait again for 300 ms. You then press the key combination for the third time, and the app realizes
+that you want to switch the text. The min value for this field is 100&nbsp;ms (which in my opinion makes the app give
+up waiting much too fast), and the max value for this field is 1000&nbsp;ms (so, 1&nbsp;full second, which as for me
+is too slow). 300&nbsp;ms is the sweet spot for me, but maybe it won't be for you. You should play around with this
+setting to figure out which value works best for you.
+
+**Note:** Wait time is ignored if the press count is set to 1.
+{: .notice--primary}
 
 ### Hot Key
 
-This switch mode was carried over from the previous version of the app and is not recommended anymore. It lets you
-specify which key combination (modifier keys + normal key) to press to switch the text. There are three fields for this
-mode:
+The hot key switch mode was carried over from the previous version of the app and is not recommended anymore. It lets
+you specify which key combination (modifier keys + normal key) to press to switch the text. There are three fields for
+this mode:
 
 - Modifier keys
 - Forward key

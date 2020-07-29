@@ -22,6 +22,8 @@ v3_0:
         url: /v3.0/char-mappings
       - title: "Preferences"
         url: /v3.0/preferences
+      - title: "Converter"
+        url: /v3.0/converter
 
   - title: "Other"
     children:

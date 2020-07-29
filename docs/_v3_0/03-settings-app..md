@@ -10,7 +10,7 @@ app in the Start menu.
 
 Here's how it looks:
 
-![app-screen]({{ '/assets/images/screen-char-mappings.png' | absolute_url }})
+![app-screen]({{ '/assets/images/v3.0/screen-char-mappings.png' | absolute_url }})
 
 The app is composed of six tabs:
 

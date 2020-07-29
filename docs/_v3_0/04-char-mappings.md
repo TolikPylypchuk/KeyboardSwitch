@@ -6,7 +6,7 @@ permalink: /v3.0/char-mappings
 In order for the Keyboard Switch service to know how to map characters, you have to configure the character mappings
 yourself. The app reads the list of installed layouts in the system, so it knows which layouts you use and in what
 order. What it doesn't (and can't) know is the physical layout of your keyboard, so it doesn't know what happens if
-you press certain keys on you keboard.
+you press certain keys on your keboard.
 
 ## Text vs Keyboard
 
@@ -46,7 +46,7 @@ it's all correct.
 
 Here's how the tab looks when the app is opened for the first time:
 
-![screen-empty]({{ '/assets/images/screen-char-mappings-empty.png' | absolute_url }})
+![screen-empty]({{ '/assets/images/v3.0/screen-char-mappings-empty.png' | absolute_url }})
 
 You have to enter every character you can think of (which can be entered using your keyboard) into the text fields
 which correspond to layouts. For example, press the _Q_ key, then press the _W_ key, and so on. Then press
@@ -61,25 +61,25 @@ If the second characters are **w** and **ц** for English and Ukrainian respecti
 **w** to **ц**.
 
 If you don't want to map a certain character, you can put space in its position in the other layout. The space character
-acts as a _don't map this character_ command.
+acts as a _don't map this character_ command, though it should generally be avoided.
 
 ## Auto-Configuration
 
-Even though you have to do it only once, it still is cumbersome and error-prone. That's why the app includes the
-auto-configuration feature. It's available only when all text fields are empty. The auto-configuration is quite simple
-(naive even), and it shouldn't be 100% trusted, so you still have to check its output and fix mistakes, or add other
-characters manually. But usually auto-configuration should be sufficient.
+Even though you have to do it only once, configuring character mappings is still cumbersome and error-prone. That's why
+the app includes the auto-configuration feature. It's available only when all text fields are empty. The
+auto-configuration is quite simple (naive even), and it shouldn't be 100% trusted, so you still have to check its output
+and fix mistakes, or add other characters manually. But usually auto-configuration should be good enough.
 
 Here's how the tab looks after running auto-configuration:
 
-![screen-auto-configuration]({{ '/assets/images/screen-auto-configuration.png' | absolute_url }})
+![screen-auto-configuration]({{ '/assets/images/v3.0/screen-auto-configuration.png' | absolute_url }})
 
 What auto-configuration does is basically ask the OS what would happen if certain keys were pressed using variaous
 layouts. There is no easy way to get the information on _all_ keys on your keyboard, so it asks only about the most
 common ones. Here's the list of the keys for the US layout:
 
 - All letter keys (_Q_, _W_, _E_ etc.)
-- Number keys (_1_-_0_)
+- Number keys
 - Other keys next to the letter and number keys: _[_ _]_ _;_ _'_ _,_ _._ _/_ _\\_ _-_ _=_
 - All those keys with the _Shift_ key
 - All those keys with the _AltGr_ key
