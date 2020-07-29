@@ -21,10 +21,10 @@ namespace KeyboardSwitch.Settings.Views
             this.WhenActivated(disposables =>
             {
                 this.Bind(this.ViewModel, vm => vm.Name, v => v.NameTextBox.Text)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.Bind(this.ViewModel, vm => vm.Chars, v => v.CharsTextBox.Text)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.BindCommand(this.ViewModel, vm => vm.Delete, v => v.DeleteButton)
                     .DisposeWith(disposables);

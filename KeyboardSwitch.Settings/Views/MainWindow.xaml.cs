@@ -22,10 +22,10 @@ namespace KeyboardSwitch.Settings.Views
             this.WhenActivated(disposables =>
             {
                 this.OneWayBind(this.ViewModel, vm => vm.MainContentViewModel, v => v.MainContent.Content)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.OneWayBind(this.ViewModel, vm => vm.ServiceViewModel, v => v.ServiceViewContent.Content)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.ViewModel.OpenExternally
                     .Subscribe(this.BringToForeground)

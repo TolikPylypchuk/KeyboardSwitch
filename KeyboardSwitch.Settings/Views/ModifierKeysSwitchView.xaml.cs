@@ -23,16 +23,16 @@ namespace KeyboardSwitch.Settings.Views
             this.WhenActivated(disposables =>
             {
                 this.Bind(this.ViewModel, vm => vm.ForwardModifierKeys, v => v.ForwardComboBox.SelectedItem)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.Bind(this.ViewModel, vm => vm.BackwardModifierKeys, v => v.BackwardComboBox.SelectedItem)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.Bind(this.ViewModel, vm => vm.PressCount, v => v.PressCountUpDown.Value)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.Bind(this.ViewModel, vm => vm.WaitMilliseconds, v => v.WaitMillisecondsUpDown.Value)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.BindValidation(
                         this.ViewModel, vm => vm.PressCount, v => v.PressCountValidationTextBlock.Text)

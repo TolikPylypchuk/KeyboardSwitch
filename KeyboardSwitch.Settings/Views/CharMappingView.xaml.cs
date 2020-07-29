@@ -19,7 +19,7 @@ namespace KeyboardSwitch.Settings.Views
             this.WhenActivated(disposables =>
             {
                 this.OneWayBind(this.ViewModel, vm => vm.Layouts, v => v.Layouts.Items)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.BindCommands(disposables);
                 this.BindTextBlocks(disposables);

@@ -18,20 +18,20 @@ namespace KeyboardSwitch.Settings.Views
             this.WhenActivated(disposables =>
             {
                 this.OneWayBind(this.ViewModel, vm => vm.CharMappingViewModel, v => v.CharMappingTabItem.Content)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.OneWayBind(this.ViewModel, vm => vm.PreferencesViewModel, v => v.PreferencesTabItem.Content)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.OneWayBind(this.ViewModel, vm => vm.ConverterViewModel, v => v.ConverterTabItem.Content)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.OneWayBind(
                     this.ViewModel, vm => vm.ConverterSettingsViewModel, v => v.ConverterSettingsTabItem.Content)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.OneWayBind(this.ViewModel, vm => vm.AboutViewModel, v => v.AboutTabItem.Content)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.ViewModel.OpenAboutTab
                     .Subscribe(_ => this.AboutTabItem.IsSelected = true)

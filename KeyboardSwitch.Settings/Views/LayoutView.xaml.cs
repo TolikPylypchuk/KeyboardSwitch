@@ -18,13 +18,13 @@ namespace KeyboardSwitch.Settings.Views
             this.WhenActivated(disposables =>
             {
                 this.OneWayBind(this.ViewModel, vm => vm.LanguageName, v => v.LanguageTextBlock.Text)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.OneWayBind(this.ViewModel, vm => vm.KeyboardName, v => v.KeyboardTextBlock.Text)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.Bind(this.ViewModel, vm => vm.Chars, v => v.CharsTextBox.Text)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.BindValidation(this.ViewModel, vm => vm.Chars, v => v.DuplicateCharsTextBlock.Text)
                     .DisposeWith(disposables);

@@ -30,9 +30,9 @@
     <PackageReference Include="System.Interactive" Version="4.1.1" />
     <PackageReference Include="System.Interactive.Async" Version="4.1.1" />
     <PackageReference Include="System.Reactive" Version="4.4.1" />
-    <PackageReference Include="Vanara.Core" Version="3.2.12" />
-    <PackageReference Include="Vanara.PInvoke.Shared" Version="3.2.12" />
-    <PackageReference Include="Vanara.PInvoke.User32" Version="3.2.12" />
+    <PackageReference Include="Vanara.Core" Version="3.2.13" />
+    <PackageReference Include="Vanara.PInvoke.Shared" Version="3.2.13" />
+    <PackageReference Include="Vanara.PInvoke.User32" Version="3.2.13" />
   </ItemGroup>
 
   <ItemGroup>

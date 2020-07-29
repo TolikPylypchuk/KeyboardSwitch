@@ -89,22 +89,22 @@ namespace KeyboardSwitch.Settings.Views
         private void BindControls(CompositeDisposable disposables)
         {
             this.Bind(this.ViewModel, vm => vm.SourceText, v => v.SourceTextBox.Text)
-                .DisposeWith(disposables);
+                ?.DisposeWith(disposables);
 
             this.OneWayBind(this.ViewModel, vm => vm.TargetText, v => v.TargetTextBox.Text)
-                .DisposeWith(disposables);
+                ?.DisposeWith(disposables);
 
             this.OneWayBind(this.ViewModel, vm => vm.Layouts, v => v.SourceLayoutComboBox.Items)
-                .DisposeWith(disposables);
+                ?.DisposeWith(disposables);
 
             this.OneWayBind(this.ViewModel, vm => vm.Layouts, v => v.TargetLayoutComboBox.Items)
-                .DisposeWith(disposables);
+                ?.DisposeWith(disposables);
 
             this.Bind(this.ViewModel, vm => vm.SourceLayout, v => v.SourceLayoutComboBox.SelectedItem)
-                .DisposeWith(disposables);
+                ?.DisposeWith(disposables);
 
             this.Bind(this.ViewModel, vm => vm.TargetLayout, v => v.TargetLayoutComboBox.SelectedItem)
-                .DisposeWith(disposables);
+                ?.DisposeWith(disposables);
 
             this.ViewModel.Layouts
                 .ToObservableChangeSet()

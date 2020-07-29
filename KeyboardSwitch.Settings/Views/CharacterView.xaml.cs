@@ -24,11 +24,12 @@ namespace KeyboardSwitch.Settings.Views
             this.WhenActivated(disposables =>
             {
                 this.Bind(
-                    this.ViewModel, vm => vm.Character,
+                    this.ViewModel,
+                    vm => vm.Character,
                     v => v.CharBox.Text,
                     ch => ch.ToString(),
                     text => text.Length > 0 ? text[0] : MissingCharacter)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.CharBox.GetObservable(KeyDownEvent, RoutingStrategies.Tunnel)
                     .Do(e => e.Handled = true)

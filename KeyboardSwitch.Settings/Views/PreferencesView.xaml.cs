@@ -21,22 +21,22 @@ namespace KeyboardSwitch.Settings.Views
             this.WhenActivated(disposables =>
             {
                 this.Bind(this.ViewModel, vm => vm.SwitchMode, v => v.SwitchModeComboBox.SelectedItem)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.Bind(this.ViewModel, vm => vm.InstantSwitching, v => v.InstantSwitchingCheckBox.IsChecked)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.Bind(this.ViewModel, vm => vm.SwitchLayout, v => v.SwitchLayoutCheckBox.IsChecked)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.Bind(this.ViewModel, vm => vm.Startup, v => v.StartupCheckBox.IsChecked)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.Bind(
                     this.ViewModel,
                     vm => vm.ShowUninstalledLayoutsMessage,
                     v => v.ShowRemovedLayoutsMessageCheckBox.IsChecked)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 Observable.CombineLatest(
                         this.WhenAnyObservable(v => v.ViewModel.HotKeySwitchViewModel.Valid),
@@ -46,7 +46,7 @@ namespace KeyboardSwitch.Settings.Views
                     .DisposeWith(disposables);
 
                 this.OneWayBind(this.ViewModel, vm => vm.Content, v => v.PreferencesContent.Content)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.BindCommand(this.ViewModel, vm => vm.Save, v => v.SaveButton)
                     .DisposeWith(disposables);

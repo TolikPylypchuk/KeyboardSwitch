@@ -19,7 +19,7 @@ namespace KeyboardSwitch.Settings.Views
             this.WhenActivated(disposables =>
             {
                 this.OneWayBind(this.ViewModel, vm => vm.CustomLayouts, v => v.Layouts.Items)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.BindValidation(
                     this.ViewModel, vm => vm.LayoutNamesAreUniqueRule, v => v.CustomLayoutsValidationTextBlock.Text)
@@ -48,7 +48,7 @@ namespace KeyboardSwitch.Settings.Views
 
                 this.OneWayBind(
                     this.ViewModel, vm => vm.LoadableLayoutsSettingsViewModel, v => v.LoadableLayoutsControl.Content)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
             });
 
             this.InitializeComponent();

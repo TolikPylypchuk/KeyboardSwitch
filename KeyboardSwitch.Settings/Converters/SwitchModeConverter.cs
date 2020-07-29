@@ -30,7 +30,7 @@ namespace KeyboardSwitch.Settings.Converters
                 ? 10000
                 : 0;
 
-        public bool TryConvert(object from, Type toType, object? conversionHint, out object? result)
+        public bool TryConvert(object? from, Type toType, object? conversionHint, out object? result)
         {
             switch (from)
             {

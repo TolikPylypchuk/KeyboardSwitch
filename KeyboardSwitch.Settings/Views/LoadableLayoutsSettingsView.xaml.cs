@@ -21,10 +21,10 @@ namespace KeyboardSwitch.Settings.Views
             this.WhenActivated(disposables =>
             {
                 this.OneWayBind(this.ViewModel, vm => vm.AddedLayouts, v => v.Layouts.Items)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.OneWayBind(this.ViewModel, vm => vm.AddableLayouts, v => v.NewLayoutComboBox.Items)
-                    .DisposeWith(disposables);
+                    ?.DisposeWith(disposables);
 
                 this.NewLayoutComboBox.GetObservable(SelectingItemsControl.SelectionChangedEvent)
                     .Where(e => e.AddedItems.Count > 0)
