@@ -67,10 +67,10 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         public ConverterModel ConverterModel { get; }
 
         [Reactive]
-        public string? SourceText { get; set; }
+        public string SourceText { get; set; } = String.Empty;
 
         [Reactive]
-        public string? TargetText { get; set; }
+        public string TargetText { get; set; } = String.Empty;
 
         public ReadOnlyObservableCollection<CustomLayoutModel> Layouts
             => this.layouts;
@@ -114,7 +114,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         }
 
         Task<string?> ITextService.GetTextAsync()
-            => Task.FromResult(this.SourceText);
+            => Task.FromResult<string?>(this.SourceText);
 
         Task ITextService.SetTextAsync(string text)
         {

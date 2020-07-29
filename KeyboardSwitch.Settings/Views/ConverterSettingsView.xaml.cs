@@ -46,8 +46,13 @@ namespace KeyboardSwitch.Settings.Views
                     .BindTo(this, v => v.MainPanel.IsVisible)
                     .DisposeWith(disposables);
 
-                this.OneWayBind(
-                    this.ViewModel, vm => vm.LoadableLayoutsSettingsViewModel, v => v.LoadableLayoutsControl.Content)
+                this.WhenAnyValue(v => v.ViewModel.IsAutoConfiguringLayouts)
+                    .BindTo(this, v => v.LoadableLayoutsControl.IsVisible)
+                    .DisposeWith(disposables);
+
+                this.WhenAnyValue(v => v.ViewModel.LoadableLayoutsSettingsViewModel)
+                    .WhereNotNull()
+                    .BindTo(this, v => v.LoadableLayoutsControl.Content)
                     ?.DisposeWith(disposables);
             });
 
