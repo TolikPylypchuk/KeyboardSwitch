@@ -73,7 +73,10 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         protected abstract TForm Self { get; }
 
         protected void TrackChanges(IObservable<bool> changes)
-            => this.changesToTrack.Add(changes.StartWith(false));
+            => this.changesToTrack.Add(changes
+                .StartWith(false)
+                .Merge(this.Save.Select(_ => false))
+                .Merge(this.Cancel.Select(_ => false)));
 
         protected void TrackChanges<T>(Expression<Func<TForm, T>> property, Func<TForm, T> itemValue)
         {
@@ -107,7 +110,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                     vms.Count != itemCollection(this.Self).Count ||
                     vms.Any(vm => vm.IsFormChanged || !this.IsNew && vm.IsNew))
                 .Do(changed => this.Log().Debug(
-                    changed ? $"{propertyName} are changed" : $"{propertyName} are unchanged"));
+                    changed ? $"{propertyName} are changed" : $"{propertyName} are unchanged"))
+                .Merge(this.Save.Select(_ => false))
+                .Merge(this.Cancel.Select(_ => false));
         }
 
         protected IObservable<bool> IsCollectionValid<TOtherForm>(ReadOnlyObservableCollection<TOtherForm> viewModels)
