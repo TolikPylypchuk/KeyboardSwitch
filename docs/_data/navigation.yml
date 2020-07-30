@@ -24,6 +24,8 @@ v3_0:
         url: /v3.0/preferences
       - title: "Converter"
         url: /v3.0/converter
+      - title: "Other Tabs"
+        url: /v3.0/other-tabs
 
   - title: "Other"
     children:
