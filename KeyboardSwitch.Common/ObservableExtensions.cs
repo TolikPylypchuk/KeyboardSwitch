@@ -22,7 +22,7 @@ namespace KeyboardSwitch.Common
 
         public static IObservable<T> WhereNotNull<T>(this IObservable<T?> observable)
             where T : class
-            => observable.Where(x => x != null).Select(x => x!);
+            => observable.Where(x => x != null)!;
 
         public static IObservable<T> WhereValueNotNull<T>(this IObservable<T?> observable)
             where T : struct
