@@ -73,24 +73,23 @@ script located in the solution root. It will create the `KeyboardSwitch-Portable
 which you can then unpack into wherever you like.
 
 Alternatively, you can build the projects using Visual Studio 2019 or later, or with the `dotnet` tool. Note however
-that you you have to build the whole solution. The startup project is `KeyboardSwitch.Settings` (the settings app),
-and if you build it, it won't actually build the `KeyboardSwitch` project (ther service app), because the settings
-app doesn't directly depend on the service app.
+that you have to build the whole solution. The startup project is `KeyboardSwitch.Settings` (the settings app), and if
+you build it, it won't actually build the `KeyboardSwitch` project (ther service app), because the settings app doesn't
+directly depend on the service app.
 
 All projects (except the installer) are built into a shared `bin` folder located in the solution root. Again, this is
 because the settings app needs the service app to be in the same folder, but the projects don't depend on each other.
 
-It's better to use `dotnet publish` than simply using the raw build results. You can look into how the
-`Build-Portable` script calls `publish`.
+It's better to use `dotnet publish` than simply using the raw build results. You can look into how the `Build-Portable`
+script calls `publish`.
 
 The installer project is excluded from the solution build sequence as it's not always needed.
 
 ### Building the Windows Installer
 
 If you want to properly install the app, you can build the installer. Unlike the other projects, this one requires
-.NET Framework 4.8. This is because it's built with [WixSharp](https://github.com/oleg-shilo/wixsharp), which
-in turn is based on [the WiX toolset](https://wixtoolset.org/), and as of version 3.11.2 WiX doesn't support
-.NET Core or .NET 5.
+.NET Framework 4.8. This is because it's built with [WixSharp](https://github.com/oleg-shilo/wixsharp), which in turn
+is based on [the WiX toolset](https://wixtoolset.org), and as of version 3.11.2 WiX doesn't support .NET Core or .NET 5.
 
 Simply run the build, and it will generate the MSI installer in the project's `bin` folder. Before the build, it calls
 `dotnet publish` to use its output.

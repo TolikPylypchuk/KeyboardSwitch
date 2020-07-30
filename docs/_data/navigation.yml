@@ -29,5 +29,7 @@ v3_0:
 
   - title: "Other"
     children:
+      - title: "Technical Stuff"
+        url: /v3.0/technical
       - title: "About"
         url: /v3.0/about
