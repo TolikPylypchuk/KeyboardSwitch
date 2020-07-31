@@ -11,5 +11,6 @@ Select the version you want to view.
 
 [Version 3.0]({% link _v3_0/01-index.md %}){: .btn .btn--inverse .btn--x-large}
 
-Docs for previous versions are avaialbe as part of their installations. Docs for version 3.0 and all future versions
-will be located here.
+**Note:** Docs for previous versions are avaialbe as part of their installations. Docs for version 3.0+ are located
+here.
+{: .notice--primary}

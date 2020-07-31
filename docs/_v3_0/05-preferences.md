@@ -35,7 +35,7 @@ default is yes, and to be honest, I see no reason to ever disable it. It just re
 do in order to get back on track with typing the text.
 
 The third check-box lets you control whether the service app will start when you log in. The default is yes if you
-installed the app using the Windows installer, and no if you're using the portable version.
+installed the app using a Windows installer, and no if you're using the portable version.
 
 The fourth check-box controls whether the settings app should show a warning about uninstalled layouts. If you install
 a new layout in the system, you should open the settings app and configure it in the Character Mappings tab. If you

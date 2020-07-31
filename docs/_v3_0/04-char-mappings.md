@@ -60,8 +60,8 @@ _Q_ key). Now the service will know that when it switches from English to Ukrain
 If the second characters are **w** and **ц** for English and Ukrainian respectively, then the service will transform
 **w** to **ц**.
 
-If you don't want to map a certain character, you can put space in its position in the other layout. The space character
-acts as a _don't map this character_ command, though it should generally be avoided.
+If you don't want to map a certain character, you can put a space in its position in the other layout. The space
+character acts as a _don't map this character_ command, though it should generally be avoided.
 
 ## Auto-Configuration
 
@@ -75,12 +75,12 @@ Here's how the tab looks after running auto-configuration:
 ![screen-auto-configuration]({{ '/assets/images/v3.0/screen-auto-configuration.png' | absolute_url }})
 
 What auto-configuration does is basically ask the OS what would happen if certain keys were pressed using variaous
-layouts. There is no easy way to get the information on _all_ keys on your keyboard, so it asks only about the most
-common ones. Here's the list of the keys for the US layout:
+layouts. There is no easy way to get the information about _all_ keys on your keyboard, so it asks only about the most
+common ones. Here's the list of those keys for the US layout:
 
 - All letter keys (_Q_, _W_, _E_ etc.)
 - Number keys
-- Other keys next to the letter and number keys: _[_ _]_ _;_ _'_ _,_ _._ _/_ _\\_ _-_ _=_
+- Other common keys: _[_ _]_ _;_ _'_ _,_ _._ _/_ _\\_ _-_ _=_ _`_
 - All those keys with the _Shift_ key
 - All those keys with the _AltGr_ key
 - All those keys with the _Shift+AltGr_ keys
@@ -88,7 +88,7 @@ common ones. Here's the list of the keys for the US layout:
 Not all of those key combinations actually produce characters for all layouts. So after asking the OS about all of
 these keys, the app keeps only those character combinations which are defined for all layouts. For example, if you press
 _AltGr+U_ in the Ukrainian layout, you will get **ґ**, but if you press those keys in the US layout, you won't get
-anything at all, so the app will just throw **ґ** out because it won't know how to map it to the US layout.
+anything at all, so the app will just throw **ґ** out as it won't know how to map it to the US layout.
 
 ## Limitations
 
@@ -96,7 +96,7 @@ You can map every character only once per layout. Otherwise, it would be impossi
 
 Characters are always mapped one to one. You cannot map one character to several characters.
 
-Dead keys are not supported (because of the previous limitation).
+Dead keys are not supported.
 
 The space character cannot be mapped to other characters. This is not really a limitation, because the space character
 is the same in every layout (at least that's the assumption).

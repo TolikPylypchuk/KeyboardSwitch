@@ -22,11 +22,11 @@ Previous versions of the app also included a tray icon so you could see that the
 ## Core Logic
 
 The service app is just an app which runs in the background. I could have made it into a Windows service, but decided
-against it when I read somewhere that Windows servcies cannot set up keyboard hooks. I didn't actually verify this info,
+against it when I read somewhere that Windows services cannot set up keyboard hooks. I didn't actually verify this info,
 so I'm not sure it's correct, but the background app approach works just fine, so it's likely to stay this way.
 
-The service app calls various native methods from the Windows' `user32.dll`. To call them it uses
-[Vanara](https://github.com/dahall/Vanara).
+The service app calls various native methods from the Windows' `user32.dll`. It uses
+[Vanara](https://github.com/dahall/Vanara) to call them.
 
 In the previous versions the service and the settings app were not separated. It was just an app running with a hidden
 window which showed up when you opened it. Having a hidden window always loaded is not that great of an idea, even
@@ -61,7 +61,7 @@ but that would take a lot of time, and the app is pretty simple, so I don't plan
 ## Docs
 
 These articles are built using [Jekyll](https://jekyllrb.com) and hosted on [GitHub Pages](https://pages.github.com),
-and use the [Minimal Mistakes theme](https://mmistakes.github.io/minimal-mistakes) theme.
+and use the [Minimal Mistakes theme](https://mmistakes.github.io/minimal-mistakes).
 
 ## Building from Source
 
@@ -76,7 +76,7 @@ The app consists of 6 projects:
 - KeyboardSwitch.Settings: The Keyboard Switch Settings app
 - KeyboardSwitch.Settings.Core: The core logic of the settings app
 - KeyboardSwitch.Common: Common functionality and interfaces for the projects
-- KeyboardSwitch.Windows: The implementations of common interfaces for the Windows platform
+- KeyboardSwitch.Windows: The implementation of common functionality for the Windows platform
 - KeyboardSwitch.Windows.Setup: The setup project
 
 ### Building the App Itself
@@ -93,7 +93,7 @@ All projects (except the installer) are built into a shared `bin` folder located
 because the settings app needs the service app to be in the same folder, but the projects don't depend on each other.
 
 It's better to use `dotnet publish` than simply using the raw build results. You can look into how the `Build-Portable`
-script calls `publish`.
+script calls `dotnet publish`.
 
 The installer project is excluded from the solution build sequence as it's not always needed.
 

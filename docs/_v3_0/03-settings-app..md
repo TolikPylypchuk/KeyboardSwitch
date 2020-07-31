@@ -4,9 +4,8 @@ permalink: /v3.0/settings-app
 toc: false
 ---
 
-Keyboard Switch Settings is a simple app which controls the behavior of the Keyboard Switch service (the app which runs
-in the background and does the actual switching). If you installed the app using a Windows inaller, you can find the
-app in the Start menu.
+Keyboard Switch Settings is a simple app which controls the behavior of the Keyboard Switch service. If you installed
+the app using a Windows inaller, you can find the app in the Start menu.
 
 Here's how it looks:
 
@@ -16,7 +15,7 @@ The app is composed of six tabs:
 
 - Character mappings: contains the settings which tell Keyboard Switch how to transform characters between layouts
 - Preferences: contains other settings
-- Converter: lets you manually convert text between arbitrary layouts
+- Converter: lets you manually convert text between arbitrary custom layouts
 - Converter settings: contains the list of custom layouts for the converter
 - Sandbox: lets you play around with switching the text
 - About: contains info about the app

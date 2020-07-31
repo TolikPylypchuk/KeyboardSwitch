@@ -16,8 +16,8 @@ I hope this app will make your life at least 1% easier :)
 
 The app is composed of two parts: the Keyboard Switch service and the Keyboard Switch Settings app. The service always
 runs in the background (and starts when you log in to the system) and listens to key presses. When you press the magic
-key combination, it reacts by copying the text, transforming it, and pasting it for you. The settings app is used for
-configuring the service and for starting/stopping it manually.
+key combination, it reacts by copying the selected text, transforming it, and pasting it for you. The settings app is
+used for configuring the service and for starting/stopping it manually.
 
 Here are the basic steps you should take to switch the text:
 
@@ -27,10 +27,9 @@ Here are the basic steps you should take to switch the text:
 - Press the magic key combination (the default is pressing _Ctrl+Shift_ twice)
 - Profit
 
-**Note:** The app uses the clipboard to get the text to transform, and then puts the transformed text back into the
-clipboard. Bear this in mind when you use it - if you have anything else in the clipboard, it will be lost. This isn't
-that big of an issue since Windows 10 October 2019 Update, because you can enable multiple items in the clipboard.
-{: .notice--primary}
+The app uses the clipboard to get the text to transform, and then puts the transformed text back into the clipboard.
+Bear this in mind when you use it - if you have anything else in the clipboard, it will be lost. This isn't that big
+of an issue since Windows 10 October 2019 Update, because you can enable multiple items in the clipboard.
 
 **Note:** The app simulates pressing _Ctrl+C_ to copy and _Ctrl+V_ to paste text. This is the default behaviour for most
 (if not all) applications. But if you are working in an app which behaves differently on those key presses, this app

@@ -81,7 +81,7 @@ All projects (except the installer) are built into a shared `bin` folder located
 because the settings app needs the service app to be in the same folder, but the projects don't depend on each other.
 
 It's better to use `dotnet publish` than simply using the raw build results. You can look into how the `Build-Portable`
-script calls `publish`.
+script calls `dotnet publish`.
 
 The installer project is excluded from the solution build sequence as it's not always needed.
 

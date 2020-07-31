@@ -14,10 +14,10 @@ time is not perfect; it can take a couple seconds for the app to get started. On
 will configure the service to run when you log into the system.
 
 If multiple users use the PC, then bear in mind that the app configures itself to run on log-in only for the user which
-installed the app. If you want it to run on log-in for other users, you have to configure it manually.
+installed the app. Other users have to configure it manually.
 
-After the settings app starts up you should configure the character mappings (you can read more about it in the next
-article). After you configured the character mappings and possibly some other preferences, start the app using the
+When the settings app starts up you should configure the character mappings (you can read more about it in the next
+article). After you have configured the character mappings and possibly some other preferences, start the app using the
 'Start' button at the bottom of the window. That's it! Now you're ready to use the Keyboard Switch service.
 
 **Note:** This app might mildly infuriate your anti-virus. This is because the app sets up a global keyboard hook,

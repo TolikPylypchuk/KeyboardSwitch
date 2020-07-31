@@ -12,7 +12,7 @@ to skip this article if you're not interested.
 
 ## The Converter Functionality
 
-Here's how the converter tab looks (when it's configured):
+Here's how the Converter tab looks (when it's configured):
 
 ![screen-converter]({{ '/assets/images/v3.0/screen-converter.png' | absolute_url }})
 
@@ -64,5 +64,5 @@ it didn't do it in the background. You had to enter text in the window much the 
 converter in this app. It was actually one of the first usable apps that I have ever created. And this app even helped
 me out once, when I had to use a computer abroad and it didn't have the Ukrainian layout installed. So after releasing
 version 2 of this app in 2018 I thought that it would be nice to add the converter feature to the next release even
-though it will probably be used by nobody (not even me). In addition, I've learned a couple interesting things about
-how keyboard layouts work in Windows when I implemented this feature. So here we are.
+though it will probably not be used by anybody (not even me). In addition, I've learned a couple interesting things
+about how keyboard layouts work in Windows when I implemented this feature. So here we are.
