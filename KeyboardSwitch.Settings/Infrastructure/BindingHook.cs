@@ -26,7 +26,7 @@ namespace KeyboardSwitch.Settings.Infrastructure
             true);
 
         public bool ExecuteHook(
-            object source,
+            object? source,
             object target,
             Func<IObservedChange<object, object>[]> getCurrentViewModelProperties,
             Func<IObservedChange<object, object>[]> getCurrentViewProperties,

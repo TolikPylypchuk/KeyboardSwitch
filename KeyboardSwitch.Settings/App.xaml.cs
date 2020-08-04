@@ -170,14 +170,14 @@ namespace KeyboardSwitch.Settings
             GC.KeepAlive(autoSuspendHelper);
 
             RxApp.SuspensionHost.CreateNewAppState = () => new AppState();
-            RxApp.SuspensionHost.SetupDefaultSuspendResumeCorrect();
+            RxApp.SuspensionHost.SetupDefaultSuspendResume();
 
             autoSuspendHelper.OnFrameworkInitializationCompleted();
         }
 
         private async Task<MainWindow> CreateMainWindow(MainViewModel viewModel)
         {
-            var state = await RxApp.SuspensionHost.ObserveAppStateCorrect<AppState>().Take(1);
+            var state = await RxApp.SuspensionHost.ObserveAppState<AppState>().Take(1);
 
             var window = new MainWindow
             {
@@ -212,7 +212,7 @@ namespace KeyboardSwitch.Settings
                 return;
             }
 
-            var state = RxApp.SuspensionHost.GetAppStateCorrect<AppState>();
+            var state = RxApp.SuspensionHost.GetAppState<AppState>();
 
             state.WindowWidth = this.desktop.MainWindow.Width;
             state.WindowHeight = this.desktop.MainWindow.Height;
