@@ -20,7 +20,7 @@ Docs are built using [Jekyll](https://jekyllrb.com) with the
 
 ## Changelog
 
-### v3.0 (4 August 2020)
+### [v3.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v3.0) (4 August 2020)
 
 - A completely rewritten app based on .NET Core and working as a truly UI-less app instead of an app with a hidden
 window
