@@ -1,4 +1,4 @@
-# v3.0 (Upcoming)
+# v3.0 (4 August 2020)
 
 - A completely rewritten app based on .NET Core and working as a truly UI-less app instead of an app with a hidden
 window

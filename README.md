@@ -1,6 +1,6 @@
 # Keyboard Switch
 
-Version 3.0 (Work in progress)
+Version 3.0
 
 Created by Tolik Pylypchuk
 
@@ -48,17 +48,12 @@ Dead keys are not supported (because of the previous limitation).
 The space character cannot be mapped to other characters. This is not really a limitation, because the space character
 is the same in every layout (at least that's the assumption).
 
-## Project Status
+## Supported Platforms
 
-I'm currently working on [version 3](https://github.com/TolikPylypchuk/KeyboardSwitch/milestone/2). Version 2 is
-currently available, but it's not really user-friendly.
-
-The app itself is feature-complete, but I should first write extensive documentation before shipping v3.0.
-
-Version 3.0 will work only on Windows 10. It can probably work on earlier versions of Windows as well, but I'm not
+Version 3.0 works only on Windows 10. It can probably work on earlier versions of Windows as well, but I'm not
 going to build or test it for them. [Version 4.0](https://github.com/TolikPylypchuk/KeyboardSwitch/milestone/3) on the
 other hand will be cross-platform - I'm planning on making it work on macOS and on Linux (via X11), though the details
-of this plan may change when I'll start looking into all that after releasing v3.0. The app will most probably use
+of this plan may change when I'll start looking into all that. The app will most probably use
 [libuiohook](https://github.com/kwhat/libuiohook) for the cross-platform keyboard hook.
 
 ## Building from Source
@@ -99,7 +94,7 @@ Currently the app's startup time is quite long, so it may appear after a couple 
 
 ## Changes
 
-### What's new in version 3.0 (Work in progress)
+### What's new in version 3.0
 
 - A completely rewritten app based on .NET Core and working as a truly UI-less app
 instead of an app with a hidden window
