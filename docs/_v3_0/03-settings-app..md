@@ -5,7 +5,7 @@ toc: false
 ---
 
 Keyboard Switch Settings is a simple app which controls the behavior of the Keyboard Switch service. If you installed
-the app using a Windows inaller, you can find the app in the Start menu.
+the app using a Windows installer, you can find the app in the Start menu.
 
 Here's how it looks:
 
