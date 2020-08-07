@@ -58,8 +58,8 @@ of this plan may change when I'll start looking into all that. The app will most
 
 ## Building from Source
 
-While version 3 of the app is not done yet, you can use it now if you really want to. To do that, you should clone or
-download this repository and build the app. All projects (except the Windows installer) require .NET Core 3.1 or later.
+You can build Keyboard Switch from source if you like. All projects (except the Windows installer) require .NET Core 3.1
+or later.
 
 ### Building the App Itself
 
