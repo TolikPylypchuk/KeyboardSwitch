@@ -2,7 +2,7 @@ title: Keyboard Switch
 title_separator: "|"
 email: pylypchuk.tolik@gmail.com
 description: An application which switches typed text as if it were typed with another keyboard layout
-baseurl: KeyboardSwitch
+baseurl: ""
 github_username:  TolikPylypchuk
 repository: TolikPylypchuk/KeyboardSwitch
 

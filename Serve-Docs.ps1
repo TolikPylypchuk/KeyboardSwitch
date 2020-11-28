@@ -1,7 +1,7 @@
 Try
 {
     Set-Location .\docs
-    bundle exec jekyll serve --baseurl=''
+    bundle exec jekyll serve
 } Finally
 {
     Set-Location ..

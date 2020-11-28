@@ -14,7 +14,7 @@ to skip this article if you're not interested.
 
 Here's how the Converter tab looks (when it's configured):
 
-![screen-converter]({{ '/assets/images/v3.0/screen-converter.png' | absolute_url }})
+![screen-converter](/assets/images/v3.0/screen-converter.png)
 
 The tab consists of two main parts:
 
@@ -35,7 +35,7 @@ Custom layouts are configured in the Converter Settings tab, discussed in the ne
 
 The Converter Settings tab lets you configure custom layouts for the converter. Here's how it looks:
 
-![screen-converter-settings-main]({{ '/assets/images/v3.0/screen-converter-settings-main.png' | absolute_url }})
+![screen-converter-settings-main](/assets/images/v3.0/screen-converter-settings-main.png)
 
 It's pretty similar to the Character Mappings tab, and the way configuration of characters works is identical. The main
 difference is that you can control what's shown here. You can add layouts, remove, or rename them. You can't change the
@@ -44,7 +44,7 @@ order of the layouts, but it doesn't actually matter here. You can't have two or
 Just like with Character Mappings, you can auto-configure custom layouts, but here you have to select layouts to
 configure first. Here's how the settings for auto-configuration look:
 
-![screen-converter-settings-config]({{ '/assets/images/v3.0/screen-converter-settings-config.png' | absolute_url }})
+![screen-converter-settings-config](/assets/images/v3.0/screen-converter-settings-config.png)
 
 You can select layouts using the drop-down. It includes all keyboard layouts that you can choose in Windows. After you
 selected the layouts, and clicked 'Save', the app will load those layouts into Windows, execute the same

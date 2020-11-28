@@ -9,7 +9,7 @@ This application switches typed text as if it were typed with another keyboard l
 ## Docs
 
 If you want to know more about the Keyboard Switch app and how to use it, check out the docs:
-[https://tolikpylypchuk.github.io/KeyboardSwitch](https://tolikpylypchuk.github.io/KeyboardSwitch).
+[https://keyboardswitch.tolik.io](https://keyboardswitch.tolik.io).
 
 ## Switching
 
@@ -51,7 +51,7 @@ is the same in every layout (at least that's the assumption).
 ## Supported Platforms
 
 Version 3.0 works only on Windows 10. It can probably work on earlier versions of Windows as well, but I'm not
-going to build or test it for them. [Version 4.0](https://github.com/TolikPylypchuk/KeyboardSwitch/milestone/3) on the
+going to build or test it for them. [Version 4.0](https://github.com/TolikPylypchuk/KeyboardSwitch/milestone/4) on the
 other hand will be cross-platform - I'm planning on making it work on macOS and on Linux (via X11), though the details
 of this plan may change when I'll start looking into all that. The app will most probably use
 [libuiohook](https://github.com/kwhat/libuiohook) for the cross-platform keyboard hook.

@@ -7,9 +7,9 @@ The Preferences tab contains other settings which control the behavior of the Ke
 
 It has two main looks, based on the switch mode setting:
 
-![screen-preferences-1]({{ '/assets/images/v3.0/screen-preferences-1.png' | absolute_url }})
+![screen-preferences-1](/assets/images/v3.0/screen-preferences-1.png)
 
-![screen-preferences-2]({{ '/assets/images/v3.0/screen-preferences-2.png' | absolute_url }})
+![screen-preferences-2](/assets/images/v3.0/screen-preferences-2.png)
 
 Following is the discussion on the many fields that are in this tab.
 

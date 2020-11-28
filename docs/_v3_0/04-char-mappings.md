@@ -46,7 +46,7 @@ it's all correct.
 
 Here's how the tab looks when the app is opened for the first time:
 
-![screen-empty]({{ '/assets/images/v3.0/screen-char-mappings-empty.png' | absolute_url }})
+![screen-empty](/assets/images/v3.0/screen-char-mappings-empty.png)
 
 You have to enter every character you can think of (which can be entered using your keyboard) into the text fields
 which correspond to layouts. For example, press the _Q_ key, then press the _W_ key, and so on. Then press
@@ -72,9 +72,9 @@ and fix mistakes, or add other characters manually. But usually auto-configurati
 
 Here's how the tab looks after running auto-configuration:
 
-![screen-auto-configuration]({{ '/assets/images/v3.0/screen-auto-configuration.png' | absolute_url }})
+![screen-auto-configuration](/assets/images/v3.0/screen-auto-configuration.png)
 
-What auto-configuration does is basically ask the OS what would happen if certain keys were pressed using variaous
+What auto-configuration does is basically ask the OS what would happen if certain keys were pressed using various
 layouts. There is no easy way to get the information about _all_ keys on your keyboard, so it asks only about the most
 common ones. Here's the list of those keys for the US layout:
 

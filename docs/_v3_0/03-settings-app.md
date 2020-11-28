@@ -9,7 +9,7 @@ the app using a Windows installer, you can find the app in the Start menu.
 
 Here's how it looks:
 
-![app-screen]({{ '/assets/images/v3.0/screen-char-mappings.png' | absolute_url }})
+![app-screen](/assets/images/v3.0/screen-char-mappings.png)
 
 The app is composed of six tabs:
 
