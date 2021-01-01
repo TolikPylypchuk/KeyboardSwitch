@@ -1,0 +1,482 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.19.3 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Technical Stuff | Keyboard Switch</title>
+<meta name="description" content="Keyboard Switch is written using C# and .NET Core 3.1. Following is the list of technologies used in this app and some other technical aspects.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Keyboard Switch">
+<meta property="og:title" content="Technical Stuff">
+<meta property="og:url" content="/v3.0/technical">
+
+
+  <meta property="og:description" content="Keyboard Switch is written using C# and .NET Core 3.1. Following is the list of technologies used in this app and some other technical aspects.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2021-01-01T16:24:17+00:00">
+
+
+
+
+
+
+<link rel="canonical" href="/v3.0/technical">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Keyboard Switch Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          Keyboard Switch
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="https://github.com/TolikPylypchuk/KeyboardSwitch/releases">Get the App</a>
+            </li><li class="masthead__menu-item">
+              <a href="https://github.com/TolikPylypchuk/KeyboardSwitch">View on GitHub</a>
+            </li><li class="masthead__menu-item">
+              <a href="/v3.0/">v3.0 Docs</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+    
+      
+      
+      
+      
+    
+    
+      
+
+<nav class="nav__list">
+  
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">Toggle Menu</label>
+  <ul class="nav__items">
+    
+      <li>
+        
+          <span class="nav__sub-title">Getting Started</span>
+        
+
+        
+        <ul>
+          
+            <li><a href="/v3.0/">Home Page</a></li>
+          
+            <li><a href="/v3.0/installation">Installation</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Settings</span>
+        
+
+        
+        <ul>
+          
+            <li><a href="/v3.0/settings-app">The Settings App</a></li>
+          
+            <li><a href="/v3.0/char-mappings">Character Mappings</a></li>
+          
+            <li><a href="/v3.0/preferences">Preferences</a></li>
+          
+            <li><a href="/v3.0/converter">Converter</a></li>
+          
+            <li><a href="/v3.0/other-tabs">Other Tabs</a></li>
+          
+        </ul>
+        
+      </li>
+    
+      <li>
+        
+          <span class="nav__sub-title">Other</span>
+        
+
+        
+        <ul>
+          
+            <li><a href="/v3.0/technical" class="active">Technical Stuff</a></li>
+          
+            <li><a href="/v3.0/about">About</a></li>
+          
+        </ul>
+        
+      </li>
+    
+  </ul>
+</nav>
+
+    
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Technical Stuff">
+    <meta itemprop="description" content="Keyboard Switch is written using C# and.NET Core 3.1. Following is the list of technologies used in this app and some othertechnical aspects.">
+    <meta itemprop="datePublished" content="2021-01-01T16:24:17+00:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Technical Stuff
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu">
+  <li><a href="#ui">UI</a></li>
+  <li><a href="#core-logic">Core Logic</a></li>
+  <li><a href="#preferences">Preferences</a></li>
+  <li><a href="#logging">Logging</a></li>
+  <li><a href="#tests">Tests</a></li>
+  <li><a href="#docs">Docs</a></li>
+  <li><a href="#building-from-source">Building from Source</a>
+    <ul>
+      <li><a href="#the-projects">The Projects</a></li>
+      <li><a href="#building-the-app-itself">Building the App Itself</a></li>
+      <li><a href="#building-the-windows-installer">Building the Windows Installer</a></li>
+      <li><a href="#building-the-docs">Building the Docs</a></li>
+    </ul>
+  </li>
+</ul>
+
+            </nav>
+          </aside>
+        
+        <p>Keyboard Switch is written using <a href="https://github.com/dotnet/csharplang">C#</a> and
+<a href="https://github.com/dotnet/core">.NET Core 3.1</a>. Following is the list of technologies used in this app and some other
+technical aspects.</p>
+
+<h2 id="ui">UI</h2>
+
+<p>The Keyboard Switch Settings app is written using <a href="https://avaloniaui.net">Avalonia</a>, a cross-platform UI framework for
+.NET. I chose it because unlike other UI frameworks for .NET, it’s cross-platform, so when I implement the app for other
+platforms, I won’t need to make major changes to the UI.</p>
+
+<p>Previous versions of the app used .NET Framework and WPF. Back then I didn’t expect to have it working on different
+platforms.</p>
+
+<p>Previous versions of the app also included a tray icon so you could see that the app is running. I removed it in version
+3.0 as I don’t see much value in keeping it and cluttering your tray.</p>
+
+<h2 id="core-logic">Core Logic</h2>
+
+<p>The service app is just an app which runs in the background. I could have made it into a Windows service, but decided
+against it when I read somewhere that Windows services cannot set up keyboard hooks. I didn’t actually verify this info,
+so I’m not sure it’s correct, but the background app approach works just fine, so it’s likely to stay this way.</p>
+
+<p>The service app calls various native methods from the Windows’ <code class="language-plaintext highlighter-rouge">user32.dll</code>. It uses
+<a href="https://github.com/dahall/Vanara">Vanara</a> to call them.</p>
+
+<p>In the previous versions the service and the settings app were not separated. It was just an app running with a hidden
+window which showed up when you opened it. Having a hidden window always loaded is not that great of an idea, even
+though it used very little RAM.</p>
+
+<p>The core logic of the settings app is implemented using <a href="https://www.reactiveui.net">ReactiveUI</a> as the MVVM framework.
+I must say that it’s a real pleasure to use this framework. Also, <a href="https://github.com/reactiveui/splat">Splat</a> is used
+for service location.</p>
+
+<h2 id="preferences">Preferences</h2>
+
+<p>Preferences are stored in the user’s local app data folder (under the KeyboardSwitch directory). I didn’t put it into
+the normal app data folder because that one is shared if you use the same Windows account on multiple machines, and
+that kind of defeats the purpose of this app being configured for each machine individually.</p>
+
+<p>This app uses <a href="https://github.com/reactiveui/Akavache">Akavache</a> as the engine for storing settings and cache.</p>
+
+<h2 id="logging">Logging</h2>
+
+<p>This app uses a plain-text log file to log the stuff it’s doing and errors it encounters along the way.
+<a href="https://serilog.net">Serilog</a> is used as the logging library. The log file is stored in the same folder as the
+preferences and is rolled over after reaching 500 MB. If you really want to (and know how), you can change the logging
+configuration in the <code class="language-plaintext highlighter-rouge">appsettings.json</code> file which is located in the same folder as the app itself. But you’re better
+off not touching that file at all.</p>
+
+<h2 id="tests">Tests</h2>
+
+<p>There are none. Honestly, I don’t even know how to approach testing, because the core logic of the app is essentially
+creating system-wide side effects, so don’t think it’s really testable. As for the settings app, well, I could test it,
+but that would take a lot of time, and the app is pretty simple, so I don’t plan on doing it in the nearest future.</p>
+
+<h2 id="docs">Docs</h2>
+
+<p>These articles are built using <a href="https://jekyllrb.com">Jekyll</a> and hosted on <a href="https://pages.github.com">GitHub Pages</a>,
+and use the <a href="https://mmistakes.github.io/minimal-mistakes">Minimal Mistakes theme</a>.</p>
+
+<h2 id="building-from-source">Building from Source</h2>
+
+<p>You can build Keyboard Switch from source if you like. All projects (except the Windows installer) require .NET Core 3.1
+or later.</p>
+
+<h3 id="the-projects">The Projects</h3>
+
+<p>The app consists of 6 projects:</p>
+
+<ul>
+  <li>KeyboardSwitch: The Keyboard Switch service itself</li>
+  <li>KeyboardSwitch.Settings: The Keyboard Switch Settings app</li>
+  <li>KeyboardSwitch.Settings.Core: The core logic of the settings app</li>
+  <li>KeyboardSwitch.Common: Common functionality and interfaces for the projects</li>
+  <li>KeyboardSwitch.Windows: The implementation of common functionality for the Windows platform</li>
+  <li>KeyboardSwitch.Windows.Setup: The setup project</li>
+</ul>
+
+<h3 id="building-the-app-itself">Building the App Itself</h3>
+
+<p>Building the service app and the settings app is quite straightforward. You can simply use the <code class="language-plaintext highlighter-rouge">Build-Portable</code>
+script located in the solution root. It will create the <code class="language-plaintext highlighter-rouge">KeyboardSwitch-Portable.zip</code> file in the <code class="language-plaintext highlighter-rouge">bin</code> folder
+which you can then unpack into wherever you like.</p>
+
+<p>Alternatively, you can build the projects using Visual Studio 2019 or later, or with the <code class="language-plaintext highlighter-rouge">dotnet</code> tool. Note however
+that you have to build the whole solution. The startup project is <code class="language-plaintext highlighter-rouge">KeyboardSwitch.Settings</code>, and if you build it, it
+won’t actually build the <code class="language-plaintext highlighter-rouge">KeyboardSwitch</code> project, because the settings app doesn’t directly depend on the service app.</p>
+
+<p>All projects (except the installer) are built into a shared <code class="language-plaintext highlighter-rouge">bin</code> folder located in the solution root. Again, this is
+because the settings app needs the service app to be in the same folder, but the projects don’t depend on each other.</p>
+
+<p>It’s better to use <code class="language-plaintext highlighter-rouge">dotnet publish</code> than simply using the raw build results. You can look into how the <code class="language-plaintext highlighter-rouge">Build-Portable</code>
+script calls <code class="language-plaintext highlighter-rouge">dotnet publish</code>.</p>
+
+<p>The installer project is excluded from the solution build sequence as it’s not always needed.</p>
+
+<h3 id="building-the-windows-installer">Building the Windows Installer</h3>
+
+<p>If you want to properly install the app, you can build the installer. Unlike the other projects, this one requires
+.NET Framework 4.8. This is because it’s built with <a href="https://github.com/oleg-shilo/wixsharp">WixSharp</a>, which in turn
+is based on <a href="https://wixtoolset.org">the WiX toolset</a>, and as of version 3.11.2 WiX doesn’t support .NET Core or .NET 5.</p>
+
+<p>Simply run the build, and it will generate the MSI installer in the project’s <code class="language-plaintext highlighter-rouge">bin</code> folder. Before the build, it calls
+<code class="language-plaintext highlighter-rouge">dotnet publish</code> to use its output.</p>
+
+<h3 id="building-the-docs">Building the Docs</h3>
+
+<p>Jekyll is used to build the docs. You can use the <code class="language-plaintext highlighter-rouge">Serve-Docs</code> script to serve them locally.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2021-01-01T16:24:17+00:00">January 1, 2021</time></p>
+
+
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/v3.0/other-tabs" class="pagination--pager" title="Other Tabs
+">Previous</a>
+    
+    
+      <a href="/v3.0/about" class="pagination--pager" title="About
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://github.com/TolikPylypchuk" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2021 Keyboard Switch. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+  </body>
+</html>
