@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Tolik Pylypchuk")]
 [assembly: AssemblyProduct("KeyboardSwitch.Windows.Setup")]
-[assembly: AssemblyCopyright("Copyright © 2020")]
+[assembly: AssemblyCopyright("Copyright © 2020-2021 Anatoliy Pylypchuk")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
