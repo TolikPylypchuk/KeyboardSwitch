@@ -27,6 +27,11 @@ bld/
 .vscode/
 .ionide/
 
+# Jekyll files
+_site
+.sass-cache
+.jekyll-metadata
+
 # MSTest test Results
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
