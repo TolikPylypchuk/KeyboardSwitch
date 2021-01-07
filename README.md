@@ -9,7 +9,7 @@ This application switches typed text as if it were typed with another keyboard l
 ## Docs
 
 If you want to know more about the Keyboard Switch app and how to use it, check out the docs:
-[https://keyboardswitch.tolik.io](https://keyboardswitch.tolik.io).
+[https://docs.keyboardswitch.tolik.io](https://docs.keyboardswitch.tolik.io).
 
 ## Switching
 
