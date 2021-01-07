@@ -48,7 +48,7 @@ Wait time controls how much time the service app waits before deciding that you'
 **Note:** Wait time is ignored if the press count is set to 1.
 {% endhint %}
 
-## Hot Key
+### Hot Key
 
 The hot key switch mode was carried over from the previous version of the app and is not recommended anymore. It lets you specify which key combination \(modifier keys + normal key\) to press to switch the text. There are three fields for this mode:
 
