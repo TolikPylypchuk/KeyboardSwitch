@@ -1,0 +1,9 @@
+root: ./docs
+
+​structure:  
+    readme: ./README.md  
+    summary: ./SUMMARY.md​
+
+title: Keyboard Switch
+description: An application which switches typed text as if it were typed with another keyboard layout
+author: Tolik Pylypchuk
