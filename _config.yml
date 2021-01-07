@@ -1,0 +1,21 @@
+title: Keyboard Switch
+author: Tolik Pylypcuk
+email: pylypchuk.tolik@gmail.com
+description: An application which switches typed text as if it were typed with another keyboard layout
+avatar: /favicon.ico
+
+baseurl: ""
+url: ""
+
+github_username: TolikPylypchuk
+repository: TolikPylypchuk/KeyboardSwitch
+
+links:
+  get-app: https://github.com/TolikPylypchuk/KeyboardSwitch/releases
+  github: https://github.com/TolikPylypchuk/KeyboardSwitch
+  view-docs: https://docs.keyboardswitch.tolik.io/
+
+markdown: kramdown
+theme: jekyll-theme-cayman
+plugins:
+  - jekyll-feed
