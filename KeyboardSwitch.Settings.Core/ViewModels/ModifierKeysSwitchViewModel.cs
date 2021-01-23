@@ -30,7 +30,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 vm => vm.BackwardModifierKeys,
                 (forward, backward) => forward != backward);
 
-            this.SwitchMethodsAreDifferentRule = this.ValidationRule(switchMethodsAreDifferent, "SwitchMethodsAreSame");
+            this.SwitchMethodsAreDifferentRule = this.LocalizedValidationRule(switchMethodsAreDifferent, "SwitchMethodsAreSame");
 
             this.EnableChangeTracking();
         }

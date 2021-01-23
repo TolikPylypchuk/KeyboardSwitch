@@ -36,8 +36,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             var forwardIsValid = this.WhenAnyValue(vm => vm.Forward.Character)
                 .Select(AllowedCharacters.Contains);
 
-            this.ForwardIsRequiredRule = this.ValidationRule(forwardIsPresent, "ForwardRequired");
-            this.ForwardIsValidRule = this.ValidationRule(forwardIsValid, "ForwardInvalid");
+            this.ForwardIsRequiredRule = this.LocalizedValidationRule(forwardIsPresent, "ForwardRequired");
+            this.ForwardIsValidRule = this.LocalizedValidationRule(forwardIsValid, "ForwardInvalid");
 
             var backwardIsPresent = this.WhenAnyValue(vm => vm.Backward.Character)
                 .Select(ch => ch != MissingCharacter);
@@ -45,13 +45,13 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             var backwardIsValid = this.WhenAnyValue(vm => vm.Backward.Character)
                 .Select(AllowedCharacters.Contains);
 
-            this.BackwardIsRequiredRule = this.ValidationRule(backwardIsPresent, "BackwardRequired");
-            this.BackwardIsValidRule = this.ValidationRule(backwardIsValid, "BackwardInvalid");
+            this.BackwardIsRequiredRule = this.LocalizedValidationRule(backwardIsPresent, "BackwardRequired");
+            this.BackwardIsValidRule = this.LocalizedValidationRule(backwardIsValid, "BackwardInvalid");
 
             var switchMethodsAreDifferent = 
                 this.WhenAnyValue(vm => vm.Forward.Character, vm => vm.Backward.Character, (f, b) => f != b);
 
-            this.SwitchMethodsAreDifferentRule = this.ValidationRule(switchMethodsAreDifferent, "SwitchMethodsAreSame");
+            this.SwitchMethodsAreDifferentRule = this.LocalizedValidationRule(switchMethodsAreDifferent, "SwitchMethodsAreSame");
 
             this.EnableChangeTracking();
         }

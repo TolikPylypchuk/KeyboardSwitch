@@ -132,7 +132,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 property, validate, _ => this.ResourceManager.GetString($"{propertyName}Invalid") ?? String.Empty);
         }
 
-        protected ValidationHelper ValidationRule(IObservable<bool> validation, string errorMessage)
+        protected ValidationHelper LocalizedValidationRule(IObservable<bool> validation, string errorMessage)
             => this.Self.ValidationRule(validation, this.ResourceManager.GetString(errorMessage) ?? String.Empty);
 
         protected void CanDeleteWhen(IObservable<bool> canDelete)

@@ -34,7 +34,7 @@
                                FontSize="{DynamicResource FontSizeSmall}" VerticalAlignment="Center" />
 
                     <Button x:Name="ClearButton" Content="{l:Translate Clear}" Grid.Row="1" Grid.Column="0"
-                            Margin="10" HorizontalAlignment="Stretch" />
+                            Margin="10" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
 
                     <TextBlock Text="{l:Translate ConverterClearHint}" Grid.Row="1" Grid.Column="1"
                                FontSize="{DynamicResource FontSizeSmall}" VerticalAlignment="Center" />

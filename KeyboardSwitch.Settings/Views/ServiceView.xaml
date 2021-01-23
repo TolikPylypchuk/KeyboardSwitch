@@ -8,7 +8,6 @@
                 <Style Selector="TextBlock.Status">
                     <Setter Property="VerticalAlignment" Value="Center" />
                     <Setter Property="Margin" Value="10" />
-                    <Setter Property="FontSize" Value="{DynamicResource FontSizeLarge}" />
                     <Setter Property="Width" Value="350" />
                 </Style>
             </StackPanel.Styles>
@@ -22,7 +21,7 @@
             <TextBlock x:Name="ServiceShuttingDownTextBlock" Classes="Status"
                        Text="{l:Translate KeyboardSwitchServiceShuttingDown}" />
 
-            <Button x:Name="StartServiceButton" Content="{l:Translate Start}" Classes="Primary" />
+            <Button x:Name="StartServiceButton" Content="{l:Translate Start}" />
             <Button x:Name="StopServiceButton" Content="{l:Translate Stop}" />
             <Button x:Name="KillServiceButton" Content="{l:Translate Kill}" />
         </StackPanel>

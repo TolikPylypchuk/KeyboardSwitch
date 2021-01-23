@@ -8,10 +8,10 @@
     </Application.DataTemplates>
 
     <Application.Styles>
-        <StyleInclude Source="avares://Citrus.Avalonia/Citrus.xaml" />
+        <FluentTheme Mode="Light"/>
 
         <Style Selector="TextBlock.Error">
-            <Setter Property="Foreground" Value="{DynamicResource ErrorBrush}" />
+            <Setter Property="Foreground" Value="Red" />
             <Setter Property="Margin" Value="10 2" />
         </Style>
 
@@ -32,7 +32,7 @@
         </Style>
 
         <Style Selector="NumericUpDown.FormControl">
-            <Setter Property="Width" Value="75" />
+            <Setter Property="Width" Value="125" />
             <Setter Property="Margin" Value="0 0 10 5" />
         </Style>
 

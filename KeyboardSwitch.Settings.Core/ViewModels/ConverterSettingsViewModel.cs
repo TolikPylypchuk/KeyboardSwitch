@@ -66,7 +66,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 .Select(layouts => layouts.Select(layout => layout.Name).Distinct().Count() == layouts.Count)
                 .StartWith(true);
 
-            this.LayoutNamesAreUniqueRule = this.ValidationRule(namesAreUnique, "CustomLayoutNamesAreSame");
+            this.LayoutNamesAreUniqueRule = this.LocalizedValidationRule(namesAreUnique, "CustomLayoutNamesAreSame");
 
             this.AddCustomLayout = ReactiveCommand.Create(this.OnAddCustomLayout);
             this.AutoConfigureCustomLayouts = ReactiveCommand.Create(this.OnAutoConfigureCustomLayouts);
