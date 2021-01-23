@@ -118,7 +118,7 @@ namespace KeyboardSwitch.Settings.Views
                 .DisposeWith(disposables);
 
             this.BindValidation(
-                    this.ViewModel, vm => vm.LayoutsAreDifferentRule, v => v.LayoutsValidationTextBlock.Text)
+                    this.ViewModel, vm => vm!.LayoutsAreDifferentRule, v => v.LayoutsValidationTextBlock.Text)
                 .DisposeWith(disposables);
         }
 

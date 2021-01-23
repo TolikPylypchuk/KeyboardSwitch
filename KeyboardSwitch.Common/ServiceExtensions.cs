@@ -10,8 +10,10 @@ namespace KeyboardSwitch.Common
     {
         public static IServiceCollection AddKeyboardSwitchServices(this IServiceCollection services)
             => services.AddSingleton<BlobCacheSettingsService>()
-                .AddSingleton<IAppSettingsService>(provider => provider.GetService<BlobCacheSettingsService>())
-                .AddSingleton<IConverterSettingsService>(provider => provider.GetService<BlobCacheSettingsService>())
+                .AddSingleton<IAppSettingsService>(provider =>
+                    provider.GetRequiredService<BlobCacheSettingsService>())
+                .AddSingleton<IConverterSettingsService>(provider =>
+                    provider.GetRequiredService<BlobCacheSettingsService>())
                 .AddSingleton<ISwitchService, SwitchService>()
                 .AddSingleton<ServiceProvider<INamedPipeService>>(s => name =>
                     new NamedPipeService(s.GetRequiredService<ILogger<NamedPipeService>>(), name))

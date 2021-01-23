@@ -44,7 +44,7 @@ namespace KeyboardSwitch.Settings.Views
 
                 this.BindValidation(
                         this.ViewModel,
-                        vm => vm.SwitchMethodsAreDifferentRule,
+                        vm => vm!.SwitchMethodsAreDifferentRule,
                         v => v.SwitchMethodsValidationTextBlock.Text)
                     .DisposeWith(disposables);
             });

@@ -32,26 +32,26 @@ namespace KeyboardSwitch.Settings.Views
                     ?.DisposeWith(disposables);
 
                 this.BindValidation(
-                        this.ViewModel, vm => vm.ForwardIsValidRule, v => v.ForwardValidationTextBlock.Text)
+                        this.ViewModel, vm => vm!.ForwardIsValidRule, v => v.ForwardValidationTextBlock.Text)
                     .DisposeWith(disposables);
 
                 this.BindValidation(
-                        this.ViewModel, vm => vm.ForwardIsRequiredRule, v => v.ForwardValidationRequiredTextBlock.Text)
+                        this.ViewModel, vm => vm!.ForwardIsRequiredRule, v => v.ForwardValidationRequiredTextBlock.Text)
                     .DisposeWith(disposables);
 
                 this.BindValidation(
-                        this.ViewModel, vm => vm.BackwardIsValidRule, v => v.BackwardValidationTextBlock.Text)
+                        this.ViewModel, vm => vm!.BackwardIsValidRule, v => v.BackwardValidationTextBlock.Text)
                     .DisposeWith(disposables);
 
                 this.BindValidation(
                         this.ViewModel,
-                        vm => vm.BackwardIsRequiredRule,
+                        vm => vm!.BackwardIsRequiredRule,
                         v => v.BackwardValidationRequiredTextBlock.Text)
                     .DisposeWith(disposables);
 
                 this.BindValidation(
                         this.ViewModel,
-                        vm => vm.SwitchMethodsAreDifferentRule,
+                        vm => vm!.SwitchMethodsAreDifferentRule,
                         v => v.SwitchMethodsValidationTextBlock.Text)
                     .DisposeWith(disposables);
             });

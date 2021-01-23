@@ -24,7 +24,7 @@ using Splat;
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
 #nullable disable
-    public abstract class ReactiveForm<TModel, TForm> : ReactiveValidationObject<TForm>, IReactiveForm
+    public abstract class ReactiveForm<TModel, TForm> : ReactiveValidationObject, IReactiveForm
 #nullable enable
         where TModel : class
         where TForm : ReactiveForm<TModel, TForm>
@@ -133,9 +133,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         }
 
         protected ValidationHelper ValidationRule(IObservable<bool> validation, string errorMessage)
-            => this.Self.ValidationRule(
-                _ => validation,
-                (vm, valid) => valid ? String.Empty : this.ResourceManager.GetString(errorMessage) ?? String.Empty);
+            => this.Self.ValidationRule(validation, this.ResourceManager.GetString(errorMessage) ?? String.Empty);
 
         protected void CanDeleteWhen(IObservable<bool> canDelete)
             => canDelete.Subscribe(this.canDeleteSubject);

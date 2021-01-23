@@ -22,7 +22,7 @@ namespace KeyboardSwitch.Settings.Views
                     ?.DisposeWith(disposables);
 
                 this.BindValidation(
-                    this.ViewModel, vm => vm.LayoutNamesAreUniqueRule, v => v.CustomLayoutsValidationTextBlock.Text)
+                    this.ViewModel, vm => vm!.LayoutNamesAreUniqueRule, v => v.CustomLayoutsValidationTextBlock.Text)
                     .DisposeWith(disposables);
 
                 this.BindCommand(this.ViewModel, vm => vm.AddCustomLayout, v => v.AddLayoutButton)

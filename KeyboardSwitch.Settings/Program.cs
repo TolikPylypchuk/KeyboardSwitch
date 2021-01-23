@@ -3,7 +3,6 @@ using System.IO;
 using System.Reflection;
 
 using Avalonia;
-using Avalonia.Logging.Serilog;
 
 namespace KeyboardSwitch.Settings
 {
@@ -16,7 +15,7 @@ namespace KeyboardSwitch.Settings
 
             return AppBuilder.Configure<App>()
                 .UsePlatformDetect()
-                .LogToDebug()
+                .LogToTrace()
                 .StartWithClassicDesktopLifetime(args);
         }
     }

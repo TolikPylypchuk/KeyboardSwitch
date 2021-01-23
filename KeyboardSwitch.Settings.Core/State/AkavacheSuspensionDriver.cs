@@ -20,7 +20,7 @@ namespace KeyboardSwitch.Settings.Core.State
             => this.cache.InvalidateObject<TAppState>(AppStateKey);
 
         public IObservable<object> LoadState()
-            => this.cache.GetObject<TAppState>(AppStateKey);
+            => this.cache.GetObject<TAppState>(AppStateKey).WhereNotNull();
 
         public IObservable<Unit> SaveState(object state)
             => this.cache.InsertObject(AppStateKey, (TAppState)state);

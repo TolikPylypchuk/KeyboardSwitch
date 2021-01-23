@@ -24,7 +24,7 @@ using Splat;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
-    public sealed class ConverterViewModel : ReactiveValidationObject<ConverterViewModel>, ITextService
+    public sealed class ConverterViewModel : ReactiveValidationObject, ITextService
     {
         private readonly ISwitchService switchService;
 
@@ -49,11 +49,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 .Subscribe();
 
             this.LayoutsAreDifferentRule = this.ValidationRule(
-                vm => vm.WhenAnyValue(
-                    v => v.SourceLayout, v => v.TargetLayout, (s, t) => s == null || t == null || s != t),
-                (vm, isValid) => isValid
-                    ? String.Empty
-                    : resourceManager.GetString("CustomLayoutsAreSame") ?? String.Empty);
+                this.WhenAnyValue(v => v.SourceLayout, v => v.TargetLayout, (s, t) => s == null || t == null || s != t),
+                resourceManager.GetString("CustomLayoutsAreSame") ?? String.Empty);
 
             var canConvert = this.WhenAnyValue(
                 vm => vm.SourceLayout, vm => vm.TargetLayout, (s, t) => s != null && t != null)
