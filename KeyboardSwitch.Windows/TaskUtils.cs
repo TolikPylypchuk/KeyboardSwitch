@@ -2,9 +2,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace KeyboardSwitch.Common
+namespace KeyboardSwitch.Windows
 {
-    public static class TaskUtils
+    internal static class TaskUtils
     {
         public static Task RunSTATask(Action action)
         {

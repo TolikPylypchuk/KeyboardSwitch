@@ -103,15 +103,16 @@ namespace KeyboardSwitch.Windows.Services
             using var layouts = Registry.LocalMachine.OpenSubKey(KeyboardLayoutsRegistryKey);
 
             return layouts
-                .GetSubKeyNames()
+                ?.GetSubKeyNames()
                 .Select(layoutKey =>
                 {
                     using var subKey = layouts.OpenSubKey(layoutKey);
                     return new LoadableKeyboardLayout(
                         layoutKey,
-                        subKey.GetValue(LayoutText).ToString() ?? String.Empty);
+                        subKey?.GetValue(LayoutText)?.ToString() ?? String.Empty);
                 })
-                .ToList();
+                .ToList()
+                ?? new List<LoadableKeyboardLayout>();
         }
 
         public DisposableLayouts LoadLayouts(IEnumerable<LoadableKeyboardLayout> loadableLayouts)

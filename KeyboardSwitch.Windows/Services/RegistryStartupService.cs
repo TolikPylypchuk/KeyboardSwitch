@@ -22,7 +22,7 @@ namespace KeyboardSwitch.Windows.Services
         public bool IsStartupConfigured()
         {
             using var key = Registry.CurrentUser.OpenSubKey(StartupRegistryKey);
-            return key.GetValue(StartupRegistryName) != null;
+            return key?.GetValue(StartupRegistryName) != null;
         }
 
         public async Task ConfigureStartupAsync(bool startup)
@@ -31,10 +31,10 @@ namespace KeyboardSwitch.Windows.Services
 
             if (startup)
             {
-                startupKey.SetValue(StartupRegistryName, await this.GetServicePath(), RegistryValueKind.String);
+                startupKey?.SetValue(StartupRegistryName, await this.GetServicePath(), RegistryValueKind.String);
             } else
             {
-                startupKey.DeleteValue(StartupRegistryName);
+                startupKey?.DeleteValue(StartupRegistryName);
             }
         }
 

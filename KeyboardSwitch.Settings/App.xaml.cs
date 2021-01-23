@@ -5,7 +5,6 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,7 +28,10 @@ using KeyboardSwitch.Settings.Core.ViewModels;
 using KeyboardSwitch.Settings.Infrastructure;
 using KeyboardSwitch.Settings.Properties;
 using KeyboardSwitch.Settings.Views;
+
+#if WINDOWS
 using KeyboardSwitch.Windows;
+#endif
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
@@ -137,10 +139,9 @@ namespace KeyboardSwitch.Settings
                 .AddSuspensionDriver()
                 .AddKeyboardSwitchServices();
 
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                services.AddKeyboardSwitchWindowsServices();
-            }
+#if WINDOWS
+            services.AddKeyboardSwitchWindowsServices();
+#endif
 
             services.UseMicrosoftDependencyResolver();
 

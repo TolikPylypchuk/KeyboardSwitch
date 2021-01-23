@@ -3,7 +3,6 @@ using System.IO;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,7 +12,10 @@ using KeyboardSwitch.Common;
 using KeyboardSwitch.Common.Services;
 using KeyboardSwitch.Common.Services.Infrastructure;
 using KeyboardSwitch.Common.Settings;
+
+#if WINDOWS
 using KeyboardSwitch.Windows;
+#endif
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,7 +31,9 @@ namespace KeyboardSwitch
     {
         public static void Main(string[] args)
         {
-            Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            Directory.SetCurrentDirectory(
+                Path.GetDirectoryName(Assembly.GetExecutingAssembly()?.Location) ?? String.Empty);
+
             BlobCache.ApplicationName = nameof(KeyboardSwitch);
 
             using var host = Host.CreateDefaultBuilder(args)
@@ -68,10 +72,9 @@ namespace KeyboardSwitch
                 .AddSingleton<IScheduler>(Scheduler.Default)
                 .AddKeyboardSwitchServices();
 
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                services.AddKeyboardSwitchWindowsServices();
-            }
+#if WINDOWS
+            services.AddKeyboardSwitchWindowsServices();
+#endif
         }
 
         private static void ConfigureLogging(HostBuilderContext hostingContext, ILoggingBuilder logging)

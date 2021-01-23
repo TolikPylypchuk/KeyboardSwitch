@@ -23,7 +23,9 @@ using Splat;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
+#nullable disable
     public abstract class ReactiveForm<TModel, TForm> : ReactiveValidationObject<TForm>, IReactiveForm
+#nullable enable
         where TModel : class
         where TForm : ReactiveForm<TModel, TForm>
     {

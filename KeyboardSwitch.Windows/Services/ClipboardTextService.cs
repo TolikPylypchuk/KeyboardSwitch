@@ -5,7 +5,6 @@ using System.Windows;
 using GregsStack.InputSimulatorStandard;
 using GregsStack.InputSimulatorStandard.Native;
 
-using KeyboardSwitch.Common;
 using KeyboardSwitch.Common.Services;
 
 using Microsoft.Extensions.Logging;

@@ -47,7 +47,7 @@ namespace KeyboardSwitch.Windows
                 logger.LogInformation("The blob cache file for settings not found - creating a new file");
 
                 var file = new FileInfo(path);
-                file.Directory.Create();
+                file.Directory?.Create();
                 file.Create().Close();
             }
 

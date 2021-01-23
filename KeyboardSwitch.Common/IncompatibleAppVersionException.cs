@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.Serialization;
-using System.Security.Permissions;
 
 namespace KeyboardSwitch.Common
 {
@@ -29,14 +28,12 @@ namespace KeyboardSwitch.Common
             : base(message, innerException)
             => this.Version = version;
 
-        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
         private IncompatibleAppVersionException(SerializationInfo info, StreamingContext context)
             : base(info, context)
             => this.Version = info.GetValue(nameof(this.Version), typeof(Version)) as Version;
 
         public Version? Version { get; }
 
-        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
