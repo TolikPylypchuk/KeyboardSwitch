@@ -1,6 +1,8 @@
+using System;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 
 using GregsStack.InputSimulatorStandard;
 using GregsStack.InputSimulatorStandard.Native;
@@ -8,6 +10,11 @@ using GregsStack.InputSimulatorStandard.Native;
 using KeyboardSwitch.Common.Services;
 
 using Microsoft.Extensions.Logging;
+
+using Vanara.PInvoke;
+
+using static Vanara.PInvoke.Kernel32;
+using static Vanara.PInvoke.User32;
 
 namespace KeyboardSwitch.Windows.Services
 {
@@ -41,7 +48,7 @@ namespace KeyboardSwitch.Windows.Services
                         Thread.Sleep(50);
                     }
 
-                    return Clipboard.ContainsText() ? Clipboard.GetText() : null;
+                    return this.GetClipboardText();
                 });
         }
 
@@ -53,7 +60,7 @@ namespace KeyboardSwitch.Windows.Services
 
             await TaskUtils.RunSTATask(() =>
                 {
-                    Clipboard.SetText(text);
+                    SetClipboardText(text);
 
                     if (settings.InstantSwitching)
                     {
@@ -61,6 +68,88 @@ namespace KeyboardSwitch.Windows.Services
                         this.input.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
                     }
                 });
+        }
+
+        private string? GetClipboardText()
+        {
+            if (!IsClipboardFormatAvailable(CLIPFORMAT.CF_UNICODETEXT))
+            {
+                return null;
+            }
+
+            try
+            {
+                if (!OpenClipboard(IntPtr.Zero))
+                {
+                    return null;
+                }
+
+                var handle = GetClipboardData(CLIPFORMAT.CF_UNICODETEXT);
+
+                var pointer = IntPtr.Zero;
+
+                try
+                {
+                    pointer = GlobalLock(handle);
+
+                    if (pointer == IntPtr.Zero)
+                    {
+                        return null;
+                    }
+
+                    int size = GlobalSize(handle);
+                    var buffer = new byte[size];
+
+                    Marshal.Copy(pointer, buffer, 0, size);
+
+                    return Encoding.Unicode.GetString(buffer).TrimEnd('\0');
+                } finally
+                {
+                    if (pointer != IntPtr.Zero)
+                    {
+                        GlobalUnlock(handle);
+                    }
+                }
+            } finally
+            {
+                CloseClipboard();
+            }
+        }
+
+        private void SetClipboardText(string text)
+        {
+            try
+            {
+                if (!OpenClipboard(IntPtr.Zero))
+                {
+                    return;
+                }
+
+                var handle = Marshal.StringToHGlobalUni(text);
+
+                var pointer = IntPtr.Zero;
+
+                try
+                {
+                    pointer = GlobalLock(handle);
+
+                    if (pointer == IntPtr.Zero)
+                    {
+                        return;
+                    }
+
+                    SetClipboardData(CLIPFORMAT.CF_UNICODETEXT, handle);
+                } finally
+                {
+                    if (pointer != IntPtr.Zero)
+                    {
+                        GlobalUnlock(handle);
+                    }
+                }
+            } finally
+            {
+                CloseClipboard();
+            }
         }
     }
 }
