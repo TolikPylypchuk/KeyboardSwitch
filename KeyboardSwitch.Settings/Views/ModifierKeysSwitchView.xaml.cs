@@ -16,7 +16,7 @@ using ReactiveUI.Validation.Extensions;
 
 namespace KeyboardSwitch.Settings.Views
 {
-    public class ModifierKeysSwitchView : ReactiveUserControl<ModifierKeysSwitchViewModel>
+    public partial class ModifierKeysSwitchView : ReactiveUserControl<ModifierKeysSwitchViewModel>
     {
         public ModifierKeysSwitchView()
         {
@@ -52,35 +52,9 @@ namespace KeyboardSwitch.Settings.Views
             this.InitializeComponent();
         }
 
-        private ComboBox ForwardComboBox { get; set; } = null!;
-        private ComboBox BackwardComboBox { get; set; } = null!;
-
-        private NumericUpDown PressCountUpDown { get; set; } = null!;
-        private NumericUpDown WaitMillisecondsUpDown { get; set; } = null!;
-
-        private TextBlock PressCountValidationTextBlock { get; set; } = null!;
-        private TextBlock WaitMillisecondsValidationTextBlock { get; set; } = null!;
-        private TextBlock SwitchMethodsValidationTextBlock { get; set; } = null!;
-
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
-
-            this.ForwardComboBox = this.FindControl<ComboBox>(nameof(this.ForwardComboBox));
-            this.BackwardComboBox = this.FindControl<ComboBox>(nameof(this.BackwardComboBox));
-
-            this.PressCountUpDown = this.FindControl<NumericUpDown>(nameof(this.PressCountUpDown));
-            this.WaitMillisecondsUpDown = this.FindControl<NumericUpDown>(nameof(this.WaitMillisecondsUpDown));
-
-            this.PressCountValidationTextBlock = this.FindControl<TextBlock>(
-                nameof(this.PressCountValidationTextBlock));
-
-            this.WaitMillisecondsValidationTextBlock = this.FindControl<TextBlock>(
-                nameof(this.WaitMillisecondsValidationTextBlock));
-
-            this.SwitchMethodsValidationTextBlock = this.FindControl<TextBlock>(
-                nameof(this.SwitchMethodsValidationTextBlock));
-
             var allModifiers = new List<ModifierKeys> { ModifierKeys.Alt, ModifierKeys.Ctrl, ModifierKeys.Shift }
                 .GetPowerSet()
                 .Select(modifiers => modifiers.ToList())

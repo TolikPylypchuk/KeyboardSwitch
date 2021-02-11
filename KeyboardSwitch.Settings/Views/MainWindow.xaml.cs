@@ -15,7 +15,7 @@ using ReactiveUI;
 
 namespace KeyboardSwitch.Settings.Views
 {
-    public class MainWindow : ReactiveWindow<MainViewModel>
+    public partial class MainWindow : ReactiveWindow<MainViewModel>
     {
         public MainWindow()
         {
@@ -45,16 +45,7 @@ namespace KeyboardSwitch.Settings.Views
 #endif
         }
 
-        private ContentControl MainContent { get; set; } = null!;
-        private ContentControl ServiceViewContent { get; set; } = null!;
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-
-            this.MainContent = this.FindControl<ContentControl>(nameof(this.MainContent));
-            this.ServiceViewContent = this.FindControl<ContentControl>(nameof(this.ServiceViewContent));
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
         private void BringToForeground()
         {

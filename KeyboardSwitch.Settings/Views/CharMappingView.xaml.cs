@@ -12,7 +12,7 @@ using ReactiveUI;
 
 namespace KeyboardSwitch.Settings.Views
 {
-    public class CharMappingView : ReactiveUserControl<CharMappingViewModel>
+    public partial class CharMappingView : ReactiveUserControl<CharMappingViewModel>
     {
         public CharMappingView()
         {
@@ -28,36 +28,7 @@ namespace KeyboardSwitch.Settings.Views
             this.InitializeComponent();
         }
 
-        private ItemsControl Layouts { get; set; } = null!;
-        private Button AutoConfigureButton { get; set; } = null!;
-
-        private TextBlock NewLayoutsTextBlock { get; set; } = null!;
-        private StackPanel RemoveLayoutsPanel { get; set; } = null!;
-        private Button RemoveLayoutsButton { get; set; } = null!;
-
-        private StackPanel ActionPanel { get; set; } = null!;
-        private Button SaveButton { get; set; } = null!;
-        private Button CancelButton { get; set; } = null!;
-
-        private TextBlock RestartServiceTextBlock { get; set; } = null!;
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-
-            this.Layouts = this.FindControl<ItemsControl>(nameof(Layouts));
-            this.AutoConfigureButton = this.FindControl<Button>(nameof(this.AutoConfigureButton));
-
-            this.NewLayoutsTextBlock = this.Find<TextBlock>(nameof(this.NewLayoutsTextBlock));
-            this.RemoveLayoutsPanel = this.Find<StackPanel>(nameof(this.RemoveLayoutsPanel));
-            this.RemoveLayoutsButton = this.Find<Button>(nameof(this.RemoveLayoutsButton));
-
-            this.ActionPanel = this.FindControl<StackPanel>(nameof(ActionPanel));
-            this.SaveButton = this.FindControl<Button>(nameof(this.SaveButton));
-            this.CancelButton = this.FindControl<Button>(nameof(this.CancelButton));
-
-            this.RestartServiceTextBlock = this.Find<TextBlock>(nameof(this.RestartServiceTextBlock));
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
         private void BindCommands(CompositeDisposable disposables)
         {

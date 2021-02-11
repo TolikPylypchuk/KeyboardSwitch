@@ -11,7 +11,7 @@ using ReactiveUI;
 
 namespace KeyboardSwitch.Settings.Views
 {
-    public class MainContentView : ReactiveUserControl<MainContentViewModel>
+    public partial class MainContentView : ReactiveUserControl<MainContentViewModel>
     {
         public MainContentView()
         {
@@ -41,21 +41,6 @@ namespace KeyboardSwitch.Settings.Views
             this.InitializeComponent();
         }
 
-        private TabItem CharMappingTabItem { get; set; } = null!;
-        private TabItem PreferencesTabItem { get; set; } = null!;
-        private TabItem ConverterTabItem { get; set; } = null!;
-        private TabItem ConverterSettingsTabItem { get; set; } = null!;
-        private TabItem AboutTabItem { get; set; } = null!;
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-
-            this.CharMappingTabItem = this.FindControl<TabItem>(nameof(this.CharMappingTabItem));
-            this.PreferencesTabItem = this.FindControl<TabItem>(nameof(this.PreferencesTabItem));
-            this.ConverterTabItem = this.FindControl<TabItem>(nameof(this.ConverterTabItem));
-            this.ConverterSettingsTabItem = this.FindControl<TabItem>(nameof(this.ConverterSettingsTabItem));
-            this.AboutTabItem = this.FindControl<TabItem>(nameof(this.AboutTabItem));
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
     }
 }

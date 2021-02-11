@@ -21,7 +21,7 @@ using ReactiveUI.Validation.Extensions;
 
 namespace KeyboardSwitch.Settings.Views
 {
-    public class ConverterView : ReactiveUserControl<ConverterViewModel>
+    public partial class ConverterView : ReactiveUserControl<ConverterViewModel>
     {
         public ConverterView()
         {
@@ -35,40 +35,7 @@ namespace KeyboardSwitch.Settings.Views
             this.InitializeComponent();
         }
 
-        private TextBlock TooFewLayoutsTextBlock { get; set; } = null!;
-        private Grid ConverterGrid { get; set; } = null!;
-
-        private TextBox SourceTextBox { get; set; } = null!;
-        private TextBox TargetTextBox { get; set; } = null!;
-
-        private ComboBox SourceLayoutComboBox { get; set; } = null!;
-        private ComboBox TargetLayoutComboBox { get; set; } = null!;
-
-        private Button SwapButton { get; set; } = null!;
-        private Button ConvertButton { get; set; } = null!;
-        private Button ClearButton { get; set; } = null!;
-
-        private TextBlock LayoutsValidationTextBlock { get; set; } = null!;
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-
-            this.TooFewLayoutsTextBlock = this.FindControl<TextBlock>(nameof(this.TooFewLayoutsTextBlock));
-            this.ConverterGrid = this.FindControl<Grid>(nameof(this.ConverterGrid));
-
-            this.SourceTextBox = this.FindControl<TextBox>(nameof(this.SourceTextBox));
-            this.TargetTextBox = this.FindControl<TextBox>(nameof(this.TargetTextBox));
-
-            this.SourceLayoutComboBox = this.FindControl<ComboBox>(nameof(this.SourceLayoutComboBox));
-            this.TargetLayoutComboBox = this.FindControl<ComboBox>(nameof(this.TargetLayoutComboBox));
-
-            this.SwapButton = this.FindControl<Button>(nameof(this.SwapButton));
-            this.ConvertButton = this.FindControl<Button>(nameof(this.ConvertButton));
-            this.ClearButton = this.FindControl<Button>(nameof(this.ClearButton));
-
-            this.LayoutsValidationTextBlock = this.FindControl<TextBlock>(nameof(this.LayoutsValidationTextBlock));
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
         private void BindConverterVisibility(CompositeDisposable disposables)
         {

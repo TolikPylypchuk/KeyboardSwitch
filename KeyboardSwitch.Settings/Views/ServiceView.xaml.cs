@@ -11,7 +11,7 @@ using ReactiveUI;
 
 namespace KeyboardSwitch.Settings.Views
 {
-    public class ServiceView : ReactiveUserControl<ServiceViewModel>
+    public partial class ServiceView : ReactiveUserControl<ServiceViewModel>
     {
         public ServiceView()
         {
@@ -60,23 +60,6 @@ namespace KeyboardSwitch.Settings.Views
             this.InitializeComponent();
         }
 
-        private TextBlock ServiceRunningTextBlock { get; set; } = null!;
-        private TextBlock ServiceNotRunningTextBlock { get; set; } = null!;
-        private TextBlock ServiceShuttingDownTextBlock { get; set; } = null!;
-        private Button StartServiceButton { get; set; } = null!;
-        private Button StopServiceButton { get; set; } = null!;
-        private Button KillServiceButton { get; set; } = null!;
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-
-            this.ServiceRunningTextBlock = this.FindControl<TextBlock>(nameof(this.ServiceRunningTextBlock));
-            this.ServiceNotRunningTextBlock = this.FindControl<TextBlock>(nameof(this.ServiceNotRunningTextBlock));
-            this.ServiceShuttingDownTextBlock = this.FindControl<TextBlock>(nameof(this.ServiceShuttingDownTextBlock));
-            this.StartServiceButton = this.FindControl<Button>(nameof(this.StartServiceButton));
-            this.StopServiceButton = this.FindControl<Button>(nameof(this.StopServiceButton));
-            this.KillServiceButton = this.FindControl<Button>(nameof(this.KillServiceButton));
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
     }
 }

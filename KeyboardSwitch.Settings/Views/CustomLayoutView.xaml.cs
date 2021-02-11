@@ -14,7 +14,7 @@ using ReactiveUI.Validation.Extensions;
 
 namespace KeyboardSwitch.Settings.Views
 {
-    public class CustomLayoutView : ReactiveUserControl<CustomLayoutViewModel>
+    public partial class CustomLayoutView : ReactiveUserControl<CustomLayoutViewModel>
     {
         public CustomLayoutView()
         {
@@ -43,23 +43,6 @@ namespace KeyboardSwitch.Settings.Views
             this.InitializeComponent();
         }
 
-        private TextBox NameTextBox { get; set; } = null!;
-        private TextBox CharsTextBox { get; set; } = null!;
-        private Button DeleteButton { get; set; } = null!;
-
-        private TextBlock NameEmptyTextBlock { get; set; } = null!;
-        private TextBlock DuplicateCharsTextBlock { get; set; } = null!;
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-
-            this.NameTextBox = this.FindControl<TextBox>(nameof(this.NameTextBox));
-            this.CharsTextBox = this.FindControl<TextBox>(nameof(this.CharsTextBox));
-            this.DeleteButton = this.FindControl<Button>(nameof(this.DeleteButton));
-
-            this.NameEmptyTextBlock = this.FindControl<TextBlock>(nameof(this.NameEmptyTextBlock));
-            this.DuplicateCharsTextBlock = this.FindControl<TextBlock>(nameof(this.DuplicateCharsTextBlock));
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
     }
 }

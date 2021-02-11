@@ -12,7 +12,7 @@ using ReactiveUI.Validation.Extensions;
 
 namespace KeyboardSwitch.Settings.Views
 {
-    public class ConverterSettingsView : ReactiveUserControl<ConverterSettingsViewModel>
+    public partial class ConverterSettingsView : ReactiveUserControl<ConverterSettingsViewModel>
     {
         public ConverterSettingsView()
         {
@@ -59,36 +59,6 @@ namespace KeyboardSwitch.Settings.Views
             this.InitializeComponent();
         }
 
-        private ItemsControl Layouts { get; set; } = null!;
-        private Button AddLayoutButton { get; set; } = null!;
-        private Button AutoConfigureButton { get; set; } = null!;
-
-        private TextBlock CustomLayoutsValidationTextBlock { get; set; } = null!;
-
-        private StackPanel ActionPanel { get; set; } = null!;
-        private Button SaveButton { get; set; } = null!;
-        private Button CancelButton { get; set; } = null!;
-
-        private DockPanel MainPanel { get; set; } = null!;
-        private ContentControl LoadableLayoutsControl { get; set; } = null!;
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-
-            this.Layouts = this.FindControl<ItemsControl>(nameof(this.Layouts));
-            this.AddLayoutButton = this.FindControl<Button>(nameof(this.AddLayoutButton));
-            this.AutoConfigureButton = this.FindControl<Button>(nameof(this.AutoConfigureButton));
-
-            this.CustomLayoutsValidationTextBlock = this.FindControl<TextBlock>(
-                nameof(this.CustomLayoutsValidationTextBlock));
-
-            this.ActionPanel = this.FindControl<StackPanel>(nameof(this.ActionPanel));
-            this.SaveButton = this.FindControl<Button>(nameof(this.SaveButton));
-            this.CancelButton = this.FindControl<Button>(nameof(this.CancelButton));
-
-            this.MainPanel = this.FindControl<DockPanel>(nameof(this.MainPanel));
-            this.LoadableLayoutsControl = this.FindControl<ContentControl>(nameof(this.LoadableLayoutsControl));
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
     }
 }

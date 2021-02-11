@@ -16,7 +16,7 @@ using ReactiveUI.Validation.Extensions;
 
 namespace KeyboardSwitch.Settings.Views
 {
-    public class HotKeySwitchView : ReactiveUserControl<HotKeySwitchViewModel>
+    public partial class HotKeySwitchView : ReactiveUserControl<HotKeySwitchViewModel>
     {
         public HotKeySwitchView()
         {
@@ -59,43 +59,9 @@ namespace KeyboardSwitch.Settings.Views
             this.InitializeComponent();
         }
 
-        private ComboBox ModifierKeysComboBox { get; set; } = null!;
-
-        private ContentControl ForwardContent { get; set; } = null!;
-        private ContentControl BackwardContent { get; set; } = null!;
-
-        private TextBlock ForwardValidationRequiredTextBlock { get; set; } = null!;
-        private TextBlock ForwardValidationTextBlock { get; set; } = null!;
-
-        private TextBlock BackwardValidationRequiredTextBlock { get; set; } = null!;
-        private TextBlock BackwardValidationTextBlock { get; set; } = null!;
-
-        private TextBlock SwitchMethodsValidationTextBlock { get; set; } = null!;
-
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
-
-            this.ModifierKeysComboBox = this.FindControl<ComboBox>(nameof(this.ModifierKeysComboBox));
-
-            this.ForwardContent = this.FindControl<ContentControl>(nameof(this.ForwardContent));
-            this.BackwardContent = this.FindControl<ContentControl>(nameof(this.BackwardContent));
-
-            this.ForwardValidationRequiredTextBlock = this.FindControl<TextBlock>(
-                nameof(this.ForwardValidationRequiredTextBlock));
-
-            this.ForwardValidationTextBlock = this.FindControl<TextBlock>(
-                nameof(this.ForwardValidationTextBlock));
-
-            this.BackwardValidationRequiredTextBlock = this.FindControl<TextBlock>(
-                nameof(this.BackwardValidationRequiredTextBlock));
-
-            this.BackwardValidationTextBlock = this.FindControl<TextBlock>(
-                nameof(this.BackwardValidationTextBlock));
-
-            this.SwitchMethodsValidationTextBlock = this.FindControl<TextBlock>(
-                nameof(this.SwitchMethodsValidationTextBlock));
-
             this.ModifierKeysComboBox.Items = new List<ModifierKeys>
                 {
                     ModifierKeys.Alt, ModifierKeys.Ctrl, ModifierKeys.Shift
