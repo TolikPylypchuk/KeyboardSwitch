@@ -15,7 +15,7 @@ using ReactiveUI;
 
 namespace KeyboardSwitch.Settings.Views
 {
-    public class AboutView : ReactiveUserControl<AboutViewModel>
+    public partial class AboutView : ReactiveUserControl<AboutViewModel>
     {
         public AboutView()
         {
@@ -47,27 +47,7 @@ namespace KeyboardSwitch.Settings.Views
             this.InitializeComponent();
         }
 
-        private TextBlock VersionTextBlock { get; set; } = null!;
-        private Button CheckForUpdatesButton { get; set; } = null!;
-        private TextBlock NoNewVersionsTextBlock { get; set; } = null!;
-        private Button ViewDocsButton { get; set; } = null!;
-
-        private TextBlock NewVersionTextBlock { get; set; } = null!;
-        private Button GetNewVersionButton { get; set; } = null!;
-        private TextBlock GetNewVersionHintTextBlock { get; set; } = null!;
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-            this.VersionTextBlock = this.FindControl<TextBlock>(nameof(this.VersionTextBlock));
-            this.CheckForUpdatesButton = this.FindControl<Button>(nameof(this.CheckForUpdatesButton));
-            this.NoNewVersionsTextBlock = this.FindControl<TextBlock>(nameof(this.NoNewVersionsTextBlock));
-            this.ViewDocsButton = this.FindControl<Button>(nameof(this.ViewDocsButton));
-
-            this.NewVersionTextBlock = this.FindControl<TextBlock>(nameof(this.NewVersionTextBlock));
-            this.GetNewVersionButton = this.FindControl<Button>(nameof(this.GetNewVersionButton));
-            this.GetNewVersionHintTextBlock = this.FindControl<TextBlock>(nameof(this.GetNewVersionHintTextBlock));
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
         private void BindElementsVisibility(CompositeDisposable disposables)
         {

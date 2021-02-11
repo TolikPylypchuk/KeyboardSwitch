@@ -14,7 +14,7 @@ using ReactiveUI;
 
 namespace KeyboardSwitch.Settings.Views
 {
-    public class LoadableLayoutsSettingsView : ReactiveUserControl<LoadableLayoutsSettingsViewModel>
+    public partial class LoadableLayoutsSettingsView : ReactiveUserControl<LoadableLayoutsSettingsViewModel>
     {
         public LoadableLayoutsSettingsView()
         {
@@ -46,21 +46,9 @@ namespace KeyboardSwitch.Settings.Views
             this.InitializeComponent();
         }
 
-        private ItemsControl Layouts { get; set; } = null!;
-        private ComboBox NewLayoutComboBox { get; set; } = null!;
-
-        private Button SaveButton { get; set; } = null!;
-        private Button CancelButton { get; set; } = null!;
-
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
-
-            this.Layouts = this.FindControl<ItemsControl>(nameof(this.Layouts));
-            this.NewLayoutComboBox = this.FindControl<ComboBox>(nameof(this.NewLayoutComboBox));
-
-            this.SaveButton = this.FindControl<Button>(nameof(this.SaveButton));
-            this.CancelButton = this.FindControl<Button>(nameof(this.CancelButton));
         }
     }
 }

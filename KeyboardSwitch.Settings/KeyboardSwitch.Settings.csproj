@@ -85,6 +85,7 @@
     <PackageReference Include="System.Interactive" Version="5.0.0" />
     <PackageReference Include="System.Interactive.Async" Version="5.0.0" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
+    <PackageReference Include="XamlNameReferenceGenerator" Version="0.2.1-preview" />
   </ItemGroup>
 
   <ItemGroup>
@@ -184,5 +185,8 @@
     <None Update="Views\AboutView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="**\*.xaml" />
   </ItemGroup>
 </Project>

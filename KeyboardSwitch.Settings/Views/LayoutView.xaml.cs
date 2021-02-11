@@ -11,7 +11,7 @@ using ReactiveUI.Validation.Extensions;
 
 namespace KeyboardSwitch.Settings.Views
 {
-    public class LayoutView : ReactiveUserControl<LayoutViewModel>
+    public partial class LayoutView : ReactiveUserControl<LayoutViewModel>
     {
         public LayoutView()
         {
@@ -33,19 +33,9 @@ namespace KeyboardSwitch.Settings.Views
             this.InitializeComponent();
         }
 
-        private TextBlock LanguageTextBlock { get; set; } = null!;
-        private TextBlock KeyboardTextBlock { get; set; } = null!;
-        private TextBox CharsTextBox { get; set; } = null!;
-        private TextBlock DuplicateCharsTextBlock { get; set; } = null!;
-
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
-
-            this.LanguageTextBlock = this.FindControl<TextBlock>(nameof(this.LanguageTextBlock));
-            this.KeyboardTextBlock = this.FindControl<TextBlock>(nameof(this.KeyboardTextBlock));
-            this.CharsTextBox = this.FindControl<TextBox>(nameof(this.CharsTextBox));
-            this.DuplicateCharsTextBlock = this.FindControl<TextBlock>(nameof(this.DuplicateCharsTextBlock));
         }
     }
 }

@@ -10,7 +10,7 @@ using ReactiveUI;
 
 namespace KeyboardSwitch.Settings.Views
 {
-    public class LoadableLayoutView : ReactiveUserControl<LoadableLayoutViewModel>
+    public partial class LoadableLayoutView : ReactiveUserControl<LoadableLayoutViewModel>
     {
         public LoadableLayoutView()
         {
@@ -25,15 +25,6 @@ namespace KeyboardSwitch.Settings.Views
             this.InitializeComponent();
         }
 
-        private TextBlock NameTextBlock { get; set; } = null!;
-        private Button DeleteButton { get; set; } = null!;
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-
-            this.NameTextBlock = this.FindControl<TextBlock>(nameof(this.NameTextBlock));
-            this.DeleteButton = this.FindControl<Button>(nameof(this.DeleteButton));
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
     }
 }

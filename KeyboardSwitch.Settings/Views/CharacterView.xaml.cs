@@ -17,7 +17,7 @@ using static KeyboardSwitch.Common.Constants;
 
 namespace KeyboardSwitch.Settings.Views
 {
-    public class CharacterView : ReactiveUserControl<CharacterViewModel>
+    public partial class CharacterView : ReactiveUserControl<CharacterViewModel>
     {
         public CharacterView()
         {
@@ -42,13 +42,7 @@ namespace KeyboardSwitch.Settings.Views
             this.InitializeComponent();
         }
 
-        private TextBox CharBox { get; set; } = null!;
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-            this.CharBox = this.FindControl<TextBox>(nameof(this.CharBox));
-        }
+        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
         private string KeyToString(KeyEventArgs e)
             => e.Key switch
