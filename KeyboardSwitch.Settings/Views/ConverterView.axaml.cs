@@ -3,10 +3,8 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
-using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 
 using DynamicData;
@@ -25,17 +23,14 @@ namespace KeyboardSwitch.Settings.Views
     {
         public ConverterView()
         {
+            this.InitializeComponent();
             this.WhenActivated(disposables =>
             {
                 this.BindConverterVisibility(disposables);
                 this.BindControls(disposables);
                 this.BindCommands(disposables);
             });
-
-            this.InitializeComponent();
         }
-
-        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
         private void BindConverterVisibility(CompositeDisposable disposables)
         {
@@ -56,22 +51,22 @@ namespace KeyboardSwitch.Settings.Views
         private void BindControls(CompositeDisposable disposables)
         {
             this.Bind(this.ViewModel, vm => vm.SourceText, v => v.SourceTextBox.Text)
-                ?.DisposeWith(disposables);
+                .DisposeWith(disposables);
 
             this.OneWayBind(this.ViewModel, vm => vm.TargetText, v => v.TargetTextBox.Text)
-                ?.DisposeWith(disposables);
+                .DisposeWith(disposables);
 
             this.OneWayBind(this.ViewModel, vm => vm.Layouts, v => v.SourceLayoutComboBox.Items)
-                ?.DisposeWith(disposables);
+                .DisposeWith(disposables);
 
             this.OneWayBind(this.ViewModel, vm => vm.Layouts, v => v.TargetLayoutComboBox.Items)
-                ?.DisposeWith(disposables);
+                .DisposeWith(disposables);
 
             this.Bind(this.ViewModel, vm => vm.SourceLayout, v => v.SourceLayoutComboBox.SelectedItem)
-                ?.DisposeWith(disposables);
+                .DisposeWith(disposables);
 
             this.Bind(this.ViewModel, vm => vm.TargetLayout, v => v.TargetLayoutComboBox.SelectedItem)
-                ?.DisposeWith(disposables);
+                .DisposeWith(disposables);
 
             this.ViewModel.Layouts
                 .ToObservableChangeSet()
@@ -92,7 +87,7 @@ namespace KeyboardSwitch.Settings.Views
         private void BindCommands(CompositeDisposable disposables)
         {
             this.BindCommand(this.ViewModel, vm => vm.SwapLayouts, v => v.SwapButton)
-                    .DisposeWith(disposables);
+                .DisposeWith(disposables);
 
             this.BindCommand(this.ViewModel, vm => vm.Convert, v => v.ConvertButton)
                 .DisposeWith(disposables);

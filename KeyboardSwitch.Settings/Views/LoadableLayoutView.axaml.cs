@@ -1,7 +1,5 @@
 using System.Reactive.Disposables;
 
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 
 using KeyboardSwitch.Settings.Core.ViewModels;
@@ -14,6 +12,7 @@ namespace KeyboardSwitch.Settings.Views
     {
         public LoadableLayoutView()
         {
+            this.InitializeComponent();
             this.WhenActivated(disposables =>
             {
                 this.NameTextBlock.Text = this.ViewModel.Layout.Name;
@@ -21,10 +20,6 @@ namespace KeyboardSwitch.Settings.Views
                 this.BindCommand(this.ViewModel, vm => vm.Delete, v => v.DeleteButton)
                     .DisposeWith(disposables);
             });
-
-            this.InitializeComponent();
         }
-
-        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
     }
 }

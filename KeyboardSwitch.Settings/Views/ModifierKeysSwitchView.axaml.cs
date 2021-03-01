@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
 
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 
 using KeyboardSwitch.Common;
@@ -20,19 +18,32 @@ namespace KeyboardSwitch.Settings.Views
     {
         public ModifierKeysSwitchView()
         {
+            this.InitializeComponent();
+            var allModifiers = new List<ModifierKeys> { ModifierKeys.Alt, ModifierKeys.Ctrl, ModifierKeys.Shift }
+                .GetPowerSet()
+                .Select(modifiers => modifiers.ToList())
+                .OrderBy(modifiers => modifiers.Count)
+                .Skip(1)
+                .Select(modifiers => modifiers.Flatten())
+                .Select(Convert.ModifierKeysToString)
+                .Where(value => value != null)
+                .ToList();
+
+            this.ForwardComboBox.Items = allModifiers;
+            this.BackwardComboBox.Items = allModifiers;
             this.WhenActivated(disposables =>
             {
                 this.Bind(this.ViewModel, vm => vm.ForwardModifierKeys, v => v.ForwardComboBox.SelectedItem)
-                    ?.DisposeWith(disposables);
+                    .DisposeWith(disposables);
 
                 this.Bind(this.ViewModel, vm => vm.BackwardModifierKeys, v => v.BackwardComboBox.SelectedItem)
-                    ?.DisposeWith(disposables);
+                    .DisposeWith(disposables);
 
                 this.Bind(this.ViewModel, vm => vm.PressCount, v => v.PressCountUpDown.Value)
-                    ?.DisposeWith(disposables);
+                    .DisposeWith(disposables);
 
                 this.Bind(this.ViewModel, vm => vm.WaitMilliseconds, v => v.WaitMillisecondsUpDown.Value)
-                    ?.DisposeWith(disposables);
+                    .DisposeWith(disposables);
 
                 this.BindValidation(
                         this.ViewModel, vm => vm.PressCount, v => v.PressCountValidationTextBlock.Text)
@@ -48,25 +59,6 @@ namespace KeyboardSwitch.Settings.Views
                         v => v.SwitchMethodsValidationTextBlock.Text)
                     .DisposeWith(disposables);
             });
-
-            this.InitializeComponent();
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-            var allModifiers = new List<ModifierKeys> { ModifierKeys.Alt, ModifierKeys.Ctrl, ModifierKeys.Shift }
-                .GetPowerSet()
-                .Select(modifiers => modifiers.ToList())
-                .OrderBy(modifiers => modifiers.Count)
-                .Skip(1)
-                .Select(modifiers => modifiers.Flatten())
-                .Select(Convert.ModifierKeysToString)
-                .Where(value => value != null)
-                .ToList();
-
-            this.ForwardComboBox.Items = allModifiers;
-            this.BackwardComboBox.Items = allModifiers;
         }
     }
 }

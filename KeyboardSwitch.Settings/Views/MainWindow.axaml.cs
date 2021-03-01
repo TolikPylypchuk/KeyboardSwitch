@@ -1,11 +1,9 @@
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 
 using KeyboardSwitch.Common;
@@ -19,13 +17,14 @@ namespace KeyboardSwitch.Settings.Views
     {
         public MainWindow()
         {
+            this.InitializeComponent();
             this.WhenActivated(disposables =>
             {
                 this.OneWayBind(this.ViewModel, vm => vm.MainContentViewModel, v => v.MainContent.Content)
-                    ?.DisposeWith(disposables);
+                    .DisposeWith(disposables);
 
                 this.OneWayBind(this.ViewModel, vm => vm.ServiceViewModel, v => v.ServiceViewContent.Content)
-                    ?.DisposeWith(disposables);
+                    .DisposeWith(disposables);
 
                 this.ViewModel.OpenExternally
                     .Subscribe(this.BringToForeground)
@@ -38,14 +37,7 @@ namespace KeyboardSwitch.Settings.Views
                     .InvokeCommand(this.ViewModel.OpenAboutTab)
                     .DisposeWith(disposables);
             });
-
-            this.InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
         }
-
-        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
         private void BringToForeground()
         {
