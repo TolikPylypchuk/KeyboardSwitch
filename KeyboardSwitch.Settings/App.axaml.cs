@@ -31,6 +31,8 @@ using KeyboardSwitch.Settings.Views;
 
 #if WINDOWS
 using KeyboardSwitch.Windows;
+#else
+using KeyboardSwitch.Linux;
 #endif
 
 using Microsoft.Extensions.Configuration;
@@ -141,6 +143,8 @@ namespace KeyboardSwitch.Settings
 
 #if WINDOWS
             services.AddKeyboardSwitchWindowsServices();
+#else
+            services.AddKeyboardSwitchLinuxServices();
 #endif
 
             services.UseMicrosoftDependencyResolver();

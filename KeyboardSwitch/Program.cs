@@ -15,6 +15,8 @@ using KeyboardSwitch.Common.Settings;
 
 #if WINDOWS
 using KeyboardSwitch.Windows;
+#else
+using KeyboardSwitch.Linux;
 #endif
 
 using Microsoft.Extensions.DependencyInjection;
@@ -74,6 +76,8 @@ namespace KeyboardSwitch
 
 #if WINDOWS
             services.AddKeyboardSwitchWindowsServices();
+#else
+            services.AddKeyboardSwitchLinuxServices();
 #endif
         }
 
