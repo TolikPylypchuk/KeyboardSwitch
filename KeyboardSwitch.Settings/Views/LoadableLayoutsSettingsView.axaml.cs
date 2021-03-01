@@ -2,10 +2,8 @@ using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
-using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 
 using KeyboardSwitch.Settings.Core.ViewModels;
@@ -18,13 +16,14 @@ namespace KeyboardSwitch.Settings.Views
     {
         public LoadableLayoutsSettingsView()
         {
+            this.InitializeComponent();
             this.WhenActivated(disposables =>
             {
                 this.OneWayBind(this.ViewModel, vm => vm.AddedLayouts, v => v.Layouts.Items)
-                    ?.DisposeWith(disposables);
+                    .DisposeWith(disposables);
 
                 this.OneWayBind(this.ViewModel, vm => vm.AddableLayouts, v => v.NewLayoutComboBox.Items)
-                    ?.DisposeWith(disposables);
+                    .DisposeWith(disposables);
 
                 this.NewLayoutComboBox.GetObservable(SelectingItemsControl.SelectionChangedEvent)
                     .Where(e => e.AddedItems.Count > 0)
@@ -42,13 +41,6 @@ namespace KeyboardSwitch.Settings.Views
                 this.BindCommand(this.ViewModel, vm => vm.Finish, v => v.CancelButton, Observable.Return(false))
                     .DisposeWith(disposables);
             });
-
-            this.InitializeComponent();
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
         }
     }
 }

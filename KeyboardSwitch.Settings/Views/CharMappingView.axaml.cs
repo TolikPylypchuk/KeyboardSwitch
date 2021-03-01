@@ -1,8 +1,6 @@
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 
 using KeyboardSwitch.Common;
@@ -16,19 +14,16 @@ namespace KeyboardSwitch.Settings.Views
     {
         public CharMappingView()
         {
+            this.InitializeComponent();
             this.WhenActivated(disposables =>
             {
                 this.OneWayBind(this.ViewModel, vm => vm.Layouts, v => v.Layouts.Items)
-                    ?.DisposeWith(disposables);
+                    .DisposeWith(disposables);
 
                 this.BindCommands(disposables);
                 this.BindTextBlocks(disposables);
             });
-
-            this.InitializeComponent();
         }
-
-        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
         private void BindCommands(CompositeDisposable disposables)
         {

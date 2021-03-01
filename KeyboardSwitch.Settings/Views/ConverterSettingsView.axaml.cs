@@ -1,7 +1,5 @@
 using System.Reactive.Disposables;
 
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 
 using KeyboardSwitch.Common;
@@ -16,10 +14,11 @@ namespace KeyboardSwitch.Settings.Views
     {
         public ConverterSettingsView()
         {
+            this.InitializeComponent();
             this.WhenActivated(disposables =>
             {
                 this.OneWayBind(this.ViewModel, vm => vm.CustomLayouts, v => v.Layouts.Items)
-                    ?.DisposeWith(disposables);
+                    .DisposeWith(disposables);
 
                 this.BindValidation(
                     this.ViewModel, vm => vm!.LayoutNamesAreUniqueRule, v => v.CustomLayoutsValidationTextBlock.Text)
@@ -53,12 +52,8 @@ namespace KeyboardSwitch.Settings.Views
                 this.WhenAnyValue(v => v.ViewModel.LoadableLayoutsSettingsViewModel)
                     .WhereNotNull()
                     .BindTo(this, v => v.LoadableLayoutsControl.Content)
-                    ?.DisposeWith(disposables);
+                    .DisposeWith(disposables);
             });
-
-            this.InitializeComponent();
         }
-
-        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
     }
 }

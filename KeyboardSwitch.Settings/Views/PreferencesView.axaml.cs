@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 
 using KeyboardSwitch.Common;
@@ -18,25 +16,27 @@ namespace KeyboardSwitch.Settings.Views
     {
         public PreferencesView()
         {
+            this.InitializeComponent();
+            this.SwitchModeComboBox.Items = new List<string> { Messages.ModifierKeys, Messages.HotKey };
             this.WhenActivated(disposables =>
             {
                 this.Bind(this.ViewModel, vm => vm.SwitchMode, v => v.SwitchModeComboBox.SelectedItem)
-                    ?.DisposeWith(disposables);
+                    .DisposeWith(disposables);
 
                 this.Bind(this.ViewModel, vm => vm.InstantSwitching, v => v.InstantSwitchingCheckBox.IsChecked)
-                    ?.DisposeWith(disposables);
+                    .DisposeWith(disposables);
 
                 this.Bind(this.ViewModel, vm => vm.SwitchLayout, v => v.SwitchLayoutCheckBox.IsChecked)
-                    ?.DisposeWith(disposables);
+                    .DisposeWith(disposables);
 
                 this.Bind(this.ViewModel, vm => vm.Startup, v => v.StartupCheckBox.IsChecked)
-                    ?.DisposeWith(disposables);
+                    .DisposeWith(disposables);
 
                 this.Bind(
                     this.ViewModel,
                     vm => vm.ShowUninstalledLayoutsMessage,
                     v => v.ShowRemovedLayoutsMessageCheckBox.IsChecked)
-                    ?.DisposeWith(disposables);
+                    .DisposeWith(disposables);
 
                 Observable.CombineLatest(
                         this.WhenAnyObservable(v => v.ViewModel.HotKeySwitchViewModel.Valid),
@@ -46,7 +46,7 @@ namespace KeyboardSwitch.Settings.Views
                     .DisposeWith(disposables);
 
                 this.OneWayBind(this.ViewModel, vm => vm.Content, v => v.PreferencesContent.Content)
-                    ?.DisposeWith(disposables);
+                    .DisposeWith(disposables);
 
                 this.BindCommand(this.ViewModel, vm => vm.Save, v => v.SaveButton)
                     .DisposeWith(disposables);
@@ -58,14 +58,6 @@ namespace KeyboardSwitch.Settings.Views
                     .BindTo(this, v => v.ActionPanel.IsVisible)
                     .DisposeWith(disposables);
             });
-
-            this.InitializeComponent();
-        }
-
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-            this.SwitchModeComboBox.Items = new List<string> { Messages.ModifierKeys, Messages.HotKey };
         }
     }
 }

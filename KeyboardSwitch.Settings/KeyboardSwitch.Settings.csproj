@@ -61,7 +61,7 @@
     <PackageReference Include="System.Interactive" Version="5.0.0" />
     <PackageReference Include="System.Interactive.Async" Version="5.0.0" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
-    <PackageReference Include="XamlNameReferenceGenerator" Version="0.4.1" />
+    <PackageReference Include="XamlNameReferenceGenerator" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>

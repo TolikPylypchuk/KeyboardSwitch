@@ -3,8 +3,6 @@ using System.Globalization;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 
 using KeyboardSwitch.Common;
@@ -19,6 +17,7 @@ namespace KeyboardSwitch.Settings.Views
     {
         public AboutView()
         {
+            this.InitializeComponent();
             this.WhenActivated(disposables =>
             {
                 this.VersionTextBlock.Text = String.Format(
@@ -43,11 +42,7 @@ namespace KeyboardSwitch.Settings.Views
 
                 this.BindElementsVisibility(disposables);
             });
-
-            this.InitializeComponent();
         }
-
-        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
         private void BindElementsVisibility(CompositeDisposable disposables)
         {

@@ -1,8 +1,6 @@
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 
 using KeyboardSwitch.Settings.Core.ViewModels;
@@ -15,6 +13,7 @@ namespace KeyboardSwitch.Settings.Views
     {
         public ServiceView()
         {
+            this.InitializeComponent();
             this.WhenActivated(disposables =>
             {
                 this.WhenAnyValue(v => v.ViewModel.ServiceStatus)
@@ -56,10 +55,6 @@ namespace KeyboardSwitch.Settings.Views
                 this.BindCommand(this.ViewModel, vm => vm.KillService, v => v.KillServiceButton)
                     .DisposeWith(disposables);
             });
-
-            this.InitializeComponent();
         }
-
-        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
     }
 }

@@ -2,11 +2,8 @@ using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
-using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 
 using KeyboardSwitch.Settings.Core.ViewModels;
@@ -21,6 +18,7 @@ namespace KeyboardSwitch.Settings.Views
     {
         public CharacterView()
         {
+            this.InitializeComponent();
             this.WhenActivated(disposables =>
             {
                 this.Bind(
@@ -29,7 +27,7 @@ namespace KeyboardSwitch.Settings.Views
                     v => v.CharBox.Text,
                     ch => ch.ToString(),
                     text => text.Length > 0 ? text[0] : MissingCharacter)
-                    ?.DisposeWith(disposables);
+                    .DisposeWith(disposables);
 
                 this.CharBox.GetObservable(KeyDownEvent, RoutingStrategies.Tunnel)
                     .Do(e => e.Handled = true)
@@ -38,11 +36,7 @@ namespace KeyboardSwitch.Settings.Views
                     .BindTo(this, v => v.CharBox.Text)
                     .DisposeWith(disposables);
             });
-
-            this.InitializeComponent();
         }
-
-        private void InitializeComponent() => AvaloniaXamlLoader.Load(this);
 
         private string KeyToString(KeyEventArgs e)
             => e.Key switch
