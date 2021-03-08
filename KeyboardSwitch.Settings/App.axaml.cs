@@ -62,7 +62,7 @@ namespace KeyboardSwitch.Settings
         private Mutex? mutex;
         private ServiceProvider? serviceProvider;
 
-        private readonly Subject<Unit> openExternally = new Subject<Unit>();
+        private readonly Subject<Unit> openExternally = new();
 
         public override void Initialize()
             => AvaloniaXamlLoader.Load(this);
