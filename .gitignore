@@ -27,6 +27,12 @@ bld/
 .vscode/
 .ionide/
 
+# Shared libraries
+*.dll
+*.so
+*.so.*
+*.dylib
+
 # Jekyll files
 _site
 .sass-cache
