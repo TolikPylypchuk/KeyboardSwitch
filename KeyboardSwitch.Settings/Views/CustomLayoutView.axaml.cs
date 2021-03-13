@@ -18,6 +18,7 @@ namespace KeyboardSwitch.Settings.Views
         public CustomLayoutView()
         {
             this.InitializeComponent();
+
             this.WhenActivated(disposables =>
             {
                 this.Bind(this.ViewModel, vm => vm.Name, v => v.NameTextBox.Text)

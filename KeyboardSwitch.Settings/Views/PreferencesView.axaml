@@ -14,16 +14,33 @@
                       Classes="FormControl" />
         </WrapPanel>
 
-        <StackPanel Orientation="Horizontal" Margin="10 10 0 0" DockPanel.Dock="Top">
-            <TextBlock Text="{l:Translate SwitchMode}" Classes="Label" />
-            <ComboBox x:Name="SwitchModeComboBox" Classes="FormControl" />
-        </StackPanel>
-
         <StackPanel x:Name="ActionPanel" DockPanel.Dock="Bottom">
             <Button x:Name="SaveButton" Content="{l:Translate Save}" Classes="Primary" />
             <Button x:Name="CancelButton" Content="{l:Translate Cancel}" />
         </StackPanel>
 
-        <ContentControl x:Name="PreferencesContent" />
+        <StackPanel>
+            <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,Auto,Auto,Auto" Margin="10">
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="{l:Translate Forward}" Classes="Label" />
+                <ComboBox x:Name="ForwardComboBox" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch"
+                          Classes="FormControl ModifierKeys" />
+
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="{l:Translate PressCount}" Classes="Label" />
+                <NumericUpDown x:Name="PressCountUpDown" Grid.Row="0" Grid.Column="3" Classes="FormControl"
+                               Minimum="1" Maximum="10" />
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="{l:Translate Backward}" Classes="Label" />
+                <ComboBox x:Name="BackwardComboBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch"
+                          Classes="FormControl ModifierKeys" />
+
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{l:Translate WaitMilliseconds}" Classes="Label" />
+                <NumericUpDown x:Name="WaitMillisecondsUpDown" Grid.Row="1" Grid.Column="3" Classes="FormControl"
+                               Increment="50" Minimum="100" Maximum="1000" />
+            </Grid>
+
+            <TextBlock x:Name="PressCountValidationTextBlock" Classes="Error" />
+            <TextBlock x:Name="WaitMillisecondsValidationTextBlock" Classes="Error" />
+            <TextBlock x:Name="SwitchMethodsValidationTextBlock" Classes="Error" />
+        </StackPanel>
     </DockPanel>
 </UserControl>

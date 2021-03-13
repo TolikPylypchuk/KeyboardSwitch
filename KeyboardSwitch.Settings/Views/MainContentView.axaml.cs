@@ -14,6 +14,7 @@ namespace KeyboardSwitch.Settings.Views
         public MainContentView()
         {
             this.InitializeComponent();
+
             this.WhenActivated(disposables =>
             {
                 this.OneWayBind(this.ViewModel, vm => vm.CharMappingViewModel, v => v.CharMappingTabItem.Content)

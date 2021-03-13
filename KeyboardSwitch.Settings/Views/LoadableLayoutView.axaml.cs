@@ -13,6 +13,7 @@ namespace KeyboardSwitch.Settings.Views
         public LoadableLayoutView()
         {
             this.InitializeComponent();
+
             this.WhenActivated(disposables =>
             {
                 this.NameTextBlock.Text = this.ViewModel.Layout.Name;

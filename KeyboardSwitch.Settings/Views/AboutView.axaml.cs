@@ -18,6 +18,7 @@ namespace KeyboardSwitch.Settings.Views
         public AboutView()
         {
             this.InitializeComponent();
+
             this.WhenActivated(disposables =>
             {
                 this.VersionTextBlock.Text = String.Format(

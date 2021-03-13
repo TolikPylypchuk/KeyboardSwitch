@@ -10,13 +10,8 @@ namespace KeyboardSwitch.Common.Services
     {
         IObservable<HotKey> HotKeyPressed { get; }
 
-        HotKey RegisterHotKey(int virtualKeyCode);
-        HotKey RegisterHotKey(ModifierKeys modifiers, int virtualKeyCode);
-        void RegisterHotModifierKey(ModifierKeys modifierKeys, int pressedCount, int waitMilliseconds);
-
-        void UnregisterHotKey(ModifierKeys modifiers, int virtualKeyCode);
-        void UnregisterHotKey(HotKey key);
-        void UnregisterHotModifierKey(ModifierKeys modifierKeys);
+        void Register(ModifierKeys modifierKeys, int pressedCount, int waitMilliseconds);
+        void Unregister(ModifierKeys modifierKeys);
 
         void UnregisterAll();
 

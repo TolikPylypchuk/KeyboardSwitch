@@ -5,7 +5,7 @@ using KeyboardSwitch.Common.Keyboard;
 namespace KeyboardSwitch.Common.Settings
 {
     [DataContract]
-    public sealed class ModifierKeysSwitchSettings
+    public sealed class SwitchSettings
     {
         [DataMember]
         public ModifierKeys ForwardModifierKeys { get; set; }

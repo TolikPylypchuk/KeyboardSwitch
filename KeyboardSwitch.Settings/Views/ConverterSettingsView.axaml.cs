@@ -15,6 +15,7 @@ namespace KeyboardSwitch.Settings.Views
         public ConverterSettingsView()
         {
             this.InitializeComponent();
+
             this.WhenActivated(disposables =>
             {
                 this.OneWayBind(this.ViewModel, vm => vm.CustomLayouts, v => v.Layouts.Items)

@@ -31,10 +31,10 @@ namespace KeyboardSwitch.Common
 
         public static IEnumerable<IEnumerable<T>> GetPowerSet<T>(this IList<T> list) =>
             from bit in Enumerable.Range(0, 1 << list.Count)
-                select
-                    from index in Enumerable.Range(0, list.Count)
-                    where (bit & (1 << index)) != 0
-                    select list[index];
+            select
+                from index in Enumerable.Range(0, list.Count)
+                where (bit & (1 << index)) != 0
+                select list[index];
 
         public static void OpenInBrowser(this Uri uri)
         {

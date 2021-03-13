@@ -15,7 +15,7 @@ namespace KeyboardSwitch.Settings.Converters
             ModifierKeys.Alt,
             ModifierKeys.Ctrl,
             ModifierKeys.Shift,
-            ModifierKeys.Win
+            ModifierKeys.Meta
         };
 
         private static readonly IReadOnlyDictionary<ModifierKeys, string> KeysToString =
@@ -46,7 +46,7 @@ namespace KeyboardSwitch.Settings.Converters
                 ModifierKeys.Alt => Messages.ModifierKeyAlt,
                 ModifierKeys.Ctrl => Messages.ModifierKeyCtrl,
                 ModifierKeys.Shift => Messages.ModifierKeyShift,
-                ModifierKeys.Win => Messages.ModifierKeyWin,
+                ModifierKeys.Meta => Messages.ModifierKeyWin,
                 _ => String.Empty
             };
 

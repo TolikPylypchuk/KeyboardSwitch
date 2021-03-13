@@ -21,7 +21,6 @@ namespace KeyboardSwitch.Common.Services
         private readonly IScheduler scheduler;
         private readonly ILogger<UioHookService> logger;
 
-        private readonly HashSet<HotKey> hotKeys = new();
         private readonly HashSet<ModifierKeys> hotModifierKeys = new();
 
         private readonly Subject<HotKey> hotKeyPressedSubject = new();
@@ -42,25 +41,7 @@ namespace KeyboardSwitch.Common.Services
         public IObservable<HotKey> HotKeyPressed =>
             this.hotKeyPressedSubject.AsObservable();
 
-        public HotKey RegisterHotKey(int virtualKeyCode) =>
-            this.RegisterHotKey(ModifierKeys.None, virtualKeyCode);
-
-        public HotKey RegisterHotKey(ModifierKeys modifiers, int virtualKeyCode)
-        {
-            this.ThrowIfDisposed();
-
-            var key = new HotKey(modifiers, virtualKeyCode);
-
-            this.logger.LogDebug($"Registering a hot key: {key}");
-
-            this.hotKeys.Add(key);
-
-            this.logger.LogDebug($"Registered a hot key: {key}");
-
-            return key;
-        }
-
-        public void RegisterHotModifierKey(ModifierKeys modifierKeys, int pressedCount, int waitMilliseconds)
+        public void Register(ModifierKeys modifierKeys, int pressedCount, int waitMilliseconds)
         {
             this.ThrowIfDisposed();
 
@@ -100,27 +81,7 @@ namespace KeyboardSwitch.Common.Services
             this.logger.LogDebug($"Registered a hot modifier key: {modifierKeys.ToFormattedString()}");
         }
 
-        public void UnregisterHotKey(ModifierKeys modifiers, int virtualKeyCode) =>
-            this.UnregisterHotKey(new HotKey(modifiers, virtualKeyCode));
-
-        public void UnregisterHotKey(HotKey key)
-        {
-            this.ThrowIfDisposed();
-
-            this.logger.LogDebug($"Unregistering a hot key: {key}");
-
-            if (!this.hotKeys.Contains(key))
-            {
-                this.logger.LogWarning($"Key {key} not found");
-                return;
-            }
-
-            this.hotKeys.Remove(key);
-
-            this.logger.LogDebug($"Unregistered a hot key: {key}");
-        }
-
-        public void UnregisterHotModifierKey(ModifierKeys modifierKeys)
+        public void Unregister(ModifierKeys modifierKeys)
         {
             this.ThrowIfDisposed();
 
@@ -146,7 +107,6 @@ namespace KeyboardSwitch.Common.Services
 
             this.ThrowIfDisposed();
 
-            this.hotKeys.Clear();
             this.hotModifierKeys.Clear();
 
             this.hotModifierKeyPressedSubscriptions.Values.ForEach(subscription => subscription.Dispose());

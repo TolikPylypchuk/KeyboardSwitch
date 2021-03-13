@@ -17,6 +17,7 @@ namespace KeyboardSwitch.Settings.Views
         public LoadableLayoutsSettingsView()
         {
             this.InitializeComponent();
+
             this.WhenActivated(disposables =>
             {
                 this.OneWayBind(this.ViewModel, vm => vm.AddedLayouts, v => v.Layouts.Items)

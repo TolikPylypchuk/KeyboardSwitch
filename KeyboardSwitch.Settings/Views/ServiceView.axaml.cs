@@ -14,6 +14,7 @@ namespace KeyboardSwitch.Settings.Views
         public ServiceView()
         {
             this.InitializeComponent();
+
             this.WhenActivated(disposables =>
             {
                 this.WhenAnyValue(v => v.ViewModel.ServiceStatus)

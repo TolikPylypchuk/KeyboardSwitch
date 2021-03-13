@@ -132,20 +132,13 @@ namespace KeyboardSwitch.Common.Services
         private AppSettings CreateDefaultAppSettings() =>
             new()
             {
-                HotKeySwitchSettings = new HotKeySwitchSettings
-                {
-                    Forward = 'X',
-                    Backward = 'Z',
-                    ModifierKeys = ModifierKeys.Ctrl | ModifierKeys.Shift
-                },
-                ModifierKeysSwitchSettings = new ModifierKeysSwitchSettings
+                SwitchSettings = new SwitchSettings
                 {
                     ForwardModifierKeys = ModifierKeys.Ctrl | ModifierKeys.Shift,
                     BackwardModifierKeys = ModifierKeys.Alt | ModifierKeys.Ctrl | ModifierKeys.Shift,
                     PressCount = 2,
                     WaitMilliseconds = 300
                 },
-                SwitchMode = SwitchMode.ModifierKey,
                 CharsByKeyboardLayoutId = this.layoutService.GetKeyboardLayouts()
                     .ToDictionary(layout => layout.Id, _ => String.Empty),
                 InstantSwitching = true,

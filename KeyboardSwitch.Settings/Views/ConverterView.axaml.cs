@@ -24,6 +24,7 @@ namespace KeyboardSwitch.Settings.Views
         public ConverterView()
         {
             this.InitializeComponent();
+
             this.WhenActivated(disposables =>
             {
                 this.BindConverterVisibility(disposables);

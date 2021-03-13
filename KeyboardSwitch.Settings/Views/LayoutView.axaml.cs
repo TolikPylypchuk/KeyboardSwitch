@@ -14,6 +14,7 @@ namespace KeyboardSwitch.Settings.Views
         public LayoutView()
         {
             this.InitializeComponent();
+
             this.WhenActivated(disposables =>
             {
                 this.OneWayBind(this.ViewModel, vm => vm.LanguageName, v => v.LanguageTextBlock.Text)

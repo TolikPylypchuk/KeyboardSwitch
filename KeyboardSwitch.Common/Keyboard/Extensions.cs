@@ -18,8 +18,7 @@ namespace KeyboardSwitch.Common.Keyboard
                     ModifierKeys.Alt => nameof(ModifierKeys.Alt),
                     ModifierKeys.Ctrl => nameof(ModifierKeys.Ctrl),
                     ModifierKeys.Shift => nameof(ModifierKeys.Shift),
-                    ModifierKeys.Win => nameof(ModifierKeys.Win),
-                    ModifierKeys.NoRepeat => nameof(ModifierKeys.NoRepeat),
+                    ModifierKeys.Meta => nameof(ModifierKeys.Meta),
                     _ => String.Empty
                 })
                 .Aggregate(

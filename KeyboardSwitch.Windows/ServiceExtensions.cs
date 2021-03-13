@@ -12,7 +12,6 @@ namespace KeyboardSwitch.Windows
         public static IServiceCollection AddKeyboardSwitchWindowsServices(this IServiceCollection services)
             => services
                 .AddSingleton<IInputSimulator>(new InputSimulator())
-                .AddSingleton<IKeysService, KeysService>()
                 .AddSingleton<ITextService, ClipboardTextService>()
                 .AddSingleton<LayoutService>()
                 .AddSingleton<ILayoutService>(provider => provider.GetRequiredService<LayoutService>())

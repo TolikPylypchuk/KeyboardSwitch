@@ -1,14 +1,13 @@
-using System;
 using System.Reactive.Concurrency;
-using System.Reactive.Linq;
 using System.Resources;
 using System.Threading.Tasks;
 
-using KeyboardSwitch.Common.Settings;
+using KeyboardSwitch.Common.Keyboard;
 using KeyboardSwitch.Settings.Core.Models;
 
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using ReactiveUI.Validation.Helpers;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
@@ -23,29 +22,21 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.PreferencesModel = preferencesModel;
             this.CopyProperties();
 
-            this.WhenAnyValue(vm => vm.SwitchMode)
-                .Merge(this.Cancel.Select(_ => this.SwitchMode))
-                .Select<SwitchMode, ReactiveObject>(mode => mode switch
-                {
-                    SwitchMode.HotKey => this.HotKeySwitchViewModel,
-                    SwitchMode.ModifierKey => this.ModifierKeysSwitchModel,
-                    _ => throw new NotSupportedException($"Switch mode {mode} is not supported")
-                })
-                .ToPropertyEx(this, vm => vm.Content);
+            this.ValidationRule(vm => vm.PressCount, count => count > 0 && count <= 10);
+            this.ValidationRule(vm => vm.WaitMilliseconds, wait => wait >= 100 && wait <= 1000);
+
+            var switchMethodsAreDifferent = this.WhenAnyValue(
+                vm => vm.ForwardModifierKeys,
+                vm => vm.BackwardModifierKeys,
+                (forward, backward) => forward != backward);
+
+            this.SwitchMethodsAreDifferentRule = this.LocalizedValidationRule(
+                switchMethodsAreDifferent, "SwitchMethodsAreSame");
 
             this.EnableChangeTracking();
         }
 
         public PreferencesModel PreferencesModel { get; }
-
-        [Reactive]
-        public HotKeySwitchViewModel HotKeySwitchViewModel { get; private set; } = null!;
-
-        [Reactive]
-        public ModifierKeysSwitchViewModel ModifierKeysSwitchModel { get; private set; } = null!;
-
-        [Reactive]
-        public SwitchMode SwitchMode { get; set; }
 
         [Reactive]
         public bool InstantSwitching { get; set; }
@@ -59,52 +50,69 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         [Reactive]
         public bool ShowUninstalledLayoutsMessage { get; set; }
 
-        public ReactiveObject? Content { [ObservableAsProperty] get; }
+        [Reactive]
+        public ModifierKeys ForwardModifierKeys { get; set; }
+
+        [Reactive]
+        public ModifierKeys BackwardModifierKeys { get; set; }
+
+        [Reactive]
+        public int PressCount { get; set; }
+
+        [Reactive]
+        public int WaitMilliseconds { get; set; }
+
+        public ValidationHelper SwitchMethodsAreDifferentRule { get; }
 
         protected override PreferencesViewModel Self => this;
 
         protected override void EnableChangeTracking()
         {
-            this.TrackChanges(vm => vm.SwitchMode, vm => vm.PreferencesModel.SwitchMode);
             this.TrackChanges(vm => vm.InstantSwitching, vm => vm.PreferencesModel.InstantSwitching);
             this.TrackChanges(vm => vm.SwitchLayout, vm => vm.PreferencesModel.SwitchLayout);
             this.TrackChanges(vm => vm.Startup, vm => vm.PreferencesModel.Startup);
+
             this.TrackChanges(
                 vm => vm.ShowUninstalledLayoutsMessage, vm => vm.PreferencesModel.ShowUninstalledLayoutsMessage);
 
-            this.TrackChanges(this.WhenAnyObservable(vm => vm.HotKeySwitchViewModel.FormChanged));
-            this.TrackChanges(this.WhenAnyObservable(vm => vm.ModifierKeysSwitchModel.FormChanged));
+            this.TrackChanges(
+                vm => vm.ForwardModifierKeys, vm => vm.PreferencesModel.SwitchSettings.ForwardModifierKeys);
 
-            this.TrackValidation(this.WhenAnyObservable(vm => vm.HotKeySwitchViewModel.Valid));
-            this.TrackValidation(this.WhenAnyObservable(vm => vm.ModifierKeysSwitchModel.Valid));
+            this.TrackChanges(
+                vm => vm.BackwardModifierKeys, vm => vm.PreferencesModel.SwitchSettings.BackwardModifierKeys);
+
+            this.TrackChanges(vm => vm.PressCount, vm => vm.PreferencesModel.SwitchSettings.PressCount);
+            this.TrackChanges(vm => vm.WaitMilliseconds, vm => vm.PreferencesModel.SwitchSettings.WaitMilliseconds);
 
             base.EnableChangeTracking();
         }
 
-        protected override async Task<PreferencesModel> OnSaveAsync()
+        protected override Task<PreferencesModel> OnSaveAsync()
         {
-            this.PreferencesModel.SwitchMode = this.SwitchMode;
             this.PreferencesModel.InstantSwitching = this.InstantSwitching;
             this.PreferencesModel.SwitchLayout = this.SwitchLayout;
             this.PreferencesModel.Startup = this.Startup;
             this.PreferencesModel.ShowUninstalledLayoutsMessage = this.ShowUninstalledLayoutsMessage;
 
-            await this.HotKeySwitchViewModel.Save.Execute();
-            await this.ModifierKeysSwitchModel.Save.Execute();
+            this.PreferencesModel.SwitchSettings.ForwardModifierKeys = this.ForwardModifierKeys;
+            this.PreferencesModel.SwitchSettings.BackwardModifierKeys = this.BackwardModifierKeys;
+            this.PreferencesModel.SwitchSettings.PressCount = this.PressCount;
+            this.PreferencesModel.SwitchSettings.WaitMilliseconds = this.WaitMilliseconds;
 
-            return this.PreferencesModel;
+            return Task.FromResult(this.PreferencesModel);
         }
 
         protected override void CopyProperties()
         {
-            this.HotKeySwitchViewModel = new(this.PreferencesModel.HotKeySwitchSettings);
-            this.ModifierKeysSwitchModel = new(this.PreferencesModel.ModifierKeysSwitchSettings);
-
-            this.SwitchMode = this.PreferencesModel.SwitchMode;
             this.InstantSwitching = this.PreferencesModel.InstantSwitching;
             this.SwitchLayout = this.PreferencesModel.SwitchLayout;
             this.Startup = this.PreferencesModel.Startup;
             this.ShowUninstalledLayoutsMessage = this.PreferencesModel.ShowUninstalledLayoutsMessage;
+
+            this.ForwardModifierKeys = this.PreferencesModel.SwitchSettings.ForwardModifierKeys;
+            this.BackwardModifierKeys = this.PreferencesModel.SwitchSettings.BackwardModifierKeys;
+            this.PressCount = this.PreferencesModel.SwitchSettings.PressCount;
+            this.WaitMilliseconds = this.PreferencesModel.SwitchSettings.WaitMilliseconds;
         }
     }
 }

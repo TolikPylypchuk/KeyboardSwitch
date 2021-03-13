@@ -19,6 +19,7 @@ namespace KeyboardSwitch.Settings.Views
         public CharacterView()
         {
             this.InitializeComponent();
+
             this.WhenActivated(disposables =>
             {
                 this.Bind(

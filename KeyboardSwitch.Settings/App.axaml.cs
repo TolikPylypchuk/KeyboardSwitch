@@ -158,11 +158,8 @@ namespace KeyboardSwitch.Settings
 
             Locator.CurrentMutable.InitializeReactiveUI();
             Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
-
             Locator.CurrentMutable.RegisterConstant(RxApp.TaskpoolScheduler, TaskPoolKey);
-
             Locator.CurrentMutable.RegisterConstant(new ModifierKeyConverter(), typeof(IBindingTypeConverter));
-            Locator.CurrentMutable.RegisterConstant(new SwitchModeConverter(), typeof(IBindingTypeConverter));
 
             RxApp.MainThreadScheduler = AvaloniaScheduler.Instance;
         }

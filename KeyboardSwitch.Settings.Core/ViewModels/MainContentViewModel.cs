@@ -98,9 +98,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         {
             var settings = await this.appSettingsService.GetAppSettingsAsync();
 
-            settings.SwitchMode = this.PreferencesViewModel.SwitchMode;
-            settings.HotKeySwitchSettings = preferencesModel.HotKeySwitchSettings;
-            settings.ModifierKeysSwitchSettings = preferencesModel.ModifierKeysSwitchSettings;
+            settings.SwitchSettings = preferencesModel.SwitchSettings;
             settings.InstantSwitching = preferencesModel.InstantSwitching;
             settings.SwitchLayout = preferencesModel.SwitchLayout;
             settings.ShowUninstalledLayoutsMessage = preferencesModel.ShowUninstalledLayoutsMessage;

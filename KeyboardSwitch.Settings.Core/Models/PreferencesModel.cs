@@ -6,18 +6,14 @@ namespace KeyboardSwitch.Settings.Core.Models
     {
         public PreferencesModel(AppSettings appSettings, bool startup)
         {
-            this.SwitchMode = appSettings.SwitchMode;
-            this.HotKeySwitchSettings = appSettings.HotKeySwitchSettings;
-            this.ModifierKeysSwitchSettings = appSettings.ModifierKeysSwitchSettings;
+            this.SwitchSettings = appSettings.SwitchSettings;
             this.InstantSwitching = appSettings.InstantSwitching;
             this.SwitchLayout = appSettings.SwitchLayout;
             this.Startup = startup;
             this.ShowUninstalledLayoutsMessage = appSettings.ShowUninstalledLayoutsMessage;
         }
 
-        public SwitchMode SwitchMode { get; set; }
-        public HotKeySwitchSettings HotKeySwitchSettings { get; set; }
-        public ModifierKeysSwitchSettings ModifierKeysSwitchSettings { get; set; }
+        public SwitchSettings SwitchSettings { get; set; }
 
         public bool InstantSwitching { get; set; }
         public bool SwitchLayout { get; set; }

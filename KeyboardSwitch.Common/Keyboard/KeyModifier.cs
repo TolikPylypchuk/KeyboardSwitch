@@ -1,9 +1,9 @@
 using System;
 
-namespace KeyboardSwitch.Common.Hook
+namespace KeyboardSwitch.Common.Keyboard
 {
     [Flags]
-    public enum ModifierMask
+    public enum KeyModifier
     {
         LeftShift = 1 << 0,
         LeftCtrl = 1 << 1,
@@ -18,16 +18,6 @@ namespace KeyboardSwitch.Common.Hook
         Shift = LeftShift | RightShift,
         Ctrl = LeftCtrl | RightCtrl,
         Meta = LeftMeta | RightMeta,
-        Alt = LeftAlt | RightAlt,
-
-        Button1 = 1 << 8,
-        Button2 = 1 << 9,
-        Button3 = 1 << 10,
-        Button4 = 1 << 11,
-        Button5 = 1 << 12,
-
-        NumLock = 1 << 13,
-        CapsLock = 1 << 14,
-        ScrollLock = 1 << 15
+        Alt = LeftAlt | RightAlt
     }
 }

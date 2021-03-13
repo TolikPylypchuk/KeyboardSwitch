@@ -19,7 +19,6 @@ namespace KeyboardSwitch
         private readonly IKeyboardHookService keyboardHookService;
         private readonly ISwitchService switchService;
         private readonly IAppSettingsService settingsService;
-        private readonly IKeysService keysService;
         private readonly IHost host;
         private readonly GlobalSettings globalSettings;
         private readonly ILogger<Worker> logger;
@@ -30,7 +29,6 @@ namespace KeyboardSwitch
             IKeyboardHookService keyboardHookService,
             ISwitchService switchService,
             IAppSettingsService settingsService,
-            IKeysService keysService,
             IHost host,
             IOptions<GlobalSettings> globalSettings,
             ILogger<Worker> logger)
@@ -38,7 +36,6 @@ namespace KeyboardSwitch
             this.keyboardHookService = keyboardHookService;
             this.switchService = switchService;
             this.settingsService = settingsService;
-            this.keysService = keysService;
             this.host = host;
             this.globalSettings = globalSettings.Value;
             this.logger = logger;
@@ -83,7 +80,8 @@ namespace KeyboardSwitch
         private async Task RegisterHotKeysAsync()
         {
             this.logger.LogDebug("Registering hot keys to switch forward and backward");
-            this.RegisterHotKeys(await this.settingsService.GetAppSettingsAsync());
+            var settings = await this.settingsService.GetAppSettingsAsync();
+            this.RegisterHotKeys(settings.SwitchSettings);
         }
 
         private async Task RefreshHotKeysAsync()
@@ -91,44 +89,14 @@ namespace KeyboardSwitch
             this.logger.LogDebug("Refreshing the hot key registration to switch forward and backward");
             this.keyboardHookService.UnregisterAll();
             this.hookSubscription?.Dispose();
-            this.RegisterHotKeys(await this.settingsService.GetAppSettingsAsync());
+            await this.RegisterHotKeysAsync();
         }
 
-        private void RegisterHotKeys(AppSettings settings)
+        private void RegisterHotKeys(SwitchSettings settings)
         {
-            switch (settings.SwitchMode)
-            {
-                case SwitchMode.HotKey when settings.HotKeySwitchSettings != null:
-                    this.RegisterHotKeys(settings.HotKeySwitchSettings);
-                    break;
-                case SwitchMode.ModifierKey when settings.ModifierKeysSwitchSettings != null:
-                    this.RegisterHotModifierKeys(settings.ModifierKeysSwitchSettings);
-                    break;
-                default:
-                    throw new InvalidOperationException("Switch settings are invalid");
-            }
-        }
-
-        private void RegisterHotKeys(HotKeySwitchSettings settings)
-        {
-            int forwardKeyCode = this.keysService.GetVirtualKeyCode(settings.Forward);
-            int backwardKeyCode = this.keysService.GetVirtualKeyCode(settings.Backward);
-
-            this.keyboardHookService.RegisterHotKey(settings.ModifierKeys, forwardKeyCode);
-            this.keyboardHookService.RegisterHotKey(settings.ModifierKeys, backwardKeyCode);
-
-            this.hookSubscription = this.keyboardHookService.HotKeyPressed
-                .Select(hotKey => hotKey.VirtualKeyCode == forwardKeyCode
-                    ? SwitchDirection.Forward
-                    : SwitchDirection.Backward)
-                .SubscribeAsync(this.switchService.SwitchTextAsync);
-        }
-
-        private void RegisterHotModifierKeys(ModifierKeysSwitchSettings settings)
-        {
-            this.keyboardHookService.RegisterHotModifierKey(
+            this.keyboardHookService.Register(
                 settings.ForwardModifierKeys, settings.PressCount, settings.WaitMilliseconds);
-            this.keyboardHookService.RegisterHotModifierKey(
+            this.keyboardHookService.Register(
                 settings.BackwardModifierKeys, settings.PressCount, settings.WaitMilliseconds);
 
             this.hookSubscription = this.keyboardHookService.HotKeyPressed
