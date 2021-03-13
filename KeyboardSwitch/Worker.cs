@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -100,7 +101,7 @@ namespace KeyboardSwitch
                 settings.BackwardModifierKeys, settings.PressCount, settings.WaitMilliseconds);
 
             this.hookSubscription = this.keyboardHookService.HotKeyPressed
-                .Select(hotKey => hotKey.Modifiers == settings.ForwardModifierKeys
+                .Select(keys => keys.SetEquals(settings.ForwardModifierKeys)
                     ? SwitchDirection.Forward
                     : SwitchDirection.Backward)
                 .SubscribeAsync(this.switchService.SwitchTextAsync);

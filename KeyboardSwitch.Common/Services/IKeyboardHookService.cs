@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -8,10 +9,10 @@ namespace KeyboardSwitch.Common.Services
 {
     public interface IKeyboardHookService : IDisposable
     {
-        IObservable<HotKey> HotKeyPressed { get; }
+        IObservable<ISet<ModifierKey>> HotKeyPressed { get; }
 
-        void Register(ModifierKeys modifierKeys, int pressedCount, int waitMilliseconds);
-        void Unregister(ModifierKeys modifierKeys);
+        void Register(IEnumerable<ModifierKey> modifierKeys, int pressedCount, int waitMilliseconds);
+        void Unregister(IEnumerable<ModifierKey> modifierKeys);
 
         void UnregisterAll();
 

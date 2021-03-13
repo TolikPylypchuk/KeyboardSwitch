@@ -9,7 +9,7 @@ namespace KeyboardSwitch.Settings.Converters
     public sealed class ModifierKeyConverter : IBindingTypeConverter
     {
         public int GetAffinityForObjects(Type fromType, Type toType) =>
-            fromType == typeof(ModifierKeys) || toType == typeof(ModifierKeys)
+            fromType == typeof(ModifierKey) || toType == typeof(ModifierKey)
                 ? 10000
                 : 0;
 
@@ -17,11 +17,11 @@ namespace KeyboardSwitch.Settings.Converters
         {
             switch (from)
             {
-                case ModifierKeys keys:
-                    result = Convert.ModifierKeysToString(keys);
+                case ModifierKey key:
+                    result = Convert.ModifierKeyToString(key);
                     return true;
                 case string str:
-                    result = Convert.StringToModifierKeys(str);
+                    result = Convert.StringToModifierKey(str);
                     return true;
                 default:
                     result = null;

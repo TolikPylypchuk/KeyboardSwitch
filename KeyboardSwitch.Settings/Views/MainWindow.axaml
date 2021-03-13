@@ -3,7 +3,7 @@
         xmlns:l="clr-namespace:KeyboardSwitch.Settings.Localization"
         x:Class="KeyboardSwitch.Settings.Views.MainWindow"
         Icon="/Assets/icon.ico" WindowStartupLocation="CenterScreen"
-        Title="{l:Translate WindowTitle}" Width="1050" Height="450"
+        Title="{l:Translate WindowTitle}" Width="1100" Height="450"
         MinWidth="450" MinHeight="400">
     <DockPanel>
         <ContentControl x:Name="ServiceViewContent" DockPanel.Dock="Bottom" />

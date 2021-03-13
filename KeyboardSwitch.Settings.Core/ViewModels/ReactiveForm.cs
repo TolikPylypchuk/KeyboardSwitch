@@ -115,6 +115,22 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 .Merge(this.Cancel.Select(_ => false));
         }
 
+        protected IObservable<bool> IsCollectionChangedSimple<TItem>(
+            Expression<Func<TForm, ReadOnlyObservableCollection<TItem>>> property,
+            Func<TForm, ICollection<TItem>> itemCollection)
+        {
+            string propertyName = property.GetMemberName();
+
+            return property.Compile()(this.Self)
+                .ToObservableChangeSet()
+                .ToCollection()
+                .Select(items => !Enumerable.SequenceEqual(items, itemCollection(this.Self)))
+                .Do(changed => this.Log().Debug(
+                    changed ? $"{propertyName} are changed" : $"{propertyName} are unchanged"))
+                .Merge(this.Save.Select(_ => false))
+                .Merge(this.Cancel.Select(_ => false));
+        }
+
         protected IObservable<bool> IsCollectionValid<TOtherForm>(ReadOnlyObservableCollection<TOtherForm> viewModels)
             where TOtherForm : IReactiveForm =>
             viewModels.ToObservableChangeSet()

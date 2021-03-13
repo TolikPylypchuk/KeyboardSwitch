@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 using KeyboardSwitch.Common.Keyboard;
@@ -8,10 +9,10 @@ namespace KeyboardSwitch.Common.Settings
     public sealed class SwitchSettings
     {
         [DataMember]
-        public ModifierKeys ForwardModifierKeys { get; set; }
+        public List<ModifierKey> ForwardModifierKeys { get; set; } = new();
 
         [DataMember]
-        public ModifierKeys BackwardModifierKeys { get; set; }
+        public List<ModifierKey> BackwardModifierKeys { get; set; } = new();
 
         [DataMember]
         public int PressCount { get; set; }

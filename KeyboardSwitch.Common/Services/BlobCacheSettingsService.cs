@@ -134,8 +134,8 @@ namespace KeyboardSwitch.Common.Services
             {
                 SwitchSettings = new SwitchSettings
                 {
-                    ForwardModifierKeys = ModifierKeys.Ctrl | ModifierKeys.Shift,
-                    BackwardModifierKeys = ModifierKeys.Alt | ModifierKeys.Ctrl | ModifierKeys.Shift,
+                    ForwardModifierKeys = new() { ModifierKey.Ctrl, ModifierKey.Shift, ModifierKey.None },
+                    BackwardModifierKeys = new() { ModifierKey.Ctrl, ModifierKey.Shift, ModifierKey.Alt },
                     PressCount = 2,
                     WaitMilliseconds = 300
                 },

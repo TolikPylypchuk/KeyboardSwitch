@@ -1,17 +1,17 @@
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
 
 using Avalonia.ReactiveUI;
 
-using KeyboardSwitch.Common;
 using KeyboardSwitch.Common.Keyboard;
-using KeyboardSwitch.Settings.Converters;
 using KeyboardSwitch.Settings.Core.ViewModels;
 
 using ReactiveUI;
 using ReactiveUI.Validation.Extensions;
+
+using Convert = KeyboardSwitch.Settings.Converters.Convert;
 
 namespace KeyboardSwitch.Settings.Views
 {
@@ -21,22 +21,34 @@ namespace KeyboardSwitch.Settings.Views
         {
             this.InitializeComponent();
 
-            var allModifiers = this.AllModifierKeys();
-            this.ForwardComboBox.Items = allModifiers;
-            this.BackwardComboBox.Items = allModifiers;
+            var modifiers = this.Modifiers()
+                .Where(key => key != ModifierKey.None)
+                .Select(Convert.ModifierKeyToString)
+                .ToImmutableList();
+
+            var allModifiers = modifiers.Insert(0, Convert.ModifierKeyToString(ModifierKey.None));
+
+            this.ForwardFirstComboBox.Items = modifiers;
+            this.ForwardSecondComboBox.Items = modifiers;
+            this.ForwardThirdComboBox.Items = allModifiers;
+
+            this.BackwardFirstComboBox.Items = modifiers;
+            this.BackwardSecondComboBox.Items = modifiers;
+            this.BackwardThirdComboBox.Items = allModifiers;
 
             this.WhenActivated(disposables =>
             {
+                this.BindCheckboxes(disposables);
                 this.BindControls(disposables);
                 this.BindValidations(disposables);
                 this.BindCommands(disposables);
             });
         }
 
-        private void BindControls(CompositeDisposable disposables)
+        private void BindCheckboxes(CompositeDisposable disposables)
         {
             this.Bind(this.ViewModel, vm => vm.InstantSwitching, v => v.InstantSwitchingCheckBox.IsChecked)
-                    .DisposeWith(disposables);
+                .DisposeWith(disposables);
 
             this.Bind(this.ViewModel, vm => vm.SwitchLayout, v => v.SwitchLayoutCheckBox.IsChecked)
                 .DisposeWith(disposables);
@@ -49,11 +61,26 @@ namespace KeyboardSwitch.Settings.Views
                 vm => vm.ShowUninstalledLayoutsMessage,
                 v => v.ShowRemovedLayoutsMessageCheckBox.IsChecked)
                 .DisposeWith(disposables);
+        }
 
-            this.Bind(this.ViewModel, vm => vm.ForwardModifierKeys, v => v.ForwardComboBox.SelectedItem)
+        private void BindControls(CompositeDisposable disposables)
+        {
+            this.Bind(this.ViewModel, vm => vm.ForwardModifierKeyFirst, v => v.ForwardFirstComboBox.SelectedItem)
                 .DisposeWith(disposables);
 
-            this.Bind(this.ViewModel, vm => vm.BackwardModifierKeys, v => v.BackwardComboBox.SelectedItem)
+            this.Bind(this.ViewModel, vm => vm.ForwardModifierKeySecond, v => v.ForwardSecondComboBox.SelectedItem)
+                .DisposeWith(disposables);
+
+            this.Bind(this.ViewModel, vm => vm.ForwardModifierKeyThird, v => v.ForwardThirdComboBox.SelectedItem)
+                .DisposeWith(disposables);
+
+            this.Bind(this.ViewModel, vm => vm.BackwardModifierKeyFirst, v => v.BackwardFirstComboBox.SelectedItem)
+                .DisposeWith(disposables);
+
+            this.Bind(this.ViewModel, vm => vm.BackwardModifierKeySecond, v => v.BackwardSecondComboBox.SelectedItem)
+                .DisposeWith(disposables);
+
+            this.Bind(this.ViewModel, vm => vm.BackwardModifierKeyThird, v => v.BackwardThirdComboBox.SelectedItem)
                 .DisposeWith(disposables);
 
             this.Bind(this.ViewModel, vm => vm.PressCount, v => v.PressCountUpDown.Value)
@@ -74,9 +101,11 @@ namespace KeyboardSwitch.Settings.Views
                 .DisposeWith(disposables);
 
             this.BindValidation(
-                this.ViewModel,
-                vm => vm!.SwitchMethodsAreDifferentRule,
-                v => v.SwitchMethodsValidationTextBlock.Text)
+                this.ViewModel, vm => vm!.ModifierKeysAreDifferentRule, v => v.ModifierKeysValidationTextBlock.Text)
+                .DisposeWith(disposables);
+
+            this.BindValidation(
+                this.ViewModel, vm => vm!.SwitchMethodsAreDifferentRule, v => v.SwitchMethodsValidationTextBlock.Text)
                 .DisposeWith(disposables);
         }
 
@@ -93,15 +122,22 @@ namespace KeyboardSwitch.Settings.Views
                 .DisposeWith(disposables);
         }
 
-        private List<string> AllModifierKeys() =>
-            new List<ModifierKeys> { ModifierKeys.Alt, ModifierKeys.Ctrl, ModifierKeys.Shift }
-                .GetPowerSet()
-                .Select(modifiers => modifiers.ToList())
-                .OrderBy(modifiers => modifiers.Count)
-                .Skip(1)
-                .Select(modifiers => modifiers.Flatten())
-                .Select(Convert.ModifierKeysToString)
-                .Where(value => value != null)
-                .ToList();
+        private List<ModifierKey> Modifiers() =>
+            new()
+            {
+                ModifierKey.None,
+                ModifierKey.Ctrl,
+                ModifierKey.Shift,
+                ModifierKey.Alt,
+                ModifierKey.Meta,
+                ModifierKey.LeftCtrl,
+                ModifierKey.LeftShift,
+                ModifierKey.LeftAlt,
+                ModifierKey.LeftMeta,
+                ModifierKey.RightCtrl,
+                ModifierKey.RightShift,
+                ModifierKey.RightAlt,
+                ModifierKey.RightMeta
+            };
     }
 }

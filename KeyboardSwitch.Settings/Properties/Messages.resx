@@ -204,9 +204,6 @@
   <data name="GetNewVersionHint" xml:space="preserve">
     <value>Don't forget to stop the Keyboard Switch service before installing the new version</value>
   </data>
-  <data name="HotKey" xml:space="preserve">
-    <value>Hot key</value>
-  </data>
   <data name="InstantSwitching" xml:space="preserve">
     <value>Instant switching</value>
   </data>
@@ -226,25 +223,76 @@
     <value>Kill</value>
   </data>
   <data name="ModifierKeyAlt" xml:space="preserve">
-    <value>Alt</value>
+    <value>Any Alt</value>
+  </data>
+  <data name="ModifierKeyCommand" xml:space="preserve">
+    <value>Command</value>
   </data>
   <data name="ModifierKeyCtrl" xml:space="preserve">
-    <value>Ctrl</value>
+    <value>Any Ctrl</value>
+  </data>
+  <data name="ModifierKeyLeftAlt" xml:space="preserve">
+    <value>Left Alt</value>
+  </data>
+  <data name="ModifierKeyLeftCommand" xml:space="preserve">
+    <value>Left Command</value>
+  </data>
+  <data name="ModifierKeyLeftCtrl" xml:space="preserve">
+    <value>Left Ctrl</value>
+  </data>
+  <data name="ModifierKeyLeftMeta" xml:space="preserve">
+    <value>Left Meta</value>
+  </data>
+  <data name="ModifierKeyLeftOption" xml:space="preserve">
+    <value>Left Option</value>
+  </data>
+  <data name="ModifierKeyLeftShift" xml:space="preserve">
+    <value>Left Shift</value>
+  </data>
+  <data name="ModifierKeyLeftWin" xml:space="preserve">
+    <value>Left Win</value>
+  </data>
+  <data name="ModifierKeyMeta" xml:space="preserve">
+    <value>Meta</value>
   </data>
   <data name="ModifierKeyNone" xml:space="preserve">
-    <value />
+    <value>&lt;no key&gt;</value>
   </data>
-  <data name="ModifierKeys" xml:space="preserve">
-    <value>Modifier keys</value>
+  <data name="ModifierKeyOption" xml:space="preserve">
+    <value>Option</value>
   </data>
-  <data name="ModifierKeyShift" xml:space="preserve">
-    <value>Shift</value>
+  <data name="ModifierKeyRightAlt" xml:space="preserve">
+    <value>Right Alt</value>
   </data>
-  <data name="ModifierKeysSeparator" xml:space="preserve">
+  <data name="ModifierKeyRightCommand" xml:space="preserve">
+    <value>RightCommand</value>
+  </data>
+  <data name="ModifierKeyRightCtrl" xml:space="preserve">
+    <value>Right Ctrl</value>
+  </data>
+  <data name="ModifierKeyRightMeta" xml:space="preserve">
+    <value>Right Meta</value>
+  </data>
+  <data name="ModifierKeyRightOption" xml:space="preserve">
+    <value>Right Option</value>
+  </data>
+  <data name="ModifierKeyRightShift" xml:space="preserve">
+    <value>Right Shift</value>
+  </data>
+  <data name="ModifierKeyRightWin" xml:space="preserve">
+    <value>Right Win</value>
+  </data>
+  <data name="ModifierKeysAreSame" xml:space="preserve">
+    <value>Modifier keys must be different in each row</value>
+  </data>
+  <data name="ModifierKeySeparator" xml:space="preserve">
     <value>+</value>
   </data>
+  <data name="ModifierKeyShift" xml:space="preserve">
+    <value>Any Shift</value>
+  </data>
   <data name="ModifierKeyWin" xml:space="preserve">
-    <value>Win</value>
+    <value>Any Win</value>
   </data>
   <data name="Modifiers" xml:space="preserve">
     <value>Modifiers</value>
@@ -315,8 +363,8 @@
   <data name="SwitchMethodsAreSame" xml:space="preserve">
     <value>Methods of forward and backward switching must be different</value>
   </data>
-  <data name="SwitchMode" xml:space="preserve">
-    <value>Switch mode</value>
+  <data name="SwitchSettings" xml:space="preserve">
+    <value>Switch settings:</value>
   </data>
   <data name="TargetText" xml:space="preserve">
     <value>Target text</value>

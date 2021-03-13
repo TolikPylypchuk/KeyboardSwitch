@@ -2,6 +2,8 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
+using static KeyboardSwitch.Common.Util;
+
 namespace KeyboardSwitch.Common.Hook
 {
     public delegate void DispatchProc(ref UioHookEvent e);
@@ -60,24 +62,10 @@ namespace KeyboardSwitch.Common.Hook
             return libHandle;
         }
 
-        private static string GetLibUioHookName()
-        {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                return "./lib/win-x64/uiohook.dll";
-            }
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                return "./lib/macos-x64/libuiohook.dylib";
-            }
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                return "./lib/linux-x64/libuiohook.so";
-            }
-
-            throw new PlatformNotSupportedException();
-        }
+        private static string GetLibUioHookName() =>
+            PlatformDependent(
+                windows: () => "./lib/win-x64/uiohook.dll",
+                macos: () => "./lib/macos-x64/libuiohook.dylib",
+                linux: () => "./lib/linux-x64/libuiohook.so");
     }
 }

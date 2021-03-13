@@ -3,8 +3,10 @@ using System;
 namespace KeyboardSwitch.Common.Keyboard
 {
     [Flags]
-    public enum KeyModifier
+    public enum ModifierKey
     {
+        None = 0,
+
         LeftShift = 1 << 0,
         LeftCtrl = 1 << 1,
         LeftMeta = 1 << 2,

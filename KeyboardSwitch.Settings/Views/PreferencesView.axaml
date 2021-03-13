@@ -20,26 +20,39 @@
         </StackPanel>
 
         <StackPanel>
-            <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,Auto,Auto,Auto" Margin="10">
+            <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" Margin="10">
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="{l:Translate Forward}" Classes="Label" />
-                <ComboBox x:Name="ForwardComboBox" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch"
-                          Classes="FormControl ModifierKeys" />
+                <ComboBox x:Name="ForwardFirstComboBox" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch"
+                          Classes="FormControl ModifierKey" />
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="{l:Translate ModifierKeySeparator}" Classes="Label" />
+                <ComboBox x:Name="ForwardSecondComboBox" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Stretch"
+                          Classes="FormControl ModifierKey" />
+                <TextBlock Grid.Row="0" Grid.Column="4" Text="{l:Translate ModifierKeySeparator}" Classes="Label" />
+                <ComboBox x:Name="ForwardThirdComboBox" Grid.Row="0" Grid.Column="5" HorizontalAlignment="Stretch"
+                          Classes="FormControl ModifierKey" />
 
-                <TextBlock Grid.Row="0" Grid.Column="2" Text="{l:Translate PressCount}" Classes="Label" />
-                <NumericUpDown x:Name="PressCountUpDown" Grid.Row="0" Grid.Column="3" Classes="FormControl"
+                <TextBlock Grid.Row="0" Grid.Column="6" Text="{l:Translate PressCount}" Classes="Label" />
+                <NumericUpDown x:Name="PressCountUpDown" Grid.Row="0" Grid.Column="7" Classes="FormControl"
                                Minimum="1" Maximum="10" />
 
                 <TextBlock Grid.Row="1" Grid.Column="0" Text="{l:Translate Backward}" Classes="Label" />
-                <ComboBox x:Name="BackwardComboBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch"
-                          Classes="FormControl ModifierKeys" />
+                <ComboBox x:Name="BackwardFirstComboBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch"
+                          Classes="FormControl ModifierKey" />
+                <TextBlock Grid.Row="1" Grid.Column="2" Text="{l:Translate ModifierKeySeparator}" Classes="Label" />
+                <ComboBox x:Name="BackwardSecondComboBox" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch"
+                          Classes="FormControl ModifierKey" />
+                <TextBlock Grid.Row="1" Grid.Column="4" Text="{l:Translate ModifierKeySeparator}" Classes="Label" />
+                <ComboBox x:Name="BackwardThirdComboBox" Grid.Row="1" Grid.Column="5" HorizontalAlignment="Stretch"
+                          Classes="FormControl ModifierKey" />
 
-                <TextBlock Grid.Row="1" Grid.Column="2" Text="{l:Translate WaitMilliseconds}" Classes="Label" />
-                <NumericUpDown x:Name="WaitMillisecondsUpDown" Grid.Row="1" Grid.Column="3" Classes="FormControl"
+                <TextBlock Grid.Row="1" Grid.Column="6" Text="{l:Translate WaitMilliseconds}" Classes="Label" />
+                <NumericUpDown x:Name="WaitMillisecondsUpDown" Grid.Row="1" Grid.Column="7" Classes="FormControl"
                                Increment="50" Minimum="100" Maximum="1000" />
             </Grid>
 
             <TextBlock x:Name="PressCountValidationTextBlock" Classes="Error" />
             <TextBlock x:Name="WaitMillisecondsValidationTextBlock" Classes="Error" />
+            <TextBlock x:Name="ModifierKeysValidationTextBlock" Classes="Error" />
             <TextBlock x:Name="SwitchMethodsValidationTextBlock" Classes="Error" />
         </StackPanel>
     </DockPanel>

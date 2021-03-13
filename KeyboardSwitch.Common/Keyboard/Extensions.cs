@@ -6,21 +6,12 @@ namespace KeyboardSwitch.Common.Keyboard
 {
     public static class Extensions
     {
-        public static ModifierKeys Flatten(this IEnumerable<ModifierKeys> keys) =>
-            keys.Aggregate(ModifierKeys.None, (acc, key) => acc | key);
+        public static ModifierKey Flatten(this IEnumerable<ModifierKey> keys) =>
+            keys.Aggregate(ModifierKey.None, (acc, key) => acc | key);
 
-        public static string ToFormattedString(this ModifierKeys modifiers) =>
-            Enum.GetValues(typeof(ModifierKeys))
-                .Cast<ModifierKeys>()
-                .Where(modifier => modifiers.HasFlag(modifier))
-                .Select(modifier => modifier switch
-                {
-                    ModifierKeys.Alt => nameof(ModifierKeys.Alt),
-                    ModifierKeys.Ctrl => nameof(ModifierKeys.Ctrl),
-                    ModifierKeys.Shift => nameof(ModifierKeys.Shift),
-                    ModifierKeys.Meta => nameof(ModifierKeys.Meta),
-                    _ => String.Empty
-                })
+        public static string ToFormattedString(this IEnumerable<ModifierKey> modifiers) =>
+            modifiers
+                .Select(Enum.GetName)
                 .Aggregate(
                     String.Empty,
                     (acc, item) => $"{acc}+{item}",

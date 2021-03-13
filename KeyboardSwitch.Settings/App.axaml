@@ -27,7 +27,7 @@
             <Setter Property="Margin" Value="0 0 10 0" />
         </Style>
 
-        <Style Selector="ComboBox.ModifierKeys">
+        <Style Selector="ComboBox.ModifierKey">
             <Setter Property="MaxDropDownHeight" Value="300" />
         </Style>
 
