@@ -38,8 +38,8 @@ namespace KeyboardSwitch.Settings.Views
             });
         }
 
-        private string KeyToString(KeyEventArgs e)
-            => e.Key switch
+        private string KeyToString(KeyEventArgs e) =>
+            e.Key switch
             {
                 Key.Q => "Q",
                 Key.W => "W",

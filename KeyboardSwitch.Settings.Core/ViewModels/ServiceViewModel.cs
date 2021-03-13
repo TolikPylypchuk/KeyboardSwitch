@@ -93,8 +93,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.isShutdownRequested = true;
         }
 
-        private void OnKillService()
-            => Process.GetProcessesByName(nameof(KeyboardSwitch)).ForEach(process => process.Kill());
+        private void OnKillService() =>
+            Process.GetProcessesByName(nameof(KeyboardSwitch)).ForEach(process => process.Kill());
 
         private void OnReloadSettings()
         {

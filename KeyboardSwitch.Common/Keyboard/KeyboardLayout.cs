@@ -19,22 +19,22 @@ namespace KeyboardSwitch.Common.Keyboard
         public string KeyboardName { get; }
         public string Tag { get; }
 
-        public override bool Equals(object? obj)
-            => obj is KeyboardLayout other && this.Equals(other);
+        public override bool Equals(object? obj) =>
+            obj is KeyboardLayout other && this.Equals(other);
 
-        public bool Equals(KeyboardLayout? other)
-            => other != null && this.Id == other.Id;
+        public bool Equals(KeyboardLayout? other) =>
+            other != null && this.Id == other.Id;
 
-        public override int GetHashCode()
-            => HashCode.Combine(this.Id);
+        public override int GetHashCode() =>
+            HashCode.Combine(this.Id);
 
-        public override string ToString()
-            => $"{this.Culture.DisplayName} - {this.KeyboardName}";
+        public override string ToString() =>
+            $"{this.Culture.DisplayName} - {this.KeyboardName}";
 
-        public static bool operator ==(KeyboardLayout? left, KeyboardLayout? right)
-            => left?.Equals(right) ?? right is null;
+        public static bool operator ==(KeyboardLayout? left, KeyboardLayout? right) =>
+            left?.Equals(right) ?? right is null;
 
-        public static bool operator !=(KeyboardLayout? left, KeyboardLayout? right)
-            => !(left == right);
+        public static bool operator !=(KeyboardLayout? left, KeyboardLayout? right) =>
+            !(left == right);
     }
 }

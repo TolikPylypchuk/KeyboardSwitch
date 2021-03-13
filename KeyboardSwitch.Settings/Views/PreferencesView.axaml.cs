@@ -39,8 +39,8 @@ namespace KeyboardSwitch.Settings.Views
                     .DisposeWith(disposables);
 
                 Observable.CombineLatest(
-                        this.WhenAnyObservable(v => v.ViewModel.HotKeySwitchViewModel.Valid),
-                        this.WhenAnyObservable(v => v.ViewModel.ModifierKeysSwitchModel.Valid))
+                    this.WhenAnyObservable(v => v.ViewModel.HotKeySwitchViewModel.Valid),
+                    this.WhenAnyObservable(v => v.ViewModel.ModifierKeysSwitchModel.Valid))
                     .AllTrue()
                     .BindTo(this, v => v.SwitchModeComboBox.IsEnabled)
                     .DisposeWith(disposables);

@@ -64,8 +64,8 @@ namespace KeyboardSwitch.Settings
 
         private readonly Subject<Unit> openExternally = new();
 
-        public override void Initialize()
-            => AvaloniaXamlLoader.Load(this);
+        public override void Initialize() =>
+            AvaloniaXamlLoader.Load(this);
 
         public override async void OnFrameworkInitializationCompleted()
         {
@@ -139,15 +139,13 @@ namespace KeyboardSwitch.Settings
                 .AddSingleton<IActivationForViewFetcher>(new AvaloniaActivationForViewFetcher())
                 .AddSingleton<IPropertyBindingHook>(new BindingHook())
                 .AddSuspensionDriver()
-                .AddKeyboardSwitchServices();
-
+                .AddKeyboardSwitchServices()
 #if WINDOWS
-            services.AddKeyboardSwitchWindowsServices();
+                .AddKeyboardSwitchWindowsServices()
 #else
-            services.AddKeyboardSwitchLinuxServices();
+                .AddKeyboardSwitchLinuxServices()
 #endif
-
-            services.UseMicrosoftDependencyResolver();
+                .UseMicrosoftDependencyResolver();
 
             BlobCache.ApplicationName = nameof(KeyboardSwitch);
 
@@ -172,7 +170,6 @@ namespace KeyboardSwitch.Settings
         private void ConfigureSuspensionDriver()
         {
             var autoSuspendHelper = new AutoSuspendHelper(this.desktop);
-            GC.KeepAlive(autoSuspendHelper);
 
             RxApp.SuspensionHost.CreateNewAppState = () => new AppState();
             RxApp.SuspensionHost.SetupDefaultSuspendResume();

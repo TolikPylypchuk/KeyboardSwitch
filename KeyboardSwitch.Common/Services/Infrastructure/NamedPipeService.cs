@@ -11,7 +11,7 @@ namespace KeyboardSwitch.Common.Services.Infrastructure
 {
     internal sealed class NamedPipeService : Disposable, INamedPipeService
     {
-        private readonly Subject<string> receivedString = new Subject<string>();
+        private readonly Subject<string> receivedString = new();
         private readonly ILogger<NamedPipeService> logger;
 
         public NamedPipeService(ILogger<NamedPipeService> logger, string name)
@@ -22,11 +22,11 @@ namespace KeyboardSwitch.Common.Services.Infrastructure
 
         public string NamedPipeName { get; }
 
-        public IObservable<string> ReceivedString
-            => this.receivedString.AsObservable();
+        public IObservable<string> ReceivedString =>
+            this.receivedString.AsObservable();
 
-        public void StartServer()
-            => Task.Run(this.WaitForMessages);
+        public void StartServer() =>
+            Task.Run(this.WaitForMessages);
 
         public bool Write(string text, int connectTimeout = 300)
         {
@@ -54,10 +54,8 @@ namespace KeyboardSwitch.Common.Services.Infrastructure
             return true;
         }
 
-        protected override void Dispose(bool disposing)
-        {
+        protected override void Dispose(bool disposing) =>
             this.receivedString.Dispose();
-        }
 
         private void WaitForMessages()
         {

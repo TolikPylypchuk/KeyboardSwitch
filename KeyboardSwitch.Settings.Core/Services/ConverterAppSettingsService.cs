@@ -18,7 +18,7 @@ namespace KeyboardSwitch.Settings.Core.Services
 {
     public class ConverterAppSettingsService : ReactiveObject, IAppSettingsService
     {
-        private readonly Subject<Unit> settingsInvalidated = new Subject<Unit>();
+        private readonly Subject<Unit> settingsInvalidated = new();
 
         public ConverterAppSettingsService(
             IObservable<CustomLayoutModel> sourceLayout,
@@ -31,11 +31,11 @@ namespace KeyboardSwitch.Settings.Core.Services
         private CustomLayoutModel SourceLayout { [ObservableAsProperty] get; } = null!;
         private CustomLayoutModel TargetLayout { [ObservableAsProperty] get; } = null!;
 
-        public IObservable<Unit> SettingsInvalidated
-            => this.settingsInvalidated.AsObservable();
+        public IObservable<Unit> SettingsInvalidated =>
+            this.settingsInvalidated.AsObservable();
 
-        public Task<AppSettings> GetAppSettingsAsync()
-            => Task.FromResult(new AppSettings
+        public Task<AppSettings> GetAppSettingsAsync() =>
+            Task.FromResult(new AppSettings
             {
                 CharsByKeyboardLayoutId = new Dictionary<int, string>
                 {
@@ -46,10 +46,10 @@ namespace KeyboardSwitch.Settings.Core.Services
                 SwitchLayout = false
             });
 
-        public void InvalidateAppSettings()
-            => this.settingsInvalidated.OnNext(Unit.Default);
+        public void InvalidateAppSettings() =>
+            this.settingsInvalidated.OnNext(Unit.Default);
 
-        public Task SaveAppSettingsAsync(AppSettings appSettings)
-            => Task.CompletedTask;
+        public Task SaveAppSettingsAsync(AppSettings appSettings) =>
+            Task.CompletedTask;
     }
 }

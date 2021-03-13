@@ -5,8 +5,8 @@ namespace KeyboardSwitch.Common
 {
     public abstract class Disposable : IDisposable
     {
-        ~Disposable()
-            => this.Dispose(false);
+        ~Disposable() =>
+            this.Dispose(false);
 
         protected bool Disposed { get; set; } = false;
 

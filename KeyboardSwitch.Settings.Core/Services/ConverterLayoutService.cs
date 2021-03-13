@@ -32,17 +32,16 @@ namespace KeyboardSwitch.Settings.Core.Services
         private KeyboardLayout SourceLayout { [ObservableAsProperty] get; } = null!;
         private KeyboardLayout TargetLayout { [ObservableAsProperty] get; } = null!;
 
-        public KeyboardLayout GetCurrentKeyboardLayout()
-            => this.SourceLayout;
+        public KeyboardLayout GetCurrentKeyboardLayout() =>
+            this.SourceLayout;
 
-        public List<KeyboardLayout> GetKeyboardLayouts()
-            => new List<KeyboardLayout> { this.SourceLayout, this.TargetLayout };
+        public List<KeyboardLayout> GetKeyboardLayouts() =>
+            new() { this.SourceLayout, this.TargetLayout };
 
         public void SwitchCurrentLayout(SwitchDirection direction)
         { }
 
-        private KeyboardLayout CreateFakeKeyboardLayout(CustomLayoutModel layout, int index)
-            => new KeyboardLayout(
-                index, CultureInfo.InvariantCulture, layout.Name, index.ToString(CultureInfo.InvariantCulture));
+        private KeyboardLayout CreateFakeKeyboardLayout(CustomLayoutModel layout, int index) =>
+            new(index, CultureInfo.InvariantCulture, layout.Name, index.ToString(CultureInfo.InvariantCulture));
     }
 }

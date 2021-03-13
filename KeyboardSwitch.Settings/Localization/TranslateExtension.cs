@@ -8,8 +8,8 @@ namespace KeyboardSwitch.Settings.Localization
 {
     public sealed class TranslateExtension : MarkupExtension
     {
-        public TranslateExtension(string key)
-            => this.Key = key;
+        public TranslateExtension(string key) =>
+            this.Key = key;
 
         [ConstructorArgument("key")]
         public string Key { get; set; }

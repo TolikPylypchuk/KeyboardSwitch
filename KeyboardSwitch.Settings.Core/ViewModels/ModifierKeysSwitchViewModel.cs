@@ -11,7 +11,8 @@ using ReactiveUI.Validation.Helpers;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
-    public sealed class ModifierKeysSwitchViewModel : ReactiveForm<ModifierKeysSwitchSettings, ModifierKeysSwitchViewModel>
+    public sealed class ModifierKeysSwitchViewModel :
+        ReactiveForm<ModifierKeysSwitchSettings, ModifierKeysSwitchViewModel>
     {
         public ModifierKeysSwitchViewModel(
             ModifierKeysSwitchSettings settings,
@@ -30,7 +31,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 vm => vm.BackwardModifierKeys,
                 (forward, backward) => forward != backward);
 
-            this.SwitchMethodsAreDifferentRule = this.LocalizedValidationRule(switchMethodsAreDifferent, "SwitchMethodsAreSame");
+            this.SwitchMethodsAreDifferentRule = this.LocalizedValidationRule(
+                switchMethodsAreDifferent, "SwitchMethodsAreSame");
 
             this.EnableChangeTracking();
         }
@@ -51,6 +53,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         public ValidationHelper SwitchMethodsAreDifferentRule { get; }
 
+        protected override ModifierKeysSwitchViewModel Self => this;
+
         protected override void EnableChangeTracking()
         {
             this.TrackChanges(vm => vm.ForwardModifierKeys, vm => vm.ModifierKeysSwitchSettings.ForwardModifierKeys);
@@ -60,9 +64,6 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
             base.EnableChangeTracking();
         }
-
-        protected override ModifierKeysSwitchViewModel Self
-            => this;
 
         protected override Task<ModifierKeysSwitchSettings> OnSaveAsync()
         {

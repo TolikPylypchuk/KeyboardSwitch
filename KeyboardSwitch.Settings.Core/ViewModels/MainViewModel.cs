@@ -78,7 +78,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 .Where(id => !layoutModels.Any(layoutModel => layoutModel.Id == id))
                 .ToList();
 
-            return new CharMappingModel { Layouts = layoutModels, RemovableLayoutIds = missingLayoutIds };
+            return new() { Layouts = layoutModels, RemovableLayoutIds = missingLayoutIds };
         }
 
         private ConverterModel CreateConverterModel(ConverterSettings settings)

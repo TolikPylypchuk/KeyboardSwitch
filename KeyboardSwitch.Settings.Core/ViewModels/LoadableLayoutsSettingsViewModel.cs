@@ -16,11 +16,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 {
     public sealed class LoadableLayoutsSettingsViewModel : ReactiveObject
     {
-        private readonly SourceCache<LoadableKeyboardLayout, string> addableLayoutsSource =
-            new SourceCache<LoadableKeyboardLayout, string>(layout => layout.Tag);
-
-        private readonly SourceCache<LoadableKeyboardLayout, string> addedLayoutsSource =
-            new SourceCache<LoadableKeyboardLayout, string>(layout => layout.Tag);
+        private readonly SourceCache<LoadableKeyboardLayout, string> addableLayoutsSource = new(layout => layout.Tag);
+        private readonly SourceCache<LoadableKeyboardLayout, string> addedLayoutsSource = new(layout => layout.Tag);
 
         private readonly ReadOnlyObservableCollection<LoadableLayoutViewModel> addableLayouts;
         private readonly ReadOnlyObservableCollection<LoadableLayoutViewModel> addedLayouts;
@@ -47,11 +44,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.addableLayoutsSource.AddOrUpdate(layouts);
         }
 
-        public ReadOnlyObservableCollection<LoadableLayoutViewModel> AddableLayouts
-            => this.addableLayouts;
-
-        public ReadOnlyObservableCollection<LoadableLayoutViewModel> AddedLayouts
-            => this.addedLayouts;
+        public ReadOnlyObservableCollection<LoadableLayoutViewModel> AddableLayouts => this.addableLayouts;
+        public ReadOnlyObservableCollection<LoadableLayoutViewModel> AddedLayouts => this.addedLayouts;
 
         public ReactiveCommand<LoadableLayoutViewModel, Unit> AddLayout { get; }
         public ReactiveCommand<LoadableLayoutViewModel, Unit> RemoveLayout { get; }

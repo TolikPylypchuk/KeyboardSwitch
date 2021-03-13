@@ -85,7 +85,6 @@ namespace KeyboardSwitch.Windows.Services
                 }
 
                 var handle = GetClipboardData(CLIPFORMAT.CF_UNICODETEXT);
-
                 var pointer = IntPtr.Zero;
 
                 try

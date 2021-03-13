@@ -9,8 +9,7 @@ namespace KeyboardSwitch.Settings.Infrastructure
 {
     public sealed class ViewLocator : IDataTemplate
     {
-        public bool SupportsRecycling
-            => false;
+        public bool SupportsRecycling => false;
 
         public IControl Build(object data)
         {
@@ -21,7 +20,7 @@ namespace KeyboardSwitch.Settings.Infrastructure
                 : new TextBlock { Text = "Not Found: " + view.GetType().FullName };
         }
 
-        public bool Match(object data)
-            => data is ReactiveObject;
+        public bool Match(object data) =>
+            data is ReactiveObject;
     }
 }

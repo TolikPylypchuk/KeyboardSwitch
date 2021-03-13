@@ -1,6 +1,5 @@
 using GregsStack.InputSimulatorStandard;
 
-using KeyboardSwitch.Common;
 using KeyboardSwitch.Common.Services;
 using KeyboardSwitch.Windows.Services;
 
@@ -13,7 +12,6 @@ namespace KeyboardSwitch.Windows
         public static IServiceCollection AddKeyboardSwitchWindowsServices(this IServiceCollection services)
             => services
                 .AddSingleton<IInputSimulator>(new InputSimulator())
-                .AddSingleton(BlobCacheFactory.CreateBlobCache)
                 .AddSingleton<IKeysService, KeysService>()
                 .AddSingleton<IKeyboardHookService, KeyboardHookService>()
                 .AddSingleton<ITextService, ClipboardTextService>()

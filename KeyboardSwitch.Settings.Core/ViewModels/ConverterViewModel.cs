@@ -69,8 +69,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         [Reactive]
         public string TargetText { get; set; } = String.Empty;
 
-        public ReadOnlyObservableCollection<CustomLayoutModel> Layouts
-            => this.layouts;
+        public ReadOnlyObservableCollection<CustomLayoutModel> Layouts => this.layouts;
 
         [Reactive]
         public CustomLayoutModel? SourceLayout { get; set; }
@@ -84,8 +83,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         public ReactiveCommand<Unit, Unit> SwapLayouts { get; }
         public ReactiveCommand<Unit, Unit> Clear { get; }
 
-        private Task ConvertAsync()
-            => this.switchService.SwitchTextAsync(SwitchDirection.Forward);
+        private Task ConvertAsync() =>
+            this.switchService.SwitchTextAsync(SwitchDirection.Forward);
 
         private void OnSwapLayouts()
         {
@@ -93,8 +92,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             (this.SourceText, this.TargetText) = (this.TargetText, this.SourceText);
         }
 
-        private void OnClear()
-            => this.SourceText = this.TargetText = String.Empty;
+        private void OnClear() =>
+            this.SourceText = this.TargetText = String.Empty;
 
         private ISwitchService CreateSwitchService(
             ILayoutService? layoutService = null,
@@ -110,8 +109,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 Locator.Current.GetService<ILogger<SwitchService>>());
         }
 
-        Task<string?> ITextService.GetTextAsync()
-            => Task.FromResult<string?>(this.SourceText);
+        Task<string?> ITextService.GetTextAsync() =>
+            Task.FromResult<string?>(this.SourceText);
 
         Task ITextService.SetTextAsync(string text)
         {

@@ -8,8 +8,8 @@ namespace KeyboardSwitch.Settings.Converters
 {
     public sealed class ModifierKeyConverter : IBindingTypeConverter
     {
-        public int GetAffinityForObjects(Type fromType, Type toType)
-            => fromType == typeof(ModifierKeys) || toType == typeof(ModifierKeys)
+        public int GetAffinityForObjects(Type fromType, Type toType) =>
+            fromType == typeof(ModifierKeys) || toType == typeof(ModifierKeys)
                 ? 10000
                 : 0;
 

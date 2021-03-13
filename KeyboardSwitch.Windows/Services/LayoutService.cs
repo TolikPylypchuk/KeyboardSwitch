@@ -32,8 +32,8 @@ namespace KeyboardSwitch.Windows.Services
 
         private List<KeyboardLayout>? systemLayouts;
 
-        public LayoutService(ILogger<LayoutService> logger)
-            => this.logger = logger;
+        public LayoutService(ILogger<LayoutService> logger) =>
+            this.logger = logger;
 
         public KeyboardLayout GetCurrentKeyboardLayout()
         {
@@ -112,7 +112,7 @@ namespace KeyboardSwitch.Windows.Services
                         subKey?.GetValue(LayoutText)?.ToString() ?? String.Empty);
                 })
                 .ToList()
-                ?? new List<LoadableKeyboardLayout>();
+                ?? new();
         }
 
         public DisposableLayouts LoadLayouts(IEnumerable<LoadableKeyboardLayout> loadableLayouts)
@@ -140,24 +140,24 @@ namespace KeyboardSwitch.Windows.Services
                 int id = (int)layout.DangerousGetHandle();
                 var culture = this.GetCultureInfo(id, loadableLayout.Name);
 
-                allLayouts.Add(new KeyboardLayout(id, culture, loadableLayout.Name, loadableLayout.Tag));
+                allLayouts.Add(new(id, culture, loadableLayout.Name, loadableLayout.Tag));
             }
 
-            return new DisposableLayouts(allLayouts, unloadDisposable);
+            return new(allLayouts, unloadDisposable);
         }
 
-        private KeyboardLayout GetThreadKeyboardLayout(uint threadId)
-            => this.CreateKeyboardLayout(GetKeyboardLayout(threadId));
+        private KeyboardLayout GetThreadKeyboardLayout(uint threadId) =>
+            this.CreateKeyboardLayout(GetKeyboardLayout(threadId));
 
-        private void SetThreadKeyboardLayout(HKL keyboardLayoutId)
-            => ActivateKeyboardLayout(keyboardLayoutId, 0);
+        private void SetThreadKeyboardLayout(HKL keyboardLayoutId) =>
+            ActivateKeyboardLayout(keyboardLayoutId, 0);
 
         private KeyboardLayout CreateKeyboardLayout(HKL keyboardLayoutId)
         {
             int id = (int)keyboardLayoutId.DangerousGetHandle();
             var (name, tag) = this.GetLayoutDisplayNameAndTag(keyboardLayoutId);
 
-            return new KeyboardLayout(id, this.GetCultureInfo(id, name), name, tag);
+            return new(id, this.GetCultureInfo(id, name), name, tag);
         }
 
         private (string DisplayName, string Tag) GetLayoutDisplayNameAndTag(HKL keyboardLayoutId)
@@ -177,7 +177,7 @@ namespace KeyboardSwitch.Windows.Services
 
         private string GetCurrentLayoutName()
         {
-            StringBuilder name = new StringBuilder(KlNameLength);
+            var name = new StringBuilder(KlNameLength);
             GetKeyboardLayoutName(name);
             return name.ToString();
         }

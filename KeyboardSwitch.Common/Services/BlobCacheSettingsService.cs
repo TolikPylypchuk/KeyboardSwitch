@@ -20,7 +20,7 @@ namespace KeyboardSwitch.Common.Services
         private readonly IBlobCache cache;
         private readonly ILayoutService layoutService;
         private readonly ILogger<BlobCacheSettingsService> logger;
-        private readonly Subject<Unit> settingsInvalidated = new Subject<Unit>();
+        private readonly Subject<Unit> settingsInvalidated = new();
 
         private AppSettings? appSettings;
         private ConverterSettings? converterSettings;
@@ -35,8 +35,8 @@ namespace KeyboardSwitch.Common.Services
             this.logger = logger;
         }
 
-        public IObservable<Unit> SettingsInvalidated
-            => this.settingsInvalidated.AsObservable();
+        public IObservable<Unit> SettingsInvalidated =>
+            this.settingsInvalidated.AsObservable();
 
         public async Task<AppSettings> GetAppSettingsAsync()
         {
@@ -129,8 +129,8 @@ namespace KeyboardSwitch.Common.Services
             }
         }
 
-        private AppSettings CreateDefaultAppSettings()
-            => new AppSettings
+        private AppSettings CreateDefaultAppSettings() =>
+            new()
             {
                 HotKeySwitchSettings = new HotKeySwitchSettings
                 {

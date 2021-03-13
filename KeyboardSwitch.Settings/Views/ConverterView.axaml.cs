@@ -35,10 +35,10 @@ namespace KeyboardSwitch.Settings.Views
         private void BindConverterVisibility(CompositeDisposable disposables)
         {
             var enoughLayouts = this.ViewModel.Layouts
-                    .ToObservableChangeSet()
-                    .Count()
-                    .StartWith(this.ViewModel.Layouts.Count)
-                    .Select(count => count >= 2);
+                .ToObservableChangeSet()
+                .Count()
+                .StartWith(this.ViewModel.Layouts.Count)
+                .Select(count => count >= 2);
 
             enoughLayouts.BindTo(this, v => v.ConverterGrid.IsVisible)
                 .DisposeWith(disposables);
@@ -80,7 +80,7 @@ namespace KeyboardSwitch.Settings.Views
                 .DisposeWith(disposables);
 
             this.BindValidation(
-                    this.ViewModel, vm => vm!.LayoutsAreDifferentRule, v => v.LayoutsValidationTextBlock.Text)
+                this.ViewModel, vm => vm!.LayoutsAreDifferentRule, v => v.LayoutsValidationTextBlock.Text)
                 .DisposeWith(disposables);
         }
 

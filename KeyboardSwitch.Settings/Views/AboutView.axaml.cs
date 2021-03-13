@@ -71,7 +71,7 @@ namespace KeyboardSwitch.Settings.Views
                 .DisposeWith(disposables);
         }
 
-        private string FormatVersion(Version version)
-            => $"{version.Major}.{version.Minor}";
+        private string FormatVersion(Version version) =>
+            $"{version.Major}.{version.Minor}";
     }
 }

@@ -16,8 +16,8 @@ namespace KeyboardSwitch.Windows.Services
 
         private readonly IAppSettingsService appSettingsService;
 
-        public RegistryStartupService(IAppSettingsService appSettingsService)
-            => this.appSettingsService = appSettingsService;
+        public RegistryStartupService(IAppSettingsService appSettingsService) =>
+            this.appSettingsService = appSettingsService;
 
         public bool IsStartupConfigured()
         {

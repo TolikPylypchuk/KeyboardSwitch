@@ -66,11 +66,11 @@ namespace KeyboardSwitch
                 this.logger.LogError(e, $"Incompatible app version found in settings: {e.Version}. " +
                     $"Delete the settings at '{settingsPath}' and let the app recreate a compatible version");
 
-                await this.host.StopAsync();
+                await this.host.StopAsync(token);
             } catch (Exception e)
             {
                 this.logger.LogError(e, "Unknown error");
-                await this.host.StopAsync();
+                await this.host.StopAsync(token);
             }
         }
 

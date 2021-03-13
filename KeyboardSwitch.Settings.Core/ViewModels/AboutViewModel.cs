@@ -49,12 +49,10 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             }
         }
 
-        public void OnGetNewVersion()
-            => new Uri(AppReleasesLocation).OpenInBrowser();
+        public void OnGetNewVersion() =>
+            new Uri(AppReleasesLocation).OpenInBrowser();
 
-        public void OnOpenDocs()
-            => new Uri(String.Format(
-                CultureInfo.InvariantCulture, DocsLocationFormat, this.AppVersion.Major, this.AppVersion.Minor))
-                .OpenInBrowser();
+        public void OnOpenDocs() =>
+            new Uri(DocsLocation).OpenInBrowser();
     }
 }

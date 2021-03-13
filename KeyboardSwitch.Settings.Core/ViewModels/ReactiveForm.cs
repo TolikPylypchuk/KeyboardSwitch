@@ -29,13 +29,13 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         where TModel : class
         where TForm : ReactiveForm<TModel, TForm>
     {
-        private readonly BehaviorSubject<bool> formChangedSubject = new BehaviorSubject<bool>(false);
-        private readonly BehaviorSubject<bool> validSubject = new BehaviorSubject<bool>(true);
-        private readonly BehaviorSubject<bool> canSaveSubject = new BehaviorSubject<bool>(false);
-        private readonly BehaviorSubject<bool> canDeleteSubject = new BehaviorSubject<bool>(false);
+        private readonly BehaviorSubject<bool> formChangedSubject = new(false);
+        private readonly BehaviorSubject<bool> validSubject = new(true);
+        private readonly BehaviorSubject<bool> canSaveSubject = new(false);
+        private readonly BehaviorSubject<bool> canDeleteSubject = new(false);
 
-        private readonly List<IObservable<bool>> changesToTrack = new List<IObservable<bool>>();
-        private readonly List<IObservable<bool>> validationsToTrack = new List<IObservable<bool>>();
+        private readonly List<IObservable<bool>> changesToTrack = new();
+        private readonly List<IObservable<bool>> validationsToTrack = new();
 
         protected ReactiveForm(ResourceManager? resourceManager = null, IScheduler? scheduler = null)
         {
@@ -45,8 +45,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.Valid = Observable.CombineLatest(this.validSubject, this.IsValid()).AllTrue();
 
             var canSave = Observable.CombineLatest(
-                    Observable.CombineLatest(this.formChangedSubject, this.canSaveSubject).AnyTrue(),
-                    this.Valid)
+                Observable.CombineLatest(this.formChangedSubject, this.canSaveSubject).AnyTrue(),
+                this.Valid)
                 .AllTrue();
 
             this.Save = ReactiveCommand.CreateFromTask(this.OnSaveAsync, canSave);
@@ -54,11 +54,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.Delete = ReactiveCommand.CreateFromTask(this.OnDeleteAsync, this.canDeleteSubject);
         }
 
-        public IObservable<bool> FormChanged
-            => this.formChangedSubject.AsObservable();
-
-        public bool IsFormChanged
-            => this.formChangedSubject.Value;
+        public IObservable<bool> FormChanged => this.formChangedSubject.AsObservable();
+        public bool IsFormChanged => this.formChangedSubject.Value;
 
         public IObservable<bool> Valid { get; }
 
@@ -74,8 +71,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         protected abstract TForm Self { get; }
 
-        protected void TrackChanges(IObservable<bool> changes)
-            => this.changesToTrack.Add(changes
+        protected void TrackChanges(IObservable<bool> changes) =>
+            this.changesToTrack.Add(changes
                 .StartWith(false)
                 .Merge(this.Save.Select(_ => false))
                 .Merge(this.Cancel.Select(_ => false)));
@@ -91,11 +88,11 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                         changed ? $"{propertyName} is changed" : $"{propertyName} is unchanged")));
         }
 
-        protected void TrackValidation(IObservable<bool> validation)
-            => this.validationsToTrack.Add(validation.StartWith(true));
+        protected void TrackValidation(IObservable<bool> validation) =>
+            this.validationsToTrack.Add(validation.StartWith(true));
 
-        protected void TrackValidationStrict(IObservable<bool> validation)
-            => this.validationsToTrack.Add(validation.StartWith(false));
+        protected void TrackValidationStrict(IObservable<bool> validation) =>
+            this.validationsToTrack.Add(validation.StartWith(false));
 
         protected IObservable<bool> IsCollectionChanged<TOtherForm, TOtherModel>(
             Expression<Func<TForm, ReadOnlyObservableCollection<TOtherForm>>> property,
@@ -105,7 +102,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         {
             string propertyName = property.GetMemberName();
 
-            return property.Compile()(this.Self).ToObservableChangeSet()
+            return property.Compile()(this.Self)
+                .ToObservableChangeSet()
                 .AutoRefreshOnObservable(vm => vm.FormChanged)
                 .ToCollection()
                 .Select(vms =>
@@ -118,8 +116,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         }
 
         protected IObservable<bool> IsCollectionValid<TOtherForm>(ReadOnlyObservableCollection<TOtherForm> viewModels)
-            where TOtherForm : IReactiveForm
-            => viewModels.ToObservableChangeSet()
+            where TOtherForm : IReactiveForm =>
+            viewModels.ToObservableChangeSet()
                 .AutoRefreshOnObservable(vm => vm.Valid)
                 .ToCollection()
                 .Select(vms => vms.Select(vm => vm.Valid).CombineLatest().AllTrue())
@@ -132,20 +130,20 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 property, validate, _ => this.ResourceManager.GetString($"{propertyName}Invalid") ?? String.Empty);
         }
 
-        protected ValidationHelper LocalizedValidationRule(IObservable<bool> validation, string errorMessage)
-            => this.Self.ValidationRule(validation, this.ResourceManager.GetString(errorMessage) ?? String.Empty);
+        protected ValidationHelper LocalizedValidationRule(IObservable<bool> validation, string errorMessage) =>
+            this.Self.ValidationRule(validation, this.ResourceManager.GetString(errorMessage) ?? String.Empty);
 
-        protected void CanDeleteWhen(IObservable<bool> canDelete)
-            => canDelete.Subscribe(this.canDeleteSubject);
+        protected void CanDeleteWhen(IObservable<bool> canDelete) =>
+            canDelete.Subscribe(this.canDeleteSubject);
 
-        protected void CanDeleteWhenNotChanged()
-            => this.CanDeleteWhen(Observable.Return(!this.IsNew).Merge(this.FormChanged.Invert()));
+        protected void CanDeleteWhenNotChanged() =>
+            this.CanDeleteWhen(Observable.Return(!this.IsNew).Merge(this.FormChanged.Invert()));
 
-        protected void CanAlwaysDelete()
-            => this.CanDeleteWhen(Observable.Return(true));
+        protected void CanAlwaysDelete() =>
+            this.CanDeleteWhen(Observable.Return(true));
 
-        protected void CanNeverDelete()
-            => this.CanDeleteWhen(Observable.Return(false));
+        protected void CanNeverDelete() =>
+            this.CanDeleteWhen(Observable.Return(false));
 
         protected virtual void EnableChangeTracking()
         {
@@ -171,8 +169,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         protected abstract Task<TModel> OnSaveAsync();
 
-        protected virtual Task<TModel?> OnDeleteAsync()
-            => Task.FromResult<TModel?>(null);
+        protected virtual Task<TModel?> OnDeleteAsync() =>
+            Task.FromResult<TModel?>(null);
 
         protected abstract void CopyProperties();
     }

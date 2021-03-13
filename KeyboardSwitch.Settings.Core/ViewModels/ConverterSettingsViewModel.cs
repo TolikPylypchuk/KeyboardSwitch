@@ -30,13 +30,12 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         private readonly ILayoutLoaderSrevice layoutLoaderService;
         private readonly IAutoConfigurationService autoConfigurationService;
 
-        private readonly SourceList<CustomLayoutModel> customLayoutsSource = new SourceList<CustomLayoutModel>();
+        private readonly SourceList<CustomLayoutModel> customLayoutsSource = new();
         private readonly ReadOnlyObservableCollection<CustomLayoutViewModel> customLayouts;
-        private readonly Dictionary<CustomLayoutViewModel, IDisposable> customLayoutSubscriptions =
-            new Dictionary<CustomLayoutViewModel, IDisposable>();
+        private readonly Dictionary<CustomLayoutViewModel, IDisposable> customLayoutSubscriptions = new();
 
-        private readonly BehaviorSubject<bool> isAutoConfiguringLayoutsSubject = new BehaviorSubject<bool>(false);
-        private readonly CompositeDisposable loadableLayoutsSettingsSubscriptions = new CompositeDisposable();
+        private readonly BehaviorSubject<bool> isAutoConfiguringLayoutsSubject = new(false);
+        private readonly CompositeDisposable loadableLayoutsSettingsSubscriptions = new();
 
         public ConverterSettingsViewModel(
             ConverterModel converterModel,
@@ -83,8 +82,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         public bool IsAutoConfiguringLayouts { [ObservableAsProperty] get; }
 
-        public ReadOnlyObservableCollection<CustomLayoutViewModel> CustomLayouts
-            => this.customLayouts;
+        public ReadOnlyObservableCollection<CustomLayoutViewModel> CustomLayouts => this.customLayouts;
 
         [Reactive]
         public LoadableLayoutsSettingsViewModel? LoadableLayoutsSettingsViewModel { get; private set; }
@@ -94,8 +92,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         public ReactiveCommand<Unit, Unit> AddCustomLayout { get; set; }
         public ReactiveCommand<Unit, Unit> AutoConfigureCustomLayouts { get; set; }
 
-        protected override ConverterSettingsViewModel Self
-            => this;
+        protected override ConverterSettingsViewModel Self => this;
 
         protected override void EnableChangeTracking()
         {
@@ -152,16 +149,15 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             return viewModel;
         }
 
-        private void OnAddCustomLayout()
-            => this.customLayoutsSource.Add(new CustomLayoutModel
+        private void OnAddCustomLayout() =>
+            this.customLayoutsSource.Add(new CustomLayoutModel
             {
                 Id = this.customLayoutsSource.Items.Max(model => (int?)model.Id) ?? 1
             });
 
         private void OnAutoConfigureCustomLayouts()
         {
-            this.LoadableLayoutsSettingsViewModel = new LoadableLayoutsSettingsViewModel(
-                this.layoutLoaderService.GetAllSystemLayouts());
+            this.LoadableLayoutsSettingsViewModel = new(this.layoutLoaderService.GetAllSystemLayouts());
 
             this.LoadableLayoutsSettingsViewModel.Finish
                 .Subscribe(this.OnAutoConfigureCustomLayoutsFinish)

@@ -10,14 +10,14 @@ namespace KeyboardSwitch.Windows.Services
 {
     internal sealed class KeysService : IKeysService
     {
-        public int GetVirtualKeyCode(char ch)
-            => VkKeyScanW(Char.ToLower(ch, CultureInfo.InvariantCulture));
+        public int GetVirtualKeyCode(char ch) =>
+            VkKeyScanW(Char.ToLower(ch, CultureInfo.InvariantCulture));
 
-        public int GetModifierKeysCode(ModifierKeys keys)
-            => (int)keys;
+        public int GetModifierKeysCode(ModifierKeys keys) =>
+            (int)keys;
 
-        public ModifierKeys? GetModifierKeyFromCode(int keyCode)
-            => keyCode switch
+        public ModifierKeys? GetModifierKeyFromCode(int keyCode) =>
+            keyCode switch
             {
                 0xA0 => ModifierKeys.Shift,
                 0xA1 => ModifierKeys.Shift,

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -31,17 +30,17 @@ namespace KeyboardSwitch.Windows.Services
             public char Char { get; }
             public HKL LayoutId { get; }
 
-            public static KeyToCharResult Success(char ch, HKL layoutId)
-                => new KeyToCharResult(KeyToCharResultTag.Success, ch, layoutId);
+            public static KeyToCharResult Success(char ch, HKL layoutId) =>
+                new(KeyToCharResultTag.Success, ch, layoutId);
 
-            public static KeyToCharResult DeadKey()
-                => new KeyToCharResult(KeyToCharResultTag.DeadKey, NullChar, HKL.NULL);
+            public static KeyToCharResult DeadKey() =>
+                new(KeyToCharResultTag.DeadKey, NullChar, HKL.NULL);
 
-            public static KeyToCharResult NotMapped()
-                => new KeyToCharResult(KeyToCharResultTag.NotMapped, NullChar, HKL.NULL);
+            public static KeyToCharResult NotMapped() =>
+                new(KeyToCharResultTag.NotMapped, NullChar, HKL.NULL);
 
-            public static KeyToCharResult MultipleChars()
-                => new KeyToCharResult(KeyToCharResultTag.MultipleChars, NullChar, HKL.NULL);
+            public static KeyToCharResult MultipleChars() =>
+                new(KeyToCharResultTag.MultipleChars, NullChar, HKL.NULL);
         }
 
         private struct DistinctCharsState
@@ -54,8 +53,8 @@ namespace KeyboardSwitch.Windows.Services
                 this.DistinctChars = processedChars;
             }
 
-            public static DistinctCharsState Initial(List<HKL> layoutIds)
-                => new DistinctCharsState(
+            public static DistinctCharsState Initial(List<HKL> layoutIds) =>
+                new(
                     ImmutableList<List<KeyToCharResult>>.Empty,
                     layoutIds.ToImmutableDictionary(layoutId => layoutId, _ => ImmutableList<char>.Empty));
 
@@ -72,7 +71,7 @@ namespace KeyboardSwitch.Windows.Services
         private const int ResultNotMapped = 0;
         private const int ResultDeadKey = -1;
 
-        private static readonly List<KeyCode> KeyCodesToMap = new List<KeyCode>
+        private static readonly List<KeyCode> KeyCodesToMap = new()
         {
             KeyCode.VcQ,
             KeyCode.VcW,
@@ -146,17 +145,17 @@ namespace KeyboardSwitch.Windows.Services
                 .ToDictionary(result => result.Key, result => new string(result.ToArray()));
         }
 
-        private DistinctCharsState RemoveDuplicateChars(DistinctCharsState state, List<KeyToCharResult> results)
-            => results.Any(result => state.DistinctChars[result.LayoutId].Contains(result.Char))
+        private DistinctCharsState RemoveDuplicateChars(DistinctCharsState state, List<KeyToCharResult> results) =>
+            results.Any(result => state.DistinctChars[result.LayoutId].Contains(result.Char))
                 ? state
-                : new DistinctCharsState(
+                : new(
                     state.Results.Add(results),
                     results.ToImmutableDictionary(
                         result => result.LayoutId,
                         result => state.DistinctChars[result.LayoutId].Add(result.Char)));
 
-        private List<KeyToCharResult> GetCharsFromKey(KeyCode keyCode, bool shift, bool altGr, List<HKL> layoutIds)
-            => layoutIds
+        private List<KeyToCharResult> GetCharsFromKey(KeyCode keyCode, bool shift, bool altGr, List<HKL> layoutIds) =>
+            layoutIds
                 .Select(layoutId => this.GetCharFromKey(keyCode, shift, altGr, layoutId))
                 .ToList();
 
@@ -208,7 +207,7 @@ namespace KeyboardSwitch.Windows.Services
             };
         }
 
-        private uint MapToVirtualKey(KeyCode keyCode)
-            => MapVirtualKey((uint)keyCode, MAPVK.MAPVK_VSC_TO_VK_EX);
+        private uint MapToVirtualKey(KeyCode keyCode) =>
+            MapVirtualKey((uint)keyCode, MAPVK.MAPVK_VSC_TO_VK_EX);
     }
 }

@@ -9,6 +9,6 @@ namespace KeyboardSwitch.Common.Settings
         public static readonly string CacheKey = "ConverterSettings";
 
         [DataMember]
-        public List<CustomLayoutSettings> Layouts { get; set; } = new List<CustomLayoutSettings>();
+        public List<CustomLayoutSettings> Layouts { get; set; } = new();
     }
 }

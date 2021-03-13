@@ -13,16 +13,16 @@ namespace KeyboardSwitch.Settings.Core.State
 
         private readonly IBlobCache cache;
 
-        public AkavacheSuspensionDriver(IBlobCache cache)
-            => this.cache = cache;
+        public AkavacheSuspensionDriver(IBlobCache cache) =>
+            this.cache = cache;
 
-        public IObservable<Unit> InvalidateState()
-            => this.cache.InvalidateObject<TAppState>(AppStateKey);
+        public IObservable<Unit> InvalidateState() =>
+            this.cache.InvalidateObject<TAppState>(AppStateKey);
 
-        public IObservable<object> LoadState()
-            => this.cache.GetObject<TAppState>(AppStateKey).WhereNotNull();
+        public IObservable<object> LoadState() =>
+            this.cache.GetObject<TAppState>(AppStateKey).WhereNotNull();
 
-        public IObservable<Unit> SaveState(object state)
-            => this.cache.InsertObject(AppStateKey, (TAppState)state);
+        public IObservable<Unit> SaveState(object state) =>
+            this.cache.InsertObject(AppStateKey, (TAppState)state);
     }
 }

@@ -30,13 +30,13 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             IConverterSettingsService? converterSettingsService = null,
             IStartupService? startupService = null)
         {
-            this.removeLayoutsEnabled = new BehaviorSubject<bool>(preferencesModel.ShowUninstalledLayoutsMessage);
+            this.removeLayoutsEnabled = new(preferencesModel.ShowUninstalledLayoutsMessage);
 
-            this.CharMappingViewModel = new CharMappingViewModel(charMappingModel, this.removeLayoutsEnabled);
-            this.PreferencesViewModel = new PreferencesViewModel(preferencesModel);
-            this.ConverterViewModel = new ConverterViewModel(converterModel);
-            this.ConverterSettingsViewModel = new ConverterSettingsViewModel(converterModel);
-            this.AboutViewModel = new AboutViewModel();
+            this.CharMappingViewModel = new(charMappingModel, this.removeLayoutsEnabled);
+            this.PreferencesViewModel = new(preferencesModel);
+            this.ConverterViewModel = new(converterModel);
+            this.ConverterSettingsViewModel = new(converterModel);
+            this.AboutViewModel = new();
 
             this.appSettingsService = appSettingsService ?? Locator.Current.GetService<IAppSettingsService>();
             this.converterSettingsService =

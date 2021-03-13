@@ -8,7 +8,7 @@ namespace KeyboardSwitch.Settings.Core
 {
     public static class ServiceExtensions
     {
-        public static IServiceCollection AddSuspensionDriver(this IServiceCollection services)
-            => services.AddSingleton<ISuspensionDriver, AkavacheSuspensionDriver<AppState>>();
+        public static IServiceCollection AddSuspensionDriver(this IServiceCollection services) =>
+            services.AddSingleton<ISuspensionDriver, AkavacheSuspensionDriver<AppState>>();
     }
 }

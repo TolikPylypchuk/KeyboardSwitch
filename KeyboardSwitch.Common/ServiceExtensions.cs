@@ -8,8 +8,10 @@ namespace KeyboardSwitch.Common
 {
     public static class ServiceExtensions
     {
-        public static IServiceCollection AddKeyboardSwitchServices(this IServiceCollection services)
-            => services.AddSingleton<BlobCacheSettingsService>()
+        public static IServiceCollection AddKeyboardSwitchServices(this IServiceCollection services) =>
+            services
+                .AddSingleton(BlobCacheFactory.CreateBlobCache)
+                .AddSingleton<BlobCacheSettingsService>()
                 .AddSingleton<IAppSettingsService>(provider =>
                     provider.GetRequiredService<BlobCacheSettingsService>())
                 .AddSingleton<IConverterSettingsService>(provider =>

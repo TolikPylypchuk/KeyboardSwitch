@@ -30,8 +30,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         [Reactive]
         public int Index { get; set; }
 
-        protected override CharacterViewModel Self
-            => this;
+        protected override CharacterViewModel Self => this;
 
         protected override void EnableChangeTracking()
         {

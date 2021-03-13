@@ -6,7 +6,7 @@ namespace KeyboardSwitch.Common
 {
     public sealed class TaskQueue : Disposable
     {
-        private readonly SemaphoreSlim semaphore = new SemaphoreSlim(1);
+        private readonly SemaphoreSlim semaphore = new(1);
 
         public async Task<T> Enqueue<T>(Func<Task<T>> taskGenerator)
         {

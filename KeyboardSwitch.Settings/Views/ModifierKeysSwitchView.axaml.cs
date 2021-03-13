@@ -46,17 +46,17 @@ namespace KeyboardSwitch.Settings.Views
                     .DisposeWith(disposables);
 
                 this.BindValidation(
-                        this.ViewModel, vm => vm.PressCount, v => v.PressCountValidationTextBlock.Text)
+                    this.ViewModel, vm => vm.PressCount, v => v.PressCountValidationTextBlock.Text)
                     .DisposeWith(disposables);
 
                 this.BindValidation(
-                        this.ViewModel, vm => vm.WaitMilliseconds, v => v.WaitMillisecondsValidationTextBlock.Text)
+                    this.ViewModel, vm => vm.WaitMilliseconds, v => v.WaitMillisecondsValidationTextBlock.Text)
                     .DisposeWith(disposables);
 
                 this.BindValidation(
-                        this.ViewModel,
-                        vm => vm!.SwitchMethodsAreDifferentRule,
-                        v => v.SwitchMethodsValidationTextBlock.Text)
+                    this.ViewModel,
+                    vm => vm!.SwitchMethodsAreDifferentRule,
+                    v => v.SwitchMethodsValidationTextBlock.Text)
                     .DisposeWith(disposables);
             });
         }

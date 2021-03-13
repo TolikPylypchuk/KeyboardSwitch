@@ -58,8 +58,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         [Reactive]
         public string Chars { get; set; } = String.Empty;
 
-        protected override CustomLayoutViewModel Self
-            => this;
+        protected override CustomLayoutViewModel Self => this;
 
         protected override void EnableChangeTracking()
         {

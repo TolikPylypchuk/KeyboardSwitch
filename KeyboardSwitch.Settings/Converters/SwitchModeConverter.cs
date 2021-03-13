@@ -25,8 +25,8 @@ namespace KeyboardSwitch.Settings.Converters
             this.stringToMode = modeToString.ToDictionary(e => e.Value, e => e.Key);
         }
 
-        public int GetAffinityForObjects(Type fromType, Type toType)
-            => fromType == typeof(SwitchMode) || toType == typeof(SwitchMode)
+        public int GetAffinityForObjects(Type fromType, Type toType) =>
+            fromType == typeof(SwitchMode) || toType == typeof(SwitchMode)
                 ? 10000
                 : 0;
 

@@ -35,7 +35,7 @@ namespace KeyboardSwitch.Settings.Infrastructure
             var viewProperties = getCurrentViewProperties();
             var lastViewProperty = viewProperties.LastOrDefault();
 
-            if (!(lastViewProperty?.Sender is ItemsControl itemsControl))
+            if (lastViewProperty?.Sender is not ItemsControl itemsControl)
             {
                 return true;
             }

@@ -61,8 +61,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         public ReactiveObject? Content { [ObservableAsProperty] get; }
 
-        protected override PreferencesViewModel Self
-            => this;
+        protected override PreferencesViewModel Self => this;
 
         protected override void EnableChangeTracking()
         {
@@ -98,9 +97,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         protected override void CopyProperties()
         {
-            this.HotKeySwitchViewModel = new HotKeySwitchViewModel(this.PreferencesModel.HotKeySwitchSettings);
-            this.ModifierKeysSwitchModel = new ModifierKeysSwitchViewModel(
-                this.PreferencesModel.ModifierKeysSwitchSettings);
+            this.HotKeySwitchViewModel = new(this.PreferencesModel.HotKeySwitchSettings);
+            this.ModifierKeysSwitchModel = new(this.PreferencesModel.ModifierKeysSwitchSettings);
 
             this.SwitchMode = this.PreferencesModel.SwitchMode;
             this.InstantSwitching = this.PreferencesModel.InstantSwitching;

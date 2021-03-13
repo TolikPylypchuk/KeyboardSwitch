@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 using KeyboardSwitch.Common.Keyboard;
 using KeyboardSwitch.Common.Settings;
-using KeyboardSwitch.Settings.Core.Models;
 
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -51,7 +50,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             var switchMethodsAreDifferent = 
                 this.WhenAnyValue(vm => vm.Forward.Character, vm => vm.Backward.Character, (f, b) => f != b);
 
-            this.SwitchMethodsAreDifferentRule = this.LocalizedValidationRule(switchMethodsAreDifferent, "SwitchMethodsAreSame");
+            this.SwitchMethodsAreDifferentRule = this.LocalizedValidationRule(
+                switchMethodsAreDifferent, "SwitchMethodsAreSame");
 
             this.EnableChangeTracking();
         }
@@ -75,8 +75,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         public ValidationHelper SwitchMethodsAreDifferentRule { get; }
 
-        protected override HotKeySwitchViewModel Self
-            => this;
+        protected override HotKeySwitchViewModel Self => this;
 
         protected override void EnableChangeTracking()
         {
@@ -102,10 +101,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         protected override void CopyProperties()
         {
             this.ModifierKeys = this.HotKeySwitchSettings.ModifierKeys;
-            this.Forward = new CharacterViewModel(
-                new CharacterModel { Character = this.HotKeySwitchSettings.Forward });
-            this.Backward = new CharacterViewModel(
-                new CharacterModel { Character = this.HotKeySwitchSettings.Backward });
+            this.Forward = new(new() { Character = this.HotKeySwitchSettings.Forward });
+            this.Backward = new(new() { Character = this.HotKeySwitchSettings.Backward });
         }
     }
 }

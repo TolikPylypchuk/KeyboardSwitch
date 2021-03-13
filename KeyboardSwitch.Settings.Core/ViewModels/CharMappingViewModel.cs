@@ -26,10 +26,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         private readonly ILayoutService layoutService;
         private readonly IAutoConfigurationService autoConfigurationService;
 
-        private readonly SourceCache<LayoutModel, int> layoutsSource =
-            new SourceCache<LayoutModel, int>(layout => layout.Id);
-
-        private readonly SourceList<int> removableLayoutIdsSource = new SourceList<int>();
+        private readonly SourceCache<LayoutModel, int> layoutsSource = new(layout => layout.Id);
+        private readonly SourceList<int> removableLayoutIdsSource = new();
 
         private readonly ReadOnlyObservableCollection<LayoutViewModel> layouts;
 
@@ -70,8 +68,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         public CharMappingModel CharMappingModel { get; }
 
-        public ReadOnlyObservableCollection<LayoutViewModel> Layouts
-            => this.layouts;
+        public ReadOnlyObservableCollection<LayoutViewModel> Layouts => this.layouts;
 
         public bool HasNewLayouts { [ObservableAsProperty] get; }
         public bool CanRemoveLayouts { [ObservableAsProperty] get; }
@@ -80,8 +77,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         public ReactiveCommand<Unit, Unit> AutoConfigure { get; }
         public ReactiveCommand<Unit, Unit> RemoveLayouts { get; }
 
-        protected override CharMappingViewModel Self
-            => this;
+        protected override CharMappingViewModel Self => this;
 
         protected override void EnableChangeTracking()
         {

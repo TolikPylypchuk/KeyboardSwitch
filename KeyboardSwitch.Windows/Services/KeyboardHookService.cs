@@ -16,14 +16,12 @@ using Microsoft.Extensions.Logging;
 
 using static Vanara.PInvoke.User32;
 
-using GC = System.GC;
-
 namespace KeyboardSwitch.Windows.Services
 {
     internal sealed class KeyboardHookService : Disposable, IKeyboardHookService
     {
-        private readonly object modifiersLock = new object();
-        private readonly TaskQueue taskQueue = new TaskQueue();
+        private readonly object modifiersLock = new();
+        private readonly TaskQueue taskQueue = new();
 
         private SafeHHOOK? hookId;
         private HookProc? hook;
@@ -32,13 +30,12 @@ namespace KeyboardSwitch.Windows.Services
         private readonly IScheduler scheduler;
         private readonly ILogger<KeyboardHookService> logger;
 
-        private readonly HashSet<HotKey> hotKeys = new HashSet<HotKey>();
-        private readonly HashSet<ModifierKeys> hotModifierKeys = new HashSet<ModifierKeys>();
+        private readonly HashSet<HotKey> hotKeys = new();
+        private readonly HashSet<ModifierKeys> hotModifierKeys = new();
 
-        private readonly Subject<HotKey> hotKeyPressedSubject = new Subject<HotKey>();
-        private readonly Subject<ModifierKeys> hotModifierKeyPressedSubject = new Subject<ModifierKeys>();
-        private readonly Dictionary<ModifierKeys, IDisposable> hotModifierKeyPressedSubscriptions =
-            new Dictionary<ModifierKeys, IDisposable>();
+        private readonly Subject<HotKey> hotKeyPressedSubject = new();
+        private readonly Subject<ModifierKeys> hotModifierKeyPressedSubject = new();
+        private readonly Dictionary<ModifierKeys, IDisposable> hotModifierKeyPressedSubscriptions = new();
 
         private ModifierKeys downModifierKeys;
         private HotKey? pressedHotKey;
@@ -54,14 +51,14 @@ namespace KeyboardSwitch.Windows.Services
             this.logger = logger;
         }
 
-        ~KeyboardHookService()
-            => this.Dispose();
+        ~KeyboardHookService() =>
+            this.Dispose();
 
-        public IObservable<HotKey> HotKeyPressed
-            => this.hotKeyPressedSubject.AsObservable();
+        public IObservable<HotKey> HotKeyPressed =>
+            this.hotKeyPressedSubject.AsObservable();
 
-        public HotKey RegisterHotKey(int virtualKeyCode)
-            => this.RegisterHotKey(ModifierKeys.None, virtualKeyCode);
+        public HotKey RegisterHotKey(int virtualKeyCode) =>
+            this.RegisterHotKey(ModifierKeys.None, virtualKeyCode);
 
         public HotKey RegisterHotKey(ModifierKeys modifiers, int virtualKeyCode)
         {
@@ -118,8 +115,8 @@ namespace KeyboardSwitch.Windows.Services
             this.logger.LogDebug($"Registered a hot modifier key: {modifierKeys.ToFormattedString()}");
         }
 
-        public void UnregisterHotKey(ModifierKeys modifiers, int virtualKeyCode)
-            => this.UnregisterHotKey(new HotKey(modifiers, virtualKeyCode));
+        public void UnregisterHotKey(ModifierKeys modifiers, int virtualKeyCode) =>
+            this.UnregisterHotKey(new HotKey(modifiers, virtualKeyCode));
 
         public void UnregisterHotKey(HotKey key)
         {
@@ -173,8 +170,8 @@ namespace KeyboardSwitch.Windows.Services
             this.logger.LogDebug("Unregistered all hot keys");
         }
 
-        public Task WaitForMessagesAsync(CancellationToken token)
-            => Task.Run(() =>
+        public Task WaitForMessagesAsync(CancellationToken token) =>
+            Task.Run(() =>
                 {
                     this.CreateHook();
 
