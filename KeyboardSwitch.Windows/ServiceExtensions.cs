@@ -13,7 +13,6 @@ namespace KeyboardSwitch.Windows
             => services
                 .AddSingleton<IInputSimulator>(new InputSimulator())
                 .AddSingleton<IKeysService, KeysService>()
-                .AddSingleton<IKeyboardHookService, KeyboardHookService>()
                 .AddSingleton<ITextService, ClipboardTextService>()
                 .AddSingleton<LayoutService>()
                 .AddSingleton<ILayoutService>(provider => provider.GetRequiredService<LayoutService>())

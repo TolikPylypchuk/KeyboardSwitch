@@ -4,31 +4,22 @@ using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-using KeyboardSwitch.Common;
+using KeyboardSwitch.Common.Hook;
 using KeyboardSwitch.Common.Keyboard;
-using KeyboardSwitch.Common.Services;
 
 using Microsoft.Extensions.Logging;
 
-using static Vanara.PInvoke.User32;
-
-namespace KeyboardSwitch.Windows.Services
+namespace KeyboardSwitch.Common.Services
 {
-    internal sealed class KeyboardHookService : Disposable, IKeyboardHookService
+    internal sealed class UioHookService : Disposable, IKeyboardHookService
     {
-        private readonly object modifiersLock = new();
         private readonly TaskQueue taskQueue = new();
 
-        private SafeHHOOK? hookId;
-        private HookProc? hook;
-
-        private readonly IKeysService keysService;
         private readonly IScheduler scheduler;
-        private readonly ILogger<KeyboardHookService> logger;
+        private readonly ILogger<UioHookService> logger;
 
         private readonly HashSet<HotKey> hotKeys = new();
         private readonly HashSet<ModifierKeys> hotModifierKeys = new();
@@ -37,21 +28,15 @@ namespace KeyboardSwitch.Windows.Services
         private readonly Subject<ModifierKeys> hotModifierKeyPressedSubject = new();
         private readonly Dictionary<ModifierKeys, IDisposable> hotModifierKeyPressedSubscriptions = new();
 
-        private ModifierKeys downModifierKeys;
-        private HotKey? pressedHotKey;
-        private ModifierKeys? pressedModifierKeys;
+        private HashSet<KeyCode> pressedKeys = new();
 
-        public KeyboardHookService(
-            IKeysService modiferKeysService,
-            IScheduler scheduler,
-            ILogger<KeyboardHookService> logger)
+        public UioHookService(IScheduler scheduler, ILogger<UioHookService> logger)
         {
-            this.keysService = modiferKeysService;
             this.scheduler = scheduler;
             this.logger = logger;
         }
 
-        ~KeyboardHookService() =>
+        ~UioHookService() =>
             this.Dispose();
 
         public IObservable<HotKey> HotKeyPressed =>
@@ -170,26 +155,31 @@ namespace KeyboardSwitch.Windows.Services
             this.logger.LogDebug("Unregistered all hot keys");
         }
 
-        public Task WaitForMessagesAsync(CancellationToken token) =>
-            Task.Run(() =>
+        public Task StartHook(CancellationToken token)
+        {
+            var source = new TaskCompletionSource<object?>();
+
+            var thread = new Thread(() =>
+            {
+                try
                 {
-                    this.CreateHook();
+                    this.CreateHook(token);
+                    source.SetResult(null);
+                } catch (Exception e)
+                {
+                    source.SetException(e);
+                }
+            });
 
-                    this.logger.LogInformation("Starting the message loop to check for keyboard input");
+            thread.Start();
 
-                    while (GetMessage(out var msg, IntPtr.Zero, 0, 0) && !token.IsCancellationRequested)
-                    {
-                        TranslateMessage(msg);
-                        DispatchMessage(msg);
-                    }
-                },
-                token);
+            return source.Task;
+        }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                this.hookId?.Dispose();
                 this.taskQueue.Dispose();
 
                 this.hotKeyPressedSubject.Dispose();
@@ -204,102 +194,44 @@ namespace KeyboardSwitch.Windows.Services
             }
         }
 
-        private void CreateHook()
+        private void CreateHook(CancellationToken token)
         {
             this.logger.LogInformation("Creating a global hook");
-
-            var hMod = Marshal.GetHINSTANCE(typeof(KeyboardHookService).Module);
-
-            this.hook = this.OnMessageReceived;
-            this.hookId = SetWindowsHookEx(HookType.WH_KEYBOARD_LL, this.hook, hMod, 0);
+            token.Register(() => UioHook.Stop());
+            UioHook.SetDispatchProc(this.HandleHookEvent);
+            UioHook.Run();
         }
 
-        private IntPtr OnMessageReceived(int nCode, IntPtr wParam, IntPtr lParam)
+        private void HandleHookEvent(ref UioHookEvent e)
         {
-            if (nCode >= 0)
+            if (e.Type == EventType.KeyPressed || e.Type == EventType.KeyReleased)
             {
-                int vkCode = Marshal.ReadInt32(lParam);
-                this.taskQueue.EnqueueAndIgnore(() => Task.Run(() => this.HandleSingleKeyboardInput(wParam, vkCode)));
-            }
-
-            return CallNextHookEx(hookId, nCode, wParam, lParam);
-        }
-
-        private void HandleSingleKeyboardInput(IntPtr wParam, int vkCode)
-        {
-            var modifierKey = this.keysService.GetModifierKeyFromCode(vkCode);
-            var message = (WindowMessage)wParam;
-
-            if (message == WindowMessage.WM_KEYDOWN || message == WindowMessage.WM_SYSKEYDOWN)
-            {
-                this.HandleKeyDown(modifierKey, vkCode);
-            }
-
-            if (message == WindowMessage.WM_KEYUP || message == WindowMessage.WM_SYSKEYUP)
-            {
-                this.HandleKeyUp(modifierKey);
+                var copy = e;
+                this.taskQueue.EnqueueAndIgnore(() => Task.Run(() => this.HandleSingleKeyboardInput(copy)));
             }
         }
 
-        private void HandleKeyDown(ModifierKeys? modifierKey, int vkCode)
+        private void HandleSingleKeyboardInput(UioHookEvent e)
         {
-            if (modifierKey != null)
+            if (e.Type == EventType.KeyPressed)
             {
-                lock (this.modifiersLock)
-                {
-                    this.downModifierKeys |= modifierKey.Value;
-                }
-            }
-
-            if (this.pressedHotKey == null)
+                this.HandleKeyDown((KeyCode)e.Keyboard.KeyCode);
+            } else if (e.Type == EventType.KeyReleased)
             {
-                var currentKey = new HotKey(this.downModifierKeys, vkCode);
-
-                if (this.hotKeys.Contains(currentKey))
-                {
-                    this.pressedHotKey = currentKey;
-                }
-            }
-
-            if (this.hotModifierKeys.Contains(this.downModifierKeys))
-            {
-                this.pressedModifierKeys = this.downModifierKeys;
-            }
-
-            if (!this.hotModifierKeys.Contains(this.downModifierKeys) || modifierKey == null)
-            {
-                this.pressedModifierKeys = null;
+                this.HandleKeyUp((KeyCode)e.Keyboard.KeyCode);
             }
         }
 
-        private void HandleKeyUp(ModifierKeys? modifierKey)
+        private void HandleKeyDown(KeyCode keyCode)
         {
-            if (modifierKey != null)
-            {
-                lock (this.modifiersLock)
-                {
-                    this.downModifierKeys &= ~modifierKey.Value;
-                }
-            }
+            // do nothing for now
+            this.logger.LogInformation($"Key pressed: {keyCode}");
+        }
 
-            if (this.downModifierKeys == ModifierKeys.None)
-            {
-                if (this.pressedHotKey != null)
-                {
-                    var hotKey = this.pressedHotKey;
-                    this.pressedHotKey = null;
-
-                    this.hotKeyPressedSubject.OnNext(hotKey);
-                }
-
-                if (this.pressedModifierKeys != null)
-                {
-                    var modifierKeys = this.pressedModifierKeys.Value;
-                    this.pressedModifierKeys = null;
-
-                    this.hotModifierKeyPressedSubject.OnNext(modifierKeys);
-                }
-            }
+        private void HandleKeyUp(KeyCode keyCode)
+        {
+            // do nothing for now
+            this.logger.LogInformation($"Key released: {keyCode}");
         }
     }
 }

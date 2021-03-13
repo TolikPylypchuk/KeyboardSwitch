@@ -10,6 +10,7 @@ namespace KeyboardSwitch.Common
     {
         public static IServiceCollection AddKeyboardSwitchServices(this IServiceCollection services) =>
             services
+                .AddSingleton<IKeyboardHookService, UioHookService>()
                 .AddSingleton(BlobCacheFactory.CreateBlobCache)
                 .AddSingleton<BlobCacheSettingsService>()
                 .AddSingleton<IAppSettingsService>(provider =>

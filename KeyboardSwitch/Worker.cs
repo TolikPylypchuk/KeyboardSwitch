@@ -56,7 +56,7 @@ namespace KeyboardSwitch
 
                 this.logger.LogDebug("Starting the service execution");
 
-                await this.keyboardHookService.WaitForMessagesAsync(token);
+                await this.keyboardHookService.StartHook(token);
             } catch (IncompatibleAppVersionException e)
             {
                 var settingsPath = Path.Combine(

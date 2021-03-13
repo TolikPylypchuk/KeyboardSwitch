@@ -20,6 +20,6 @@ namespace KeyboardSwitch.Common.Services
 
         void UnregisterAll();
 
-        Task WaitForMessagesAsync(CancellationToken token);
+        Task StartHook(CancellationToken token);
     }
 }
