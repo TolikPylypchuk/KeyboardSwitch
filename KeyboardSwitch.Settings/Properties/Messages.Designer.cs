@@ -727,6 +727,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show the converter.
+        /// </summary>
+        internal static string ShowConverter {
+            get {
+                return ResourceManager.GetString("ShowConverter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show a message about uninstalled layouts.
         /// </summary>
         internal static string ShowUninstalledLayoutsMessage {

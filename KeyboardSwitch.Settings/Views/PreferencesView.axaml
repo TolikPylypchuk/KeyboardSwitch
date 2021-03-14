@@ -12,6 +12,8 @@
                       Classes="FormControl" />
             <CheckBox x:Name="ShowRemovedLayoutsMessageCheckBox" Content="{l:Translate ShowUninstalledLayoutsMessage}"
                       Classes="FormControl" />
+            <CheckBox x:Name="ShowConverterCheckBox" Content="{l:Translate ShowConverter}"
+                      Classes="FormControl" />
         </WrapPanel>
 
         <StackPanel x:Name="ActionPanel" DockPanel.Dock="Bottom">

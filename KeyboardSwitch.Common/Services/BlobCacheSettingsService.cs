@@ -13,6 +13,8 @@ using KeyboardSwitch.Common.Settings;
 
 using Microsoft.Extensions.Logging;
 
+using static KeyboardSwitch.Common.Util;
+
 namespace KeyboardSwitch.Common.Services
 {
     internal sealed class BlobCacheSettingsService : AsyncDisposable, IAppSettingsService, IConverterSettingsService
@@ -37,6 +39,9 @@ namespace KeyboardSwitch.Common.Services
 
         public IObservable<Unit> SettingsInvalidated =>
             this.settingsInvalidated.AsObservable();
+
+        public bool CanShowConverter =>
+            PlatformDependent(windows: () => true, macos: () => false, linux: () => false);
 
         public async Task<AppSettings> GetAppSettingsAsync()
         {
@@ -137,13 +142,14 @@ namespace KeyboardSwitch.Common.Services
                     ForwardModifierKeys = new() { ModifierKey.Ctrl, ModifierKey.Shift, ModifierKey.None },
                     BackwardModifierKeys = new() { ModifierKey.Ctrl, ModifierKey.Shift, ModifierKey.Alt },
                     PressCount = 2,
-                    WaitMilliseconds = 300
+                    WaitMilliseconds = 400
                 },
                 CharsByKeyboardLayoutId = this.layoutService.GetKeyboardLayouts()
                     .ToDictionary(layout => layout.Id, _ => String.Empty),
                 InstantSwitching = true,
                 SwitchLayout = true,
                 ShowUninstalledLayoutsMessage = true,
+                ShowConverter = false,
                 AppVersion = Assembly.GetEntryAssembly()?.GetName().Version ?? new Version(0, 0),
                 ServicePath = nameof(KeyboardSwitch)
             };

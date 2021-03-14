@@ -10,6 +10,8 @@ namespace KeyboardSwitch.Common.Services
     {
         IObservable<Unit> SettingsInvalidated { get; }
 
+        bool CanShowConverter { get; }
+
         Task<AppSettings> GetAppSettingsAsync();
         Task SaveAppSettingsAsync(AppSettings appSettings);
 

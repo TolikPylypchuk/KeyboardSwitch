@@ -25,6 +25,9 @@ namespace KeyboardSwitch.Common.Settings
         public bool ShowUninstalledLayoutsMessage { get; set; }
 
         [DataMember]
+        public bool ShowConverter { get; set; }
+
+        [DataMember]
         public string ServicePath { get; set; } = String.Empty;
 
         [DataMember]

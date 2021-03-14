@@ -26,8 +26,14 @@ namespace KeyboardSwitch.Settings.Views
                 this.OneWayBind(this.ViewModel, vm => vm.ConverterViewModel, v => v.ConverterTabItem.Content)
                     .DisposeWith(disposables);
 
+                this.OneWayBind(this.ViewModel, vm => vm.ShowConverter, v => v.ConverterTabItem.IsVisible)
+                    .DisposeWith(disposables);
+
                 this.OneWayBind(
                     this.ViewModel, vm => vm.ConverterSettingsViewModel, v => v.ConverterSettingsTabItem.Content)
+                    .DisposeWith(disposables);
+
+                this.OneWayBind(this.ViewModel, vm => vm.ShowConverter, v => v.ConverterSettingsTabItem.IsVisible)
                     .DisposeWith(disposables);
 
                 this.OneWayBind(this.ViewModel, vm => vm.AboutViewModel, v => v.AboutTabItem.Content)

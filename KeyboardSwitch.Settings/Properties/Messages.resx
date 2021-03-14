@@ -339,6 +339,9 @@
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="ShowConverter" xml:space="preserve">
+    <value>Show the converter</value>
+  </data>
   <data name="ShowUninstalledLayoutsMessage" xml:space="preserve">
     <value>Show a message about uninstalled layouts</value>
   </data>

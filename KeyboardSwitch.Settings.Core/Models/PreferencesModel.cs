@@ -11,6 +11,7 @@ namespace KeyboardSwitch.Settings.Core.Models
             this.SwitchLayout = appSettings.SwitchLayout;
             this.Startup = startup;
             this.ShowUninstalledLayoutsMessage = appSettings.ShowUninstalledLayoutsMessage;
+            this.ShowConverter = appSettings.ShowConverter;
         }
 
         public SwitchSettings SwitchSettings { get; set; }
@@ -19,5 +20,6 @@ namespace KeyboardSwitch.Settings.Core.Models
         public bool SwitchLayout { get; set; }
         public bool Startup { get; set; }
         public bool ShowUninstalledLayoutsMessage { get; set; }
+        public bool ShowConverter { get; set; }
     }
 }

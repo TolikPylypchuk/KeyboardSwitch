@@ -51,5 +51,7 @@ namespace KeyboardSwitch.Settings.Core.Services
 
         public Task SaveAppSettingsAsync(AppSettings appSettings) =>
             Task.CompletedTask;
+
+        bool IAppSettingsService.CanShowConverter => true;
     }
 }

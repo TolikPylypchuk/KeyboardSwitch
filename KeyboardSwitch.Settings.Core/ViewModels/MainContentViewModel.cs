@@ -9,6 +9,7 @@ using KeyboardSwitch.Common.Settings;
 using KeyboardSwitch.Settings.Core.Models;
 
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 using Splat;
 
@@ -32,16 +33,16 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         {
             this.removeLayoutsEnabled = new(preferencesModel.ShowUninstalledLayoutsMessage);
 
-            this.CharMappingViewModel = new(charMappingModel, this.removeLayoutsEnabled);
-            this.PreferencesViewModel = new(preferencesModel);
-            this.ConverterViewModel = new(converterModel);
-            this.ConverterSettingsViewModel = new(converterModel);
-            this.AboutViewModel = new();
-
             this.appSettingsService = appSettingsService ?? Locator.Current.GetService<IAppSettingsService>();
             this.converterSettingsService =
                 converterSettingsService ?? Locator.Current.GetService<IConverterSettingsService>();
             this.startupService = startupService ?? Locator.Current.GetService<IStartupService>();
+
+            this.CharMappingViewModel = new(charMappingModel, this.removeLayoutsEnabled);
+            this.PreferencesViewModel = new(preferencesModel, this.appSettingsService.CanShowConverter);
+            this.ConverterViewModel = new(converterModel);
+            this.ConverterSettingsViewModel = new(converterModel);
+            this.AboutViewModel = new();
 
             this.SaveCharMappingSettings = ReactiveCommand.CreateFromTask<CharMappingModel>(
                 this.SaveCharMappingSettingsAsync);
@@ -58,6 +59,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.PreferencesViewModel.Save
                 .Select(model => model.ShowUninstalledLayoutsMessage)
                 .Subscribe(this.removeLayoutsEnabled);
+
+            this.ShowConverter = preferencesModel.ShowConverter;
         }
 
         public CharMappingViewModel CharMappingViewModel { get; }
@@ -70,6 +73,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         public ReactiveCommand<PreferencesModel, Unit> SavePreferences { get; }
         public ReactiveCommand<ConverterModel, Unit> SaveConverterSettings { get; }
         public ReactiveCommand<Unit, Unit> OpenAboutTab { get; }
+
+        [Reactive]
+        public bool ShowConverter { get; private set; }
 
         private async Task SaveCharMappingSettingsAsync(CharMappingModel charMappingModel)
         {
@@ -102,6 +108,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             settings.InstantSwitching = preferencesModel.InstantSwitching;
             settings.SwitchLayout = preferencesModel.SwitchLayout;
             settings.ShowUninstalledLayoutsMessage = preferencesModel.ShowUninstalledLayoutsMessage;
+            settings.ShowConverter = preferencesModel.ShowConverter;
 
             await this.appSettingsService.SaveAppSettingsAsync(settings);
 
@@ -109,6 +116,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             {
                 await this.startupService.ConfigureStartupAsync(preferencesModel.Startup);
             }
+
+            this.ShowConverter = preferencesModel.ShowConverter;
         }
 
         private async Task SaveConverterSettingsAsync(ConverterModel converterModel)

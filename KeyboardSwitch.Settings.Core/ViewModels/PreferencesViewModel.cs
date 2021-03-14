@@ -30,11 +30,13 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         public PreferencesViewModel(
             PreferencesModel preferencesModel,
+            bool canShowConverter,
             ResourceManager? resourceManager = null,
             IScheduler? scheduler = null)
             : base(resourceManager, scheduler)
         {
             this.PreferencesModel = preferencesModel;
+            this.CanShowConverter = canShowConverter;
             this.CopyProperties();
 
             this.forwardModifierKeysSource.Connect()
@@ -71,6 +73,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         public bool ShowUninstalledLayoutsMessage { get; set; }
 
         [Reactive]
+        public bool ShowConverter { get; set; }
+
+        [Reactive]
         public ModifierKey ForwardModifierKeyFirst { get; set; }
 
         [Reactive]
@@ -94,6 +99,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         [Reactive]
         public int WaitMilliseconds { get; set; }
 
+        public bool CanShowConverter { get; }
+
         public ValidationHelper ModifierKeysAreDifferentRule { get; }
         public ValidationHelper SwitchMethodsAreDifferentRule { get; }
 
@@ -107,6 +114,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
             this.TrackChanges(
                 vm => vm.ShowUninstalledLayoutsMessage, vm => vm.PreferencesModel.ShowUninstalledLayoutsMessage);
+
+            this.TrackChanges(vm => vm.ShowConverter, vm => vm.PreferencesModel.ShowConverter);
 
             this.TrackChanges(this.IsCollectionChangedSimple(
                 vm => vm.forwardModifierKeys, vm => vm.PreferencesModel.SwitchSettings.ForwardModifierKeys));
@@ -126,6 +135,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.PreferencesModel.SwitchLayout = this.SwitchLayout;
             this.PreferencesModel.Startup = this.Startup;
             this.PreferencesModel.ShowUninstalledLayoutsMessage = this.ShowUninstalledLayoutsMessage;
+            this.PreferencesModel.ShowConverter = this.ShowConverter;
 
             this.PreferencesModel.SwitchSettings.ForwardModifierKeys = new(this.forwardModifierKeys);
             this.PreferencesModel.SwitchSettings.BackwardModifierKeys = new(this.backwardModifierKeys);
@@ -141,6 +151,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.SwitchLayout = this.PreferencesModel.SwitchLayout;
             this.Startup = this.PreferencesModel.Startup;
             this.ShowUninstalledLayoutsMessage = this.PreferencesModel.ShowUninstalledLayoutsMessage;
+            this.ShowConverter = this.PreferencesModel.ShowConverter;
 
             if (this.PreferencesModel.SwitchSettings.ForwardModifierKeys.Count > 0)
             {
