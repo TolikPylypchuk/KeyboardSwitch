@@ -9,7 +9,7 @@ namespace KeyboardSwitch.Common.Services
 {
     public interface IKeyboardHookService : IDisposable
     {
-        IObservable<ISet<ModifierKey>> HotKeyPressed { get; }
+        IObservable<ModifierKey> HotKeyPressed { get; }
 
         void Register(IEnumerable<ModifierKey> modifierKeys, int pressedCount, int waitMilliseconds);
         void Unregister(IEnumerable<ModifierKey> modifierKeys);

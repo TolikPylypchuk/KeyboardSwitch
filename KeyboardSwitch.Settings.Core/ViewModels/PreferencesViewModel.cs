@@ -231,7 +231,12 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             return this.LocalizedValidationRule(switchMethodsAreDifferent, "SwitchMethodsAreSame");
         }
 
-        private bool ContainsDistinctElements<T>(IReadOnlyCollection<T> collection) =>
-            collection.Count == collection.Distinct().Count();
+        private bool ContainsDistinctElements(IReadOnlyCollection<ModifierKey> keys) =>
+            !keys
+                .SelectMany((x, index1) =>
+                    keys.Select((y, index2) => (Key1: x, Key2: y, Index1: index1, Index2: index2)))
+                .Where(keys => keys.Index1 < keys.Index2)
+                .Select(keys => (keys.Key1 & keys.Key2) == ModifierKey.None)
+                .Any(equals => !equals);
     }
 }

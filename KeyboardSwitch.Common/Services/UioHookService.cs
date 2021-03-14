@@ -16,22 +16,20 @@ namespace KeyboardSwitch.Common.Services
 {
     internal sealed class UioHookService : Disposable, IKeyboardHookService
     {
-        private static readonly IEqualityComparer<HashSet<ModifierKey>> SetComparer =
-            HashSet<ModifierKey>.CreateSetComparer();
-
         private readonly TaskQueue taskQueue = new();
+        private readonly object keyLock = new();
 
         private readonly IScheduler scheduler;
         private readonly ILogger<UioHookService> logger;
 
-        private readonly HashSet<HashSet<ModifierKey>> hotModifierKeys = new(SetComparer);
+        private readonly HashSet<ModifierKey> hotModifierKeys = new();
 
-        private readonly Subject<ISet<ModifierKey>> keysPressedSubject = new();
-        private readonly Subject<ISet<ModifierKey>> hotKeyPressedSubject = new();
-        private readonly Dictionary<HashSet<ModifierKey>, IDisposable> hotModifierKeyPressedSubscriptions =
-            new(SetComparer);
+        private readonly Subject<ModifierKey> rawKeyPressedSubject = new();
+        private readonly Subject<ModifierKey> hotKeyPressedSubject = new();
+        private readonly Dictionary<ModifierKey, IDisposable> hotModifierKeyPressedSubscriptions = new();
 
         private readonly HashSet<KeyCode> pressedKeys = new();
+        private readonly HashSet<KeyCode> releasedKeys = new();
 
         public UioHookService(IScheduler scheduler, ILogger<UioHookService> logger)
         {
@@ -42,69 +40,48 @@ namespace KeyboardSwitch.Common.Services
         ~UioHookService() =>
             this.Dispose();
 
-        public IObservable<ISet<ModifierKey>> HotKeyPressed =>
+        public IObservable<ModifierKey> HotKeyPressed =>
             this.hotKeyPressedSubject.AsObservable();
 
         public void Register(IEnumerable<ModifierKey> modifierKeys, int pressedCount, int waitMilliseconds)
         {
             this.ThrowIfDisposed();
 
-            var modifierKeysSet = modifierKeys.ToHashSet();
+            var modifierKey = modifierKeys.Flatten();
 
-            this.logger.LogDebug($"Registering a hot key: {modifierKeysSet.ToFormattedString()}");
+            this.logger.LogDebug($"Registering a hot key: {modifierKeys}");
 
-            this.hotModifierKeys.Add(modifierKeysSet);
+            this.hotModifierKeys.Add(modifierKey);
 
-            IDisposable subscription;
+            var subscription = pressedCount == 1
+                ? this.SubscribeToKeyPressesSimple(modifierKey)
+                : this.SubscribeToKeyPresses(modifierKey, pressedCount, TimeSpan.FromMilliseconds(waitMilliseconds));
 
-            if (pressedCount == 1)
-            {
-                subscription = this.keysPressedSubject
-                    .Where(keys => keys.SetEquals(modifierKeysSet))
-                    .Subscribe(this.hotKeyPressedSubject);
-            } else
-            {
-                var waitTime = TimeSpan.FromMilliseconds(waitMilliseconds);
+            this.hotModifierKeyPressedSubscriptions.Add(modifierKey, subscription);
 
-                subscription = this.keysPressedSubject
-                    .Where(keys => keys.SetEquals(modifierKeysSet))
-                    .Buffer(this.keysPressedSubject
-                        .Scan(
-                            DateTimeOffset.MinValue,
-                            (lastPrimary, _) => scheduler.Now - lastPrimary > waitTime
-                                ? DateTimeOffset.Now
-                                : lastPrimary)
-                        .Delay(waitTime, scheduler))
-                    .Where(modifiers => modifiers.Count == pressedCount && modifiers.All(m => m == modifiers[0]))
-                    .Select(modifiers => modifiers[0])
-                    .Subscribe(this.hotKeyPressedSubject);
-            }
-
-            this.hotModifierKeyPressedSubscriptions.Add(modifierKeysSet, subscription);
-
-            this.logger.LogDebug($"Registered a hot key: {modifierKeysSet.ToFormattedString()}");
+            this.logger.LogDebug($"Registered a hot key: {modifierKey}");
         }
 
         public void Unregister(IEnumerable<ModifierKey> modifierKeys)
         {
             this.ThrowIfDisposed();
 
-            var modifierKeysSet = modifierKeys.ToHashSet();
+            var modifierKey = modifierKeys.Flatten();
 
-            this.logger.LogDebug($"Unregistering a hot key: {modifierKeysSet.ToFormattedString()}");
+            this.logger.LogDebug($"Unregistering a hot key: {modifierKey}");
 
-            if (!this.hotModifierKeys.Contains(modifierKeysSet))
+            if (!this.hotModifierKeys.Contains(modifierKey))
             {
-                this.logger.LogWarning($"Modifier key {modifierKeysSet.ToFormattedString()} not found");
+                this.logger.LogWarning($"Modifier key {modifierKey} not found");
                 return;
             }
 
-            this.hotModifierKeys.Remove(modifierKeysSet);
+            this.hotModifierKeys.Remove(modifierKey);
 
-            this.hotModifierKeyPressedSubscriptions[modifierKeysSet].Dispose();
-            this.hotModifierKeyPressedSubscriptions.Remove(modifierKeysSet);
+            this.hotModifierKeyPressedSubscriptions[modifierKey].Dispose();
+            this.hotModifierKeyPressedSubscriptions.Remove(modifierKey);
 
-            this.logger.LogDebug($"Unregistered a hot modifier key: {modifierKeysSet.ToFormattedString()}");
+            this.logger.LogDebug($"Unregistered a hot modifier key: {modifierKey}");
         }
 
         public void UnregisterAll()
@@ -148,7 +125,7 @@ namespace KeyboardSwitch.Common.Services
             {
                 this.taskQueue.Dispose();
 
-                this.keysPressedSubject.Dispose();
+                this.rawKeyPressedSubject.Dispose();
                 this.hotKeyPressedSubject.Dispose();
 
                 foreach (var subscription in this.hotModifierKeyPressedSubscriptions.Values)
@@ -159,6 +136,25 @@ namespace KeyboardSwitch.Common.Services
                 this.hotModifierKeyPressedSubscriptions.Clear();
             }
         }
+
+        private IDisposable SubscribeToKeyPressesSimple(ModifierKey modifierKey) =>
+            this.rawKeyPressedSubject
+                .Where(key => key.IsSubsetKeyOf(modifierKey))
+                .Subscribe(this.hotKeyPressedSubject);
+
+        private IDisposable SubscribeToKeyPresses(ModifierKey modifierKey, int pressedCount, TimeSpan waitTime) =>
+            this.rawKeyPressedSubject
+                .Where(key => key.IsSubsetKeyOf(modifierKey))
+                .Buffer(this.rawKeyPressedSubject
+                    .Scan(
+                        DateTimeOffset.MinValue,
+                        (lastKeyPressTime, _) => this.scheduler.Now - lastKeyPressTime > waitTime
+                            ? this.scheduler.Now
+                            : lastKeyPressTime)
+                    .Delay(waitTime, scheduler))
+                .Where(modifiers => modifiers.Count == pressedCount && modifiers.All(m => m == modifiers[0]))
+                .Select(modifiers => modifiers[0])
+                .Subscribe(this.hotKeyPressedSubject);
 
         private void CreateHook(CancellationToken token)
         {
@@ -190,14 +186,43 @@ namespace KeyboardSwitch.Common.Services
 
         private void HandleKeyDown(KeyCode keyCode)
         {
-            // do nothing for now
-            this.logger.LogInformation($"Key pressed: {keyCode}");
+            lock (this.keyLock)
+            {
+                this.releasedKeys.Clear();
+                this.pressedKeys.Add(keyCode);
+            }
         }
 
         private void HandleKeyUp(KeyCode keyCode)
         {
-            // do nothing for now
-            this.logger.LogInformation($"Key released: {keyCode}");
+            lock (this.keyLock)
+            {
+                if (!this.pressedKeys.Contains(keyCode))
+                {
+                    return;
+                }
+
+                this.pressedKeys.Remove(keyCode);
+                this.releasedKeys.Add(keyCode);
+
+                if (this.pressedKeys.Count != 0)
+                {
+                    return;
+                }
+
+                var modifierKeys = this.releasedKeys
+                    .Select(key => key.ToModifierKey())
+                    .ToList();
+
+                this.releasedKeys.Clear();
+
+                if (!modifierKeys.Any(key => key is null) && modifierKeys.Count > 1)
+                {
+                    var modifierKey = modifierKeys.Select(key => key!.Value).Flatten();
+                    this.logger.LogDebug($"Key combination activated: {modifierKey}");
+                    this.rawKeyPressedSubject.OnNext(modifierKey);
+                }
+            }
         }
     }
 }
