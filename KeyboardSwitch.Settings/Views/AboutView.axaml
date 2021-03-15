@@ -10,13 +10,13 @@
         <TextBlock x:Name="NewVersionTextBlock" Margin="10" FontSize="{DynamicResource FontSizeNormal}" />
 
         <WrapPanel Background="Transparent">
-            <Button x:Name="ViewDocsButton" Margin="10 0" Content="{l:Translate ViewDocs}" Classes="Primary"
+            <Button x:Name="ViewDocsButton" Margin="10 0" Content="{l:Translate ViewDocs}" Classes="accent"
                     HorizontalAlignment="Left" />
 
-            <Button x:Name="CheckForUpdatesButton" Content="{l:Translate CheckForUpdates}" Classes="Primary"
+            <Button x:Name="CheckForUpdatesButton" Content="{l:Translate CheckForUpdates}" Classes="accent"
                     HorizontalAlignment="Left" />
 
-            <Button x:Name="GetNewVersionButton" Content="{l:Translate GetNewVersion}" Classes="Primary"
+            <Button x:Name="GetNewVersionButton" Content="{l:Translate GetNewVersion}" Classes="accent"
                     HorizontalAlignment="Left" />
         </WrapPanel>
 

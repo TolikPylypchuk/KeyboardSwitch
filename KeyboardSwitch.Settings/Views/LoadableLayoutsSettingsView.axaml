@@ -5,7 +5,7 @@
              x:Class="KeyboardSwitch.Settings.Views.LoadableLayoutsSettingsView">
     <DockPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="10">
-            <Button x:Name="SaveButton" Content="{l:Translate Save}" Classes="Primary" />
+            <Button x:Name="SaveButton" Content="{l:Translate Save}" Classes="accent" />
             <Button x:Name="CancelButton" Content="{l:Translate Cancel}" />
         </StackPanel>
 

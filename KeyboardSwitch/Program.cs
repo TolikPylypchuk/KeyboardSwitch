@@ -114,7 +114,7 @@ namespace KeyboardSwitch
 
             namedPipeService.ReceivedString
                 .Where(command => command.IsCommand(ExternalCommand.ReloadSettings))
-                .Do(_ => logger.LogInformation("Invalidating the settings be external request"))
+                .Do(_ => logger.LogInformation("Invalidating the settings by external request"))
                 .Subscribe(_ => settingsService.InvalidateAppSettings());
 
             namedPipeService.ReceivedString

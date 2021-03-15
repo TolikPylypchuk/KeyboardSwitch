@@ -5,16 +5,16 @@
     <Grid>
         <DockPanel x:Name="MainPanel" Grid.Row="0" Grid.Column="0">
             <StackPanel x:Name="ActionPanel" DockPanel.Dock="Bottom">
-                <Button x:Name="SaveButton" Content="{l:Translate Save}" Classes="Primary" />
+                <Button x:Name="SaveButton" Content="{l:Translate Save}" Classes="accent" />
                 <Button x:Name="CancelButton" Content="{l:Translate Cancel}" />
             </StackPanel>
 
             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" VerticalAlignment="Stretch">
                 <DockPanel VerticalAlignment="Top">
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
-                        <Button x:Name="AddLayoutButton" Margin="10 10 0 10" Classes="Primary"
+                        <Button x:Name="AddLayoutButton" Margin="10 10 0 10" Classes="accent"
                                 HorizontalAlignment="Left" Content="{l:Translate AddCustomLayout}" />
-                        <Button x:Name="AutoConfigureButton" Margin="10" Classes="Primary"
+                        <Button x:Name="AutoConfigureButton" Margin="10" Classes="accent"
                                 HorizontalAlignment="Left" Content="{l:Translate AutoConfigureCustomLayouts}" />
                     </StackPanel>
 

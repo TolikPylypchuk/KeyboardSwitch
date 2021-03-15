@@ -13,7 +13,7 @@
 
     <DockPanel>
         <StackPanel x:Name="ActionPanel" DockPanel.Dock="Bottom">
-            <Button x:Name="SaveButton" Content="{l:Translate Save}" Classes="Primary" />
+            <Button x:Name="SaveButton" Content="{l:Translate Save}" Classes="accent" />
             <Button x:Name="CancelButton" Content="{l:Translate Cancel}" />
 
             <TextBlock x:Name="RestartServiceTextBlock" Text="{l:Translate RestartServiceHint}" Margin="10"
@@ -26,7 +26,7 @@
                 <ItemsControl x:Name="Layouts" HorizontalAlignment="Stretch" VerticalAlignment="Top"
                               Grid.IsSharedSizeScope="True" />
 
-                <Button x:Name="AutoConfigureButton" Content="{l:Translate AutoConfigure}" Classes="Primary"
+                <Button x:Name="AutoConfigureButton" Content="{l:Translate AutoConfigure}" Classes="accent"
                         FontSize="{DynamicResource FontSizeLarge}" Margin="10" HorizontalAlignment="Center" />
 
                 <TextBlock x:Name="NewLayoutsTextBlock" Text="{l:Translate NewLayoutsHint}" Classes="Hint" />

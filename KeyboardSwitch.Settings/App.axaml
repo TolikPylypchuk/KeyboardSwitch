@@ -11,7 +11,7 @@
         <FluentTheme Mode="Light"/>
 
         <Style Selector="TextBlock.Error">
-            <Setter Property="Foreground" Value="Red" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemErrorTextColor}" />
             <Setter Property="Margin" Value="10 2" />
         </Style>
 

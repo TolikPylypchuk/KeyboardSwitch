@@ -21,7 +21,7 @@
             <TextBlock x:Name="ServiceShuttingDownTextBlock" Classes="Status"
                        Text="{l:Translate KeyboardSwitchServiceShuttingDown}" />
 
-            <Button x:Name="StartServiceButton" Content="{l:Translate Start}" />
+            <Button x:Name="StartServiceButton" Content="{l:Translate Start}" Classes="accent" />
             <Button x:Name="StopServiceButton" Content="{l:Translate Stop}" />
             <Button x:Name="KillServiceButton" Content="{l:Translate Kill}" />
         </StackPanel>
