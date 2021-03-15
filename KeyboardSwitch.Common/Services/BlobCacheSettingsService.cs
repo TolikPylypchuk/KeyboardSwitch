@@ -62,16 +62,41 @@ namespace KeyboardSwitch.Common.Services
                     await this.cache.InsertObject(AppSettings.CacheKey, this.appSettings);
                 }
 
-                if (appSettings.AppVersion == null ||
-                    appSettings.AppVersion > Assembly.GetEntryAssembly()?.GetName().Version)
+                var appVersion = this.GetAppVersion();
+
+                if (appSettings.AppVersion == null || appSettings.AppVersion > appVersion)
                 {
                     var version = this.appSettings.AppVersion;
                     this.appSettings = null;
                     throw new IncompatibleAppVersionException(version);
                 }
+
+                if (this.appSettings.AppVersion < appVersion)
+                {
+                    await this.MigrateSettingsToLatestVersion();
+                }
             }
 
             return this.appSettings;
+        }
+
+        private async Task MigrateSettingsToLatestVersion()
+        {
+            if (this.appSettings == null)
+            {
+                return;
+            }
+
+            var defaultSettings = this.CreateDefaultAppSettings();
+
+            this.logger.LogInformation(
+                $"Migrating settings from version {this.appSettings.AppVersion} to {defaultSettings.AppVersion}");
+
+            this.appSettings.AppVersion = defaultSettings.AppVersion;
+            this.appSettings.SwitchSettings = defaultSettings.SwitchSettings;
+            this.appSettings.ShowConverter = defaultSettings.ShowConverter;
+
+            await this.cache.InsertObject(AppSettings.CacheKey, this.appSettings);
         }
 
         public async Task SaveAppSettingsAsync(AppSettings appSettings)
@@ -94,6 +119,11 @@ namespace KeyboardSwitch.Common.Services
         public async ValueTask<ConverterSettings> GetConverterSettingsAsync()
         {
             this.ThrowIfDisposed();
+
+            if (!this.CanShowConverter)
+            {
+                throw new NotSupportedException("The converter is not supported");
+            }
 
             if (this.converterSettings == null)
             {
@@ -118,6 +148,11 @@ namespace KeyboardSwitch.Common.Services
         {
             this.ThrowIfDisposed();
 
+            if (!this.CanShowConverter)
+            {
+                throw new NotSupportedException("The converter is not supported");
+            }
+
             this.logger.LogDebug("Saving the converter settings");
             await this.cache.InsertObject(ConverterSettings.CacheKey, converterSettings);
 
@@ -129,8 +164,8 @@ namespace KeyboardSwitch.Common.Services
             if (!this.Disposed)
             {
                 await BlobCache.Shutdown();
-                this.Disposed = true;
                 this.settingsInvalidated.Dispose();
+                this.Disposed = true;
             }
         }
 
@@ -150,8 +185,11 @@ namespace KeyboardSwitch.Common.Services
                 SwitchLayout = true,
                 ShowUninstalledLayoutsMessage = true,
                 ShowConverter = false,
-                AppVersion = Assembly.GetEntryAssembly()?.GetName().Version ?? new Version(0, 0),
+                AppVersion = this.GetAppVersion(),
                 ServicePath = nameof(KeyboardSwitch)
             };
+
+        private Version GetAppVersion() =>
+            Assembly.GetEntryAssembly()?.GetName().Version ?? new Version(0, 0);
     }
 }
