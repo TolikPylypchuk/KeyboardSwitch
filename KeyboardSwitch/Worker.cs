@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading;
@@ -58,9 +57,7 @@ namespace KeyboardSwitch
                 await this.keyboardHookService.StartHook(token);
             } catch (IncompatibleAppVersionException e)
             {
-                var settingsPath = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                    this.globalSettings.Path);
+                var settingsPath = Environment.ExpandEnvironmentVariables(this.globalSettings.Path);
 
                 this.logger.LogError(e, $"Incompatible app version found in settings: {e.Version}. " +
                     $"Delete the settings at '{settingsPath}' and let the app recreate a compatible version");
@@ -102,7 +99,7 @@ namespace KeyboardSwitch
                 settings.BackwardModifierKeys, settings.PressCount, settings.WaitMilliseconds);
 
             this.hookSubscription = this.keyboardHookService.HotKeyPressed
-                .Select(key => key == settings.ForwardModifierKeys.Flatten()
+                .Select(key => key.IsSubsetKeyOf(settings.ForwardModifierKeys.Flatten())
                     ? SwitchDirection.Forward
                     : SwitchDirection.Backward)
                 .SubscribeAsync(this.switchService.SwitchTextAsync);
