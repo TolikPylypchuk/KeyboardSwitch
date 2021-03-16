@@ -50,6 +50,7 @@ using Splat.Microsoft.Extensions.DependencyInjection;
 using Splat.Microsoft.Extensions.Logging;
 using Splat.Serilog;
 
+using static KeyboardSwitch.Common.Util;
 using static KeyboardSwitch.Settings.Core.Constants;
 
 namespace KeyboardSwitch.Settings
@@ -124,13 +125,12 @@ namespace KeyboardSwitch.Settings
 
         private void ConfigureServices(IServiceCollection services)
         {
-            var provider = new JsonConfigurationProvider(new JsonConfigurationSource
-            {
-                Path = "appsettings.json",
-                FileProvider = new PhysicalFileProvider(Environment.CurrentDirectory)
-            });
+            var environment = PlatformDependent(windows: () => "windows", macos: () => "macos", linux: () => "linux");
+            var genericProvider = this.JsonProvider("appsettings.json");
+            var platformSpecificProvider = this.JsonProvider($"appsettings.{environment}.json");
 
-            var config = new ConfigurationRoot(new List<IConfigurationProvider> { provider });
+            var config = new ConfigurationRoot(
+                new List<IConfigurationProvider> { genericProvider, platformSpecificProvider });
 
             services
                 .AddLogging(logging => logging.AddSplat())
@@ -173,6 +173,13 @@ namespace KeyboardSwitch.Settings
 
             autoSuspendHelper.OnFrameworkInitializationCompleted();
         }
+
+        private IConfigurationProvider JsonProvider(string fileName) =>
+            new JsonConfigurationProvider(new JsonConfigurationSource
+            {
+                Path = fileName,
+                FileProvider = new PhysicalFileProvider(Environment.CurrentDirectory)
+            });
 
         private async Task<MainWindow> CreateMainWindow(MainViewModel viewModel)
         {

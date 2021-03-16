@@ -25,6 +25,8 @@ using Microsoft.Extensions.Logging;
 
 using Serilog;
 
+using static KeyboardSwitch.Common.Util;
+
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace KeyboardSwitch
@@ -42,6 +44,7 @@ namespace KeyboardSwitch
                 .ConfigureServices(ConfigureServices)
                 .ConfigureLogging(ConfigureLogging)
                 .UseConsoleLifetime()
+                .UseEnvironment(PlatformDependent(windows: () => "windows", macos: () => "macos", linux: () => "linux"))
                 .Build();
 
             var logger = host.Services.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(Program));
