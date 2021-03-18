@@ -24,6 +24,8 @@ namespace KeyboardSwitch.Windows.Services
         private readonly IAppSettingsService settingsService;
         private readonly ILogger<ClipboardTextService> logger;
 
+        private string? savedClipboardText;
+
         public ClipboardTextService(
             IInputSimulator input,
             IAppSettingsService settingsService,
@@ -44,6 +46,7 @@ namespace KeyboardSwitch.Windows.Services
                 {
                     if (settings.InstantSwitching)
                     {
+                        this.savedClipboardText = this.GetClipboardText();
                         this.input.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C);
                         Thread.Sleep(50);
                     }
@@ -66,6 +69,14 @@ namespace KeyboardSwitch.Windows.Services
                     {
                         Thread.Sleep(50);
                         this.input.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
+
+                        if (this.savedClipboardText != null)
+                        {
+                            var text = this.savedClipboardText;
+                            this.savedClipboardText = null;
+                            Thread.Sleep(50);
+                            this.SetClipboardText(text);
+                        }
                     }
                 });
         }
