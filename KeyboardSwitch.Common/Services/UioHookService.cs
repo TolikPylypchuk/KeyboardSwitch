@@ -18,6 +18,8 @@ namespace KeyboardSwitch.Common.Services
     {
         private readonly TaskQueue taskQueue = new();
         private readonly object keyLock = new();
+        private DateTimeOffset lastKeyPress = DateTimeOffset.MinValue;
+        private readonly TimeSpan keyPressWaitThresshold = TimeSpan.FromSeconds(3);
 
         private readonly IScheduler scheduler;
         private readonly ILogger<UioHookService> logger;
@@ -188,8 +190,14 @@ namespace KeyboardSwitch.Common.Services
         {
             lock (this.keyLock)
             {
+                if (this.scheduler.Now - this.lastKeyPress > this.keyPressWaitThresshold)
+                {
+                    this.pressedKeys.Clear();
+                }
+
                 this.releasedKeys.Clear();
                 this.pressedKeys.Add(keyCode);
+                this.lastKeyPress = this.scheduler.Now;
             }
         }
 
