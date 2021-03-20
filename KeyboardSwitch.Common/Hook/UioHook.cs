@@ -64,8 +64,8 @@ namespace KeyboardSwitch.Common.Hook
 
         private static string GetLibUioHookName() =>
             PlatformDependent(
-                windows: () => "./lib/win-x64/uiohook.dll",
-                macos: () => "./lib/macos-x64/libuiohook.dylib",
-                linux: () => "./lib/linux-x64/libuiohook.so");
+                windows: () => ".\\uiohook.dll",
+                macos: () => "./libuiohook.dylib",
+                linux: () => "./libuiohook.so");
     }
 }

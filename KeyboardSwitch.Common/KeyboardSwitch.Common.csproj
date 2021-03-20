@@ -27,27 +27,34 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="lib\linux-x64\libuiohook.so">
+    <ContentWithTargetPath Include="lib\linux-x64\libuiohook.so">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="lib\linux-x64\libuiohook.so.1">
+      <TargetPath>libuiohook.so</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\linux-x64\libuiohook.so.1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="lib\linux-x64\libuiohook.so.1.2.0">
+      <TargetPath>libuiohook.so.1</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\linux-x64\libuiohook.so.1.2.0">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="lib\macos-x64\libuiohook.1.2.0.dylib">
+      <TargetPath>libuiohook.so.1.2.0</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\macos-x64\libuiohook.dylib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="lib\macos-x64\libuiohook.1.dylib">
+      <TargetPath>libuiohook.dylib</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\macos-x64\libuiohook.1.dylib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="lib\macos-x64\libuiohook.dylib">
+      <TargetPath>libuiohook.1.dylib</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\macos-x64\libuiohook.1.2.0.dylib">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="lib\win-x64\uiohook.dll">
+      <TargetPath>libuiohook.1.2.0.dylib</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\win-x64\uiohook.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+      <TargetPath>uiohook.dll</TargetPath>
+    </ContentWithTargetPath>
   </ItemGroup>
 
 </Project>

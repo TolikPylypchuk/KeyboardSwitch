@@ -23,7 +23,17 @@ namespace KeyboardSwitch.Windows.Setup
         private const string BuildDirectory = @"..\bin\publish\*.*";
         private static readonly string TargetDirectory = @$"%ProgramFiles%\{nameof(KeyboardSwitch)}";
 
-        private static readonly List<string> ExcludedFileExtensions = new List<string> { ".pdb", ".xml" };
+        private static readonly List<string> ExcludedFileExtensions = new List<string>
+        {
+            ".pdb",
+            ".xml",
+            ".so",
+            ".so.1",
+            ".so.1.2.0",
+            ".dylib",
+            ".dylib.1",
+            ".dylib.1.2.0"
+        };
 
         private const string InstallationDirectory = "[INSTALLDIR]";
         private const string StartMenuDirectory = "%ProgramMenu%";
@@ -31,6 +41,7 @@ namespace KeyboardSwitch.Windows.Setup
         private readonly static string ExplorerPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.Windows), "explorer.exe");
 
+        private const string SettingsAppId = "settings_exe";
         private const string SettingsAppName = "KeyboardSwitchSettings.exe";
         private const string SetStartupFile = "set-startup";
 
