@@ -120,11 +120,6 @@ namespace KeyboardSwitch.Common.Services
         {
             this.ThrowIfDisposed();
 
-            if (!this.CanShowConverter)
-            {
-                throw new NotSupportedException("The converter is not supported");
-            }
-
             if (this.converterSettings == null)
             {
                 this.logger.LogDebug("Getting the converter settings");
