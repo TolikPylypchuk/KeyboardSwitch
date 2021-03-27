@@ -21,10 +21,10 @@
     <PackageReference Include="System.Interactive" Version="5.0.0" />
     <PackageReference Include="System.Interactive.Async" Version="5.0.0" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
-    <PackageReference Include="Vanara.Core" Version="3.3.5" />
-    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="3.3.5" />
-    <PackageReference Include="Vanara.PInvoke.Shared" Version="3.3.5" />
-    <PackageReference Include="Vanara.PInvoke.User32" Version="3.3.5" />
+    <PackageReference Include="Vanara.Core" Version="3.3.7" />
+    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="3.3.7" />
+    <PackageReference Include="Vanara.PInvoke.Shared" Version="3.3.7" />
+    <PackageReference Include="Vanara.PInvoke.User32" Version="3.3.7" />
   </ItemGroup>
 
   <ItemGroup>
