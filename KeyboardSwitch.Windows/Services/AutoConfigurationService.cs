@@ -122,10 +122,10 @@ namespace KeyboardSwitch.Windows.Services
             KeyCode.VcEquals
         };
 
-        public Dictionary<int, string> CreateCharMappings(IEnumerable<KeyboardLayout> layouts)
+        public Dictionary<string, string> CreateCharMappings(IEnumerable<KeyboardLayout> layouts)
         {
             var layoutIds = layouts
-                .Select(layout => (IntPtr)layout.Id)
+                .Select(layout => (IntPtr)Int32.Parse(layout.Id))
                 .Select(id => (HKL)id)
                 .ToList();
 
@@ -142,7 +142,7 @@ namespace KeyboardSwitch.Windows.Services
                 .Results
                 .SelectMany(results => results)
                 .GroupBy(result => (int)result.LayoutId.DangerousGetHandle(), result => result.Char)
-                .ToDictionary(result => result.Key, result => new string(result.ToArray()));
+                .ToDictionary(result => result.Key.ToString(), result => new string(result.ToArray()));
         }
 
         private DistinctCharsState RemoveDuplicateChars(DistinctCharsState state, List<KeyToCharResult> results) =>

@@ -26,8 +26,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         private readonly ILayoutService layoutService;
         private readonly IAutoConfigurationService autoConfigurationService;
 
-        private readonly SourceCache<LayoutModel, int> layoutsSource = new(layout => layout.Id);
-        private readonly SourceList<int> removableLayoutIdsSource = new();
+        private readonly SourceCache<LayoutModel, string> layoutsSource = new(layout => layout.Id);
+        private readonly SourceList<string> removableLayoutIdsSource = new();
 
         private readonly ReadOnlyObservableCollection<LayoutViewModel> layouts;
 

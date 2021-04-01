@@ -51,7 +51,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         public string KeyboardName { get; set; } = String.Empty;
 
         [Reactive]
-        public int Id { get; set; }
+        public string Id { get; set; } = String.Empty;
 
         [Reactive]
         public int Index { get; set; }

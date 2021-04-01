@@ -6,6 +6,6 @@ namespace KeyboardSwitch.Common.Services
 {
     public interface IAutoConfigurationService
     {
-        Dictionary<int, string> CreateCharMappings(IEnumerable<KeyboardLayout> layouts);
+        Dictionary<string, string> CreateCharMappings(IEnumerable<KeyboardLayout> layouts);
     }
 }

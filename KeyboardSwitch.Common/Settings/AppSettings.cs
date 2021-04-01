@@ -13,7 +13,7 @@ namespace KeyboardSwitch.Common.Settings
         public SwitchSettings SwitchSettings { get; set; } = null!;
 
         [DataMember]
-        public Dictionary<int, string> CharsByKeyboardLayoutId { get; set; } = new();
+        public Dictionary<string, string> CharsByKeyboardLayoutId { get; set; } = new();
 
         [DataMember]
         public bool InstantSwitching { get; set; }

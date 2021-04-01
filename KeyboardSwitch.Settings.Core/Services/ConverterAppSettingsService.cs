@@ -37,7 +37,7 @@ namespace KeyboardSwitch.Settings.Core.Services
         public Task<AppSettings> GetAppSettingsAsync() =>
             Task.FromResult(new AppSettings
             {
-                CharsByKeyboardLayoutId = new Dictionary<int, string>
+                CharsByKeyboardLayoutId = new()
                 {
                     [SourceLayoutId] = this.SourceLayout.Chars,
                     [TargetLayoutId] = this.TargetLayout.Chars

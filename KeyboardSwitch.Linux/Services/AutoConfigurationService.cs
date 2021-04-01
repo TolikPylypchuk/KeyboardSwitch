@@ -8,7 +8,7 @@ namespace KeyboardSwitch.Linux.Services
 {
     public sealed class AutoConfigurationService : IAutoConfigurationService
     {
-        public Dictionary<int, string> CreateCharMappings(IEnumerable<KeyboardLayout> layouts) =>
+        public Dictionary<string, string> CreateCharMappings(IEnumerable<KeyboardLayout> layouts) =>
             throw new NotImplementedException();
     }
 }

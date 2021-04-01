@@ -41,7 +41,7 @@ namespace KeyboardSwitch.Settings.Core.Services
         public void SwitchCurrentLayout(SwitchDirection direction)
         { }
 
-        private KeyboardLayout CreateFakeKeyboardLayout(CustomLayoutModel layout, int index) =>
-            new(index, CultureInfo.InvariantCulture, layout.Name, index.ToString(CultureInfo.InvariantCulture));
+        private KeyboardLayout CreateFakeKeyboardLayout(CustomLayoutModel layout, string index) =>
+            new(index, CultureInfo.InvariantCulture.EnglishName, layout.Name, index);
     }
 }

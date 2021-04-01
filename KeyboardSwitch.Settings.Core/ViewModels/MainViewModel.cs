@@ -67,7 +67,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 {
                     Id = layout.Id,
                     Index = index,
-                    LanguageName = layout.Culture.EnglishName,
+                    LanguageName = layout.LanguageName,
                     KeyboardName = layout.KeyboardName,
                     IsNew = charsByLayoutId.Count != 0 && !charsByLayoutId.ContainsKey(layout.Id),
                     Chars = charsByLayoutId.GetValueOrDefault(layout.Id, String.Empty)!

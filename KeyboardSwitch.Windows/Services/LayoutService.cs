@@ -140,7 +140,7 @@ namespace KeyboardSwitch.Windows.Services
                 int id = (int)layout.DangerousGetHandle();
                 var culture = this.GetCultureInfo(id, loadableLayout.Name);
 
-                allLayouts.Add(new(id, culture, loadableLayout.Name, loadableLayout.Tag));
+                allLayouts.Add(new(id.ToString(), culture.EnglishName, loadableLayout.Name, loadableLayout.Tag));
             }
 
             return new(allLayouts, unloadDisposable);
@@ -157,7 +157,7 @@ namespace KeyboardSwitch.Windows.Services
             int id = (int)keyboardLayoutId.DangerousGetHandle();
             var (name, tag) = this.GetLayoutDisplayNameAndTag(keyboardLayoutId);
 
-            return new(id, this.GetCultureInfo(id, name), name, tag);
+            return new(id.ToString(), this.GetCultureInfo(id, name).EnglishName, name, tag);
         }
 
         private (string DisplayName, string Tag) GetLayoutDisplayNameAndTag(HKL keyboardLayoutId)
