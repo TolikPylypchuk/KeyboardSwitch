@@ -12,9 +12,9 @@ namespace KeyboardSwitch.Linux.Services
             throw new NotImplementedException();
 
         public List<KeyboardLayout> GetKeyboardLayouts() =>
-            throw new NotImplementedException();
+            new();
 
-        public void SwitchCurrentLayout(SwitchDirection direction) =>
-            throw new NotImplementedException();
+        public void SwitchCurrentLayout(SwitchDirection direction)
+        { }
     }
 }
