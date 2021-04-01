@@ -15,6 +15,10 @@
 #*.sqlproj   merge=binary
 #*.wwaproj   merge=binary
 
+#*.dll   binary
+#*.so    binary
+#*.so.*  binary
+#*.dylib binary
 #*.jpg   binary
 #*.png   binary
 #*.gif   binary
