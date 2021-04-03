@@ -13,8 +13,6 @@ using KeyboardSwitch.Common.Settings;
 
 using Microsoft.Extensions.Logging;
 
-using static KeyboardSwitch.Common.Util;
-
 namespace KeyboardSwitch.Common.Services
 {
     internal sealed class BlobCacheSettingsService : AsyncDisposable, IAppSettingsService, IConverterSettingsService

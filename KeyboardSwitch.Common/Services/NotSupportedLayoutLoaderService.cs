@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using KeyboardSwitch.Common.Keyboard;
 
-namespace KeyboardSwitch.Common.Services.NotSupported
+namespace KeyboardSwitch.Common.Services
 {
     public sealed class NotSupportedLayoutLoaderService : ILayoutLoaderSrevice
     {

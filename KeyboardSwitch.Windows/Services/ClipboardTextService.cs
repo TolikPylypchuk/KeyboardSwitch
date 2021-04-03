@@ -1,165 +1,165 @@
-using System;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+//using System;
+//using System.Runtime.InteropServices;
+//using System.Text;
+//using System.Threading;
+//using System.Threading.Tasks;
 
-using GregsStack.InputSimulatorStandard;
-using GregsStack.InputSimulatorStandard.Native;
+//using GregsStack.InputSimulatorStandard;
+//using GregsStack.InputSimulatorStandard.Native;
 
-using KeyboardSwitch.Common.Services;
+//using KeyboardSwitch.Common.Services;
 
-using Microsoft.Extensions.Logging;
+//using Microsoft.Extensions.Logging;
 
-using Vanara.PInvoke;
+//using Vanara.PInvoke;
 
-using static Vanara.PInvoke.Kernel32;
-using static Vanara.PInvoke.User32;
+//using static Vanara.PInvoke.Kernel32;
+//using static Vanara.PInvoke.User32;
 
-namespace KeyboardSwitch.Windows.Services
-{
-    internal class ClipboardTextService : ITextService
-    {
-        private readonly IInputSimulator input;
-        private readonly IAppSettingsService settingsService;
-        private readonly ILogger<ClipboardTextService> logger;
+//namespace KeyboardSwitch.Windows.Services
+//{
+//    internal class ClipboardTextService : ITextService
+//    {
+//        private readonly IInputSimulator input;
+//        private readonly IAppSettingsService settingsService;
+//        private readonly ILogger<ClipboardTextService> logger;
 
-        private string? savedClipboardText;
+//        private string? savedClipboardText;
 
-        public ClipboardTextService(
-            IInputSimulator input,
-            IAppSettingsService settingsService,
-            ILogger<ClipboardTextService> logger)
-        {
-            this.input = input;
-            this.settingsService = settingsService;
-            this.logger = logger;
-        }
+//        public ClipboardTextService(
+//            IInputSimulator input,
+//            IAppSettingsService settingsService,
+//            ILogger<ClipboardTextService> logger)
+//        {
+//            this.input = input;
+//            this.settingsService = settingsService;
+//            this.logger = logger;
+//        }
 
-        public async Task<string?> GetTextAsync()
-        {
-            this.logger.LogDebug("Getting the text from the clipboard");
+//        public async Task<string?> GetTextAsync()
+//        {
+//            this.logger.LogDebug("Getting the text from the clipboard");
 
-            var settings = await this.settingsService.GetAppSettingsAsync();
+//            var settings = await this.settingsService.GetAppSettingsAsync();
 
-            return await TaskUtils.RunSTATask(() =>
-                {
-                    if (settings.InstantSwitching)
-                    {
-                        this.savedClipboardText = this.GetClipboardText();
-                        this.input.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C);
-                        Thread.Sleep(50);
-                    }
+//            return await TaskUtils.RunSTATask(() =>
+//                {
+//                    if (settings.InstantSwitching)
+//                    {
+//                        this.savedClipboardText = this.GetClipboardText();
+//                        this.input.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C);
+//                        Thread.Sleep(50);
+//                    }
 
-                    return this.GetClipboardText();
-                });
-        }
+//                    return this.GetClipboardText();
+//                });
+//        }
 
-        public async Task SetTextAsync(string text)
-        {
-            this.logger.LogDebug("Setting the text into the clipboard");
+//        public async Task SetTextAsync(string text)
+//        {
+//            this.logger.LogDebug("Setting the text into the clipboard");
 
-            var settings = await this.settingsService.GetAppSettingsAsync();
+//            var settings = await this.settingsService.GetAppSettingsAsync();
 
-            await TaskUtils.RunSTATask(() =>
-                {
-                    SetClipboardText(text);
+//            await TaskUtils.RunSTATask(() =>
+//                {
+//                    SetClipboardText(text);
 
-                    if (settings.InstantSwitching)
-                    {
-                        Thread.Sleep(50);
-                        this.input.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
+//                    if (settings.InstantSwitching)
+//                    {
+//                        Thread.Sleep(50);
+//                        this.input.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
 
-                        if (this.savedClipboardText != null)
-                        {
-                            var text = this.savedClipboardText;
-                            this.savedClipboardText = null;
-                            Thread.Sleep(50);
-                            this.SetClipboardText(text);
-                        }
-                    }
-                });
-        }
+//                        if (this.savedClipboardText != null)
+//                        {
+//                            var text = this.savedClipboardText;
+//                            this.savedClipboardText = null;
+//                            Thread.Sleep(50);
+//                            this.SetClipboardText(text);
+//                        }
+//                    }
+//                });
+//        }
 
-        private string? GetClipboardText()
-        {
-            if (!IsClipboardFormatAvailable(CLIPFORMAT.CF_UNICODETEXT))
-            {
-                return null;
-            }
+//        private string? GetClipboardText()
+//        {
+//            if (!IsClipboardFormatAvailable(CLIPFORMAT.CF_UNICODETEXT))
+//            {
+//                return null;
+//            }
 
-            try
-            {
-                if (!OpenClipboard(IntPtr.Zero))
-                {
-                    return null;
-                }
+//            try
+//            {
+//                if (!OpenClipboard(IntPtr.Zero))
+//                {
+//                    return null;
+//                }
 
-                var handle = GetClipboardData(CLIPFORMAT.CF_UNICODETEXT);
-                var pointer = IntPtr.Zero;
+//                var handle = GetClipboardData(CLIPFORMAT.CF_UNICODETEXT);
+//                var pointer = IntPtr.Zero;
 
-                try
-                {
-                    pointer = GlobalLock(handle);
+//                try
+//                {
+//                    pointer = GlobalLock(handle);
 
-                    if (pointer == IntPtr.Zero)
-                    {
-                        return null;
-                    }
+//                    if (pointer == IntPtr.Zero)
+//                    {
+//                        return null;
+//                    }
 
-                    int size = GlobalSize(handle);
-                    var buffer = new byte[size];
+//                    int size = GlobalSize(handle);
+//                    var buffer = new byte[size];
 
-                    Marshal.Copy(pointer, buffer, 0, size);
+//                    Marshal.Copy(pointer, buffer, 0, size);
 
-                    return Encoding.Unicode.GetString(buffer).TrimEnd('\0');
-                } finally
-                {
-                    if (pointer != IntPtr.Zero)
-                    {
-                        GlobalUnlock(handle);
-                    }
-                }
-            } finally
-            {
-                CloseClipboard();
-            }
-        }
+//                    return Encoding.Unicode.GetString(buffer).TrimEnd('\0');
+//                } finally
+//                {
+//                    if (pointer != IntPtr.Zero)
+//                    {
+//                        GlobalUnlock(handle);
+//                    }
+//                }
+//            } finally
+//            {
+//                CloseClipboard();
+//            }
+//        }
 
-        private void SetClipboardText(string text)
-        {
-            try
-            {
-                if (!OpenClipboard(IntPtr.Zero))
-                {
-                    return;
-                }
+//        private void SetClipboardText(string text)
+//        {
+//            try
+//            {
+//                if (!OpenClipboard(IntPtr.Zero))
+//                {
+//                    return;
+//                }
 
-                var handle = Marshal.StringToHGlobalUni(text);
+//                var handle = Marshal.StringToHGlobalUni(text);
 
-                var pointer = IntPtr.Zero;
+//                var pointer = IntPtr.Zero;
 
-                try
-                {
-                    pointer = GlobalLock(handle);
+//                try
+//                {
+//                    pointer = GlobalLock(handle);
 
-                    if (pointer == IntPtr.Zero)
-                    {
-                        return;
-                    }
+//                    if (pointer == IntPtr.Zero)
+//                    {
+//                        return;
+//                    }
 
-                    SetClipboardData(CLIPFORMAT.CF_UNICODETEXT, handle);
-                } finally
-                {
-                    if (pointer != IntPtr.Zero)
-                    {
-                        GlobalUnlock(handle);
-                    }
-                }
-            } finally
-            {
-                CloseClipboard();
-            }
-        }
-    }
-}
+//                    SetClipboardData(CLIPFORMAT.CF_UNICODETEXT, handle);
+//                } finally
+//                {
+//                    if (pointer != IntPtr.Zero)
+//                    {
+//                        GlobalUnlock(handle);
+//                    }
+//                }
+//            } finally
+//            {
+//                CloseClipboard();
+//            }
+//        }
+//    }
+//}

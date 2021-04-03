@@ -69,8 +69,7 @@ namespace KeyboardSwitch
             }
         }
 
-        private static void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services)
-        {
+        private static void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services) =>
             services.AddHostedService<Worker>()
                 .Configure<HostOptions>(o => o.ShutdownTimeout = TimeSpan.FromMilliseconds(100))
                 .Configure<GlobalSettings>(hostContext.Configuration.GetSection("Settings"))
@@ -81,7 +80,6 @@ namespace KeyboardSwitch
 #else
                 .AddKeyboardSwitchLinuxServices();
 #endif
-        }
 
         private static void ConfigureLogging(HostBuilderContext hostingContext, ILoggingBuilder logging) =>
             logging

@@ -51,7 +51,7 @@ namespace KeyboardSwitch.Common.Services
 
             var modifierKey = modifierKeys.Flatten();
 
-            this.logger.LogDebug($"Registering a hot key: {modifierKeys}");
+            this.logger.LogDebug($"Registering a hot key: {modifierKey}");
 
             this.hotModifierKeys.Add(modifierKey);
 

@@ -1,8 +1,12 @@
+using System.Reactive.Concurrency;
+
 using KeyboardSwitch.Common.Services;
 using KeyboardSwitch.Common.Services.Infrastructure;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
+using TextCopy;
 
 namespace KeyboardSwitch.Common
 {
@@ -11,6 +15,8 @@ namespace KeyboardSwitch.Common
         public static IServiceCollection AddKeyboardSwitchServices(this IServiceCollection services) =>
             services
                 .AddSingleton<IKeyboardHookService, UioHookService>()
+                .AddSingleton<ITextService, ClipboardTextService>()
+                .AddClipboard()
                 .AddSingleton(BlobCacheFactory.CreateBlobCache)
                 .AddSingleton<BlobCacheSettingsService>()
                 .AddSingleton<IAppSettingsService>(provider =>
@@ -24,6 +30,13 @@ namespace KeyboardSwitch.Common
                     new SingleInstanceService(
                         s.GetRequiredService<ServiceProvider<INamedPipeService>>(),
                         s.GetRequiredService<ILogger<SingleInstanceService>>(),
-                        name));
+                        name))
+                .AddSingleton<IScheduler>(DefaultScheduler.Instance);
+
+        public static IServiceCollection AddClipboard(this IServiceCollection services)
+        {
+            services.InjectClipboard();
+            return services;
+        }
     }
 }

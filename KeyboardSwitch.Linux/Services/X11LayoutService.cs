@@ -150,6 +150,7 @@ namespace KeyboardSwitch.Linux.Services
                 .Zip(variantNames, (gs, variant) => (GroupAndSymbol: gs, Variant: variant))
                 .Select(items => CreateKeyboardLayout(
                     items.GroupAndSymbol.Group, items.GroupAndSymbol.Symbol, items.Variant))
+                .Distinct()
                 .ToList();
         }
 
