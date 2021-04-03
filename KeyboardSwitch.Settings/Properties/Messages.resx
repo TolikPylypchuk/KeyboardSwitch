@@ -226,7 +226,7 @@
     <value>Any Alt</value>
   </data>
   <data name="ModifierKeyCommand" xml:space="preserve">
-    <value>Command</value>
+    <value>Any Command</value>
   </data>
   <data name="ModifierKeyCtrl" xml:space="preserve">
     <value>Any Ctrl</value>
@@ -240,26 +240,23 @@
   <data name="ModifierKeyLeftCtrl" xml:space="preserve">
     <value>Left Ctrl</value>
   </data>
-  <data name="ModifierKeyLeftMeta" xml:space="preserve">
-    <value>Left Meta</value>
-  </data>
   <data name="ModifierKeyLeftOption" xml:space="preserve">
     <value>Left Option</value>
   </data>
   <data name="ModifierKeyLeftShift" xml:space="preserve">
     <value>Left Shift</value>
   </data>
+  <data name="ModifierKeyLeftSuper" xml:space="preserve">
+    <value>Left Super</value>
+  </data>
   <data name="ModifierKeyLeftWin" xml:space="preserve">
     <value>Left Win</value>
-  </data>
-  <data name="ModifierKeyMeta" xml:space="preserve">
-    <value>Meta</value>
   </data>
   <data name="ModifierKeyNone" xml:space="preserve">
     <value>&lt;no key&gt;</value>
   </data>
   <data name="ModifierKeyOption" xml:space="preserve">
-    <value>Option</value>
+    <value>Any Option</value>
   </data>
   <data name="ModifierKeyRightAlt" xml:space="preserve">
     <value>Right Alt</value>
@@ -270,14 +267,14 @@
   <data name="ModifierKeyRightCtrl" xml:space="preserve">
     <value>Right Ctrl</value>
   </data>
-  <data name="ModifierKeyRightMeta" xml:space="preserve">
-    <value>Right Meta</value>
-  </data>
   <data name="ModifierKeyRightOption" xml:space="preserve">
     <value>Right Option</value>
   </data>
   <data name="ModifierKeyRightShift" xml:space="preserve">
     <value>Right Shift</value>
+  </data>
+  <data name="ModifierKeyRightSuper" xml:space="preserve">
+    <value>Right Super</value>
   </data>
   <data name="ModifierKeyRightWin" xml:space="preserve">
     <value>Right Win</value>
@@ -290,6 +287,9 @@
   </data>
   <data name="ModifierKeyShift" xml:space="preserve">
     <value>Any Shift</value>
+  </data>
+  <data name="ModifierKeySuper" xml:space="preserve">
+    <value>Any Super</value>
   </data>
   <data name="ModifierKeyWin" xml:space="preserve">
     <value>Any Win</value>

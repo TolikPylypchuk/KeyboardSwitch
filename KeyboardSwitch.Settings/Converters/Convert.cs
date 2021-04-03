@@ -54,15 +54,15 @@ namespace KeyboardSwitch.Settings.Converters
                 ModifierKey.LeftMeta => PlatformDependent(
                     windows: () => Messages.ModifierKeyLeftWin,
                     macos: () => Messages.ModifierKeyLeftCommand,
-                    linux: () => Messages.ModifierKeyLeftMeta),
+                    linux: () => Messages.ModifierKeyLeftSuper),
                 ModifierKey.RightMeta => PlatformDependent(
                     windows: () => Messages.ModifierKeyRightWin,
                     macos: () => Messages.ModifierKeyRightCommand,
-                    linux: () => Messages.ModifierKeyRightMeta),
+                    linux: () => Messages.ModifierKeyRightSuper),
                 ModifierKey.Meta => PlatformDependent(
                     windows: () => Messages.ModifierKeyWin,
                     macos: () => Messages.ModifierKeyCommand,
-                    linux: () => Messages.ModifierKeyMeta),
+                    linux: () => Messages.ModifierKeySuper),
 
                 _ => String.Empty
             };
