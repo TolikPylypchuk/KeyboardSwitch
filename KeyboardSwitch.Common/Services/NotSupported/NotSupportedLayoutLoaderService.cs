@@ -7,6 +7,8 @@ namespace KeyboardSwitch.Common.Services.NotSupported
 {
     public sealed class NotSupportedLayoutLoaderService : ILayoutLoaderSrevice
     {
+        public bool IsLoadingLayoutsSupported => false;
+
         public List<LoadableKeyboardLayout> GetAllSystemLayouts() =>
             throw new NotSupportedException("Getting all system layouts is not supported");
 

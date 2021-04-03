@@ -68,7 +68,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.LayoutNamesAreUniqueRule = this.LocalizedValidationRule(namesAreUnique, "CustomLayoutNamesAreSame");
 
             this.AddCustomLayout = ReactiveCommand.Create(this.OnAddCustomLayout);
-            this.AutoConfigureCustomLayouts = ReactiveCommand.Create(this.OnAutoConfigureCustomLayouts);
+            this.AutoConfigureCustomLayouts = ReactiveCommand.Create(
+                this.OnAutoConfigureCustomLayouts,
+                Observable.Return(this.layoutLoaderService.IsLoadingLayoutsSupported));
 
             this.AutoConfigureCustomLayouts
                 .Select(_ => true)

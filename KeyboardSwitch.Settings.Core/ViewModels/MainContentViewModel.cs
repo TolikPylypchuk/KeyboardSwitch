@@ -39,7 +39,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.startupService = startupService ?? Locator.Current.GetService<IStartupService>();
 
             this.CharMappingViewModel = new(charMappingModel, this.removeLayoutsEnabled);
-            this.PreferencesViewModel = new(preferencesModel, this.appSettingsService.CanShowConverter);
+            this.PreferencesViewModel = new(preferencesModel);
             this.ConverterViewModel = new(converterModel);
             this.ConverterSettingsViewModel = new(converterModel);
             this.AboutViewModel = new();

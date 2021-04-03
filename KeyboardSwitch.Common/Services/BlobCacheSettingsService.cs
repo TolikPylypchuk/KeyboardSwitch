@@ -40,9 +40,6 @@ namespace KeyboardSwitch.Common.Services
         public IObservable<Unit> SettingsInvalidated =>
             this.settingsInvalidated.AsObservable();
 
-        public bool CanShowConverter =>
-            PlatformDependent(windows: () => true, macos: () => false, linux: () => false);
-
         public async Task<AppSettings> GetAppSettingsAsync()
         {
             this.ThrowIfDisposed();
@@ -142,11 +139,6 @@ namespace KeyboardSwitch.Common.Services
         public async Task SaveConverterSettingsAsync(ConverterSettings converterSettings)
         {
             this.ThrowIfDisposed();
-
-            if (!this.CanShowConverter)
-            {
-                throw new NotSupportedException("The converter is not supported");
-            }
 
             this.logger.LogDebug("Saving the converter settings");
             await this.cache.InsertObject(ConverterSettings.CacheKey, converterSettings);

@@ -62,14 +62,8 @@ namespace KeyboardSwitch.Settings.Views
                 v => v.ShowRemovedLayoutsMessageCheckBox.IsChecked)
                 .DisposeWith(disposables);
 
-            if (this.ViewModel.CanShowConverter)
-            {
-                this.Bind(this.ViewModel, vm => vm.ShowConverter, v => v.ShowConverterCheckBox.IsChecked)
-                    .DisposeWith(disposables);
-            } else
-            {
-                this.ShowConverterCheckBox.IsVisible = false;
-            }
+            this.Bind(this.ViewModel, vm => vm.ShowConverter, v => v.ShowConverterCheckBox.IsChecked)
+                .DisposeWith(disposables);
         }
 
         private void BindControls(CompositeDisposable disposables)

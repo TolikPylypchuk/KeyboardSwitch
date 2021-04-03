@@ -35,6 +35,8 @@ namespace KeyboardSwitch.Windows.Services
         public LayoutService(ILogger<LayoutService> logger) =>
             this.logger = logger;
 
+        public bool IsLoadingLayoutsSupported => true;
+
         public KeyboardLayout GetCurrentKeyboardLayout()
         {
             this.logger.LogDebug("Getting the keyboard layout of the foreground process");

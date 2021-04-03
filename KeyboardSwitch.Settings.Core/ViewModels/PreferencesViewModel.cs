@@ -30,13 +30,11 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         public PreferencesViewModel(
             PreferencesModel preferencesModel,
-            bool canShowConverter,
             ResourceManager? resourceManager = null,
             IScheduler? scheduler = null)
             : base(resourceManager, scheduler)
         {
             this.PreferencesModel = preferencesModel;
-            this.CanShowConverter = canShowConverter;
             this.CopyProperties();
 
             this.forwardModifierKeysSource.Connect()
@@ -98,8 +96,6 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         [Reactive]
         public int WaitMilliseconds { get; set; }
-
-        public bool CanShowConverter { get; }
 
         public ValidationHelper ModifierKeysAreDifferentRule { get; }
         public ValidationHelper SwitchMethodsAreDifferentRule { get; }

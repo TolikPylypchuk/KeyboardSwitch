@@ -31,6 +31,10 @@ namespace KeyboardSwitch.Settings.Views
                 this.BindCommand(this.ViewModel, vm => vm.AutoConfigureCustomLayouts, v => v.AutoConfigureButton)
                     .DisposeWith(disposables);
 
+                this.ViewModel.AutoConfigureCustomLayouts.CanExecute
+                    .BindTo(this, v => v.AutoConfigureButton.IsVisible)
+                    .DisposeWith(disposables);
+
                 this.BindCommand(this.ViewModel, vm => vm.Save, v => v.SaveButton)
                     .DisposeWith(disposables);
 
