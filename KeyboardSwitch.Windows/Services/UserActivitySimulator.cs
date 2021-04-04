@@ -5,11 +5,11 @@ using KeyboardSwitch.Common.Services;
 
 namespace KeyboardSwitch.Windows.Services
 {
-    public sealed class Simulator : ISimulator
+    public sealed class UserActivitySimulator : IUserActivitySimulator
     {
         private readonly IInputSimulator input;
 
-        public Simulator(IInputSimulator input) =>
+        public UserActivitySimulator(IInputSimulator input) =>
             this.input = input;
 
         public void SimulateCopy() =>

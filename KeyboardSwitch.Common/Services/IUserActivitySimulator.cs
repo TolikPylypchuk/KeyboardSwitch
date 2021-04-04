@@ -1,6 +1,6 @@
 namespace KeyboardSwitch.Common.Services
 {
-    public interface ISimulator
+    public interface IUserActivitySimulator
     {
         void SimulateCopy();
         void SimulatePaste();

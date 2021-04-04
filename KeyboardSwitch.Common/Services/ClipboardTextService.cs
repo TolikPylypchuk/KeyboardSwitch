@@ -14,7 +14,7 @@ namespace KeyboardSwitch.Common.Services
         private static readonly TimeSpan MaxTextRestoreDuration = TimeSpan.FromSeconds(3);
 
         private readonly IClipboard clipboard;
-        private readonly ISimulator simulator;
+        private readonly IUserActivitySimulator simulator;
         private readonly IAppSettingsService settingsService;
         private readonly IScheduler scheduler;
         private readonly ILogger<ClipboardTextService> logger;
@@ -24,7 +24,7 @@ namespace KeyboardSwitch.Common.Services
 
         public ClipboardTextService(
             IClipboard clipboard,
-            ISimulator simulator,
+            IUserActivitySimulator simulator,
             IAppSettingsService settingsService,
             IScheduler scheduler,
             ILogger<ClipboardTextService> logger)
