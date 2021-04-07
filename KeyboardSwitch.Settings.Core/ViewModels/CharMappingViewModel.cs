@@ -17,7 +17,7 @@ using KeyboardSwitch.Settings.Core.Models;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
-using Splat;
+using static KeyboardSwitch.Settings.Core.ServiceUtil;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
@@ -42,9 +42,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         {
             this.CharMappingModel = charMappingModel;
 
-            this.layoutService = layoutService ?? Locator.Current.GetService<ILayoutService>();
-            this.autoConfigurationService = autoConfigurationService ??
-                Locator.Current.GetService<IAutoConfigurationService>();
+            this.layoutService = layoutService ?? GetDefaultService<ILayoutService>();
+            this.autoConfigurationService = autoConfigurationService ?? GetDefaultService<IAutoConfigurationService>();
 
             this.layoutsSource.Connect()
                 .Transform(ch => new LayoutViewModel(ch))

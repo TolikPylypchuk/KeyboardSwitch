@@ -31,7 +31,7 @@ namespace KeyboardSwitch.Common
                         s.GetRequiredService<ServiceProvider<INamedPipeService>>(),
                         s.GetRequiredService<ILogger<SingleInstanceService>>(),
                         name))
-                .AddSingleton<IScheduler>(DefaultScheduler.Instance);
+                .AddSingleton<IScheduler>(Scheduler.Default);
 
         public static IServiceCollection AddClipboard(this IServiceCollection services)
         {

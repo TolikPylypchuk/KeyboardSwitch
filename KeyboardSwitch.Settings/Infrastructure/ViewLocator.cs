@@ -17,7 +17,7 @@ namespace KeyboardSwitch.Settings.Infrastructure
 
             return view is IControl control
                 ? control
-                : new TextBlock { Text = "Not Found: " + view.GetType().FullName };
+                : new TextBlock { Text = "Not Found: " + view?.GetType().FullName };
         }
 
         public bool Match(object data) =>

@@ -52,6 +52,7 @@ using Splat.Serilog;
 
 using static KeyboardSwitch.Common.Util;
 using static KeyboardSwitch.Settings.Core.Constants;
+using static KeyboardSwitch.Settings.Core.ServiceUtil;
 
 namespace KeyboardSwitch.Settings
 {
@@ -91,13 +92,13 @@ namespace KeyboardSwitch.Settings
                     if (File.Exists(SetStartupFile))
                     {
                         this.Log().Info("Setting the app to run at system startup");
-                        await Locator.Current.GetService<IStartupService>().ConfigureStartupAsync(true);
+                        await GetDefaultService<IStartupService>().ConfigureStartupAsync(true);
                         File.Delete(SetStartupFile);
                     }
 
-                    var appSettings = await Locator.Current.GetService<IAppSettingsService>().GetAppSettingsAsync();
+                    var appSettings = await GetDefaultService<IAppSettingsService>().GetAppSettingsAsync();
 
-                    var converterSettings = await Locator.Current.GetService<IConverterSettingsService>()
+                    var converterSettings = await GetDefaultService<IConverterSettingsService>()
                         .GetConverterSettingsAsync();
 
                     var mainViewModel = new MainViewModel(appSettings, converterSettings);
@@ -111,7 +112,7 @@ namespace KeyboardSwitch.Settings
                 } catch (IncompatibleAppVersionException e)
                 {
                     var settingsPath = Environment.ExpandEnvironmentVariables(
-                        Locator.Current.GetService<IOptions<GlobalSettings>>().Value.Path);
+                        GetDefaultService<IOptions<GlobalSettings>>().Value.Path);
 
                     this.Log().Error(e, $"Incompatible app version found in settings: {e.Version}. " +
                         $"Delete the settings at '{settingsPath}' and let the app recreate a compatible version");

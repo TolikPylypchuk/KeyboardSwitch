@@ -21,6 +21,8 @@ using ReactiveUI.Validation.Helpers;
 
 using Splat;
 
+using static KeyboardSwitch.Settings.Core.ServiceUtil;
+
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
 #nullable disable
@@ -39,7 +41,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         protected ReactiveForm(ResourceManager? resourceManager = null, IScheduler? scheduler = null)
         {
-            this.ResourceManager = resourceManager ?? Locator.Current.GetService<ResourceManager>();
+            this.ResourceManager = resourceManager ?? GetDefaultService<ResourceManager>();
             this.Scheduler = scheduler ?? RxApp.MainThreadScheduler;
 
             this.Valid = Observable.CombineLatest(this.validSubject, this.IsValid()).AllTrue();
@@ -139,7 +141,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 .Select(vms => vms.Select(vm => vm.Valid).CombineLatest().AllTrue())
                 .Switch();
 
-        protected ValidationHelper ValidationRule<T>(Expression<Func<TForm, T>> property, Func<T, bool> validate)
+        protected ValidationHelper LocalizedValidationRule<T>(
+            Expression<Func<TForm, T>> property,
+            Func<T, bool> validate)
         {
             var propertyName = property.GetMemberName();
             return this.Self.ValidationRule(

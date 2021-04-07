@@ -21,7 +21,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Validation.Helpers;
 
-using Splat;
+using static KeyboardSwitch.Settings.Core.ServiceUtil;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
@@ -47,9 +47,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         {
             this.ConverterModel = converterModel;
 
-            this.layoutLoaderService = layoutLoaderService ?? Locator.Current.GetService<ILayoutLoaderSrevice>();
-            this.autoConfigurationService = autoConfigurationService
-                ?? Locator.Current.GetService<IAutoConfigurationService>();
+            this.layoutLoaderService = layoutLoaderService ?? GetDefaultService<ILayoutLoaderSrevice>();
+            this.autoConfigurationService = autoConfigurationService ?? GetDefaultService<IAutoConfigurationService>();
 
             this.customLayoutsSource.Connect()
                 .Transform(model => this.CreateCustomLayoutViewModel(model, isNew: false))

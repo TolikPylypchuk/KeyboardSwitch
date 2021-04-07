@@ -13,7 +13,7 @@ using KeyboardSwitch.Settings.Core.Models;
 
 using ReactiveUI;
 
-using Splat;
+using static KeyboardSwitch.Settings.Core.ServiceUtil;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
@@ -29,8 +29,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             IStartupService? startupService = null)
         {
             this.appSettings = appSettings;
-            this.layoutService = layoutService ?? Locator.Current.GetService<ILayoutService>();
-            startupService ??= Locator.Current.GetService<IStartupService>();
+            this.layoutService = layoutService ?? GetDefaultService<ILayoutService>();
+            startupService ??= GetDefaultService<IStartupService>();
 
             this.MainContentViewModel = new MainContentViewModel(
                 this.CreateCharMappingModel(),

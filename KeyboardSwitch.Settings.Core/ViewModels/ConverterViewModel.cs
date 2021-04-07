@@ -20,7 +20,7 @@ using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Validation.Extensions;
 using ReactiveUI.Validation.Helpers;
 
-using Splat;
+using static KeyboardSwitch.Settings.Core.ServiceUtil;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
@@ -40,7 +40,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
             this.switchService = this.CreateSwitchService(layoutService, settingsService);
 
-            resourceManager ??= Locator.Current.GetService<ResourceManager>();
+            resourceManager ??= GetDefaultService<ResourceManager>();
 
             this.ConverterModel.Layouts
                 .ToObservableChangeSet()
@@ -106,7 +106,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 this,
                 layoutService ?? new ConverterLayoutService(sourceLayout, targetLayout),
                 settingsService ?? new ConverterAppSettingsService(sourceLayout, targetLayout),
-                Locator.Current.GetService<ILogger<SwitchService>>());
+                GetDefaultService<ILogger<SwitchService>>());
         }
 
         Task<string?> ITextService.GetTextAsync() =>

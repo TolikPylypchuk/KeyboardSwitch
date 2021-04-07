@@ -11,7 +11,7 @@ using KeyboardSwitch.Settings.Core.Models;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
-using Splat;
+using static KeyboardSwitch.Settings.Core.ServiceUtil;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
@@ -33,10 +33,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         {
             this.removeLayoutsEnabled = new(preferencesModel.ShowUninstalledLayoutsMessage);
 
-            this.appSettingsService = appSettingsService ?? Locator.Current.GetService<IAppSettingsService>();
-            this.converterSettingsService =
-                converterSettingsService ?? Locator.Current.GetService<IConverterSettingsService>();
-            this.startupService = startupService ?? Locator.Current.GetService<IStartupService>();
+            this.appSettingsService = appSettingsService ?? GetDefaultService<IAppSettingsService>();
+            this.converterSettingsService = converterSettingsService ?? GetDefaultService<IConverterSettingsService>();
+            this.startupService = startupService ?? GetDefaultService<IStartupService>();
 
             this.CharMappingViewModel = new(charMappingModel, this.removeLayoutsEnabled);
             this.PreferencesViewModel = new(preferencesModel);

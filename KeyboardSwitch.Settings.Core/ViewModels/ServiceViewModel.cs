@@ -14,7 +14,7 @@ using KeyboardSwitch.Common.Services.Infrastructure;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
-using Splat;
+using static KeyboardSwitch.Settings.Core.ServiceUtil;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
@@ -32,9 +32,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             INamedPipeService? namedPipeService = null,
             IScheduler? scheduler = null)
         {
-            this.settingsService = settingsService ?? Locator.Current.GetService<IAppSettingsService>();
+            this.settingsService = settingsService ?? GetDefaultService<IAppSettingsService>();
             this.namedPipeService = namedPipeService ??
-                Locator.Current.GetService<ServiceProvider<INamedPipeService>>()(nameof(KeyboardSwitch));
+                GetDefaultService<ServiceProvider<INamedPipeService>>()(nameof(KeyboardSwitch));
 
             scheduler ??= RxApp.MainThreadScheduler;
 

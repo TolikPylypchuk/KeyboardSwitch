@@ -47,8 +47,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
             this.BindKeys();
 
-            this.ValidationRule(vm => vm.PressCount, count => count > 0 && count <= 10);
-            this.ValidationRule(vm => vm.WaitMilliseconds, wait => wait >= 100 && wait <= 1000);
+            this.LocalizedValidationRule(vm => vm.PressCount, count => count > 0 && count <= 10);
+            this.LocalizedValidationRule(vm => vm.WaitMilliseconds, wait => wait >= 100 && wait <= 1000);
 
             this.ModifierKeysAreDifferentRule = this.InitModifierKeysAreDifferentRule();
             this.SwitchMethodsAreDifferentRule = this.InitSwitchMethodsAreDifferentRule();

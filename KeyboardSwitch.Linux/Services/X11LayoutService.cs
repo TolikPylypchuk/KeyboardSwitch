@@ -78,7 +78,7 @@ namespace KeyboardSwitch.Linux.Services
             int major = XkbMajorVersion;
             int minor = XkbMinorVersion;
 
-            var display = XkbOpenDisplay("", out _, out _, ref major, ref minor, out var result);
+            var display = XkbOpenDisplay(String.Empty, out _, out _, ref major, ref minor, out var result);
             this.ValidateXOpenDisplayResult(result);
 
             return display;
