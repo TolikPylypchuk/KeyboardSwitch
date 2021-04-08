@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using DynamicData;
 using DynamicData.Binding;
 
-using KeyboardSwitch.Common;
+using KeyboardSwitch.Core;
 
 using ReactiveUI;
 using ReactiveUI.Validation.Extensions;

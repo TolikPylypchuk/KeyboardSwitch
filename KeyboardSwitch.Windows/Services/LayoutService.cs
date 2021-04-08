@@ -7,9 +7,9 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 
-using KeyboardSwitch.Common;
-using KeyboardSwitch.Common.Keyboard;
-using KeyboardSwitch.Common.Services;
+using KeyboardSwitch.Core;
+using KeyboardSwitch.Core.Keyboard;
+using KeyboardSwitch.Core.Services;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;

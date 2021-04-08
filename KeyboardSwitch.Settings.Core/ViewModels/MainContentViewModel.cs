@@ -4,8 +4,8 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 
-using KeyboardSwitch.Common.Services;
-using KeyboardSwitch.Common.Settings;
+using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Settings;
 using KeyboardSwitch.Settings.Core.Models;
 
 using ReactiveUI;

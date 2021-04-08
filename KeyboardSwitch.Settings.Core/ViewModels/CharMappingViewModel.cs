@@ -11,7 +11,7 @@ using DynamicData;
 using DynamicData.Aggregation;
 using DynamicData.Binding;
 
-using KeyboardSwitch.Common.Services;
+using KeyboardSwitch.Core.Services;
 using KeyboardSwitch.Settings.Core.Models;
 
 using ReactiveUI;

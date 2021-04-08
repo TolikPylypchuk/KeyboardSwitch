@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch", "KeyboardSwitch\KeyboardSwitch.csproj", "{3B77F28C-A7AF-49F6-B041-28C5D31FBE67}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Common", "KeyboardSwitch.Common\KeyboardSwitch.Common.csproj", "{57008AC4-B4B3-4858-A068-559AEB22BC74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Core", "KeyboardSwitch.Core\KeyboardSwitch.Core.csproj", "{57008AC4-B4B3-4858-A068-559AEB22BC74}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Settings.Core", "KeyboardSwitch.Settings.Core\KeyboardSwitch.Settings.Core.csproj", "{1BC312D4-F82A-4F5A-BB26-1DC93C008714}"
 EndProject
@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Settings", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardSwitch.Windows.Setup", "KeyboardSwitch.Windows.Setup\KeyboardSwitch.Windows.Setup.csproj", "{C9A243E5-6443-4A00-ACAC-C20A61286264}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardSwitch.Linux", "KeyboardSwitch.Linux\KeyboardSwitch.Linux.csproj", "{8F1EB1FC-CF92-4000-81C9-7C40260858C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Linux", "KeyboardSwitch.Linux\KeyboardSwitch.Linux.csproj", "{8F1EB1FC-CF92-4000-81C9-7C40260858C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -37,7 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\KeyboardSwitch.Common\KeyboardSwitch.Common.csproj" />
+    <ProjectReference Include="..\KeyboardSwitch.Core\KeyboardSwitch.Core.csproj" />
     <ProjectReference Include="..\KeyboardSwitch.Windows\KeyboardSwitch.Windows.csproj" Condition="$(TargetFramework) == 'net5.0-windows'" />
     <ProjectReference Include="..\KeyboardSwitch.Linux\KeyboardSwitch.Linux.csproj" Condition="$(TargetFramework) == 'net5.0'" />
   </ItemGroup>

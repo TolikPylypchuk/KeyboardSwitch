@@ -1,4 +1,4 @@
-using KeyboardSwitch.Common.Settings;
+using KeyboardSwitch.Core.Settings;
 
 namespace KeyboardSwitch.Settings.Core.Models
 {

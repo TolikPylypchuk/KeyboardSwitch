@@ -4,8 +4,8 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 
-using KeyboardSwitch.Common.Keyboard;
-using KeyboardSwitch.Common.Services;
+using KeyboardSwitch.Core.Keyboard;
+using KeyboardSwitch.Core.Services;
 
 using static Vanara.PInvoke.User32;
 

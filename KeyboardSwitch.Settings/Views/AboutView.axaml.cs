@@ -5,7 +5,7 @@ using System.Reactive.Linq;
 
 using Avalonia.ReactiveUI;
 
-using KeyboardSwitch.Common;
+using KeyboardSwitch.Core;
 using KeyboardSwitch.Settings.Core.ViewModels;
 using KeyboardSwitch.Settings.Properties;
 

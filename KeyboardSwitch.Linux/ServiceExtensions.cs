@@ -1,4 +1,4 @@
-using KeyboardSwitch.Common.Services;
+using KeyboardSwitch.Core.Services;
 using KeyboardSwitch.Linux.Services;
 
 using Microsoft.Extensions.DependencyInjection;

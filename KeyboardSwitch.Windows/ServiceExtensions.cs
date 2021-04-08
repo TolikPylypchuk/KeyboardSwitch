@@ -1,6 +1,6 @@
 using GregsStack.InputSimulatorStandard;
 
-using KeyboardSwitch.Common.Services;
+using KeyboardSwitch.Core.Services;
 using KeyboardSwitch.Windows.Services;
 
 using Microsoft.Extensions.DependencyInjection;

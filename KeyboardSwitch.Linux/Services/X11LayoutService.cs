@@ -5,8 +5,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 
-using KeyboardSwitch.Common.Keyboard;
-using KeyboardSwitch.Common.Services;
+using KeyboardSwitch.Core.Keyboard;
+using KeyboardSwitch.Core.Services;
 using KeyboardSwitch.Linux.X11;
 
 using Microsoft.Extensions.Logging;

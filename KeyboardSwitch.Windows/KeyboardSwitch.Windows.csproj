@@ -28,6 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\KeyboardSwitch.Common\KeyboardSwitch.Common.csproj" />
+    <ProjectReference Include="..\KeyboardSwitch.Core\KeyboardSwitch.Core.csproj" />
   </ItemGroup>
 </Project>

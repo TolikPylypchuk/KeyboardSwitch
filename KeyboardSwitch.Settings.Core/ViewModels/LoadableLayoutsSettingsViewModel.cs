@@ -8,7 +8,7 @@ using System.Reactive.Linq;
 using DynamicData;
 using DynamicData.Binding;
 
-using KeyboardSwitch.Common.Keyboard;
+using KeyboardSwitch.Core.Keyboard;
 
 using ReactiveUI;
 

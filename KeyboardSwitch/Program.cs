@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 using Akavache;
 
-using KeyboardSwitch.Common;
-using KeyboardSwitch.Common.Services;
-using KeyboardSwitch.Common.Services.Infrastructure;
-using KeyboardSwitch.Common.Settings;
+using KeyboardSwitch.Core;
+using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Services.Infrastructure;
+using KeyboardSwitch.Core.Settings;
 
 #if WINDOWS
 using KeyboardSwitch.Windows;
@@ -25,7 +25,7 @@ using Microsoft.Extensions.Logging;
 
 using Serilog;
 
-using static KeyboardSwitch.Common.Util;
+using static KeyboardSwitch.Core.Util;
 
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 

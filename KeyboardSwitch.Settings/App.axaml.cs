@@ -17,10 +17,10 @@ using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 
-using KeyboardSwitch.Common;
-using KeyboardSwitch.Common.Services;
-using KeyboardSwitch.Common.Services.Infrastructure;
-using KeyboardSwitch.Common.Settings;
+using KeyboardSwitch.Core;
+using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Services.Infrastructure;
+using KeyboardSwitch.Core.Settings;
 using KeyboardSwitch.Settings.Converters;
 using KeyboardSwitch.Settings.Core;
 using KeyboardSwitch.Settings.Core.State;
@@ -50,7 +50,7 @@ using Splat.Microsoft.Extensions.DependencyInjection;
 using Splat.Microsoft.Extensions.Logging;
 using Splat.Serilog;
 
-using static KeyboardSwitch.Common.Util;
+using static KeyboardSwitch.Core.Util;
 using static KeyboardSwitch.Settings.Core.Constants;
 using static KeyboardSwitch.Settings.Core.ServiceUtil;
 

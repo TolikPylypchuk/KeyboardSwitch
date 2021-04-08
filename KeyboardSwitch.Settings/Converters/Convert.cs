@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using KeyboardSwitch.Common.Keyboard;
+using KeyboardSwitch.Core.Keyboard;
 using KeyboardSwitch.Settings.Properties;
 
-using static KeyboardSwitch.Common.Util;
+using static KeyboardSwitch.Core.Util;
 
 namespace KeyboardSwitch.Settings.Converters
 {

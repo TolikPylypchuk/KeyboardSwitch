@@ -10,7 +10,7 @@ using KeyboardSwitch.Settings.Core.Models;
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Validation.Extensions;
 
-using static KeyboardSwitch.Common.Constants;
+using static KeyboardSwitch.Core.Constants;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {

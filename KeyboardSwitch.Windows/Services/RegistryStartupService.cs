@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-using KeyboardSwitch.Common.Services;
+using KeyboardSwitch.Core.Services;
 
 using Microsoft.Win32;
 

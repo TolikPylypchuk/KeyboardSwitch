@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using DynamicData;
 using DynamicData.Binding;
 
-using KeyboardSwitch.Common;
-using KeyboardSwitch.Common.Services;
+using KeyboardSwitch.Core;
+using KeyboardSwitch.Core.Services;
 using KeyboardSwitch.Settings.Core.Models;
 using KeyboardSwitch.Settings.Core.Services;
 

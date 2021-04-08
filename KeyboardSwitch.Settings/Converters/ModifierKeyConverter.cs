@@ -1,6 +1,6 @@
 using System;
 
-using KeyboardSwitch.Common.Keyboard;
+using KeyboardSwitch.Core.Keyboard;
 
 using ReactiveUI;
 

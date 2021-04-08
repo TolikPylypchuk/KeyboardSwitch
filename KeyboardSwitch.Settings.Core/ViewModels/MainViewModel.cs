@@ -6,9 +6,9 @@ using System.Reactive.Linq;
 
 using DynamicData;
 
-using KeyboardSwitch.Common;
-using KeyboardSwitch.Common.Services;
-using KeyboardSwitch.Common.Settings;
+using KeyboardSwitch.Core;
+using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Settings;
 using KeyboardSwitch.Settings.Core.Models;
 
 using ReactiveUI;

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-using KeyboardSwitch.Common.Services;
+using KeyboardSwitch.Core.Services;
 
 namespace KeyboardSwitch.Linux.Services
 {

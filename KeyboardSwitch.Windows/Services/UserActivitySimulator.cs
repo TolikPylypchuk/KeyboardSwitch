@@ -1,7 +1,7 @@
 using GregsStack.InputSimulatorStandard;
 using GregsStack.InputSimulatorStandard.Native;
 
-using KeyboardSwitch.Common.Services;
+using KeyboardSwitch.Core.Services;
 
 namespace KeyboardSwitch.Windows.Services
 {

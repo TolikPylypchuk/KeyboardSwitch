@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 
-using KeyboardSwitch.Common.Keyboard;
-using KeyboardSwitch.Common.Services;
+using KeyboardSwitch.Core.Keyboard;
+using KeyboardSwitch.Core.Services;
 
 namespace KeyboardSwitch.Linux.Services
 {

@@ -4,10 +4,10 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using KeyboardSwitch.Common;
-using KeyboardSwitch.Common.Keyboard;
-using KeyboardSwitch.Common.Services;
-using KeyboardSwitch.Common.Settings;
+using KeyboardSwitch.Core;
+using KeyboardSwitch.Core.Keyboard;
+using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Settings;
 
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;

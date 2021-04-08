@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reactive.Linq;
 
-using KeyboardSwitch.Common.Keyboard;
-using KeyboardSwitch.Common.Services;
+using KeyboardSwitch.Core.Keyboard;
+using KeyboardSwitch.Core.Services;
 using KeyboardSwitch.Settings.Core.Models;
 
 using ReactiveUI;

@@ -5,7 +5,7 @@ using System.Reactive.Disposables;
 
 using Avalonia.ReactiveUI;
 
-using KeyboardSwitch.Common.Keyboard;
+using KeyboardSwitch.Core.Keyboard;
 using KeyboardSwitch.Settings.Core.ViewModels;
 
 using ReactiveUI;

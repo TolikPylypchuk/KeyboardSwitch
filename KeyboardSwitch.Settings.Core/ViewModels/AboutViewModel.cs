@@ -5,7 +5,7 @@ using System.Reactive;
 using System.Reflection;
 using System.Threading.Tasks;
 
-using KeyboardSwitch.Common;
+using KeyboardSwitch.Core;
 
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;

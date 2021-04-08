@@ -2,7 +2,7 @@ using System.Reactive.Disposables;
 
 using Avalonia.ReactiveUI;
 
-using KeyboardSwitch.Common;
+using KeyboardSwitch.Core;
 using KeyboardSwitch.Settings.Core.ViewModels;
 
 using ReactiveUI;

@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 using DynamicData;
 using DynamicData.Binding;
 
-using KeyboardSwitch.Common;
-using KeyboardSwitch.Common.Keyboard;
+using KeyboardSwitch.Core;
+using KeyboardSwitch.Core.Keyboard;
 using KeyboardSwitch.Settings.Core.Models;
 
 using ReactiveUI;

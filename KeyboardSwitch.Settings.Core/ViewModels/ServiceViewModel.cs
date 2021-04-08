@@ -7,9 +7,9 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 
-using KeyboardSwitch.Common;
-using KeyboardSwitch.Common.Services;
-using KeyboardSwitch.Common.Services.Infrastructure;
+using KeyboardSwitch.Core;
+using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Services.Infrastructure;
 
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
