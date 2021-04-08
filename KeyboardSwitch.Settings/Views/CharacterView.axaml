@@ -1,6 +1,0 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="KeyboardSwitch.Settings.Views.CharacterView">
-    <TextBox x:Name="CharBox" Width="40" TextAlignment="Center" FontSize="{DynamicResource FontSizeNormal}"
-             MaxLength="1" Classes="FormControl" CaretBrush="Transparent" />
-</UserControl>

@@ -7,6 +7,8 @@ using System.Runtime.InteropServices;
 
 using KeyboardSwitch.Core.Services;
 
+using static KeyboardSwitch.Core.Util;
+
 namespace KeyboardSwitch.Core
 {
     public static class Extensions
@@ -36,18 +38,11 @@ namespace KeyboardSwitch.Core
                 where (bit & (1 << index)) != 0
                 select list[index];
 
-        public static void OpenInBrowser(this Uri uri)
-        {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                Process.Start(new ProcessStartInfo { FileName = uri.ToString(), UseShellExecute = true });
-            } else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                Process.Start("xdg-open", uri.ToString());
-            } else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                Process.Start("open", uri.ToString());
-            }
-        }
+        public static void OpenInBrowser(this Uri uri) =>
+            PlatformDependent(
+                windows: () => Process.Start(
+                    new ProcessStartInfo { FileName = uri.ToString(), UseShellExecute = true }),
+                macos: () => Process.Start("open", uri.ToString()),
+                linux: () => Process.Start("xdg-open", uri.ToString()));
     }
 }
