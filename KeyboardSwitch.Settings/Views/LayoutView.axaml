@@ -3,8 +3,8 @@
              x:Class="KeyboardSwitch.Settings.Views.LayoutView">
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" SharedSizeGroup="Layout" />
-            <ColumnDefinition Width="*" SharedSizeGroup="Chars" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -18,7 +18,7 @@
         </StackPanel>
 
         <TextBox x:Name="CharsTextBox" Grid.Row="0" Grid.Column="1" FontFamily="Consolas" FontSize="16"
-                 VerticalAlignment="Center" HorizontalAlignment="Stretch" MinWidth="300" />
+                 VerticalAlignment="Center" HorizontalAlignment="Left" MinWidth="300" />
 
         <TextBlock x:Name="DuplicateCharsTextBlock" Grid.Row="1" Grid.Column="1" Classes="Error" />
     </Grid>
