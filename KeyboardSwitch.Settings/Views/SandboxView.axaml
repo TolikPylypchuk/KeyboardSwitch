@@ -7,6 +7,6 @@
                    FontSize="{DynamicResource FontSizeNormal}" TextWrapping="Wrap" />
 
         <TextBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10"
-                 AcceptsReturn="True" FontSize="14" />
+                 AcceptsReturn="True" FontSize="14" TextWrapping="Wrap" />
     </DockPanel>
 </UserControl>
