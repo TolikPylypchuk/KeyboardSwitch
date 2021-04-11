@@ -3,7 +3,7 @@
              x:Class="KeyboardSwitch.Settings.Views.LayoutView">
     <Grid Margin="5">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" SharedSizeGroup="Layout" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
