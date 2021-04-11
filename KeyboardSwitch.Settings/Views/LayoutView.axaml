@@ -17,8 +17,8 @@
             <TextBlock x:Name="KeyboardTextBlock" FontSize="{DynamicResource FontSizeSmall}" Margin="2 0 2 2" />
         </StackPanel>
 
-        <TextBox x:Name="CharsTextBox" Grid.Row="0" Grid.Column="1" FontFamily="Consolas" FontSize="16"
-                 VerticalAlignment="Center" HorizontalAlignment="Left" MinWidth="300" />
+        <TextBox x:Name="CharsTextBox" Grid.Row="0" Grid.Column="1" FontFamily="/Assets#Cascadia Mono" FontSize="14"
+                 FontWeight="Regular" VerticalAlignment="Center" HorizontalAlignment="Left" MinWidth="300" />
 
         <TextBlock x:Name="DuplicateCharsTextBlock" Grid.Row="1" Grid.Column="1" Classes="Error" />
     </Grid>
