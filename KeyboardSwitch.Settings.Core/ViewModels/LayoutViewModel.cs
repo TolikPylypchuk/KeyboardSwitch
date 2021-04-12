@@ -11,6 +11,7 @@ using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Validation.Extensions;
 
 using static KeyboardSwitch.Core.Constants;
+using static KeyboardSwitch.Settings.Core.Constants;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
@@ -58,6 +59,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         [Reactive]
         public string Chars { get; set; } = String.Empty;
+
+        [Reactive]
+        public int CurrentCharIndex { get; set; } = NoIndex;
 
         protected override LayoutViewModel Self => this;
 

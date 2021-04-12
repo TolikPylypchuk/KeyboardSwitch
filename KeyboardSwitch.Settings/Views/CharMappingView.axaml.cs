@@ -1,12 +1,20 @@
+using System;
+using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
 using Avalonia.ReactiveUI;
 
+using DynamicData;
+using DynamicData.Binding;
+
 using KeyboardSwitch.Core;
 using KeyboardSwitch.Settings.Core.ViewModels;
+using KeyboardSwitch.Settings.Properties;
 
 using ReactiveUI;
+
+using static KeyboardSwitch.Settings.Core.Constants;
 
 namespace KeyboardSwitch.Settings.Views
 {
@@ -52,6 +60,25 @@ namespace KeyboardSwitch.Settings.Views
 
         private void BindTextBlocks(CompositeDisposable disposables)
         {
+            var currentIndex = this.ViewModel.Layouts
+                .ToObservableChangeSet()
+                .AutoRefresh(layout => layout.CurrentCharIndex)
+                .ToCollection()
+                .Select(layouts => layouts
+                    .Select(layout => (int?)layout.CurrentCharIndex)
+                    .FirstOrDefault(index => index != NoIndex)
+                    ?? NoIndex);
+
+            currentIndex
+                .Select(index => String.Format(Messages.CurrentPositionFormat, index + 1))
+                .BindTo(this, v => v.CurrentPositionTextBlock.Text)
+                .DisposeWith(disposables);
+
+            currentIndex
+                .Select(index => index != NoIndex)
+                .BindTo(this, v => v.CurrentPositionTextBlock.IsVisible)
+                .DisposeWith(disposables);
+
             this.WhenAnyValue(v => v.ViewModel.HasNewLayouts)
                 .BindTo(this, v => v.NewLayoutsTextBlock.IsVisible)
                 .DisposeWith(disposables);

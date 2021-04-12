@@ -250,6 +250,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current position: {0}.
+        /// </summary>
+        internal static string CurrentPositionFormat {
+            get {
+                return ResourceManager.GetString("CurrentPositionFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Layout names must be unique.
         /// </summary>
         internal static string CustomLayoutNamesAreSame {

@@ -12,6 +12,8 @@
     </UserControl.Styles>
 
     <DockPanel>
+        <TextBlock x:Name="CurrentPositionTextBlock" DockPanel.Dock="Bottom" IsVisible="False" Margin="5" />
+
         <StackPanel x:Name="ActionPanel" DockPanel.Dock="Bottom">
             <Button x:Name="SaveButton" Content="{l:Translate Save}" Classes="accent" />
             <Button x:Name="CancelButton" Content="{l:Translate Cancel}" />

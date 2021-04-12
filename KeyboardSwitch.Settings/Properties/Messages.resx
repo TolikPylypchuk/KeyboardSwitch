@@ -180,6 +180,9 @@
   <data name="CreatedBy" xml:space="preserve">
     <value>Created by Tolik Pylypchuk</value>
   </data>
+  <data name="CurrentPositionFormat" xml:space="preserve">
+    <value>Current position: {0}</value>
+  </data>
   <data name="CustomLayoutNamesAreSame" xml:space="preserve">
     <value>Layout names must be unique</value>
   </data>
