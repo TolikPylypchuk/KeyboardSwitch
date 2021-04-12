@@ -140,12 +140,8 @@ namespace KeyboardSwitch.Settings
                 .AddSingleton<IActivationForViewFetcher>(new AvaloniaActivationForViewFetcher())
                 .AddSingleton<IPropertyBindingHook>(new BindingHook())
                 .AddSuspensionDriver()
-                .AddKeyboardSwitchServices()
-#if WINDOWS
-                .AddKeyboardSwitchWindowsServices()
-#else
-                .AddKeyboardSwitchLinuxServices()
-#endif
+                .AddCoreKeyboardSwitchServices()
+                .AddNativeKeyboardSwitchServices()
                 .UseMicrosoftDependencyResolver();
 
             BlobCache.ApplicationName = nameof(KeyboardSwitch);

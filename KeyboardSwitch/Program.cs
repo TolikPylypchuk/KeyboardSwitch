@@ -74,12 +74,8 @@ namespace KeyboardSwitch
                 .Configure<HostOptions>(o => o.ShutdownTimeout = TimeSpan.FromMilliseconds(100))
                 .Configure<GlobalSettings>(hostContext.Configuration.GetSection("Settings"))
                 .AddSingleton<IScheduler>(Scheduler.Default)
-                .AddKeyboardSwitchServices()
-#if WINDOWS
-                .AddKeyboardSwitchWindowsServices();
-#else
-                .AddKeyboardSwitchLinuxServices();
-#endif
+                .AddCoreKeyboardSwitchServices()
+                .AddNativeKeyboardSwitchServices();
 
         private static void ConfigureLogging(HostBuilderContext hostingContext, ILoggingBuilder logging) =>
             logging

@@ -7,7 +7,7 @@ namespace KeyboardSwitch.Linux
 {
     public static class ServiceExtensions
     {
-        public static IServiceCollection AddKeyboardSwitchLinuxServices(this IServiceCollection services) =>
+        public static IServiceCollection AddNativeKeyboardSwitchServices(this IServiceCollection services) =>
             services
                 .AddSingleton<ITextService, ClipboardTextService>()
                 .AddSingleton<IUserActivitySimulator, NoOpSimulator>()

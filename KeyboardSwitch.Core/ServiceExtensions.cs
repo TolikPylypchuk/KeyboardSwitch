@@ -12,7 +12,7 @@ namespace KeyboardSwitch.Core
 {
     public static class ServiceExtensions
     {
-        public static IServiceCollection AddKeyboardSwitchServices(this IServiceCollection services) =>
+        public static IServiceCollection AddCoreKeyboardSwitchServices(this IServiceCollection services) =>
             services
                 .AddSingleton<IKeyboardHookService, UioHookService>()
                 .AddSingleton<ITextService, ClipboardTextService>()

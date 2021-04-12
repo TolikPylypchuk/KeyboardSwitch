@@ -9,9 +9,9 @@ namespace KeyboardSwitch.Windows
 {
     public static class SerivceExtensions
     {
-        public static IServiceCollection AddKeyboardSwitchWindowsServices(this IServiceCollection services)
-            => services
-                .AddSingleton<IInputSimulator>(new InputSimulator())
+        public static IServiceCollection AddNativeKeyboardSwitchServices(this IServiceCollection services) =>
+            services
+                .AddSingleton<IKeyboardSimulator>(new KeyboardSimulator())
                 .AddSingleton<IUserActivitySimulator, UserActivitySimulator>()
                 .AddSingleton<LayoutService>()
                 .AddSingleton<ILayoutService>(provider => provider.GetRequiredService<LayoutService>())

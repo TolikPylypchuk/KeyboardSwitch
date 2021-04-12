@@ -7,15 +7,15 @@ namespace KeyboardSwitch.Windows.Services
 {
     public sealed class UserActivitySimulator : IUserActivitySimulator
     {
-        private readonly IInputSimulator input;
+        private readonly IKeyboardSimulator keyboard;
 
-        public UserActivitySimulator(IInputSimulator input) =>
-            this.input = input;
+        public UserActivitySimulator(IKeyboardSimulator keyboard) =>
+            this.keyboard = keyboard;
 
         public void SimulateCopy() =>
-            this.input.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C);
+            this.keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C);
 
         public void SimulatePaste() =>
-            this.input.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
+            this.keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
     }
 }
