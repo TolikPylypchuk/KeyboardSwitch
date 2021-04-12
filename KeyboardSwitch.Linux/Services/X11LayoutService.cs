@@ -113,20 +113,19 @@ namespace KeyboardSwitch.Linux.Services
 
             var keyboardDesc = (XkbDesc*)keyboardHandle.DangerousGetHandle().ToPointer();
 
-            keyboardDesc->Dpy = display.DangerousGetHandle();
-
             if (keyboardDesc->Names == IntPtr.Zero)
             {
                 this.FreeKeyboard(keyboardHandle);
                 throw new X11Exception("Failed to get keyboard description");
             }
 
+            keyboardDesc->Dpy = display.DangerousGetHandle();
+
             var names = Marshal.PtrToStructure<XkbNames>(keyboardDesc->Names);
-            var groupSource = names.Groups;
 
-            int groupCount = this.GetGroupCount(keyboardDesc, groupSource);
+            int groupCount = this.GetGroupCount(keyboardDesc, names.Groups);
 
-            var groupNames = groupSource
+            var groupNames = names.Groups
                 .Where((group, index) => index < groupCount && group != Atom.None)
                 .Select(group => this.GetGroupName(display, group))
                 .ToList();

@@ -31,7 +31,7 @@ namespace KeyboardSwitch.Core
 
                 var file = new FileInfo(path);
                 file.Directory?.Create();
-                file.Create().Close();
+                file.Create().Dispose();
             }
 
             return new SqlRawPersistentBlobCache(path, scheduler);
