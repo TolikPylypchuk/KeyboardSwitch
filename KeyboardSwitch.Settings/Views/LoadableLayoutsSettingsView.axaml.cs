@@ -29,7 +29,7 @@ namespace KeyboardSwitch.Settings.Views
                 this.NewLayoutComboBox.GetObservable(SelectingItemsControl.SelectionChangedEvent)
                     .Where(e => e.AddedItems.Count > 0)
                     .Select(e => e.AddedItems[0])
-                    .InvokeCommand(this.ViewModel.AddLayout)
+                    .InvokeCommand(this.ViewModel!.AddLayout)
                     .DisposeWith(disposables);
 
                 this.NewLayoutComboBox.GetObservable(SelectingItemsControl.SelectionChangedEvent)

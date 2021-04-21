@@ -35,7 +35,7 @@ namespace KeyboardSwitch.Settings.Views
 
         private void BindConverterVisibility(CompositeDisposable disposables)
         {
-            var enoughLayouts = this.ViewModel.Layouts
+            var enoughLayouts = this.ViewModel!.Layouts
                 .ToObservableChangeSet()
                 .Count()
                 .StartWith(this.ViewModel.Layouts.Count)
@@ -69,7 +69,7 @@ namespace KeyboardSwitch.Settings.Views
             this.Bind(this.ViewModel, vm => vm.TargetLayout, v => v.TargetLayoutComboBox.SelectedItem)
                 .DisposeWith(disposables);
 
-            this.ViewModel.Layouts
+            this.ViewModel!.Layouts
                 .ToObservableChangeSet()
                 .ToCollection()
                 .Where(layouts => layouts.Count >= 2)
@@ -87,20 +87,20 @@ namespace KeyboardSwitch.Settings.Views
 
         private void BindCommands(CompositeDisposable disposables)
         {
-            this.BindCommand(this.ViewModel, vm => vm.SwapLayouts, v => v.SwapButton)
+            this.BindCommand(this.ViewModel!, vm => vm.SwapLayouts, v => v.SwapButton)
                 .DisposeWith(disposables);
 
-            this.BindCommand(this.ViewModel, vm => vm.Convert, v => v.ConvertButton)
+            this.BindCommand(this.ViewModel!, vm => vm.Convert, v => v.ConvertButton)
                 .DisposeWith(disposables);
 
-            this.BindCommand(this.ViewModel, vm => vm.Clear, v => v.ClearButton)
+            this.BindCommand(this.ViewModel!, vm => vm.Clear, v => v.ClearButton)
                 .DisposeWith(disposables);
 
             this.GetObservable(KeyDownEvent, RoutingStrategies.Tunnel)
                 .Where(e => e.Key == Key.Enter && e.KeyModifiers == KeyModifiers.Control)
                 .Do(e => e.Handled = true)
                 .Discard()
-                .InvokeCommand(this.ViewModel.Convert)
+                .InvokeCommand(this.ViewModel!.Convert)
                 .DisposeWith(disposables);
 
             this.GetObservable(KeyDownEvent, RoutingStrategies.Tunnel)

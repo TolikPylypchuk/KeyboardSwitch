@@ -27,7 +27,7 @@ namespace KeyboardSwitch.Settings.Views
                 this.OneWayBind(this.ViewModel, vm => vm.ServiceViewModel, v => v.ServiceViewContent.Content)
                     .DisposeWith(disposables);
 
-                this.ViewModel.OpenExternally
+                this.ViewModel!.OpenExternally
                     .Subscribe(this.BringToForeground)
                     .DisposeWith(disposables);
 

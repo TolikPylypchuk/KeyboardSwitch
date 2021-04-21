@@ -27,7 +27,7 @@ namespace KeyboardSwitch.Settings.Views
                 this.Bind(this.ViewModel, vm => vm.Chars, v => v.CharsTextBox.Text)
                     .DisposeWith(disposables);
 
-                this.BindCommand(this.ViewModel, vm => vm.Delete, v => v.DeleteButton)
+                this.BindCommand(this.ViewModel!, vm => vm.Delete, v => v.DeleteButton)
                     .DisposeWith(disposables);
 
                 this.NameTextBox.GetObservable(TextBox.TextProperty)

@@ -39,7 +39,7 @@ namespace KeyboardSwitch.Settings.Views
                 this.OneWayBind(this.ViewModel, vm => vm.AboutViewModel, v => v.AboutTabItem.Content)
                     .DisposeWith(disposables);
 
-                this.ViewModel.OpenAboutTab
+                this.ViewModel!.OpenAboutTab
                     .Subscribe(_ => this.AboutTabItem.IsSelected = true)
                     .DisposeWith(disposables);
             });

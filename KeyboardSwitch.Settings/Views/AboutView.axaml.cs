@@ -24,7 +24,7 @@ namespace KeyboardSwitch.Settings.Views
                 this.VersionTextBlock.Text = String.Format(
                     CultureInfo.InvariantCulture,
                     Messages.VersionFormat,
-                    this.FormatVersion(this.ViewModel.AppVersion));
+                    this.FormatVersion(this.ViewModel!.AppVersion));
 
                 this.BindCommand(this.ViewModel, vm => vm.CheckForUpdates, v => v.CheckForUpdatesButton)
                     .DisposeWith(disposables);
@@ -35,7 +35,7 @@ namespace KeyboardSwitch.Settings.Views
                 this.BindCommand(this.ViewModel, vm => vm.GetNewVersion, v => v.GetNewVersionButton)
                     .DisposeWith(disposables);
 
-                this.WhenAnyValue(v => v.ViewModel.LatestVersion)
+                this.WhenAnyValue(v => v.ViewModel!.LatestVersion)
                     .Select(version => String.Format(
                         CultureInfo.InvariantCulture, Messages.NewVersionAvailable, this.FormatVersion(version)))
                     .BindTo(this, v => v.NewVersionTextBlock.Text)
@@ -47,14 +47,14 @@ namespace KeyboardSwitch.Settings.Views
 
         private void BindElementsVisibility(CompositeDisposable disposables)
         {
-            var newVersionAvailable = this.WhenAnyValue(v => v.ViewModel.LatestVersion)
-                .Select(latestVersion => latestVersion > this.ViewModel.AppVersion);
+            var newVersionAvailable = this.WhenAnyValue(v => v.ViewModel!.LatestVersion)
+                .Select(latestVersion => latestVersion > this.ViewModel!.AppVersion);
 
             newVersionAvailable.Invert()
                 .BindTo(this, v => v.CheckForUpdatesButton.IsVisible)
                 .DisposeWith(disposables);
 
-            this.ViewModel.CheckForUpdates
+            this.ViewModel!.CheckForUpdates
                 .Select(latestVersion => latestVersion <= this.ViewModel.AppVersion)
                 .BindTo(this, v => v.NoNewVersionsTextBlock.IsVisible)
                 .DisposeWith(disposables);

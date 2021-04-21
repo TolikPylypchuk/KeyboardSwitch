@@ -25,13 +25,13 @@ namespace KeyboardSwitch.Settings.Views
                     this.ViewModel, vm => vm!.LayoutNamesAreUniqueRule, v => v.CustomLayoutsValidationTextBlock.Text)
                     .DisposeWith(disposables);
 
-                this.BindCommand(this.ViewModel, vm => vm.AddCustomLayout, v => v.AddLayoutButton)
+                this.BindCommand(this.ViewModel!, vm => vm.AddCustomLayout, v => v.AddLayoutButton)
                     .DisposeWith(disposables);
 
-                this.BindCommand(this.ViewModel, vm => vm.AutoConfigureCustomLayouts, v => v.AutoConfigureButton)
+                this.BindCommand(this.ViewModel!, vm => vm.AutoConfigureCustomLayouts, v => v.AutoConfigureButton)
                     .DisposeWith(disposables);
 
-                this.ViewModel.AutoConfigureCustomLayouts.CanExecute
+                this.ViewModel!.AutoConfigureCustomLayouts.CanExecute
                     .BindTo(this, v => v.AutoConfigureButton.IsVisible)
                     .DisposeWith(disposables);
 
@@ -45,16 +45,16 @@ namespace KeyboardSwitch.Settings.Views
                     .BindTo(this, v => v.ActionPanel.IsVisible)
                     .DisposeWith(disposables);
 
-                this.WhenAnyValue(v => v.ViewModel.IsAutoConfiguringLayouts)
+                this.WhenAnyValue(v => v.ViewModel!.IsAutoConfiguringLayouts)
                     .Invert()
                     .BindTo(this, v => v.MainPanel.IsVisible)
                     .DisposeWith(disposables);
 
-                this.WhenAnyValue(v => v.ViewModel.IsAutoConfiguringLayouts)
+                this.WhenAnyValue(v => v.ViewModel!.IsAutoConfiguringLayouts)
                     .BindTo(this, v => v.LoadableLayoutsControl.IsVisible)
                     .DisposeWith(disposables);
 
-                this.WhenAnyValue(v => v.ViewModel.LoadableLayoutsSettingsViewModel)
+                this.WhenAnyValue(v => v.ViewModel!.LoadableLayoutsSettingsViewModel)
                     .WhereNotNull()
                     .BindTo(this, v => v.LoadableLayoutsControl.Content)
                     .DisposeWith(disposables);

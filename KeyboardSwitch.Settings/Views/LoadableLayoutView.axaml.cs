@@ -16,7 +16,7 @@ namespace KeyboardSwitch.Settings.Views
 
             this.WhenActivated(disposables =>
             {
-                this.NameTextBlock.Text = this.ViewModel.Layout.Name;
+                this.NameTextBlock.Text = this.ViewModel!.Layout.Name;
 
                 this.BindCommand(this.ViewModel, vm => vm.Delete, v => v.DeleteButton)
                     .DisposeWith(disposables);

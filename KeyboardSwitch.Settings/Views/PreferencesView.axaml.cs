@@ -114,13 +114,13 @@ namespace KeyboardSwitch.Settings.Views
 
         private void BindCommands(CompositeDisposable disposables)
         {
-            this.BindCommand(this.ViewModel, vm => vm.Save, v => v.SaveButton)
+            this.BindCommand(this.ViewModel!, vm => vm.Save, v => v.SaveButton)
                 .DisposeWith(disposables);
 
-            this.BindCommand(this.ViewModel, vm => vm.Cancel, v => v.CancelButton)
+            this.BindCommand(this.ViewModel!, vm => vm.Cancel, v => v.CancelButton)
                 .DisposeWith(disposables);
 
-            this.ViewModel.Cancel.CanExecute
+            this.ViewModel!.Cancel.CanExecute
                 .BindTo(this, v => v.ActionPanel.IsVisible)
                 .DisposeWith(disposables);
         }

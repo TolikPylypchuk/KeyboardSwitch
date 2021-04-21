@@ -38,12 +38,12 @@ namespace KeyboardSwitch.Settings.Views
                     .SkipUntil(focused.Where(isFocused => isFocused))
                     .TakeUntil(focused.Where(isFocused => !isFocused))
                     .Repeat()
-                    .BindTo(this.ViewModel, vm => vm.CurrentCharIndex)
+                    .BindTo(this.ViewModel!, vm => vm.CurrentCharIndex)
                     .DisposeWith(disposables);
 
                 focused
                     .Select(isFocused => isFocused ? this.CharsTextBox.CaretIndex : NoIndex)
-                    .BindTo(this.ViewModel, vm => vm.CurrentCharIndex)
+                    .BindTo(this.ViewModel!, vm => vm.CurrentCharIndex)
                     .DisposeWith(disposables);
 
                 focused.Connect();

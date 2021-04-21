@@ -36,10 +36,10 @@ namespace KeyboardSwitch.Settings.Views
 
         private void BindCommands(CompositeDisposable disposables)
         {
-            this.BindCommand(this.ViewModel, vm => vm.AutoConfigure, v => v.AutoConfigureButton)
+            this.BindCommand(this.ViewModel!, vm => vm.AutoConfigure, v => v.AutoConfigureButton)
                 .DisposeWith(disposables);
 
-            this.ViewModel.AutoConfigure.CanExecute
+            this.ViewModel!.AutoConfigure.CanExecute
                 .BindTo(this, v => v.AutoConfigureButton.IsVisible)
                 .DisposeWith(disposables);
 
@@ -60,7 +60,7 @@ namespace KeyboardSwitch.Settings.Views
 
         private void BindTextBlocks(CompositeDisposable disposables)
         {
-            var currentIndex = this.ViewModel.Layouts
+            var currentIndex = this.ViewModel!.Layouts
                 .ToObservableChangeSet()
                 .AutoRefresh(layout => layout.CurrentCharIndex)
                 .ToCollection()
@@ -79,17 +79,17 @@ namespace KeyboardSwitch.Settings.Views
                 .BindTo(this, v => v.CurrentPositionTextBlock.IsVisible)
                 .DisposeWith(disposables);
 
-            this.WhenAnyValue(v => v.ViewModel.HasNewLayouts)
+            this.WhenAnyValue(v => v.ViewModel!.HasNewLayouts)
                 .BindTo(this, v => v.NewLayoutsTextBlock.IsVisible)
                 .DisposeWith(disposables);
 
-            this.WhenAnyValue(v => v.ViewModel.CanRemoveLayouts)
+            this.WhenAnyValue(v => v.ViewModel!.CanRemoveLayouts)
                 .BindTo(this, v => v.RemoveLayoutsPanel.IsVisible)
                 .DisposeWith(disposables);
 
             Observable.CombineLatest(
-                this.WhenAnyValue(v => v.ViewModel.HasNewLayouts),
-                this.WhenAnyValue(v => v.ViewModel.ShouldRemoveLayouts))
+                this.WhenAnyValue(v => v.ViewModel!.HasNewLayouts),
+                this.WhenAnyValue(v => v.ViewModel!.ShouldRemoveLayouts))
                 .AnyTrue()
                 .BindTo(this, v => v.RestartServiceTextBlock.IsVisible)
                 .DisposeWith(disposables);
