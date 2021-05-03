@@ -24,11 +24,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.2" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.2" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.2" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.2" />
-    <PackageReference Include="DynamicData" Version="7.1.1" />
+    <PackageReference Include="Avalonia" Version="0.10.3" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.3" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.3" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.3" />
+    <PackageReference Include="DynamicData" Version="7.1.16" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
@@ -55,7 +55,7 @@
     <PackageReference Include="System.Interactive" Version="5.0.0" />
     <PackageReference Include="System.Interactive.Async" Version="5.0.0" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
-    <PackageReference Include="XamlNameReferenceGenerator" Version="1.1.2" />
+    <PackageReference Include="XamlNameReferenceGenerator" Version="1.2.1" />
   </ItemGroup>
 
   <ItemGroup>
