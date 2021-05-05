@@ -3,6 +3,8 @@ using System.Runtime.InteropServices;
 
 using X11;
 
+using KeyCode = X11.KeyCode;
+
 namespace KeyboardSwitch.Linux.X11
 {
     internal static class Native
@@ -15,6 +17,7 @@ namespace KeyboardSwitch.Linux.X11
         public const int XkbNumKbdGroups = 4;
 
         private const string X11 = "libX11.so.6";
+        private const string XTest = "libXtst.so.6";
 
         [DllImport(X11)]
         public static extern bool XkbIgnoreExtension(bool ignore);
@@ -71,5 +74,12 @@ namespace KeyboardSwitch.Linux.X11
             XkbEventType eventType,
             XStateMask affect,
             XStateMask details);
+
+        [DllImport(XTest)]
+        internal static extern int XTestFakeKeyEvent(
+            XDisplayHandle display,
+            KeyCode keyCode,
+            bool isPress,
+            ulong delay);
     }
 }

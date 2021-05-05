@@ -10,8 +10,8 @@ namespace KeyboardSwitch.Linux
         public static IServiceCollection AddNativeKeyboardSwitchServices(this IServiceCollection services) =>
             services
                 .AddSingleton<ITextService, ClipboardTextService>()
-                .AddSingleton<IUserActivitySimulator, NoOpSimulator>()
-                .AddSingleton<ILayoutService, X11LayoutService>()
+                .AddSingleton<IUserActivitySimulator, XUserActivitySimulator>()
+                .AddSingleton<ILayoutService, XLayoutService>()
                 .AddSingleton<ILayoutLoaderSrevice, NotSupportedLayoutLoaderService>()
                 .AddSingleton<IStartupService, StartupService>()
                 .AddSingleton<IAutoConfigurationService, AutoConfigurationService>();

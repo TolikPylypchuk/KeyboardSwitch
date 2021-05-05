@@ -1,12 +1,13 @@
+using System;
+
 using X11;
 
 namespace KeyboardSwitch.Linux.X11
 {
     internal sealed class XDisplayHandle : XHandleBase
     {
-        private XDisplayHandle()
-            : base()
-        { }
+        public XDisplayHandle(IntPtr handle) =>
+            this.SetHandle(handle);
 
         protected override bool ReleaseHandle() =>
             Xlib.XCloseDisplay(this.handle) != Status.Failure;

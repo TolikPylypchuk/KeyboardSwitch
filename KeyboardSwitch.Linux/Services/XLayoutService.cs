@@ -17,13 +17,13 @@ using static KeyboardSwitch.Linux.X11.Native;
 
 namespace KeyboardSwitch.Linux.Services
 {
-    public sealed class X11LayoutService : ILayoutService
+    public sealed class XLayoutService : ILayoutService
     {
         private static readonly ImmutableList<string> NonSymbols = ImmutableList.Create("group", "inet", "pc");
 
-        private readonly ILogger<X11LayoutService> logger;
+        private readonly ILogger<XLayoutService> logger;
 
-        public X11LayoutService(ILogger<X11LayoutService> logger) =>
+        public XLayoutService(ILogger<XLayoutService> logger) =>
             this.logger = logger;
 
         public KeyboardLayout GetCurrentKeyboardLayout()
@@ -45,7 +45,7 @@ namespace KeyboardSwitch.Linux.Services
 
             return state.Group < allLayouts.Count
                 ? allLayouts[state.Group]
-                : throw new X11Exception("Current input group is invalid");
+                : throw new XException("Current input group is invalid");
         }
 
         public List<KeyboardLayout> GetKeyboardLayouts()
@@ -91,13 +91,13 @@ namespace KeyboardSwitch.Linux.Services
             switch (result)
             {
                 case XOpenDisplayResult.BadLibraryVersion:
-                    throw new X11Exception("Bad X11 version");
+                    throw new XException("Bad X11 version");
                 case XOpenDisplayResult.ConnectionRefused:
-                    throw new X11Exception("Connection to X server refused");
+                    throw new XException("Connection to X server refused");
                 case XOpenDisplayResult.NonXkbServer:
-                    throw new X11Exception("XKB not present");
+                    throw new XException("XKB not present");
                 case XOpenDisplayResult.BadServerVersion:
-                    throw new X11Exception("Bad X11 server version");
+                    throw new XException("Bad X11 server version");
             }
         }
 
@@ -116,7 +116,7 @@ namespace KeyboardSwitch.Linux.Services
             if (keyboardDesc->Names == IntPtr.Zero)
             {
                 this.FreeKeyboard(keyboardHandle);
-                throw new X11Exception("Failed to get keyboard description");
+                throw new XException("Failed to get keyboard description");
             }
 
             keyboardDesc->Dpy = display.DangerousGetHandle();
@@ -135,7 +135,7 @@ namespace KeyboardSwitch.Linux.Services
             if (symbols == null)
             {
                 this.FreeKeyboard(keyboardHandle);
-                throw new X11Exception("Error when getting keyboard layout symbols");
+                throw new XException("Error when getting keyboard layout symbols");
             }
 
             var (symbolNames, variantNames) = this.ParseSymbols(symbols);
