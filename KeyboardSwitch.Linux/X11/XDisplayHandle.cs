@@ -9,6 +9,9 @@ namespace KeyboardSwitch.Linux.X11
         public XDisplayHandle(IntPtr handle) =>
             this.SetHandle(handle);
 
+        private XDisplayHandle()
+        { }
+
         protected override bool ReleaseHandle() =>
             Xlib.XCloseDisplay(this.handle) != Status.Failure;
     }
