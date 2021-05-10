@@ -162,7 +162,9 @@ namespace KeyboardSwitch.Core.Services
                     ForwardModifierKeys = new() { ModifierKey.Ctrl, ModifierKey.Shift, ModifierKey.None },
                     BackwardModifierKeys = new() { ModifierKey.Ctrl, ModifierKey.Shift, ModifierKey.Alt },
                     PressCount = 2,
-                    WaitMilliseconds = 400
+                    WaitMilliseconds = 400,
+                    LayoutForwardKeys = new() { KeyCode.VcLeftMeta, KeyCode.VcSpace },
+                    LayoutBackwardKeys = new() { KeyCode.VcLeftMeta, KeyCode.VcLeftShift, KeyCode.VcSpace }
                 },
                 CharsByKeyboardLayoutId = this.layoutService.GetKeyboardLayouts()
                     .ToDictionary(layout => layout.Id, _ => String.Empty),

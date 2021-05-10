@@ -10,6 +10,7 @@ using System.Text;
 using KeyboardSwitch.Core;
 using KeyboardSwitch.Core.Keyboard;
 using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Settings;
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
@@ -35,6 +36,8 @@ namespace KeyboardSwitch.Windows.Services
         public LayoutService(ILogger<LayoutService> logger) =>
             this.logger = logger;
 
+        public bool SwitchLayoutsViaKeyboardSimulation => false;
+
         public bool IsLoadingLayoutsSupported => true;
 
         public KeyboardLayout GetCurrentKeyboardLayout()
@@ -44,7 +47,7 @@ namespace KeyboardSwitch.Windows.Services
             return this.GetThreadKeyboardLayout(foregroundWindowThreadId);
         }
 
-        public void SwitchCurrentLayout(SwitchDirection direction)
+        public void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
         {
             this.logger.LogDebug($"Switching the keyboard layout of the foregound process {direction.AsString()}");
 

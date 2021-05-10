@@ -1,15 +1,28 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 
+using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.ReactiveUI;
 
+using DynamicData;
+using DynamicData.Binding;
+
+using KeyboardSwitch.Core;
 using KeyboardSwitch.Core.Keyboard;
+using KeyboardSwitch.Settings.Controls;
+using KeyboardSwitch.Settings.Converters;
 using KeyboardSwitch.Settings.Core.ViewModels;
+using KeyboardSwitch.Settings.Properties;
 
 using ReactiveUI;
 using ReactiveUI.Validation.Extensions;
+
+using static KeyboardSwitch.Core.Util;
 
 using Convert = KeyboardSwitch.Settings.Converters.Convert;
 
@@ -17,6 +30,8 @@ namespace KeyboardSwitch.Settings.Views
 {
     public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
     {
+        private readonly KeyCodeConverter keyCodeConverter = new();
+
         public PreferencesView()
         {
             this.InitializeComponent();
@@ -42,6 +57,14 @@ namespace KeyboardSwitch.Settings.Views
                 this.BindControls(disposables);
                 this.BindValidations(disposables);
                 this.BindCommands(disposables);
+
+                if (this.ViewModel!.SwitchLayoutsViaKeyboardSimulation)
+                {
+                    this.BindLayoutKeys(disposables);
+                } else
+                {
+                    this.LayoutKeysPanel.IsVisible = false;
+                }
             });
         }
 
@@ -93,6 +116,94 @@ namespace KeyboardSwitch.Settings.Views
                 .DisposeWith(disposables);
         }
 
+        private void BindLayoutKeys(CompositeDisposable disposables)
+        {
+            this.ViewModel!.LayoutForwardKeyCodes
+                .ToObservableChangeSet()
+                .ToCollection()
+                .Select(this.ConvertKeyCodesToString)
+                .BindTo(this, v => v.LayoutForwardKeysTextBox.Text)
+                .DisposeWith(disposables);
+
+            this.ViewModel!.LayoutBackwardKeyCodes
+                .ToObservableChangeSet()
+                .ToCollection()
+                .Select(this.ConvertKeyCodesToString)
+                .BindTo(this, v => v.LayoutBackwardKeysTextBox.Text)
+                .DisposeWith(disposables);
+
+            this.LayoutForwardKeysTextBox.GetObservable(KeysBox.KeyPressedEvent)
+                .Select(e => e.Key)
+                .Select(this.keyCodeConverter.ConvertToKeyCode)
+                .WhereValueNotNull()
+                .InvokeCommand(this.ViewModel!.AddLayoutForwardKeyCode)
+                .DisposeWith(disposables);
+
+            this.LayoutBackwardKeysTextBox.GetObservable(KeysBox.KeyPressedEvent)
+                .Select(e => e.Key)
+                .Select(this.keyCodeConverter.ConvertToKeyCode)
+                .WhereValueNotNull()
+                .InvokeCommand(this.ViewModel!.AddLayoutBackwardKeyCode)
+                .DisposeWith(disposables);
+
+            this.BindCommand(
+                this.ViewModel!, vm => vm.ClearLayoutForwardKeyCodes, v => v.ClearLayoutForwardKeysButton)
+                .DisposeWith(disposables);
+
+            this.BindCommand(
+                this.ViewModel!, vm => vm.ClearLayoutBackwardKeyCodes, v => v.ClearLayoutBackwardKeysButton)
+                .DisposeWith(disposables);
+
+            var shouldShowManualMetaButtons = PlatformDependent(
+                windows: () => false, macos: () => false, linux: () => true);
+
+            if (shouldShowManualMetaButtons)
+            {
+                this.EnableManualMetaButtons(disposables);
+            } else
+            {
+                this.AddLeftMetaForwardButton.IsVisible = false;
+                this.AddRightMetaForwardButton.IsVisible = false;
+                this.AddLeftMetaBackwardButton.IsVisible = false;
+                this.AddRightMetaBackwardButton.IsVisible = false;
+            } 
+        }
+
+        private void EnableManualMetaButtons(CompositeDisposable disposables)
+        {
+            this.AddLeftMetaForwardButton.Content =
+                    String.Format(Messages.AddKeyFormat, Messages.ModifierKeyLeftSuper);
+
+            this.AddRightMetaForwardButton.Content =
+                String.Format(Messages.AddKeyFormat, Messages.ModifierKeyRightSuper);
+
+            this.AddLeftMetaBackwardButton.Content =
+                String.Format(Messages.AddKeyFormat, Messages.ModifierKeyLeftSuper);
+
+            this.AddRightMetaBackwardButton.Content =
+                String.Format(Messages.AddKeyFormat, Messages.ModifierKeyRightSuper);
+
+            this.AddLeftMetaForwardButton.GetObservable(Button.ClickEvent)
+                .Select(e => KeyCode.VcLeftMeta)
+                .InvokeCommand(this.ViewModel!.AddLayoutForwardKeyCode)
+                .DisposeWith(disposables);
+
+            this.AddRightMetaForwardButton.GetObservable(Button.ClickEvent)
+                .Select(e => KeyCode.VcRightMeta)
+                .InvokeCommand(this.ViewModel!.AddLayoutForwardKeyCode)
+                .DisposeWith(disposables);
+
+            this.AddLeftMetaBackwardButton.GetObservable(Button.ClickEvent)
+                .Select(e => KeyCode.VcLeftMeta)
+                .InvokeCommand(this.ViewModel!.AddLayoutBackwardKeyCode)
+                .DisposeWith(disposables);
+
+            this.AddRightMetaBackwardButton.GetObservable(Button.ClickEvent)
+                .Select(e => KeyCode.VcRightMeta)
+                .InvokeCommand(this.ViewModel!.AddLayoutBackwardKeyCode)
+                .DisposeWith(disposables);
+        }
+
         private void BindValidations(CompositeDisposable disposables)
         {
             this.BindValidation(
@@ -109,6 +220,24 @@ namespace KeyboardSwitch.Settings.Views
 
             this.BindValidation(
                 this.ViewModel, vm => vm!.SwitchMethodsAreDifferentRule, v => v.SwitchMethodsValidationTextBlock.Text)
+                .DisposeWith(disposables);
+
+            this.BindValidation(
+                this.ViewModel,
+                vm => vm!.LayoutForwardKeysAreNotEmptyRule,
+                v => v.LayoutForwardKeysAreNotEmptyValidationTextBlock.Text)
+                .DisposeWith(disposables);
+
+            this.BindValidation(
+                this.ViewModel,
+                vm => vm!.LayoutBackwardKeysAreNotEmptyRule,
+                v => v.LayoutBackwardKeysAreNotEmptyValidationTextBlock.Text)
+                .DisposeWith(disposables);
+
+            this.BindValidation(
+                this.ViewModel,
+                vm => vm!.LayoutKeysAreDifferentRule,
+                v => v.LayoutKeysAreDifferentValidationTextBlock.Text)
                 .DisposeWith(disposables);
         }
 
@@ -142,5 +271,14 @@ namespace KeyboardSwitch.Settings.Views
                 ModifierKey.RightAlt,
                 ModifierKey.RightMeta
             };
+
+        private string ConvertKeyCodesToString(IEnumerable<KeyCode> keyCodes)
+        {
+            string names = keyCodes
+                .Select(this.keyCodeConverter.GetName)
+                .Aggregate(String.Empty, (acc, KeyCode) => $"{acc}+{KeyCode}");
+
+            return !String.IsNullOrEmpty(names) ? names[1..] : names;
+        }
     }
 }

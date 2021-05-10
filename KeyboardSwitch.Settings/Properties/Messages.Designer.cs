@@ -79,6 +79,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add {0}.
+        /// </summary>
+        internal static string AddKeyFormat {
+            get {
+                return ResourceManager.GetString("AddKeyFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto-configure.
         /// </summary>
         internal static string AutoConfigure {
@@ -376,11 +385,56 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Key combinations to switch layouts:.
+        /// </summary>
+        internal static string KeysToSwitchLayouts {
+            get {
+                return ResourceManager.GetString("KeysToSwitchLayouts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Key combinations to switch text:.
+        /// </summary>
+        internal static string KeysToSwitchText {
+            get {
+                return ResourceManager.GetString("KeysToSwitchText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Kill.
         /// </summary>
         internal static string Kill {
             get {
                 return ResourceManager.GetString("Kill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No keys for switching layouts backward specified.
+        /// </summary>
+        internal static string LayoutBackwardKeysEmpty {
+            get {
+                return ResourceManager.GetString("LayoutBackwardKeysEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No keys for switching layouts forward specified.
+        /// </summary>
+        internal static string LayoutForwardKeysEmpty {
+            get {
+                return ResourceManager.GetString("LayoutForwardKeysEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keys for switching layouts are same.
+        /// </summary>
+        internal static string LayoutKeysAreSame {
+            get {
+                return ResourceManager.GetString("LayoutKeysAreSame", resourceCulture);
             }
         }
         

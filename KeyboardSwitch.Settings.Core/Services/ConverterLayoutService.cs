@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 
 using KeyboardSwitch.Core.Keyboard;
 using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Settings;
 using KeyboardSwitch.Settings.Core.Models;
 
 using ReactiveUI;
@@ -29,6 +30,8 @@ namespace KeyboardSwitch.Settings.Core.Services
                 .ToPropertyEx(this, vm => vm.TargetLayout);
         }
 
+        public bool SwitchLayoutsViaKeyboardSimulation => false;
+
         private KeyboardLayout SourceLayout { [ObservableAsProperty] get; } = null!;
         private KeyboardLayout TargetLayout { [ObservableAsProperty] get; } = null!;
 
@@ -38,7 +41,7 @@ namespace KeyboardSwitch.Settings.Core.Services
         public List<KeyboardLayout> GetKeyboardLayouts() =>
             new() { this.SourceLayout, this.TargetLayout };
 
-        public void SwitchCurrentLayout(SwitchDirection direction)
+        public void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
         { }
 
         private KeyboardLayout CreateFakeKeyboardLayout(CustomLayoutModel layout, string index) =>

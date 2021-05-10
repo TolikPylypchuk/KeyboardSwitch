@@ -19,5 +19,11 @@ namespace KeyboardSwitch.Core.Settings
 
         [DataMember]
         public int WaitMilliseconds { get; set; }
+
+        [DataMember]
+        public List<KeyCode> LayoutForwardKeys { get; set; } = new();
+
+        [DataMember]
+        public List<KeyCode> LayoutBackwardKeys { get; set; } = new();
     }
 }

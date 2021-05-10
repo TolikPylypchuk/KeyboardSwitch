@@ -63,7 +63,7 @@ namespace KeyboardSwitch.Core.Services
 
             if (settings.SwitchLayout)
             {
-                this.layoutService.SwitchCurrentLayout(direction);
+                this.layoutService.SwitchCurrentLayout(direction, settings.SwitchSettings);
             }
         }
     }

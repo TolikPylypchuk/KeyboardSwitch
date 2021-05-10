@@ -24,7 +24,7 @@ namespace KeyboardSwitch.Core.Keyboard
         VcF17 = 0x0064,
         VcF18 = 0x0065,
         VcF19 = 0x0066,
-        VcF29 = 0x0067,
+        VcF20 = 0x0067,
         VcF21 = 0x0068,
         VcF22 = 0x0069,
         VcF23 = 0x006A,

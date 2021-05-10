@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:KeyboardSwitch.Settings.Controls"
              xmlns:l="clr-namespace:KeyboardSwitch.Settings.Localization"
              x:Class="KeyboardSwitch.Settings.Views.PreferencesView">
     <DockPanel>
@@ -20,12 +21,14 @@
                               Content="{l:Translate StartOnLogIn}" />
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Margin="10 10 0 0">
+                <StackPanel Orientation="Horizontal" Margin="10">
                     <CheckBox x:Name="ShowRemovedLayoutsMessageCheckBox" Classes="FormControl"
                               Content="{l:Translate ShowUninstalledLayoutsMessage}" />
                     <CheckBox x:Name="ShowConverterCheckBox" Classes="FormControl"
                               Content="{l:Translate ShowConverter}" />
                 </StackPanel>
+
+                <TextBlock Text="{l:Translate KeysToSwitchText}" Margin="10 5" />
 
                 <Grid RowDefinitions="Auto,Auto" Margin="10"
                       ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
@@ -62,6 +65,44 @@
                 <TextBlock x:Name="WaitMillisecondsValidationTextBlock" Classes="Error" />
                 <TextBlock x:Name="ModifierKeysValidationTextBlock" Classes="Error" />
                 <TextBlock x:Name="SwitchMethodsValidationTextBlock" Classes="Error" />
+
+                <StackPanel x:Name="LayoutKeysPanel">
+                    <TextBlock Text="{l:Translate KeysToSwitchLayouts}" Margin="10 5" />
+
+                    <Grid RowDefinitions="Auto,Auto" Margin="10 5" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto">
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{l:Translate Forward}" Classes="Label" />
+
+                        <c:KeysBox x:Name="LayoutForwardKeysTextBox" Grid.Row="0" Grid.Column="1" CaretBrush="Transparent"
+                                   Margin="0 5 10 5" VerticalAlignment="Center" />
+
+                        <Button x:Name="ClearLayoutForwardKeysButton" Grid.Row="0" Grid.Column="2"
+                                Content="{l:Translate Clear}" VerticalAlignment="Center" />
+
+                        <Button x:Name="AddLeftMetaForwardButton" Grid.Row="0" Grid.Column="3"
+                                VerticalAlignment="Center" />
+
+                        <Button x:Name="AddRightMetaForwardButton" Grid.Row="0" Grid.Column="4"
+                                VerticalAlignment="Center" />
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{l:Translate Backward}" Classes="Label" />
+
+                        <c:KeysBox x:Name="LayoutBackwardKeysTextBox" Grid.Row="1" Grid.Column="1" CaretBrush="Transparent"
+                                   Margin="0 5 10 5" VerticalAlignment="Center" />
+
+                        <Button x:Name="ClearLayoutBackwardKeysButton" Grid.Row="1" Grid.Column="2"
+                                Content="{l:Translate Clear}" VerticalAlignment="Center" />
+
+                        <Button x:Name="AddLeftMetaBackwardButton" Grid.Row="1" Grid.Column="3"
+                                VerticalAlignment="Center" />
+
+                        <Button x:Name="AddRightMetaBackwardButton" Grid.Row="1" Grid.Column="4"
+                                VerticalAlignment="Center" />
+                    </Grid>
+
+                    <TextBlock x:Name="LayoutForwardKeysAreNotEmptyValidationTextBlock" Classes="Error" />
+                    <TextBlock x:Name="LayoutBackwardKeysAreNotEmptyValidationTextBlock" Classes="Error" />
+                    <TextBlock x:Name="LayoutKeysAreDifferentValidationTextBlock" Classes="Error" />
+                </StackPanel>
             </StackPanel>
         </ScrollViewer>
     </DockPanel>

@@ -2,21 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Resources;
 using System.Threading.Tasks;
 
 using DynamicData;
-using DynamicData.Binding;
 
 using KeyboardSwitch.Core;
 using KeyboardSwitch.Core.Keyboard;
+using KeyboardSwitch.Core.Services;
 using KeyboardSwitch.Settings.Core.Models;
 
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Validation.Helpers;
+
+using Splat;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
@@ -25,11 +28,18 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         private readonly SourceList<ModifierKey> forwardModifierKeysSource = new();
         private readonly SourceList<ModifierKey> backwardModifierKeysSource = new();
 
+        private readonly SourceCache<KeyCode, KeyCode> layoutForwardKeyCodesSource = new(keyCode => keyCode);
+        private readonly SourceCache<KeyCode, KeyCode> layoutBackwardKeyCodesSource = new(keyCode => keyCode);
+
         private readonly ReadOnlyObservableCollection<ModifierKey> forwardModifierKeys;
         private readonly ReadOnlyObservableCollection<ModifierKey> backwardModifierKeys;
 
+        private readonly ReadOnlyObservableCollection<KeyCode> layoutForwardKeyCodes;
+        private readonly ReadOnlyObservableCollection<KeyCode> layoutBackwardKeyCodes;
+
         public PreferencesViewModel(
             PreferencesModel preferencesModel,
+            ILayoutService? layoutService = null,
             ResourceManager? resourceManager = null,
             IScheduler? scheduler = null)
             : base(resourceManager, scheduler)
@@ -45,13 +55,42 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 .Bind(out this.backwardModifierKeys)
                 .Subscribe();
 
+            this.layoutForwardKeyCodesSource.Connect()
+                .Bind(out this.layoutForwardKeyCodes)
+                .Subscribe();
+
+            this.layoutBackwardKeyCodesSource.Connect()
+                .Bind(out this.layoutBackwardKeyCodes)
+                .Subscribe();
+
             this.BindKeys();
+
+            this.AddLayoutForwardKeyCode = ReactiveCommand.Create<KeyCode>(
+                this.layoutForwardKeyCodesSource.AddOrUpdate);
+
+            this.AddLayoutBackwardKeyCode = ReactiveCommand.Create<KeyCode>(
+                this.layoutBackwardKeyCodesSource.AddOrUpdate);
+
+            this.ClearLayoutForwardKeyCodes = ReactiveCommand.Create(this.layoutForwardKeyCodesSource.Clear);
+            this.ClearLayoutBackwardKeyCodes = ReactiveCommand.Create(this.layoutBackwardKeyCodesSource.Clear);
 
             this.LocalizedValidationRule(vm => vm.PressCount, count => count > 0 && count <= 10);
             this.LocalizedValidationRule(vm => vm.WaitMilliseconds, wait => wait >= 100 && wait <= 1000);
 
             this.ModifierKeysAreDifferentRule = this.InitModifierKeysAreDifferentRule();
             this.SwitchMethodsAreDifferentRule = this.InitSwitchMethodsAreDifferentRule();
+
+            this.LayoutForwardKeysAreNotEmptyRule = this.InitLayoutKeysAreNotEmptyRule(
+                this.layoutForwardKeyCodesSource, "LayoutForwardKeysEmpty");
+
+            this.LayoutBackwardKeysAreNotEmptyRule = this.InitLayoutKeysAreNotEmptyRule(
+                this.layoutBackwardKeyCodesSource, "LayoutBackwardKeysEmpty");
+
+            this.LayoutKeysAreDifferentRule = this.InitLayoutKeysAreDifferentRule();
+
+            layoutService ??= Locator.Current.GetService<ILayoutService>();
+
+            this.SwitchLayoutsViaKeyboardSimulation = layoutService?.SwitchLayoutsViaKeyboardSimulation ?? false;
 
             this.EnableChangeTracking();
         }
@@ -97,8 +136,26 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         [Reactive]
         public int WaitMilliseconds { get; set; }
 
+        public ReadOnlyObservableCollection<KeyCode> LayoutForwardKeyCodes =>
+            this.layoutForwardKeyCodes;
+
+        public ReadOnlyObservableCollection<KeyCode> LayoutBackwardKeyCodes =>
+            this.layoutBackwardKeyCodes;
+
+        public ReactiveCommand<KeyCode, Unit> AddLayoutForwardKeyCode { get; }
+        public ReactiveCommand<KeyCode, Unit> AddLayoutBackwardKeyCode { get; }
+
+        public ReactiveCommand<Unit, Unit> ClearLayoutForwardKeyCodes { get; }
+        public ReactiveCommand<Unit, Unit> ClearLayoutBackwardKeyCodes { get; }
+
         public ValidationHelper ModifierKeysAreDifferentRule { get; }
         public ValidationHelper SwitchMethodsAreDifferentRule { get; }
+
+        public ValidationHelper LayoutForwardKeysAreNotEmptyRule { get; }
+        public ValidationHelper LayoutBackwardKeysAreNotEmptyRule { get; }
+        public ValidationHelper LayoutKeysAreDifferentRule { get; }
+
+        public bool SwitchLayoutsViaKeyboardSimulation { get; }
 
         protected override PreferencesViewModel Self => this;
 
@@ -122,6 +179,12 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.TrackChanges(vm => vm.PressCount, vm => vm.PreferencesModel.SwitchSettings.PressCount);
             this.TrackChanges(vm => vm.WaitMilliseconds, vm => vm.PreferencesModel.SwitchSettings.WaitMilliseconds);
 
+            this.TrackChanges(this.IsCollectionChangedSimple(
+                vm => vm.LayoutForwardKeyCodes, vm => vm.PreferencesModel.SwitchSettings.LayoutForwardKeys));
+
+            this.TrackChanges(this.IsCollectionChangedSimple(
+                vm => vm.LayoutBackwardKeyCodes, vm => vm.PreferencesModel.SwitchSettings.LayoutBackwardKeys));
+
             base.EnableChangeTracking();
         }
 
@@ -133,10 +196,18 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.PreferencesModel.ShowUninstalledLayoutsMessage = this.ShowUninstalledLayoutsMessage;
             this.PreferencesModel.ShowConverter = this.ShowConverter;
 
-            this.PreferencesModel.SwitchSettings.ForwardModifierKeys = new(this.forwardModifierKeys);
-            this.PreferencesModel.SwitchSettings.BackwardModifierKeys = new(this.backwardModifierKeys);
-            this.PreferencesModel.SwitchSettings.PressCount = this.PressCount;
-            this.PreferencesModel.SwitchSettings.WaitMilliseconds = this.WaitMilliseconds;
+            var switchSettings = this.PreferencesModel.SwitchSettings;
+
+            switchSettings.ForwardModifierKeys = new(this.forwardModifierKeys);
+            switchSettings.BackwardModifierKeys = new(this.backwardModifierKeys);
+            switchSettings.PressCount = this.PressCount;
+            switchSettings.WaitMilliseconds = this.WaitMilliseconds;
+
+            switchSettings.LayoutForwardKeys.Clear();
+            switchSettings.LayoutForwardKeys.AddRange(this.LayoutForwardKeyCodes);
+
+            switchSettings.LayoutBackwardKeys.Clear();
+            switchSettings.LayoutBackwardKeys.AddRange(this.LayoutBackwardKeyCodes);
 
             return Task.FromResult(this.PreferencesModel);
         }
@@ -149,38 +220,52 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.ShowUninstalledLayoutsMessage = this.PreferencesModel.ShowUninstalledLayoutsMessage;
             this.ShowConverter = this.PreferencesModel.ShowConverter;
 
-            if (this.PreferencesModel.SwitchSettings.ForwardModifierKeys.Count > 0)
+            var switchSettings = this.PreferencesModel.SwitchSettings;
+
+            if (switchSettings.ForwardModifierKeys.Count > 0)
             {
-                this.ForwardModifierKeyFirst = this.PreferencesModel.SwitchSettings.ForwardModifierKeys[0];
+                this.ForwardModifierKeyFirst = switchSettings.ForwardModifierKeys[0];
             }
 
-            if (this.PreferencesModel.SwitchSettings.ForwardModifierKeys.Count > 1)
+            if (switchSettings.ForwardModifierKeys.Count > 1)
             {
-                this.ForwardModifierKeySecond = this.PreferencesModel.SwitchSettings.ForwardModifierKeys[1];
+                this.ForwardModifierKeySecond = switchSettings.ForwardModifierKeys[1];
             }
 
-            if (this.PreferencesModel.SwitchSettings.ForwardModifierKeys.Count > 2)
+            if (switchSettings.ForwardModifierKeys.Count > 2)
             {
-                this.ForwardModifierKeyThird = this.PreferencesModel.SwitchSettings.ForwardModifierKeys[2];
+                this.ForwardModifierKeyThird = switchSettings.ForwardModifierKeys[2];
             }
 
-            if (this.PreferencesModel.SwitchSettings.BackwardModifierKeys.Count > 0)
+            if (switchSettings.BackwardModifierKeys.Count > 0)
             {
-                this.BackwardModifierKeyFirst = this.PreferencesModel.SwitchSettings.BackwardModifierKeys[0];
+                this.BackwardModifierKeyFirst = switchSettings.BackwardModifierKeys[0];
             }
 
-            if (this.PreferencesModel.SwitchSettings.BackwardModifierKeys.Count > 1)
+            if (switchSettings.BackwardModifierKeys.Count > 1)
             {
-                this.BackwardModifierKeySecond = this.PreferencesModel.SwitchSettings.BackwardModifierKeys[1];
+                this.BackwardModifierKeySecond = switchSettings.BackwardModifierKeys[1];
             }
 
-            if (this.PreferencesModel.SwitchSettings.BackwardModifierKeys.Count > 2)
+            if (switchSettings.BackwardModifierKeys.Count > 2)
             {
-                this.BackwardModifierKeyThird = this.PreferencesModel.SwitchSettings.BackwardModifierKeys[2];
+                this.BackwardModifierKeyThird = switchSettings.BackwardModifierKeys[2];
             }
 
-            this.PressCount = this.PreferencesModel.SwitchSettings.PressCount;
-            this.WaitMilliseconds = this.PreferencesModel.SwitchSettings.WaitMilliseconds;
+            this.PressCount = switchSettings.PressCount;
+            this.WaitMilliseconds = switchSettings.WaitMilliseconds;
+
+            this.layoutForwardKeyCodesSource.Edit(list =>
+            {
+                list.Clear();
+                switchSettings.LayoutForwardKeys.ForEach(list.AddOrUpdate);
+            });
+
+            this.layoutBackwardKeyCodesSource.Edit(list =>
+            {
+                list.Clear();
+                switchSettings.LayoutBackwardKeys.ForEach(list.AddOrUpdate);
+            });
         }
 
         private void BindKeys()
@@ -215,12 +300,12 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         private ValidationHelper InitModifierKeysAreDifferentRule()
         {
             var modifierKeysAreDifferent = Observable.CombineLatest(
-                this.forwardModifierKeys
-                    .ToObservableChangeSet()
+                this.forwardModifierKeysSource
+                    .Connect()
                     .ToCollection()
                     .Select(this.ContainsDistinctElements),
-                this.backwardModifierKeys
-                    .ToObservableChangeSet()
+                this.backwardModifierKeysSource
+                    .Connect()
                     .ToCollection()
                     .Select(this.ContainsDistinctElements),
                 (forward, backward) => forward && backward);
@@ -231,11 +316,30 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         private ValidationHelper InitSwitchMethodsAreDifferentRule()
         {
             var switchMethodsAreDifferent = Observable.CombineLatest(
-                this.forwardModifierKeys.ToObservableChangeSet().ToCollection(),
-                this.backwardModifierKeys.ToObservableChangeSet().ToCollection(),
+                this.forwardModifierKeysSource.Connect().ToCollection(),
+                this.backwardModifierKeysSource.Connect().ToCollection(),
                 (forward, backward) => !new HashSet<ModifierKey>(forward).SetEquals(backward));
 
             return this.LocalizedValidationRule(switchMethodsAreDifferent, "SwitchMethodsAreSame");
+        }
+
+        private ValidationHelper InitLayoutKeysAreNotEmptyRule(SourceCache<KeyCode, KeyCode> keys, string messageKey)
+        {
+            var layoutKeysAreNotEmptyRule = keys.Connect()
+                .ToCollection()
+                .Select(k => k.Count != 0);
+
+            return this.LocalizedValidationRule(layoutKeysAreNotEmptyRule, messageKey);
+        }
+
+        private ValidationHelper InitLayoutKeysAreDifferentRule()
+        {
+            var switchMethodsAreDifferent = Observable.CombineLatest(
+                this.layoutForwardKeyCodesSource.Connect().ToCollection(),
+                this.layoutBackwardKeyCodesSource.Connect().ToCollection(),
+                (forward, backward) => !new HashSet<KeyCode>(forward).SetEquals(backward));
+
+            return this.LocalizedValidationRule(switchMethodsAreDifferent, "LayoutKeysAreSame");
         }
 
         private bool ContainsDistinctElements(IReadOnlyCollection<ModifierKey> keys) =>

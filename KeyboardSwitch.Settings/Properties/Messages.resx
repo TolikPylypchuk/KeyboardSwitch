@@ -123,6 +123,9 @@
   <data name="AddCustomLayout" xml:space="preserve">
     <value>Add custom layout</value>
   </data>
+  <data name="AddKeyFormat" xml:space="preserve">
+    <value>Add {0}</value>
+  </data>
   <data name="AutoConfigure" xml:space="preserve">
     <value>Auto-configure</value>
   </data>
@@ -222,8 +225,23 @@
   <data name="KeyboardSwitchServiceShuttingDown" xml:space="preserve">
     <value>The Keyboard Switch service is shutting down</value>
   </data>
+  <data name="KeysToSwitchLayouts" xml:space="preserve">
+    <value>Key combinations to switch layouts:</value>
+  </data>
+  <data name="KeysToSwitchText" xml:space="preserve">
+    <value>Key combinations to switch text:</value>
+  </data>
   <data name="Kill" xml:space="preserve">
     <value>Kill</value>
+  </data>
+  <data name="LayoutBackwardKeysEmpty" xml:space="preserve">
+    <value>No keys for switching layouts backward specified</value>
+  </data>
+  <data name="LayoutForwardKeysEmpty" xml:space="preserve">
+    <value>No keys for switching layouts forward specified</value>
+  </data>
+  <data name="LayoutKeysAreSame" xml:space="preserve">
+    <value>Keys for switching layouts are same</value>
   </data>
   <data name="ModifierKeyAlt" xml:space="preserve">
     <value>Any Alt</value>

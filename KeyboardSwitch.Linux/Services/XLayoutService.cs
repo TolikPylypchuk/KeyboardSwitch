@@ -15,18 +15,21 @@ using X11;
 
 using static KeyboardSwitch.Linux.X11.Native;
 
+using KeyCode = KeyboardSwitch.Core.Keyboard.KeyCode;
+
 namespace KeyboardSwitch.Linux.Services
 {
-    public sealed class XLayoutService : ILayoutService
+    public sealed class XLayoutService : SimulatingLayoutService
     {
         private static readonly ImmutableList<string> NonSymbols = ImmutableList.Create("group", "inet", "pc");
 
         private readonly ILogger<XLayoutService> logger;
 
-        public XLayoutService(ILogger<XLayoutService> logger) =>
+        public XLayoutService(ILogger<XLayoutService> logger)
+            : base(logger) =>
             this.logger = logger;
 
-        public KeyboardLayout GetCurrentKeyboardLayout()
+        public override KeyboardLayout GetCurrentKeyboardLayout()
         {
             this.logger.LogDebug("Getting current keyboard layout");
 
@@ -48,7 +51,7 @@ namespace KeyboardSwitch.Linux.Services
                 : throw new XException("Current input group is invalid");
         }
 
-        public List<KeyboardLayout> GetKeyboardLayouts()
+        public override List<KeyboardLayout> GetKeyboardLayouts()
         {
             this.logger.LogDebug("Getting all keyboard layouts");
 
@@ -56,8 +59,8 @@ namespace KeyboardSwitch.Linux.Services
             return this.GetKeyboardLayoutsInternal(display);
         }
 
-        public void SwitchCurrentLayout(SwitchDirection direction)
-        { }
+        protected override void SimulateKeyPresses(IEnumerable<KeyCode> keys) =>
+            XKeyboardUtil.SimulateKeyPresses(keys.Select(key => key.ToKeySym()).ToArray());
 
         private static KeyboardLayout CreateKeyboardLayout(string group, string symbol, string variant) =>
             new(
