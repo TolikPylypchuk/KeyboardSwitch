@@ -6,10 +6,9 @@ namespace KeyboardSwitch.Linux.Services
     internal class XUserActivitySimulator : IUserActivitySimulator
     {
         public void SimulateCopy() =>
-            XKeyboardUtil.SimulateKeyPresses(XKeySym.LeftControl, XKeySym.C);
+            XUtil.SimulateKeyPresses(XKeySym.LeftControl, XKeySym.C);
 
         public void SimulatePaste() =>
-            XKeyboardUtil.SimulateKeyPresses(XKeySym.LeftControl, XKeySym.V);
-
+            XUtil.SimulateKeyPresses(XKeySym.LeftControl, XKeySym.V);
     }
 }

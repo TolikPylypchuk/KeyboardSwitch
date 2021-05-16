@@ -1,7 +1,8 @@
 namespace KeyboardSwitch.Linux.X11
 {
-    public enum XKeySym : long
+    internal enum XKeySym : ulong
     {
+        NoSymbol = 0x0,
         VoidSymbol = 0xFFFFFF,
 
         BackSpace = 0xFF08,

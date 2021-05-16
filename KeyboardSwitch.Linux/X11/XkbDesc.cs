@@ -7,10 +7,13 @@ namespace KeyboardSwitch.Linux.X11
     internal struct XkbDesc
     {
         public IntPtr Dpy;
+
         public ushort Flags;
         public ushort DeviceSpec;
-        public ushort MinKeyCode;
-        public ushort MaxKeyCode;
+
+        public byte MinKeyCode;
+        public byte MaxKeyCode;
+
         public IntPtr Ctrls;
         public IntPtr Server;
         public IntPtr Map;

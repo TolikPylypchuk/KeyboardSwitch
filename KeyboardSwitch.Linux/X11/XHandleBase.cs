@@ -9,6 +9,10 @@ namespace KeyboardSwitch.Linux.X11
             : base(IntPtr.Zero, true)
         { }
 
+        private protected XHandleBase(IntPtr ptr)
+            : base(ptr, true)
+        { }
+
         public override bool IsInvalid =>
             this.handle == IntPtr.Zero;
     }

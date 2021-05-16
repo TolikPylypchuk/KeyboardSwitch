@@ -14,6 +14,6 @@ namespace KeyboardSwitch.Linux
                 .AddSingleton<ILayoutService, XLayoutService>()
                 .AddSingleton<ILayoutLoaderSrevice, NotSupportedLayoutLoaderService>()
                 .AddSingleton<IStartupService, StartupService>()
-                .AddSingleton<IAutoConfigurationService, AutoConfigurationService>();
+                .AddSingleton<IAutoConfigurationService, XAutoConfigurationService>();
     }
 }

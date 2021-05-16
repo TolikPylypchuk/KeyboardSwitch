@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using X11;
 
 using static KeyboardSwitch.Linux.X11.Native;
+using static KeyboardSwitch.Linux.X11.XUtil;
 
 using KeyCode = KeyboardSwitch.Core.Keyboard.KeyCode;
 
@@ -33,7 +34,7 @@ namespace KeyboardSwitch.Linux.Services
         {
             this.logger.LogDebug("Getting current keyboard layout");
 
-            using var display = this.GetXDisplay();
+            using var display = OpenXDisplay();
             var allLayouts = this.GetKeyboardLayoutsInternal(display);
 
             XkbSelectEventDetails(
@@ -55,12 +56,12 @@ namespace KeyboardSwitch.Linux.Services
         {
             this.logger.LogDebug("Getting all keyboard layouts");
 
-            using var display = this.GetXDisplay();
+            using var display = OpenXDisplay();
             return this.GetKeyboardLayoutsInternal(display);
         }
 
         protected override void SimulateKeyPresses(IEnumerable<KeyCode> keys) =>
-            XKeyboardUtil.SimulateKeyPresses(keys.Select(key => key.ToKeySym()).ToArray());
+            XUtil.SimulateKeyPresses(keys.Select(key => key.ToKeySym()).ToArray());
 
         private static KeyboardLayout CreateKeyboardLayout(string group, string symbol, string variant) =>
             new(
@@ -71,38 +72,6 @@ namespace KeyboardSwitch.Linux.Services
 
         private static bool IsXkbLayoutSymbol(string symbol) =>
             !NonSymbols.Contains(symbol);
-
-        private XDisplayHandle GetXDisplay()
-        {
-            this.logger.LogDebug("Getting the X display");
-
-            XkbIgnoreExtension(false);
-
-            int major = XkbMajorVersion;
-            int minor = XkbMinorVersion;
-
-            var display = XkbOpenDisplay(String.Empty, out _, out _, ref major, ref minor, out var result);
-            this.ValidateXOpenDisplayResult(result);
-
-            return display;
-        }
-
-        private void ValidateXOpenDisplayResult(XOpenDisplayResult result)
-        {
-            this.logger.LogDebug("Validating opening the X display");
-
-            switch (result)
-            {
-                case XOpenDisplayResult.BadLibraryVersion:
-                    throw new XException("Bad X11 version");
-                case XOpenDisplayResult.ConnectionRefused:
-                    throw new XException("Connection to X server refused");
-                case XOpenDisplayResult.NonXkbServer:
-                    throw new XException("XKB not present");
-                case XOpenDisplayResult.BadServerVersion:
-                    throw new XException("Bad X11 server version");
-            }
-        }
 
         private unsafe List<KeyboardLayout> GetKeyboardLayoutsInternal(XDisplayHandle display)
         {

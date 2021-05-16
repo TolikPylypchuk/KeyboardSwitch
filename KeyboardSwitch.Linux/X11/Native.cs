@@ -15,6 +15,7 @@ namespace KeyboardSwitch.Linux.X11
         public const int XkbNumVirtualMods = 16;
         public const int XkbNumIndicators = 32;
         public const int XkbNumKbdGroups = 4;
+        public const int XkbMaxShiftLevel = 63;
 
         private const string X11 = "libX11.so.6";
         private const string XTest = "libXtst.so.6";
@@ -74,6 +75,18 @@ namespace KeyboardSwitch.Linux.X11
             XkbEventType eventType,
             XStateMask affect,
             XStateMask details);
+
+        [DllImport(X11)]
+        public static extern IntPtr XkbGetMap(
+            XDisplayHandle display,
+            XkbMapComponentMask which,
+            XkbKeyboardSpec deviceSpec);
+
+        [DllImport(X11)]
+        public static extern void XkbFreeClientMap(IntPtr map, XkbMapComponentMask which, bool freeMap);
+
+        [DllImport(X11)]
+        public static extern ulong XkbKeycodeToKeysym(XDisplayHandle display, KeyCode keyCode, int group, int level);
 
         [DllImport(XTest)]
         internal static extern int XTestFakeKeyEvent(
