@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitbook.yaml = .gitbook.yaml
 		.gitignore = .gitignore
 		Build-Portable.ps1 = Build-Portable.ps1
+		build.sh = build.sh
 		CHANGELOG.md = CHANGELOG.md
 		global.json = global.json
 		LICENSE = LICENSE
