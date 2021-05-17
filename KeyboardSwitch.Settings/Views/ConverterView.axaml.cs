@@ -87,13 +87,13 @@ namespace KeyboardSwitch.Settings.Views
 
         private void BindCommands(CompositeDisposable disposables)
         {
-            this.BindCommand(this.ViewModel!, vm => vm.SwapLayouts, v => v.SwapButton)
+            this.BindCommand(this.ViewModel, vm => vm.SwapLayouts, v => v.SwapButton)
                 .DisposeWith(disposables);
 
-            this.BindCommand(this.ViewModel!, vm => vm.Convert, v => v.ConvertButton)
+            this.BindCommand(this.ViewModel, vm => vm.Convert, v => v.ConvertButton)
                 .DisposeWith(disposables);
 
-            this.BindCommand(this.ViewModel!, vm => vm.Clear, v => v.ClearButton)
+            this.BindCommand(this.ViewModel, vm => vm.Clear, v => v.ClearButton)
                 .DisposeWith(disposables);
 
             this.GetObservable(KeyDownEvent, RoutingStrategies.Tunnel)

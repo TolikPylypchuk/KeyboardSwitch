@@ -47,13 +47,13 @@ namespace KeyboardSwitch.Settings.Views
                     .BindTo(this, v => v.KillServiceButton.IsVisible)
                     .DisposeWith(disposables);
 
-                this.BindCommand(this.ViewModel!, vm => vm.StartService, v => v.StartServiceButton)
+                this.BindCommand(this.ViewModel, vm => vm.StartService, v => v.StartServiceButton)
                     .DisposeWith(disposables);
 
-                this.BindCommand(this.ViewModel!, vm => vm.StopService, v => v.StopServiceButton)
+                this.BindCommand(this.ViewModel, vm => vm.StopService, v => v.StopServiceButton)
                     .DisposeWith(disposables);
 
-                this.BindCommand(this.ViewModel!, vm => vm.KillService, v => v.KillServiceButton)
+                this.BindCommand(this.ViewModel, vm => vm.KillService, v => v.KillServiceButton)
                     .DisposeWith(disposables);
             });
         }

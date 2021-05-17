@@ -147,11 +147,11 @@ namespace KeyboardSwitch.Settings.Views
                 .DisposeWith(disposables);
 
             this.BindCommand(
-                this.ViewModel!, vm => vm.ClearLayoutForwardKeyCodes, v => v.ClearLayoutForwardKeysButton)
+                this.ViewModel, vm => vm.ClearLayoutForwardKeyCodes, v => v.ClearLayoutForwardKeysButton)
                 .DisposeWith(disposables);
 
             this.BindCommand(
-                this.ViewModel!, vm => vm.ClearLayoutBackwardKeyCodes, v => v.ClearLayoutBackwardKeysButton)
+                this.ViewModel, vm => vm.ClearLayoutBackwardKeyCodes, v => v.ClearLayoutBackwardKeysButton)
                 .DisposeWith(disposables);
 
             var shouldShowManualMetaButtons = PlatformDependent(
@@ -243,10 +243,10 @@ namespace KeyboardSwitch.Settings.Views
 
         private void BindCommands(CompositeDisposable disposables)
         {
-            this.BindCommand(this.ViewModel!, vm => vm.Save, v => v.SaveButton)
+            this.BindCommand(this.ViewModel, vm => vm.Save, v => v.SaveButton)
                 .DisposeWith(disposables);
 
-            this.BindCommand(this.ViewModel!, vm => vm.Cancel, v => v.CancelButton)
+            this.BindCommand(this.ViewModel, vm => vm.Cancel, v => v.CancelButton)
                 .DisposeWith(disposables);
 
             this.ViewModel!.Cancel.CanExecute

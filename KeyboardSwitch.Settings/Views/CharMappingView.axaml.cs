@@ -36,7 +36,7 @@ namespace KeyboardSwitch.Settings.Views
 
         private void BindCommands(CompositeDisposable disposables)
         {
-            this.BindCommand(this.ViewModel!, vm => vm.AutoConfigure, v => v.AutoConfigureButton)
+            this.BindCommand(this.ViewModel, vm => vm.AutoConfigure, v => v.AutoConfigureButton)
                 .DisposeWith(disposables);
 
             this.ViewModel!.AutoConfigure.CanExecute

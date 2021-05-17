@@ -25,10 +25,10 @@ namespace KeyboardSwitch.Settings.Views
                     this.ViewModel, vm => vm!.LayoutNamesAreUniqueRule, v => v.CustomLayoutsValidationTextBlock.Text)
                     .DisposeWith(disposables);
 
-                this.BindCommand(this.ViewModel!, vm => vm.AddCustomLayout, v => v.AddLayoutButton)
+                this.BindCommand(this.ViewModel, vm => vm.AddCustomLayout, v => v.AddLayoutButton)
                     .DisposeWith(disposables);
 
-                this.BindCommand(this.ViewModel!, vm => vm.AutoConfigureCustomLayouts, v => v.AutoConfigureButton)
+                this.BindCommand(this.ViewModel, vm => vm.AutoConfigureCustomLayouts, v => v.AutoConfigureButton)
                     .DisposeWith(disposables);
 
                 this.ViewModel!.AutoConfigureCustomLayouts.CanExecute
