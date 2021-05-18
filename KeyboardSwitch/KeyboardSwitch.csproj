@@ -16,7 +16,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="$(TargetFramework) == 'net5.0-windows'">
-    <DefineConstants>WINDOWS</DefineConstants>
+    <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(TargetFramework) == 'net5.0-macos'">
+    <DefineConstants>$(DefineConstants);MACOS</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
