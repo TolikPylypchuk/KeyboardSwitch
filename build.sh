@@ -13,6 +13,8 @@ dotnet publish ../KeyboardSwitch.Settings --configuration Release --runtime linu
 find ./KeyboardSwitch -name "*.pdb" -type f -delete
 find ./KeyboardSwitch -name "*.xml" -type f -delete
 find ./KeyboardSwitch -name "*.dylib" -type f -delete
+rm ./KeyboardSwitch/appsettings.windows.json
+rm ./KeyboardSwitch/appsettings.macos.json
 rm ./KeyboardSwitch/uiohook.dll
 
 rm ./KeyboardSwitch.tar.gz 2> /dev/null
