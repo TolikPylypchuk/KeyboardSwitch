@@ -89,14 +89,14 @@ namespace KeyboardSwitch.Settings
 
                 try
                 {
+                    var appSettings = await GetDefaultService<IAppSettingsService>().GetAppSettingsAsync();
+
                     if (File.Exists(SetStartupFile))
                     {
                         this.Log().Info("Setting the app to run at system startup");
-                        await GetDefaultService<IStartupService>().ConfigureStartupAsync(true);
+                        GetDefaultService<IStartupService>().ConfigureStartup(appSettings, true);
                         File.Delete(SetStartupFile);
                     }
-
-                    var appSettings = await GetDefaultService<IAppSettingsService>().GetAppSettingsAsync();
 
                     var converterSettings = await GetDefaultService<IConverterSettingsService>()
                         .GetConverterSettingsAsync();

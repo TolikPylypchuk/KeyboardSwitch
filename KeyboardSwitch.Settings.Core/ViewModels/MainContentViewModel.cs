@@ -111,9 +111,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
             await this.appSettingsService.SaveAppSettingsAsync(settings);
 
-            if (this.startupService.IsStartupConfigured() != preferencesModel.Startup)
+            if (this.startupService.IsStartupConfigured(settings) != preferencesModel.Startup)
             {
-                await this.startupService.ConfigureStartupAsync(preferencesModel.Startup);
+                this.startupService.ConfigureStartup(settings, preferencesModel.Startup);
             }
 
             this.ShowConverter = preferencesModel.ShowConverter;

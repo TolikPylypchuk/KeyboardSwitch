@@ -19,7 +19,7 @@ using static Vanara.PInvoke.User32;
 
 namespace KeyboardSwitch.Windows.Services
 {
-    public sealed class LayoutService : ILayoutService, ILayoutLoaderSrevice
+    internal sealed class LayoutService : ILayoutService, ILayoutLoaderSrevice
     {
         private const string KeyboardLayoutsRegistryKey = @"SYSTEM\CurrentControlSet\Control\Keyboard Layouts";
         private const string KeyboardLayoutNameRegistryKeyFormat = KeyboardLayoutsRegistryKey + @"\{0}";

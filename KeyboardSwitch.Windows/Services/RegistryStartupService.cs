@@ -1,46 +1,58 @@
 using System;
 using System.IO;
-using System.Threading.Tasks;
 
 using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Settings;
 
+using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 
 namespace KeyboardSwitch.Windows.Services
 {
-    public class RegistryStartupService : IStartupService
+    internal class RegistryStartupService : IStartupService
     {
         private const string StartupRegistryKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
         private const string StartupRegistryName = "Keyboard Switch";
         private const string ExecutableExtension = ".exe";
 
-        private readonly IAppSettingsService appSettingsService;
+        private readonly ILogger<RegistryStartupService> logger;
 
-        public RegistryStartupService(IAppSettingsService appSettingsService) =>
-            this.appSettingsService = appSettingsService;
+        public RegistryStartupService(ILogger<RegistryStartupService> logger) =>
+            this.logger = logger;
 
-        public bool IsStartupConfigured()
+        public bool IsStartupConfigured(AppSettings settings)
         {
+            this.logger.LogDebug("Checking if the KeyboardSwitch service is configured to run on startup");
+
             using var key = Registry.CurrentUser.OpenSubKey(StartupRegistryKey);
-            return key?.GetValue(StartupRegistryName) != null;
+            bool isConfigured = key?.GetValue(StartupRegistryName) != null;
+
+            this.logger.LogDebug($"KeyboardSwitch {(isConfigured ? "is" : "is not")} configured to run on startup");
+
+            return isConfigured;
         }
 
-        public async Task ConfigureStartupAsync(bool startup)
+        public void ConfigureStartup(AppSettings settings, bool startup)
         {
+            this.logger.LogDebug(
+                $"Configuring to {(startup ? "start" : "stop")} running the KeyboardSwitch service on startup");
+
             using var startupKey = Registry.CurrentUser.OpenSubKey(StartupRegistryKey, true);
 
             if (startup)
             {
-                startupKey?.SetValue(StartupRegistryName, await this.GetServicePath(), RegistryValueKind.String);
+                startupKey?.SetValue(StartupRegistryName, this.GetServicePath(settings), RegistryValueKind.String);
             } else
             {
                 startupKey?.DeleteValue(StartupRegistryName);
             }
+
+            this.logger.LogDebug(
+                $"Configured to {(startup ? "start" : "stop")} running the KeyboardSwitch service on startup");
         }
 
-        private async Task<string> GetServicePath()
+        private string GetServicePath(AppSettings settings)
         {
-            var settings = await this.appSettingsService.GetAppSettingsAsync();
             var path = settings.ServicePath.EndsWith(ExecutableExtension, StringComparison.InvariantCultureIgnoreCase)
                 ? settings.ServicePath
                 : settings.ServicePath + ExecutableExtension;

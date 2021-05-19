@@ -1,10 +1,10 @@
-using System.Threading.Tasks;
+using KeyboardSwitch.Core.Settings;
 
 namespace KeyboardSwitch.Core.Services
 {
     public interface IStartupService
     {
-        bool IsStartupConfigured();
-        Task ConfigureStartupAsync(bool startup);
+        bool IsStartupConfigured(AppSettings settings);
+        void ConfigureStartup(AppSettings settings, bool startup);
     }
 }

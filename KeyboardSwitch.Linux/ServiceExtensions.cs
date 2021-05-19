@@ -13,7 +13,7 @@ namespace KeyboardSwitch.Linux
                 .AddSingleton<IUserActivitySimulator, XUserActivitySimulator>()
                 .AddSingleton<ILayoutService, XLayoutService>()
                 .AddSingleton<ILayoutLoaderSrevice, NotSupportedLayoutLoaderService>()
-                .AddSingleton<IStartupService, StartupService>()
+                .AddSingleton<IStartupService, CronStartupService>()
                 .AddSingleton<IAutoConfigurationService, XAutoConfigurationService>();
     }
 }

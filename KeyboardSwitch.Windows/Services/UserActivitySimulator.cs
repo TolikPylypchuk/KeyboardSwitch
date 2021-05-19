@@ -5,7 +5,7 @@ using KeyboardSwitch.Core.Services;
 
 namespace KeyboardSwitch.Windows.Services
 {
-    public sealed class UserActivitySimulator : IUserActivitySimulator
+    internal sealed class UserActivitySimulator : IUserActivitySimulator
     {
         private readonly IKeyboardSimulator keyboard;
 

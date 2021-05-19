@@ -34,7 +34,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
             this.MainContentViewModel = new MainContentViewModel(
                 this.CreateCharMappingModel(),
-                new PreferencesModel(appSettings, startupService.IsStartupConfigured()),
+                new PreferencesModel(appSettings, startupService.IsStartupConfigured(appSettings)),
                 this.CreateConverterModel(converterSettings));
 
             this.ServiceViewModel = new ServiceViewModel();
