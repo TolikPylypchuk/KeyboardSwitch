@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Concurrency;
@@ -7,9 +6,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 
-using KeyboardSwitch.Core;
 using KeyboardSwitch.Core.Services;
-using KeyboardSwitch.Core.Services.Infrastructure;
 
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -22,19 +19,13 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
     public sealed class ServiceViewModel : ReactiveObject
     {
-        private readonly IAppSettingsService settingsService;
-        private readonly INamedPipeService namedPipeService;
+        private readonly IServiceCommunicator serviceCommunicator;
 
         private bool isShutdownRequested = false;
 
-        public ServiceViewModel(
-            IAppSettingsService? settingsService = null,
-            INamedPipeService? namedPipeService = null,
-            IScheduler? scheduler = null)
+        public ServiceViewModel(IServiceCommunicator? serviceCommunicator = null, IScheduler? scheduler = null)
         {
-            this.settingsService = settingsService ?? GetDefaultService<IAppSettingsService>();
-            this.namedPipeService = namedPipeService ??
-                GetDefaultService<ServiceProvider<INamedPipeService>>()(nameof(KeyboardSwitch));
+            this.serviceCommunicator = serviceCommunicator ?? GetDefaultService<IServiceCommunicator>();
 
             scheduler ??= RxApp.MainThreadScheduler;
 
@@ -69,7 +60,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
         private ServiceStatus CheckServiceStatus()
         {
-            bool isRunning = Process.GetProcessesByName(nameof(KeyboardSwitch)).Length > 0;
+            bool isRunning = this.serviceCommunicator.IsServiceRunning();
 
             if (!isRunning)
             {
@@ -81,26 +72,23 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 : ServiceStatus.Stopped;
         }
 
-        private async Task StartServiceAsync()
-        {
-            var settings = await settingsService.GetAppSettingsAsync();
-            Process.Start(settings.ServicePath);
-        }
+        private Task StartServiceAsync() =>
+            this.serviceCommunicator.StartServiceAsync();
 
         private void OnStopService()
         {
-            this.namedPipeService.Write(ExternalCommand.Stop);
+            this.serviceCommunicator.StopService(kill: false);
             this.isShutdownRequested = true;
         }
 
         private void OnKillService() =>
-            Process.GetProcessesByName(nameof(KeyboardSwitch)).ForEach(process => process.Kill());
+            this.serviceCommunicator.StopService(kill: true);
 
         private void OnReloadSettings()
         {
             if (this.ServiceStatus == ServiceStatus.Running)
             {
-                this.namedPipeService.Write(ExternalCommand.ReloadSettings);
+                this.serviceCommunicator.ReloadService();
             }
         }
     }

@@ -29,6 +29,12 @@ namespace KeyboardSwitch.Linux
         public static void Stop(string service) =>
             Run($"stop {service}");
 
+        public static void Kill(string service) =>
+            Run($"kill -s SIGKILL {service}");
+
+        public static void Reload(string service) =>
+            Run($"reload {service}");
+
         public static void Enable(string service) =>
             Run($"enable {service}");
 

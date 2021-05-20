@@ -12,7 +12,7 @@ Documentation=https://docs.keyboardswitch.tolik.io
 Type=notify
 ExecStart=$SERVICE_APP
 ExecStop=$SERVICE_APP --stop
-ExecReload=$SERVICE_APP --reload
+ExecReload=$SERVICE_APP --reload-settings
 Environment=\"DISPLAY=:0\"
 
 [Install]
