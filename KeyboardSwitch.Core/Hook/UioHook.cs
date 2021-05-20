@@ -14,10 +14,8 @@ namespace KeyboardSwitch.Core.Hook
     {
         public const string LibUioHook = "uiohook";
 
-        static UioHook()
-        {
+        static UioHook() =>
             NativeLibrary.SetDllImportResolver(typeof(UioHook).Assembly, ImportResolver);
-        }
 
         [DllImport(LibUioHook, EntryPoint = "hook_set_dispatch_proc")]
         internal static extern void SetDispatchProc(DispatchProc dispatchProc);
@@ -64,7 +62,7 @@ namespace KeyboardSwitch.Core.Hook
 
         private static string GetLibUioHookName() =>
             PlatformDependent(
-                windows: () => ".\\uiohook.dll",
+                windows: () => @".\uiohook.dll",
                 macos: () => "./libuiohook.dylib",
                 linux: () => "./libuiohook.so");
     }
