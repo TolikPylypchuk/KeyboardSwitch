@@ -71,8 +71,6 @@ namespace KeyboardSwitch.Settings
 
         public override async void OnFrameworkInitializationCompleted()
         {
-            this.Log().Info("Starting the settings app");
-
             if (this.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 this.desktop = desktop;
@@ -83,6 +81,8 @@ namespace KeyboardSwitch.Settings
 
                 this.serviceProvider = services.BuildServiceProvider();
                 this.serviceProvider.UseMicrosoftDependencyResolver();
+
+                this.Log().Info("Starting the settings app");
 
                 this.ConfigureSingleInstance(serviceProvider);
                 this.ConfigureSuspensionDriver();

@@ -21,7 +21,7 @@ namespace KeyboardSwitch.Linux.Services
         {
             this.logger.LogDebug("Checking if the KeyboardSwitch service is configured to run on startup");
 
-            bool isConfigured = Systemd.IsEnabled(this.ServiceName);
+            bool isConfigured = Systemd.IsLoaded(this.ServiceName) && Systemd.IsEnabled(this.ServiceName);
 
             this.logger.LogDebug($"KeyboardSwitch {(isConfigured ? "is" : "is not")} configured to run on startup");
 
@@ -32,6 +32,14 @@ namespace KeyboardSwitch.Linux.Services
         {
             this.logger.LogDebug(
                 $"Configuring to {(startup ? "start" : "stop")} running the KeyboardSwitch service on startup");
+
+            if (!Systemd.IsLoaded(this.ServiceName))
+            {
+                this.logger.LogError(
+                    "Cannot set startup - KeyboardSwitch is not a systemd service. " +
+                    "Configuring startup is supported only through systemd");
+                return;
+            }
 
             if (startup)
             {
