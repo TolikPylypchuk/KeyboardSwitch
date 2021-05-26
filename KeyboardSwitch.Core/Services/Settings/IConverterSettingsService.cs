@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 
 using KeyboardSwitch.Core.Settings;
 
-namespace KeyboardSwitch.Core.Services
+namespace KeyboardSwitch.Core.Services.Settings
 {
     public interface IConverterSettingsService
     {

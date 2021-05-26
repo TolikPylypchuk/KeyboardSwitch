@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 using KeyboardSwitch.Core;
 using KeyboardSwitch.Core.Keyboard;
-using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Services.Hook;
+using KeyboardSwitch.Core.Services.Settings;
+using KeyboardSwitch.Core.Services.Switching;
 using KeyboardSwitch.Core.Settings;
 
 using Microsoft.Extensions.Hosting;
@@ -65,7 +67,7 @@ namespace KeyboardSwitch
                 await this.host.StopAsync(token);
             } catch (Exception e)
             {
-                this.logger.LogError(e, "Unknown error");
+                this.logger.LogCritical(e, "The Keyboard Switch service has crashed");
                 await this.host.StopAsync(token);
             }
         }
@@ -102,7 +104,18 @@ namespace KeyboardSwitch
                 .Select(key => key.IsSubsetKeyOf(settings.ForwardModifierKeys.Flatten())
                     ? SwitchDirection.Forward
                     : SwitchDirection.Backward)
-                .SubscribeAsync(this.switchService.SwitchTextAsync);
+                .SubscribeAsync(this.SwitchTextSafeAsync);
+        }
+
+        private async Task SwitchTextSafeAsync(SwitchDirection direction)
+        {
+            try
+            {
+                await this.switchService.SwitchTextAsync(direction);
+            } catch (Exception e)
+            {
+                this.logger.LogError(e, "Error when trying to switch text");
+            }
         }
     }
 }

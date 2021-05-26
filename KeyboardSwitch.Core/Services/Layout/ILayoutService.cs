@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using KeyboardSwitch.Core.Keyboard;
 using KeyboardSwitch.Core.Settings;
 
-namespace KeyboardSwitch.Core.Services
+namespace KeyboardSwitch.Core.Services.Layout
 {
     public interface ILayoutService
     {

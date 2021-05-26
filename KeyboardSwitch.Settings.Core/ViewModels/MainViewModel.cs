@@ -7,7 +7,8 @@ using System.Reactive.Linq;
 using DynamicData;
 
 using KeyboardSwitch.Core;
-using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Services.Layout;
+using KeyboardSwitch.Core.Services.Startup;
 using KeyboardSwitch.Core.Settings;
 using KeyboardSwitch.Settings.Core.Models;
 

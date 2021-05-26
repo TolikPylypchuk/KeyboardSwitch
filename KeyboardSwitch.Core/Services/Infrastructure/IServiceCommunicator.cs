@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace KeyboardSwitch.Core.Services
+namespace KeyboardSwitch.Core.Services.Infrastructure
 {
     public interface IServiceCommunicator
     {

@@ -2,9 +2,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-using KeyboardSwitch.Core.Services.Infrastructure;
+using KeyboardSwitch.Core.Services.Settings;
 
-namespace KeyboardSwitch.Core.Services
+namespace KeyboardSwitch.Core.Services.Infrastructure
 {
     public sealed class DirectServiceCommunicator : IServiceCommunicator
     {

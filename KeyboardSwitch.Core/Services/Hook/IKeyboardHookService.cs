@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using KeyboardSwitch.Core.Keyboard;
 
-namespace KeyboardSwitch.Core.Services
+namespace KeyboardSwitch.Core.Services.Hook
 {
     public interface IKeyboardHookService : IDisposable
     {

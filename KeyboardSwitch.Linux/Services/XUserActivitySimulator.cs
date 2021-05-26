@@ -1,4 +1,4 @@
-using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Services.Simulation;
 using KeyboardSwitch.Linux.X11;
 
 namespace KeyboardSwitch.Linux.Services

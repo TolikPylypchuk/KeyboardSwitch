@@ -1,13 +1,7 @@
 using System.Threading.Tasks;
 
-namespace KeyboardSwitch.Core.Services
+namespace KeyboardSwitch.Core.Services.Switching
 {
-    public enum SwitchDirection
-    {
-        Forward,
-        Backward
-    }
-
     public interface ISwitchService
     {
         Task SwitchTextAsync(SwitchDirection direction);

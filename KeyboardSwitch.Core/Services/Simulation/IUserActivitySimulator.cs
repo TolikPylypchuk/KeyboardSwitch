@@ -1,4 +1,4 @@
-namespace KeyboardSwitch.Core.Services
+namespace KeyboardSwitch.Core.Services.Simulation
 {
     public interface IUserActivitySimulator
     {

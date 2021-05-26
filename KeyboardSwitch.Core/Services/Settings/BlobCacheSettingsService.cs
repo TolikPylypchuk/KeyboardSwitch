@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 using Akavache;
 
 using KeyboardSwitch.Core.Keyboard;
+using KeyboardSwitch.Core.Services.Layout;
 using KeyboardSwitch.Core.Settings;
 
 using Microsoft.Extensions.Logging;
 
-namespace KeyboardSwitch.Core.Services
+namespace KeyboardSwitch.Core.Services.Settings
 {
     internal sealed class BlobCacheSettingsService : AsyncDisposable, IAppSettingsService, IConverterSettingsService
     {

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Services.Infrastructure;
 using KeyboardSwitch.Core.Settings;
 
 using Microsoft.Extensions.Options;

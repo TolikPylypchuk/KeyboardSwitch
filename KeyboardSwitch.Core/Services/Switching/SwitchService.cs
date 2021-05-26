@@ -2,11 +2,15 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
+using KeyboardSwitch.Core.Services.Layout;
+using KeyboardSwitch.Core.Services.Settings;
+using KeyboardSwitch.Core.Services.Text;
+
 using Microsoft.Extensions.Logging;
 
 using static KeyboardSwitch.Core.Constants;
 
-namespace KeyboardSwitch.Core.Services
+namespace KeyboardSwitch.Core.Services.Switching
 {
     public class SwitchService : ISwitchService
     {

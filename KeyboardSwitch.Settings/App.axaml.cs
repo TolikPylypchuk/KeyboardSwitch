@@ -54,6 +54,9 @@ using static KeyboardSwitch.Core.Util;
 using static KeyboardSwitch.Settings.Core.Constants;
 using static KeyboardSwitch.Settings.Core.ServiceUtil;
 
+using KeyboardSwitch.Core.Services.Startup;
+using KeyboardSwitch.Core.Services.Settings;
+
 namespace KeyboardSwitch.Settings
 {
     public class App : Application, IEnableLogger

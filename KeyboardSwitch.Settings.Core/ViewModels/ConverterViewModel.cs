@@ -9,7 +9,10 @@ using DynamicData;
 using DynamicData.Binding;
 
 using KeyboardSwitch.Core;
-using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Services.Layout;
+using KeyboardSwitch.Core.Services.Settings;
+using KeyboardSwitch.Core.Services.Switching;
+using KeyboardSwitch.Core.Services.Text;
 using KeyboardSwitch.Settings.Core.Models;
 using KeyboardSwitch.Settings.Core.Services;
 

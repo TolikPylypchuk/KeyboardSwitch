@@ -11,6 +11,7 @@ using Akavache;
 using KeyboardSwitch.Core;
 using KeyboardSwitch.Core.Services;
 using KeyboardSwitch.Core.Services.Infrastructure;
+using KeyboardSwitch.Core.Services.Settings;
 using KeyboardSwitch.Core.Settings;
 
 #if WINDOWS

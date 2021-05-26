@@ -14,7 +14,8 @@ using DynamicData;
 using DynamicData.Binding;
 
 using KeyboardSwitch.Core;
-using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Services.AutoConfiguration;
+using KeyboardSwitch.Core.Services.Layout;
 using KeyboardSwitch.Settings.Core.Models;
 
 using ReactiveUI;

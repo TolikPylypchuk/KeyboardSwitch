@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 using KeyboardSwitch.Core.Keyboard;
-using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Services.Layout;
 using KeyboardSwitch.Linux.X11;
 
 using Microsoft.Extensions.Logging;

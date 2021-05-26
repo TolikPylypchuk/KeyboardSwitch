@@ -9,7 +9,7 @@ using System.Text;
 
 using KeyboardSwitch.Core;
 using KeyboardSwitch.Core.Keyboard;
-using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Services.Layout;
 using KeyboardSwitch.Core.Settings;
 
 using Microsoft.Extensions.Logging;
@@ -19,7 +19,7 @@ using static Vanara.PInvoke.User32;
 
 namespace KeyboardSwitch.Windows.Services
 {
-    internal sealed class LayoutService : ILayoutService, ILayoutLoaderSrevice
+    internal sealed class WinLayoutService : ILayoutService, ILayoutLoaderSrevice
     {
         private const string KeyboardLayoutsRegistryKey = @"SYSTEM\CurrentControlSet\Control\Keyboard Layouts";
         private const string KeyboardLayoutNameRegistryKeyFormat = KeyboardLayoutsRegistryKey + @"\{0}";
@@ -29,11 +29,11 @@ namespace KeyboardSwitch.Windows.Services
         private static readonly IntPtr HklPrev = (IntPtr)0;
         public const int KlNameLength = 9;
 
-        private readonly ILogger<LayoutService> logger;
+        private readonly ILogger<WinLayoutService> logger;
 
         private List<KeyboardLayout>? systemLayouts;
 
-        public LayoutService(ILogger<LayoutService> logger) =>
+        public WinLayoutService(ILogger<WinLayoutService> logger) =>
             this.logger = logger;
 
         public bool SwitchLayoutsViaKeyboardSimulation => false;

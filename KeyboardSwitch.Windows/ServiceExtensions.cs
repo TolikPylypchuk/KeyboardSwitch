@@ -1,6 +1,10 @@
 using GregsStack.InputSimulatorStandard;
 
-using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Services.AutoConfiguration;
+using KeyboardSwitch.Core.Services.Infrastructure;
+using KeyboardSwitch.Core.Services.Layout;
+using KeyboardSwitch.Core.Services.Simulation;
+using KeyboardSwitch.Core.Services.Startup;
 using KeyboardSwitch.Windows.Services;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -13,11 +17,11 @@ namespace KeyboardSwitch.Windows
             services
                 .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
                 .AddSingleton<IKeyboardSimulator>(new KeyboardSimulator())
-                .AddSingleton<IUserActivitySimulator, UserActivitySimulator>()
-                .AddSingleton<LayoutService>()
-                .AddSingleton<ILayoutService>(provider => provider.GetRequiredService<LayoutService>())
-                .AddSingleton<ILayoutLoaderSrevice>(provider => provider.GetRequiredService<LayoutService>())
+                .AddSingleton<IUserActivitySimulator, WinUserActivitySimulator>()
+                .AddSingleton<WinLayoutService>()
+                .AddSingleton<ILayoutService>(provider => provider.GetRequiredService<WinLayoutService>())
+                .AddSingleton<ILayoutLoaderSrevice>(provider => provider.GetRequiredService<WinLayoutService>())
                 .AddSingleton<IStartupService, RegistryStartupService>()
-                .AddSingleton<IAutoConfigurationService, AutoConfigurationService>();
+                .AddSingleton<IAutoConfigurationService, WinAutoConfigurationService>();
     }
 }

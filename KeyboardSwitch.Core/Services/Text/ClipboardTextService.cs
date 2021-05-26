@@ -3,11 +3,14 @@ using System.Reactive.Concurrency;
 using System.Threading;
 using System.Threading.Tasks;
 
+using KeyboardSwitch.Core.Services.Settings;
+using KeyboardSwitch.Core.Services.Simulation;
+
 using Microsoft.Extensions.Logging;
 
 using TextCopy;
 
-namespace KeyboardSwitch.Core.Services
+namespace KeyboardSwitch.Core.Services.Text
 {
     public sealed class ClipboardTextService : ITextService
     {

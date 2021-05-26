@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 
 using KeyboardSwitch.Core.Keyboard;
-using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Services.AutoConfiguration;
 
 using static Vanara.PInvoke.User32;
 
 namespace KeyboardSwitch.Windows.Services
 {
-    internal class AutoConfigurationService : AutoConfigurationServiceBase
+    internal class WinAutoConfigurationService : AutoConfigurationServiceBase
     {
         private const int VkShift = 0x10;
         private const int VkCtrl = 0x11;

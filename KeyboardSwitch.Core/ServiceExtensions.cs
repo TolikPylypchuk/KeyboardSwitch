@@ -1,7 +1,11 @@
 using System.Reactive.Concurrency;
 
 using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Services.Hook;
 using KeyboardSwitch.Core.Services.Infrastructure;
+using KeyboardSwitch.Core.Services.Settings;
+using KeyboardSwitch.Core.Services.Switching;
+using KeyboardSwitch.Core.Services.Text;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

@@ -6,7 +6,7 @@ using KeyboardSwitch.Core.Settings;
 
 using Microsoft.Extensions.Logging;
 
-namespace KeyboardSwitch.Core.Services
+namespace KeyboardSwitch.Core.Services.Layout
 {
     public abstract class SimulatingLayoutService : ILayoutService
     {

@@ -12,7 +12,7 @@ using DynamicData;
 
 using KeyboardSwitch.Core;
 using KeyboardSwitch.Core.Keyboard;
-using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Services.Layout;
 using KeyboardSwitch.Settings.Core.Models;
 
 using ReactiveUI;

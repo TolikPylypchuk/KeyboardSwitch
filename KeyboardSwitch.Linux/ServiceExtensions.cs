@@ -1,6 +1,11 @@
 using System;
 
-using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Services.AutoConfiguration;
+using KeyboardSwitch.Core.Services.Infrastructure;
+using KeyboardSwitch.Core.Services.Layout;
+using KeyboardSwitch.Core.Services.Simulation;
+using KeyboardSwitch.Core.Services.Startup;
+using KeyboardSwitch.Core.Services.Text;
 using KeyboardSwitch.Core.Settings;
 using KeyboardSwitch.Linux.Services;
 

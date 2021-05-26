@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace KeyboardSwitch.Core.Services
+namespace KeyboardSwitch.Core.Services.Text
 {
     public interface ITextService
     {

@@ -1,6 +1,6 @@
 using KeyboardSwitch.Core.Settings;
 
-namespace KeyboardSwitch.Core.Services
+namespace KeyboardSwitch.Core.Services.Startup
 {
     public interface IStartupService
     {

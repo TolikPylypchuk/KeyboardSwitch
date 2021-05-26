@@ -12,7 +12,7 @@ using KeyboardSwitch.Core.Keyboard;
 
 using Microsoft.Extensions.Logging;
 
-namespace KeyboardSwitch.Core.Services
+namespace KeyboardSwitch.Core.Services.Hook
 {
     internal sealed class UioHookService : Disposable, IKeyboardHookService
     {

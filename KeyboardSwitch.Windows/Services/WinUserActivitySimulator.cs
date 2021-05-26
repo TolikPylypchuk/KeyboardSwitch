@@ -1,15 +1,15 @@
 using GregsStack.InputSimulatorStandard;
 using GregsStack.InputSimulatorStandard.Native;
 
-using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Services.Simulation;
 
 namespace KeyboardSwitch.Windows.Services
 {
-    internal sealed class UserActivitySimulator : IUserActivitySimulator
+    internal sealed class WinUserActivitySimulator : IUserActivitySimulator
     {
         private readonly IKeyboardSimulator keyboard;
 
-        public UserActivitySimulator(IKeyboardSimulator keyboard) =>
+        public WinUserActivitySimulator(IKeyboardSimulator keyboard) =>
             this.keyboard = keyboard;
 
         public void SimulateCopy() =>

@@ -5,7 +5,7 @@ using System.Linq;
 
 using KeyboardSwitch.Core.Keyboard;
 
-namespace KeyboardSwitch.Core.Services
+namespace KeyboardSwitch.Core.Services.AutoConfiguration
 {
     public abstract class AutoConfigurationServiceBase : IAutoConfigurationService
     {

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reactive.Linq;
 
+using KeyboardSwitch.Core;
 using KeyboardSwitch.Core.Keyboard;
-using KeyboardSwitch.Core.Services;
+using KeyboardSwitch.Core.Services.Layout;
 using KeyboardSwitch.Core.Settings;
 using KeyboardSwitch.Settings.Core.Models;
 
