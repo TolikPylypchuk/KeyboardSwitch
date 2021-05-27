@@ -7,7 +7,8 @@ Created by Tolik Pylypchuk
 This application switches typed text as if it were typed with another keyboard layout.
 
 Instead of manually retyping all that text that you have mistyped, you can switch it using this app. It will copy the
-text, switch it and paste it instantly. You just have to select the text and press the magic key combination. That's it!
+text, switch it, and paste it instantly. You just have to select the text and press the magic key combination.
+That's it!
 
 Keyboard Switch consists of two apps:
 
@@ -27,23 +28,31 @@ difference between them.
 
 ### Linux
 
-Work on the Linux version is currently in progress, but you can compile from source, and it will work - check the
-[Issues](https://github.com/TolikPylypchuk/KeyboardSwitch/issues) to see whether there are any incomplete features.
+Work on the Linux version is currently in progress, but you can build from source, and it will most probably work. If it
+doesn't, then fell free to [post an issue](https://github.com/TolikPylypchuk/KeyboardSwitch/issues).
 
 There are several prerequisites for running Keyboard Switch on Linux:
 
-- X11 and the X Keyboard Extension (XKB) which is enabled by default
+- X11
+
+- X Keyboard Extension (XKB) which is enabled by default
 
 - X Test Extension (you have to download it separately - for example, by installing `libxtst-dev` on Ubuntu) - used to
 simulate pressing keys like _Ctrl+C_ and _Ctrl+V_ for you
 
 - [xsel](https://github.com/kfish/xsel) - used to copy and paste text
 
-- Bash - used to call xsel. You don't need to have it as your default shell.
+- Bash - used to call xsel, but you don't need to have it as your default shell
 
-Keyboard Switch doesn't support Wayland (maybe through XWayland it will, but I have to test it first). Bash and xsel
-are not used directly by the app - they are used by the [TextCopy lilbrary](https://github.com/CopyText/TextCopy) which
-the app uses for copying and pasting text.
+- systemd - used to make the service app start when you log in
+
+Keyboard Switch doesn't support Wayland (maybe through XWayland it will, but I have to test it first).
+
+Bash and xsel are not used directly by the app - they are used by the
+[TextCopy lilbrary](https://github.com/CopyText/TextCopy) which the app uses for copying and pasting text.
+
+The app uses systemd to start at system startup, but it's not required (you'll have to figure out a way of starting the
+app on startup on your own if you're not using systemd).
 
 Currently, the app was tested only on Ubuntu 20.04, but I'm planning on testing it on several popular distributions.
 
@@ -108,7 +117,8 @@ is the same in every layout (at least that's the assumption).
 
 Version 3.0 works only on Windows 10. It can probably work on earlier versions of Windows as well, but I'm not
 going to build or test it for them. [Version 4.0](https://github.com/TolikPylypchuk/KeyboardSwitch/milestone/4) on the
-other hand will be cross-platform - I'm planning on making it work on macOS and on Linux (via X11).
+other hand will be cross-platform - it already works on Linux (via X11) and I'm planning on making it work on macOS
+as well.
 
 Only the x64 architecture is supported. It would be ideal to also support arm64, but not all dependencies of this app
 currently support it. And even if they did, I don't have any devices with arm64 to test the app there.
@@ -136,7 +146,7 @@ It's better to use `dotnet publish` than simply using the raw build results. You
 `Build-Portable` script calls `dotnet publish`.
 
 If you want to run the app of Linux through the `dotnet` tool, you have to always specify that `net5.0` is the target
-framework since it takes `net5.0-windows` by default.
+framework since it uses `net5.0-windows` by default.
 
 The installer project is excluded from the solution build sequence as it's not always needed.
 
