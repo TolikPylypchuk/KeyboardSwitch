@@ -29,7 +29,7 @@ difference between them.
 ### Linux
 
 Work on the Linux version is currently in progress, but you can build from source, and it will most probably work. If it
-doesn't, then fell free to [post an issue](https://github.com/TolikPylypchuk/KeyboardSwitch/issues).
+doesn't, then feel free to [post an issue](https://github.com/TolikPylypchuk/KeyboardSwitch/issues).
 
 There are several prerequisites for running Keyboard Switch on Linux:
 
@@ -49,7 +49,7 @@ simulate pressing keys like _Ctrl+C_ and _Ctrl+V_ for you
 Keyboard Switch doesn't support Wayland (maybe through XWayland it will, but I have to test it first).
 
 Bash and xsel are not used directly by the app - they are used by the
-[TextCopy lilbrary](https://github.com/CopyText/TextCopy) which the app uses for copying and pasting text.
+[TextCopy library](https://github.com/CopyText/TextCopy) which the app uses for copying and pasting text.
 
 The app uses systemd to start at system startup, but it's not required (you'll have to figure out a way of starting the
 app on startup on your own if you're not using systemd).
