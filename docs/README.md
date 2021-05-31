@@ -8,6 +8,10 @@ If you ever write some text and then realise that you have written it using a wr
 
 I hope this app will make your life at least 1% easier :\)
 
+{% hint style="warning" %}
+Version 4.0 is not yet completed. The only way to get it is to build it yourself. It works on Windows and Linux, but it's not yet ready for macOS. The app itself and these docs may change at any moment without warning until version 4.0 is released.
+{% endhint %}
+
 ## How The App Works
 
 The app is composed of two parts: the Keyboard Switch service and the Keyboard Switch Settings app. The service always runs in the background \(and starts when you log into the system\) and listens to key presses. When you press the magic key combination, it reacts by copying the selected text, transforming it, and pasting it for you. The settings app is used for configuring the service and for starting/stopping it manually.
@@ -20,7 +24,7 @@ Here are the basic steps you should take to switch the text:
 * Press the magic key combination \(the default is pressing _Ctrl+Shift_ twice\)
 * Profit
 
-The app uses the clipboard to get the text to transform, and then puts the transformed text back into the clipboard. Bear this in mind when you use it - if you have anything else in the clipboard, it will be lost. This isn't that big of an issue since Windows 10 October 2019 Update, because you can enable multiple items in the clipboard.
+The app uses the clipboard to get the text to transform, and then puts the transformed text back into the clipboard. Bear this in mind when you use it - if you have anything else in the clipboard, it will be lost. This isn't that big of an issue since Windows 10 October 2019 Update, because you can enable multiple items in the clipboard. Starting with v4.0, the app will try to preserve the text that was in the clipboard before switching, and restoring it afterwards. It doesn't guarantee that the text will be restored though. Also, any non-text data \(e.g. a file or a picture\) will not be restored.
 
 {% hint style="info" %}
 **Note:** The app simulates pressing _Ctrl+C_ to copy and _Ctrl+V_ to paste text. This is the default behaviour for most \(if not all\) applications. But if you are working in an app which behaves differently on those key presses, this app will not be able to instantly switch text. You can disable this behaviour, and copy/paste the text manually.
@@ -28,7 +32,9 @@ The app uses the clipboard to get the text to transform, and then puts the trans
 
 ## Supported Platforms
 
-This app works only on Windows 10. It can probably work on older versions of Windows as well, but I'm not going to support them. Future versions of the app will be supported on other platforms, so if you don't use Windows then stay tuned!
+keyboard Switch currently works on Windows 10 and on Linux. It can probably work on older versions of Windows as well, but I'm not going to support them. As for Linux, it needs several prerequisites to run \(more on that on the installation page\).
+
+Only the x64 architecture is supported. It would be ideal to also support arm64, but it's unlikely in the nearest future.
 
 ## Layouts
 
