@@ -1,16 +1,16 @@
 # Converter
 
-Converter lets you manually convert text between arbitrary layouts, not just those installed in your system.
+The converter lets you manually convert text between arbitrary layouts, not just those installed in your system. In order to enable it, check the 'Show the converter' check-box in the Preferences tab.
 
 {% hint style="info" %}
-**Note** Converter is a very niche feature. Chances are that you'll never need to use it and never even think of using it. Moreover, it has nothing to do with the main functionality of the app - switching text in the background. Feel free to skip this article if you're not interested.
+**Note** Converter is a very niche feature. Chances are that you'll never need to use it and never even think of using it, and that's why it's hidden by default. Moreover, it has nothing to do with the main functionality of the app - switching text in the background. Feel free to skip this article if you're not interested.
 {% endhint %}
 
 ## The Converter Functionality
 
 Here's how the Converter tab looks \(when it's configured\):
 
-![](../.gitbook/assets/v3.0-screen-converter.png)
+![](../.gitbook/assets/v4.0-screen-converter.png)
 
 The tab consists of two main parts:
 
@@ -31,13 +31,13 @@ Custom layouts are configured in the Converter Settings tab, discussed in the ne
 
 The Converter Settings tab lets you configure custom layouts for the converter. Here's how it looks:
 
-![](../.gitbook/assets/v3.0-screen-converter-settings-main.png)
+![](../.gitbook/assets/v4.0-screen-converter-settings-main.png)
 
 It's pretty similar to the Character Mappings tab, and the way configuration of characters works is identical. The main difference is that you can control what's shown here. You can add layouts, remove, or rename them. You can't change the order of the layouts, but it doesn't actually matter here. You can't have two or more layouts with the same name.
 
-Just like with Character Mappings, you can auto-configure custom layouts, but here you have to select layouts to configure first. Here's how the settings for auto-configuration look:
+Just like with Character Mappings, you can auto-configure custom layouts, but here you have to select layouts to configure first. This is available only on Windows though. Here's how the settings for auto-configuration look:
 
-![](../.gitbook/assets/v3.0-screen-converter-settings-config.png)
+![](../.gitbook/assets/v4.0-screen-converter-settings-config.png)
 
 You can select layouts using the drop-down. It includes all keyboard layouts that you can choose in Windows. After you selected the layouts, and clicked _Save_, the app will load those layouts into Windows, execute the same auto-configuration algorithm as it does in the Character Mappings tab, and then unload those layouts from the system.
 
