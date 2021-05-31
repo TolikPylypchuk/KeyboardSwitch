@@ -1,5 +1,9 @@
 # Other Tabs
 
+{% hint style="warning" %}
+Version 4.0 is not yet completed. The only way to get it is to build it yourself. It works on Windows and Linux, but it's not yet ready for macOS. The app itself and these docs may change at any moment without warning until version 4.0 is released.
+{% endhint %}
+
 Other tabs in the settings app include the Sandbox tab and the About tab.
 
 ## Sandbox

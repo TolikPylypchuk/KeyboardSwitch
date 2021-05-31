@@ -36,13 +36,13 @@ Upon uninstallation the installer will ask whether you want to delete the app's 
 
 ### Using the Portable Version
 
-If you don't want to install the app \(or can't\), you can use the portable version of the app. It's literally the same as the installable version; there are no differences. ~~Again, go to the~~ [~~releases page on GitHub~~](https://github.com/TolikPylypchuk/KeyboardSwitch/releases) ~~and dowload _KeyboardSwitch-Portable.zip_.~~ If you run the `Build-Portable.ps1` script, you'll have the _KeyboardSwitch-Portable.zip_ file. Extract the archive to anywhere you want and start _KeyboardSwitchSettings.exe_. You can configure the app to run when you log in just like the installed version. The configuration for the portable version is also stored under the user's local app data folder.
+If you don't want to install the app \(or can't\), you can use the portable version of the app. It's literally the same as the installable version; there are no differences. ~~Again, go to the~~ [~~releases page on GitHub~~](https://github.com/TolikPylypchuk/KeyboardSwitch/releases) ~~and dowload _KeyboardSwitch-Portable.zip_.~~ If you run the _Build-Portable.ps1_ script, you'll have the _KeyboardSwitch-Portable.zip_ file. Extract the archive to anywhere you want and start _KeyboardSwitchSettings.exe_. You can configure the app to run when you log in just like the installed version. The configuration for the portable version is also stored under the user's local app data folder.
 
 ## Linux
 
 ### Installing the App
 
-Currently, the Linux build is available only as a plain _.tar.gz_ file. Run the `buid.sh` script to create `KeyboardSwitch.tar.gz`. You can then extract it to anywhere you like \(e.g. into the `/opt` directory\). The  deployed app includes two scripts - `install.sh` and `uninstall.sh`. `install.sh` configures systemd to start the KeyboardSwitch service to start when you login, and `uninstall.sh` deletes this configuration. The scripts edit files under `/etc/systemd/user` so they will ask you for root privileges. If you don't use systemd, you'll have to figure out a different way of making sure the app starts when you log in.
+Currently, the Linux build is available only as a plain _.tar.gz_ file. Run the _buid.sh_ script to create _KeyboardSwitch.tar.gz_. You can then extract it to anywhere you like \(e.g. into the _/opt_ directory\). The  deployed app includes two scripts - _install.sh_ and _uninstall.sh_. _install.sh_ configures systemd to start the KeyboardSwitch service to start when you login, and _uninstall.sh_ deletes this configuration. The scripts edit files under _/etc/systemd/user_ so they will ask you for root privileges. If you don't use systemd, you'll have to figure out a different way of making sure the app starts when you log in.
 
 There are several prerequisites for running the app on Linux:
 
@@ -70,7 +70,7 @@ sudo chmod 777 install.sh uninstall.sh  # Let every user use the app
 
 ### Uninstalling the App
 
-To uninstall the app, simply run the included `uninstall.sh` script, and delete the app's directory. If you want to delete the app's configuration as well, then delete the `~/.KeyboardSwitch` directory.
+To uninstall the app, simply run the included _uninstall.sh_ script, and delete the app's directory. If you want to delete the app's configuration as well, then delete the _~/.KeyboardSwitch_ directory.
 
 ## macOS
 

@@ -1,16 +1,23 @@
 # About
 
-Keyboard Switch: version 3.0. Created by [Tolik Pylypchuk](https://github.com/TolikPylypchuk).
+Keyboard Switch: version 4.0. Created by [Tolik Pylypchuk](https://github.com/TolikPylypchuk).
 
 ## Acknowledgements
 
 Icon made by [Smashicons](https://smashicons.com/) from [www.flaticon.com](https://www.flaticon.com/).
 
-The UI for the settings app was created using [Avalonia](https://avaloniaui.net/) with [ReactiveUI](https://www.reactiveui.net/) and the [Citrus theme](https://github.com/worldbeater/Citrus.Avalonia) by [worldbeater](https://github.com/worldbeater).
+The UI for the settings app was created using [Avalonia](https://avaloniaui.net/) with [ReactiveUI](https://www.reactiveui.net/) and the Fluent theme.
 
 Docs are built using [GitBook](https://www.gitbook.com).
 
 ## Changelog
+
+### v4.0 \(TBA\)
+
+* The app is cross-platform now, and works on Linux \(macOS coming soon\)
+* The UI theme is overhauled
+* The converter is hidden by default
+* .NET 5 is used instead of .NET Core 3.1
 
 ### [v3.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v3.0) \(4 August 2020\)
 
