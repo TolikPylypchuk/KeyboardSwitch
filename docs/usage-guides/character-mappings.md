@@ -1,5 +1,9 @@
 # Character Mappings
 
+{% hint style="warning" %}
+Version 4.0 is not yet completed. The only way to get it is to build it yourself. It works on Windows and Linux, but it's not yet ready for macOS. The app itself and these docs may change at any moment without warning until version 4.0 is released.
+{% endhint %}
+
 In order for the Keyboard Switch service to know how to map characters, you have to configure the character mappings yourself. The app reads the list of installed layouts in the system, so it knows which layouts you use and in what order. What it doesn't \(and can't\) know is the physical layout of your keyboard, so it doesn't know what happens if you press certain keys on your keboard.
 
 ## Text vs Keyboard
@@ -22,7 +26,7 @@ And that's why the app uses a much simpler solution - it lets you, the user, fig
 
 Here's how the tab looks when the app is opened for the first time:
 
-![](../.gitbook/assets/v3.0-screen-char-mappings-empty.png)
+![](../.gitbook/assets/v4.0-screen-char-mappings-empty.png)
 
 You have to enter every character you can think of \(which can be entered using your keyboard\) into the text fields which correspond to layouts. For example, press the _Q_ key, then press the _W_ key, and so on. Then press _Shift+Q_, then _Shift+W_ etc. to add uppercase letters.
 
@@ -36,9 +40,11 @@ Even though you have to do it only once, configuring character mappings is still
 
 Here's how the tab looks after running auto-configuration:
 
-![](../.gitbook/assets/v3.0-screen-auto-configuration.png)
+![](../.gitbook/assets/v4.0-screen-auto-configuration.png)
 
-What auto-configuration does is basically ask the OS what would happen if certain keys were pressed using various layouts. There is no easy way to get the information about _all_ keys on your keyboard, so it asks only about the most common ones. Here's the list of those keys for the US layout:
+### Windows
+
+What auto-configuration does on Windows is basically ask the OS what would happen if certain keys were pressed using various layouts. There is no easy way to get the information about _all_ keys on your keyboard, so it asks only about the most common ones. Here's the list of those keys for the US layout:
 
 * All letter keys \(_Q_, _W_, _E_ etc.\)
 * Number keys
@@ -48,6 +54,10 @@ What auto-configuration does is basically ask the OS what would happen if certai
 * All those keys with the _Shift+AltGr_ keys
 
 Not all of those key combinations actually produce characters for all layouts. So after asking the OS about all of these keys, the app keeps only those character combinations which are defined for all layouts. For example, if you press _AltGr+U_ in the Ukrainian layout, you will get **ґ**, but if you press those keys in the US layout, you won't get anything at all, so the app will just throw **ґ** out as it won't know how to map it to the US layout.
+
+### Linux
+
+Unlike Windows, there's actually a way to ask the OS \(though X11\) which characters are produced by all possible key presses. What the app will do is ask about characters produced by all key codes on all shift levels \(there are 64 of them!\). As with Windows, it will keep only those combinations which are defined for all layouts.
 
 ## Limitations
 

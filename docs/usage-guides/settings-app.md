@@ -1,15 +1,19 @@
 # The Settings App
 
+{% hint style="warning" %}
+Version 4.0 is not yet completed. The only way to get it is to build it yourself. It works on Windows and Linux, but it's not yet ready for macOS. The app itself and these docs may change at any moment without warning until version 4.0 is released.
+{% endhint %}
+
 Keyboard Switch Settings is a simple app which controls the behavior of the Keyboard Switch service. If you installed the app using a Windows installer, you can find the app in the Start menu. Here's how it looks:
 
-![](../.gitbook/assets/v3.0-screen-char-mappings.png)
+![](../.gitbook/assets/v4.0-screen-char-mappings.png)
 
 The app is composed of six tabs:
 
 * Character mappings: contains the settings which tell Keyboard Switch how to transform characters between layouts
 * Preferences: contains other settings
-* Converter: lets you manually convert text between arbitrary custom layouts
-* Converter settings: contains the list of custom layouts for the converter
+* Converter: lets you manually convert text between arbitrary custom layouts \(hidden by default\)
+* Converter settings: contains the list of custom layouts for the converter \(hidden by default\)
 * Sandbox: lets you play around with switching the text
 * About: contains info about the app
 
