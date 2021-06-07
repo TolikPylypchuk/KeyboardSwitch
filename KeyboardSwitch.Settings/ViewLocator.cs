@@ -5,7 +5,7 @@ using ReactiveUI;
 
 using Splat;
 
-namespace KeyboardSwitch.Settings.Infrastructure
+namespace KeyboardSwitch.Settings
 {
     public sealed class ViewLocator : IDataTemplate
     {

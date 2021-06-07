@@ -25,7 +25,6 @@ using KeyboardSwitch.Settings.Converters;
 using KeyboardSwitch.Settings.Core;
 using KeyboardSwitch.Settings.Core.State;
 using KeyboardSwitch.Settings.Core.ViewModels;
-using KeyboardSwitch.Settings.Infrastructure;
 using KeyboardSwitch.Settings.Properties;
 using KeyboardSwitch.Settings.Views;
 
@@ -77,54 +76,63 @@ namespace KeyboardSwitch.Settings
             if (this.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 this.desktop = desktop;
+                this.desktop.Exit += this.OnExit;
 
-                var services = new ServiceCollection();
+                var mainViewModel = await this.InitializeApp();
 
-                this.ConfigureServices(services);
-
-                this.serviceProvider = services.BuildServiceProvider();
-                this.serviceProvider.UseMicrosoftDependencyResolver();
-
-                this.Log().Info("Starting the settings app");
-
-                this.ConfigureSingleInstance(serviceProvider);
-                this.ConfigureSuspensionDriver();
-
-                try
-                {
-                    var appSettings = await GetDefaultService<IAppSettingsService>().GetAppSettingsAsync();
-
-                    if (File.Exists(SetStartupFile))
-                    {
-                        this.Log().Info("Setting the app to run at system startup");
-                        GetDefaultService<IStartupService>().ConfigureStartup(appSettings, true);
-                        File.Delete(SetStartupFile);
-                    }
-
-                    var converterSettings = await GetDefaultService<IConverterSettingsService>()
-                        .GetConverterSettingsAsync();
-
-                    var mainViewModel = new MainViewModel(appSettings, converterSettings);
-
-                    this.openExternally.InvokeCommand(mainViewModel.OpenExternally);
-
-                    desktop.Exit += this.OnExit;
-
-                    desktop.MainWindow = await this.CreateMainWindow(mainViewModel);
-                    desktop.MainWindow.Show();
-                } catch (IncompatibleAppVersionException e)
-                {
-                    var settingsPath = Environment.ExpandEnvironmentVariables(
-                        GetDefaultService<IOptions<GlobalSettings>>().Value.Path);
-
-                    this.Log().Error(e, $"Incompatible app version found in settings: {e.Version}. " +
-                        $"Delete the settings at '{settingsPath}' and let the app recreate a compatible version");
-
-                    this.desktop.Shutdown(1);
-                }
+                this.desktop.MainWindow = await this.CreateMainWindow(mainViewModel);
+                this.desktop.MainWindow.Show();
             }
 
             base.OnFrameworkInitializationCompleted();
+        }
+
+        private async Task<MainViewModel> InitializeApp()
+        {
+            TransitioningContentControl.PageTransitionProperty.OverrideDefaultValue(typeof(ViewModelViewHost), null);
+
+            var services = new ServiceCollection();
+
+            this.ConfigureServices(services);
+
+            this.serviceProvider = services.BuildServiceProvider();
+            this.serviceProvider.UseMicrosoftDependencyResolver();
+
+            this.Log().Info("Starting the settings app");
+
+            this.ConfigureSingleInstance(serviceProvider);
+            this.ConfigureSuspensionDriver();
+
+            try
+            {
+                var appSettings = await GetDefaultService<IAppSettingsService>().GetAppSettingsAsync();
+
+                if (File.Exists(SetStartupFile))
+                {
+                    this.Log().Info("Setting the app to run at system startup");
+                    GetDefaultService<IStartupService>().ConfigureStartup(appSettings, true);
+                    File.Delete(SetStartupFile);
+                }
+
+                var converterSettings = await GetDefaultService<IConverterSettingsService>()
+                    .GetConverterSettingsAsync();
+
+                var mainViewModel = new MainViewModel(appSettings, converterSettings);
+
+                this.openExternally.InvokeCommand(mainViewModel.OpenExternally);
+
+                return mainViewModel;
+            } catch (IncompatibleAppVersionException e)
+            {
+                var settingsPath = Environment.ExpandEnvironmentVariables(
+                    GetDefaultService<IOptions<GlobalSettings>>().Value.Path);
+
+                this.Log().Error(e, $"Incompatible app version found in settings: {e.Version}. " +
+                    $"Delete the settings at '{settingsPath}' and let the app recreate a compatible version");
+
+                this.desktop.Shutdown(1);
+                return null!;
+            }
         }
 
         private void ConfigureServices(IServiceCollection services)
@@ -141,7 +149,6 @@ namespace KeyboardSwitch.Settings
                 .Configure<GlobalSettings>(config.GetSection("Settings"))
                 .AddSingleton(Messages.ResourceManager)
                 .AddSingleton<IActivationForViewFetcher>(new AvaloniaActivationForViewFetcher())
-                .AddSingleton<IPropertyBindingHook>(new BindingHook())
                 .AddSuspensionDriver()
                 .AddCoreKeyboardSwitchServices()
                 .AddNativeKeyboardSwitchServices()
@@ -221,11 +228,16 @@ namespace KeyboardSwitch.Settings
 
             var state = RxApp.SuspensionHost.GetAppState<AppState>();
 
-            state.WindowWidth = this.desktop.MainWindow.Width;
-            state.WindowHeight = this.desktop.MainWindow.Height;
-            state.WindowX = this.desktop.MainWindow.Position.X;
-            state.WindowY = this.desktop.MainWindow.Position.Y;
             state.IsWindowMaximized = this.desktop.MainWindow.WindowState == WindowState.Maximized;
+
+            if (!state.IsWindowMaximized)
+            {
+                state.WindowWidth = this.desktop.MainWindow.Width;
+                state.WindowHeight = this.desktop.MainWindow.Height;
+                state.WindowX = this.desktop.MainWindow.Position.X;
+                state.WindowY = this.desktop.MainWindow.Position.Y;
+            }
+
             state.IsInitialized = true;
         }
 

@@ -1,6 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:l="clr-namespace:KeyboardSwitch.Settings.Localization"
+        xmlns:l="using:KeyboardSwitch.Settings.Localization"
         x:Class="KeyboardSwitch.Settings.Views.MainWindow"
         Icon="/Assets/icon.ico" WindowStartupLocation="CenterScreen"
         Title="{l:Translate WindowTitle}" Width="1100" Height="450"

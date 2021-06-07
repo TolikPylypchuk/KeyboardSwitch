@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:l="clr-namespace:KeyboardSwitch.Settings.Localization"
-             xmlns:vm="clr-namespace:KeyboardSwitch.Settings.Core.ViewModels;assembly=KeyboardSwitch.Settings.Core"
+             xmlns:l="using:KeyboardSwitch.Settings.Localization"
+             xmlns:vm="using:KeyboardSwitch.Settings.Core.ViewModels"
              x:Class="KeyboardSwitch.Settings.Views.LoadableLayoutsSettingsView">
     <DockPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="10">

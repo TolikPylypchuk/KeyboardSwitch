@@ -1,6 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:l="clr-namespace:KeyboardSwitch.Settings.Localization"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:l="using:KeyboardSwitch.Settings.Localization"
              x:Class="KeyboardSwitch.Settings.Views.LoadableLayoutView">
     <StackPanel Orientation="Horizontal">
         <TextBlock x:Name="NameTextBlock" Margin="10" FontSize="{DynamicResource FontSizeLarge}"

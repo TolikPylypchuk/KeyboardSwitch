@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:KeyboardSwitch.Settings.Views"
-             xmlns:l="clr-namespace:KeyboardSwitch.Settings.Localization"
+             xmlns:local="using:KeyboardSwitch.Settings.Views"
+             xmlns:l="using:KeyboardSwitch.Settings.Localization"
              x:Class="KeyboardSwitch.Settings.Views.MainContentView">
     <TabControl>
         <TabItem x:Name="CharMappingTabItem" Header="{l:Translate CharMapping}" />
