@@ -79,7 +79,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 .Merge(this.Save.Select(_ => false))
                 .Merge(this.Cancel.Select(_ => false)));
 
-        protected void TrackChanges<T>(Expression<Func<TForm, T>> property, Func<TForm, T> itemValue)
+        protected void TrackChanges<T>(Expression<Func<TForm, T?>> property, Func<TForm, T> itemValue)
         {
             string propertyName = property.GetMemberName();
 
