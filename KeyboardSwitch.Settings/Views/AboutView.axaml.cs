@@ -36,7 +36,6 @@ namespace KeyboardSwitch.Settings.Views
                     .DisposeWith(disposables);
 
                 this.WhenAnyValue(v => v.ViewModel!.LatestVersion)
-                    .WhereNotNull()
                     .Select(version => String.Format(
                         CultureInfo.InvariantCulture, Messages.NewVersionAvailable, this.FormatVersion(version)))
                     .BindTo(this, v => v.NewVersionTextBlock.Text)
