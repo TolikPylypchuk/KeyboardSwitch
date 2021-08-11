@@ -25,9 +25,7 @@ using static KeyboardSwitch.Settings.Core.ServiceUtil;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
-#nullable disable
     public abstract class ReactiveForm<TModel, TForm> : ReactiveValidationObject, IReactiveForm
-#nullable enable
         where TModel : class
         where TForm : ReactiveForm<TModel, TForm>
     {
