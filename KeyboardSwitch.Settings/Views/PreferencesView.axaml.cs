@@ -109,10 +109,10 @@ namespace KeyboardSwitch.Settings.Views
             this.Bind(this.ViewModel, vm => vm.BackwardModifierKeyThird, v => v.BackwardThirdComboBox.SelectedItem)
                 .DisposeWith(disposables);
 
-            this.Bind(this.ViewModel, vm => vm.PressCount, v => v.PressCountUpDown.Value)
+            this.Bind(this.ViewModel, vm => vm.PressCount, v => v.PressCountBox.Value)
                 .DisposeWith(disposables);
 
-            this.Bind(this.ViewModel, vm => vm.WaitMilliseconds, v => v.WaitMillisecondsUpDown.Value)
+            this.Bind(this.ViewModel, vm => vm.WaitMilliseconds, v => v.WaitMillisecondsBox.Value)
                 .DisposeWith(disposables);
         }
 

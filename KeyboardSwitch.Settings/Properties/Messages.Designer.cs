@@ -718,6 +718,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If you input the number then press &apos;Enter&apos; to apply changes.
+        /// </summary>
+        internal static string NumberBoxHint {
+            get {
+                return ResourceManager.GetString("NumberBoxHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Preferences.
         /// </summary>
         internal static string Preferences {

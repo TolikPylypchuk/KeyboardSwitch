@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
              xmlns:c="using:KeyboardSwitch.Settings.Controls"
              xmlns:l="using:KeyboardSwitch.Settings.Localization"
              x:Class="KeyboardSwitch.Settings.Views.PreferencesView">
@@ -43,8 +44,8 @@
                               Classes="FormControl ModifierKey" />
 
                     <TextBlock Grid.Row="0" Grid.Column="6" Text="{l:Translate PressCount}" Classes="Label" />
-                    <NumericUpDown x:Name="PressCountUpDown" Grid.Row="0" Grid.Column="7" Classes="FormControl"
-                                   Minimum="1" Maximum="10" />
+                    <ui:NumberBox x:Name="PressCountBox" Grid.Row="0" Grid.Column="7" Classes="FormControl"
+                                  Minimum="1" Maximum="10" />
 
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="{l:Translate Backward}" Classes="Label" />
                     <ComboBox x:Name="BackwardFirstComboBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch"
@@ -57,8 +58,8 @@
                               Classes="FormControl ModifierKey" />
 
                     <TextBlock Grid.Row="1" Grid.Column="6" Text="{l:Translate WaitMilliseconds}" Classes="Label" />
-                    <NumericUpDown x:Name="WaitMillisecondsUpDown" Grid.Row="1" Grid.Column="7" Classes="FormControl"
-                                   Increment="50" Minimum="100" Maximum="1000" />
+                    <ui:NumberBox x:Name="WaitMillisecondsBox" Grid.Row="1" Grid.Column="7" Classes="FormControl"
+                                  Minimum="100" Maximum="1000" />
                 </Grid>
 
                 <TextBlock x:Name="PressCountValidationTextBlock" Classes="Error" />

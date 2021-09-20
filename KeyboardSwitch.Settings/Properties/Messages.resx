@@ -336,6 +336,9 @@
   <data name="NoNewVersions" xml:space="preserve">
     <value>You have the latest version!</value>
   </data>
+  <data name="NumberBoxHint" xml:space="preserve">
+    <value>If you input the number then press 'Enter' to apply changes</value>
+  </data>
   <data name="Preferences" xml:space="preserve">
     <value>Preferences</value>
   </data>

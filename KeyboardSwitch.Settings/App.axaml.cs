@@ -55,6 +55,7 @@ using static KeyboardSwitch.Settings.Core.ServiceUtil;
 
 using KeyboardSwitch.Core.Services.Startup;
 using KeyboardSwitch.Core.Services.Settings;
+using FluentAvalonia.Styling;
 
 namespace KeyboardSwitch.Settings
 {
@@ -79,6 +80,9 @@ namespace KeyboardSwitch.Settings
                 this.desktop.Exit += this.OnExit;
 
                 var mainViewModel = await this.InitializeApp();
+
+                var fluentAvaloniaTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
+                fluentAvaloniaTheme.RequestedTheme = "Light";
 
                 this.desktop.MainWindow = await this.CreateMainWindow(mainViewModel);
                 this.desktop.MainWindow.Show();

@@ -1,6 +1,9 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:sys="using:System"
+             xmlns:ui="using:FluentAvalonia.UI.Controls"
+             xmlns:uis="using:FluentAvalonia.Styling"
+             xmlns:l="using:KeyboardSwitch.Settings.Localization"
              xmlns:local="using:KeyboardSwitch.Settings"
              x:Class="KeyboardSwitch.Settings.App">
     <Application.DataTemplates>
@@ -8,10 +11,10 @@
     </Application.DataTemplates>
 
     <Application.Styles>
-        <FluentTheme Mode="Light"/>
+        <uis:FluentAvaloniaTheme />
 
         <Style Selector="TextBlock.Error">
-            <Setter Property="Foreground" Value="{DynamicResource SystemErrorTextColor}" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
             <Setter Property="Margin" Value="10 2" />
         </Style>
 
@@ -31,8 +34,11 @@
             <Setter Property="MaxDropDownHeight" Value="300" />
         </Style>
 
-        <Style Selector="NumericUpDown.FormControl">
+        <Style Selector="ui|NumberBox.FormControl">
             <Setter Property="Width" Value="125" />
+            <Setter Property="SpinButtonPlacementMode" Value="Inline" />
+            <Setter Property="ToolTip.Tip" Value="{l:Translate NumberBoxHint}" />
+            <Setter Property="ValidationMode" Value="InvalidInputOverwritten" />
             <Setter Property="Margin" Value="0 0 10 5" />
         </Style>
 
@@ -46,6 +52,70 @@
             <Setter Property="Orientation" Value="Horizontal" />
             <Setter Property="DockPanel.Dock" Value="Bottom" />
             <Setter Property="Margin" Value="10" />
+        </Style>
+
+        <Style Selector="TextBox.NumberBoxTextBoxStyle">
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <DataValidationErrors>
+                        <Panel>
+                            <Border Name="PART_BorderElement" Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    MinWidth="{TemplateBinding MinWidth}" MinHeight="{TemplateBinding MinHeight}"
+                                    RenderTransform="scaleY(-1)" />
+
+                            <Border Margin="{TemplateBinding BorderThickness}">
+                                <Grid ColumnDefinitions="Auto,*,Auto" >
+                                    <ContentPresenter Grid.Column="0" Grid.ColumnSpan="1"
+                                                      Content="{TemplateBinding InnerLeftContent}" />
+                                    <DockPanel x:Name="PART_InnerDockPanel" Grid.Column="1" Grid.ColumnSpan="1"
+                                               Margin="{TemplateBinding Padding}">
+                                        <TextBlock Name="PART_FloatingWatermark" Text="{TemplateBinding Watermark}"
+                                                   Foreground="{DynamicResource SystemAccentColor}"
+                                                   FontSize="{TemplateBinding FontSize}" DockPanel.Dock="Top" />
+
+                                        <ScrollViewer HorizontalScrollBarVisibility="{TemplateBinding
+                                                      (ScrollViewer.HorizontalScrollBarVisibility)}"
+                                                      VerticalScrollBarVisibility="{TemplateBinding
+                                                      (ScrollViewer.VerticalScrollBarVisibility)}">
+                                            <Panel>
+                                                <TextBlock Name="PART_Watermark" Text="{TemplateBinding Watermark}"
+                                                           TextAlignment="{TemplateBinding TextAlignment}"
+                                                           TextWrapping="{TemplateBinding TextWrapping}"
+                                                           IsVisible="{TemplateBinding Text,
+                                                           Converter={x:Static StringConverters.IsNullOrEmpty}}"
+                                                           HorizontalAlignment="{TemplateBinding
+                                                           HorizontalContentAlignment}"
+                                                           VerticalAlignment="{TemplateBinding
+                                                               VerticalContentAlignment}"
+                                                           IsHitTestVisible="False"/>
+                                                <TextPresenter Name="PART_TextPresenter"
+                                                               Text="{TemplateBinding Text, Mode=TwoWay}"
+                                                               CaretIndex="{TemplateBinding CaretIndex}"
+                                                               SelectionStart="{TemplateBinding SelectionStart}"
+                                                               SelectionEnd="{TemplateBinding SelectionEnd}"
+                                                               TextAlignment="{TemplateBinding TextAlignment}"
+                                                               TextWrapping="{TemplateBinding TextWrapping}"
+                                                               PasswordChar="{TemplateBinding PasswordChar}"
+                                                               RevealPassword="{TemplateBinding RevealPassword}"
+                                                               SelectionBrush="{TemplateBinding SelectionBrush}"
+                                                               SelectionForegroundBrush="{TemplateBinding
+                                                               SelectionForegroundBrush}"
+                                                               CaretBrush="{TemplateBinding CaretBrush}"
+                                                               HorizontalAlignment="{TemplateBinding
+                                                               HorizontalContentAlignment}"
+                                                               VerticalAlignment="{TemplateBinding
+                                                               VerticalContentAlignment}"/>
+                                            </Panel>
+                                        </ScrollViewer>
+                                    </DockPanel>
+                                </Grid>
+                            </Border>
+                        </Panel>
+                    </DataValidationErrors>
+                </ControlTemplate>
+            </Setter>
         </Style>
     </Application.Styles>
 
