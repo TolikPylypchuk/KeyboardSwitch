@@ -23,10 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="lib\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ContentWithTargetPath Include="lib\linux-x64\libuiohook.so">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>libuiohook.so</TargetPath>
@@ -39,15 +35,27 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>libuiohook.so.1.2.0</TargetPath>
     </ContentWithTargetPath>
-    <ContentWithTargetPath Include="lib\macos-x64\libuiohook.dylib">
+    <ContentWithTargetPath Include="lib\macos-x64\libuiohook.dylib" Condition="$(Platform) == 'x64'">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>libuiohook.dylib</TargetPath>
     </ContentWithTargetPath>
-    <ContentWithTargetPath Include="lib\macos-x64\libuiohook.1.dylib">
+    <ContentWithTargetPath Include="lib\macos-x64\libuiohook.1.dylib" Condition="$(Platform) == 'x64'">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>libuiohook.1.dylib</TargetPath>
     </ContentWithTargetPath>
-    <ContentWithTargetPath Include="lib\macos-x64\libuiohook.1.2.0.dylib">
+    <ContentWithTargetPath Include="lib\macos-x64\libuiohook.1.2.0.dylib" Condition="$(Platform) == 'x64'">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>libuiohook.1.2.0.dylib</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\macos-arm64\libuiohook.dylib" Condition="$(Platform) == 'ARM64'">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>libuiohook.dylib</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\macos-arm64\libuiohook.1.dylib" Condition="$(Platform) == 'ARM64'">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>libuiohook.1.dylib</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="lib\macos-arm64\libuiohook.1.2.0.dylib" Condition="$(Platform) == 'ARM64'">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>libuiohook.1.2.0.dylib</TargetPath>
     </ContentWithTargetPath>
@@ -56,5 +64,4 @@
       <TargetPath>uiohook.dll</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
-
 </Project>
