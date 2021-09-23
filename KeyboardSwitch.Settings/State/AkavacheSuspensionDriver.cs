@@ -5,7 +5,7 @@ using Akavache;
 
 using ReactiveUI;
 
-namespace KeyboardSwitch.Settings.Core.State
+namespace KeyboardSwitch.Settings.State
 {
     internal sealed class AkavacheSuspensionDriver<TAppState> : ISuspensionDriver where TAppState : class
     {

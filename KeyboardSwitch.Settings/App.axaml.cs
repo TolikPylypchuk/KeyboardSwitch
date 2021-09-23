@@ -22,10 +22,9 @@ using KeyboardSwitch.Core.Services;
 using KeyboardSwitch.Core.Services.Infrastructure;
 using KeyboardSwitch.Core.Settings;
 using KeyboardSwitch.Settings.Converters;
-using KeyboardSwitch.Settings.Core;
-using KeyboardSwitch.Settings.Core.State;
 using KeyboardSwitch.Settings.Core.ViewModels;
 using KeyboardSwitch.Settings.Properties;
+using KeyboardSwitch.Settings.State;
 using KeyboardSwitch.Settings.Views;
 
 #if WINDOWS
@@ -55,6 +54,7 @@ using static KeyboardSwitch.Settings.Core.ServiceUtil;
 
 using KeyboardSwitch.Core.Services.Startup;
 using KeyboardSwitch.Core.Services.Settings;
+
 using FluentAvalonia.Styling;
 
 namespace KeyboardSwitch.Settings
@@ -77,7 +77,6 @@ namespace KeyboardSwitch.Settings
             if (this.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 this.desktop = desktop;
-                this.desktop.Exit += this.OnExit;
 
                 var mainViewModel = await this.InitializeApp();
 
@@ -86,6 +85,8 @@ namespace KeyboardSwitch.Settings
 
                 this.desktop.MainWindow = await this.CreateMainWindow(mainViewModel);
                 this.desktop.MainWindow.Show();
+
+                this.desktop.Exit += this.OnExit;
             }
 
             base.OnFrameworkInitializationCompleted();

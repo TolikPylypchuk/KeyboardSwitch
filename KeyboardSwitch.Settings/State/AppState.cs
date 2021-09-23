@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace KeyboardSwitch.Settings.Core.State
+namespace KeyboardSwitch.Settings.State
 {
     [DataContract]
     public class AppState
