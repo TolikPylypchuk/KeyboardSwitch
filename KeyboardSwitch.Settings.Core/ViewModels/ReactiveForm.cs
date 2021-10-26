@@ -140,8 +140,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                 .Switch();
 
         protected ValidationHelper LocalizedValidationRule<T>(
-            Expression<Func<TForm, T>> property,
-            Func<T, bool> validate)
+            Expression<Func<TForm, T?>> property,
+            Func<T?, bool> validate)
         {
             var propertyName = property.GetMemberName();
             return this.Self.ValidationRule(

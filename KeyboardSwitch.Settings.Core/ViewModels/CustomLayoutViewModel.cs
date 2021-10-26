@@ -33,17 +33,19 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
             this.ValidationRule(
                 vm => vm.Chars,
-                chars => chars.Distinct().Count(ch => ch != MissingCharacter) ==
-                    chars.Count(ch => ch != MissingCharacter),
-                chars => String.Format(
-                    CultureInfo.InvariantCulture,
-                    this.ResourceManager.GetString("CharsDuplicatedFormat") ?? String.Empty,
-                    chars
-                        .Where(ch => ch != MissingCharacter)
-                        .GroupBy(ch => ch)
-                        .Where(chs => chs.Count() > 1)
-                        .Select(chs => chs.Key.ToString())
-                        .Aggregate((acc, ch) => $"{acc}, {ch}")));
+                chars => chars != null &&
+                    chars.Distinct().Count(ch => ch != MissingCharacter) == chars.Count(ch => ch != MissingCharacter),
+                chars => chars != null
+                    ? String.Format(
+                        CultureInfo.InvariantCulture,
+                        this.ResourceManager.GetString("CharsDuplicatedFormat") ?? String.Empty,
+                        chars
+                            .Where(ch => ch != MissingCharacter)
+                            .GroupBy(ch => ch)
+                            .Where(chs => chs.Count() > 1)
+                            .Select(chs => chs.Key.ToString())
+                            .Aggregate((acc, ch) => $"{acc}, {ch}"))
+                    : String.Empty);
 
             this.CopyProperties();
             this.CanAlwaysDelete();
