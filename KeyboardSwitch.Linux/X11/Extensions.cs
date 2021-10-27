@@ -1,4 +1,4 @@
-using KeyboardSwitch.Core.Keyboard;
+using SharpHook.Native;
 
 namespace KeyboardSwitch.Linux.X11
 {

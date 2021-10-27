@@ -14,6 +14,8 @@ using KeyboardSwitch.Core.Settings;
 
 using Microsoft.Extensions.Logging;
 
+using SharpHook.Native;
+
 namespace KeyboardSwitch.Core.Services.Settings
 {
     internal sealed class BlobCacheSettingsService : AsyncDisposable, IAppSettingsService, IConverterSettingsService
@@ -160,8 +162,8 @@ namespace KeyboardSwitch.Core.Services.Settings
             {
                 SwitchSettings = new SwitchSettings
                 {
-                    ForwardModifierKeys = new() { ModifierKey.Ctrl, ModifierKey.Shift, ModifierKey.None },
-                    BackwardModifierKeys = new() { ModifierKey.Ctrl, ModifierKey.Shift, ModifierKey.Alt },
+                    ForwardModifiers = new() { ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.None },
+                    BackwardModifiers = new() { ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.Alt },
                     PressCount = 2,
                     WaitMilliseconds = 400,
                     LayoutForwardKeys = new() { KeyCode.VcLeftMeta, KeyCode.VcSpace },

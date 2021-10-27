@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-using KeyboardSwitch.Core.Keyboard;
+using SharpHook.Native;
 
 namespace KeyboardSwitch.Core.Settings
 {
@@ -9,10 +9,10 @@ namespace KeyboardSwitch.Core.Settings
     public sealed class SwitchSettings
     {
         [DataMember]
-        public List<ModifierKey> ForwardModifierKeys { get; set; } = new();
+        public List<ModifierMask> ForwardModifiers { get; set; } = new();
 
         [DataMember]
-        public List<ModifierKey> BackwardModifierKeys { get; set; } = new();
+        public List<ModifierMask> BackwardModifiers { get; set; } = new();
 
         [DataMember]
         public int PressCount { get; set; }

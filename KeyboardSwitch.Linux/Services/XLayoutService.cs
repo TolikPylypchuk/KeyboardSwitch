@@ -16,7 +16,7 @@ using X11;
 using static KeyboardSwitch.Linux.X11.Native;
 using static KeyboardSwitch.Linux.X11.XUtil;
 
-using KeyCode = KeyboardSwitch.Core.Keyboard.KeyCode;
+using KeyCode = SharpHook.Native.KeyCode;
 
 namespace KeyboardSwitch.Linux.Services
 {

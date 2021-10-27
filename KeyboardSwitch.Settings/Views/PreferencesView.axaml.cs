@@ -13,7 +13,6 @@ using DynamicData;
 using DynamicData.Binding;
 
 using KeyboardSwitch.Core;
-using KeyboardSwitch.Core.Keyboard;
 using KeyboardSwitch.Settings.Controls;
 using KeyboardSwitch.Settings.Converters;
 using KeyboardSwitch.Settings.Core.ViewModels;
@@ -21,6 +20,8 @@ using KeyboardSwitch.Settings.Properties;
 
 using ReactiveUI;
 using ReactiveUI.Validation.Extensions;
+
+using SharpHook.Native;
 
 using static KeyboardSwitch.Core.Util;
 
@@ -37,11 +38,11 @@ namespace KeyboardSwitch.Settings.Views
             this.InitializeComponent();
 
             var modifiers = this.Modifiers()
-                .Where(key => key != ModifierKey.None)
-                .Select(Convert.ModifierKeyToString)
+                .Where(key => key != ModifierMask.None)
+                .Select(Convert.ModifierToString)
                 .ToImmutableList();
 
-            var allModifiers = modifiers.Insert(0, Convert.ModifierKeyToString(ModifierKey.None));
+            var allModifiers = modifiers.Insert(0, Convert.ModifierToString(ModifierMask.None));
 
             this.ForwardFirstComboBox.Items = modifiers;
             this.ForwardSecondComboBox.Items = modifiers;
@@ -91,22 +92,22 @@ namespace KeyboardSwitch.Settings.Views
 
         private void BindControls(CompositeDisposable disposables)
         {
-            this.Bind(this.ViewModel, vm => vm.ForwardModifierKeyFirst, v => v.ForwardFirstComboBox.SelectedItem)
+            this.Bind(this.ViewModel, vm => vm.ForwardModifierFirst, v => v.ForwardFirstComboBox.SelectedItem)
                 .DisposeWith(disposables);
 
-            this.Bind(this.ViewModel, vm => vm.ForwardModifierKeySecond, v => v.ForwardSecondComboBox.SelectedItem)
+            this.Bind(this.ViewModel, vm => vm.ForwardModifierSecond, v => v.ForwardSecondComboBox.SelectedItem)
                 .DisposeWith(disposables);
 
-            this.Bind(this.ViewModel, vm => vm.ForwardModifierKeyThird, v => v.ForwardThirdComboBox.SelectedItem)
+            this.Bind(this.ViewModel, vm => vm.ForwardModifierThird, v => v.ForwardThirdComboBox.SelectedItem)
                 .DisposeWith(disposables);
 
-            this.Bind(this.ViewModel, vm => vm.BackwardModifierKeyFirst, v => v.BackwardFirstComboBox.SelectedItem)
+            this.Bind(this.ViewModel, vm => vm.BackwardModifierFirst, v => v.BackwardFirstComboBox.SelectedItem)
                 .DisposeWith(disposables);
 
-            this.Bind(this.ViewModel, vm => vm.BackwardModifierKeySecond, v => v.BackwardSecondComboBox.SelectedItem)
+            this.Bind(this.ViewModel, vm => vm.BackwardModifierSecond, v => v.BackwardSecondComboBox.SelectedItem)
                 .DisposeWith(disposables);
 
-            this.Bind(this.ViewModel, vm => vm.BackwardModifierKeyThird, v => v.BackwardThirdComboBox.SelectedItem)
+            this.Bind(this.ViewModel, vm => vm.BackwardModifierThird, v => v.BackwardThirdComboBox.SelectedItem)
                 .DisposeWith(disposables);
 
             this.Bind(this.ViewModel, vm => vm.PressCount, v => v.PressCountBox.Value)
@@ -254,22 +255,22 @@ namespace KeyboardSwitch.Settings.Views
                 .DisposeWith(disposables);
         }
 
-        private List<ModifierKey> Modifiers() =>
+        private List<ModifierMask> Modifiers() =>
             new()
             {
-                ModifierKey.None,
-                ModifierKey.Ctrl,
-                ModifierKey.Shift,
-                ModifierKey.Alt,
-                ModifierKey.Meta,
-                ModifierKey.LeftCtrl,
-                ModifierKey.LeftShift,
-                ModifierKey.LeftAlt,
-                ModifierKey.LeftMeta,
-                ModifierKey.RightCtrl,
-                ModifierKey.RightShift,
-                ModifierKey.RightAlt,
-                ModifierKey.RightMeta
+                ModifierMask.None,
+                ModifierMask.Ctrl,
+                ModifierMask.Shift,
+                ModifierMask.Alt,
+                ModifierMask.Meta,
+                ModifierMask.LeftCtrl,
+                ModifierMask.LeftShift,
+                ModifierMask.LeftAlt,
+                ModifierMask.LeftMeta,
+                ModifierMask.RightCtrl,
+                ModifierMask.RightShift,
+                ModifierMask.RightAlt,
+                ModifierMask.RightMeta
             };
 
         private string ConvertKeyCodesToString(IEnumerable<KeyCode> keyCodes)

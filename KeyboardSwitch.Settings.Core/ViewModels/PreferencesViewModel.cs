@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using DynamicData;
 
 using KeyboardSwitch.Core;
-using KeyboardSwitch.Core.Keyboard;
 using KeyboardSwitch.Core.Services.Layout;
 using KeyboardSwitch.Settings.Core.Models;
 
@@ -19,20 +18,22 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Validation.Helpers;
 
+using SharpHook.Native;
+
 using Splat;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels
 {
     public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, PreferencesViewModel>
     {
-        private readonly SourceList<ModifierKey> forwardModifierKeysSource = new();
-        private readonly SourceList<ModifierKey> backwardModifierKeysSource = new();
+        private readonly SourceList<ModifierMask> forwardModifierKeysSource = new();
+        private readonly SourceList<ModifierMask> backwardModifierKeysSource = new();
 
         private readonly SourceCache<KeyCode, KeyCode> layoutForwardKeyCodesSource = new(keyCode => keyCode);
         private readonly SourceCache<KeyCode, KeyCode> layoutBackwardKeyCodesSource = new(keyCode => keyCode);
 
-        private readonly ReadOnlyObservableCollection<ModifierKey> forwardModifierKeys;
-        private readonly ReadOnlyObservableCollection<ModifierKey> backwardModifierKeys;
+        private readonly ReadOnlyObservableCollection<ModifierMask> forwardModifierKeys;
+        private readonly ReadOnlyObservableCollection<ModifierMask> backwardModifierKeys;
 
         private readonly ReadOnlyObservableCollection<KeyCode> layoutForwardKeyCodes;
         private readonly ReadOnlyObservableCollection<KeyCode> layoutBackwardKeyCodes;
@@ -113,22 +114,22 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         public bool ShowConverter { get; set; }
 
         [Reactive]
-        public ModifierKey ForwardModifierKeyFirst { get; set; }
+        public ModifierMask ForwardModifierFirst { get; set; }
 
         [Reactive]
-        public ModifierKey ForwardModifierKeySecond { get; set; }
+        public ModifierMask ForwardModifierSecond { get; set; }
 
         [Reactive]
-        public ModifierKey ForwardModifierKeyThird { get; set; }
+        public ModifierMask ForwardModifierThird { get; set; }
 
         [Reactive]
-        public ModifierKey BackwardModifierKeyFirst { get; set; }
+        public ModifierMask BackwardModifierFirst { get; set; }
 
         [Reactive]
-        public ModifierKey BackwardModifierKeySecond { get; set; }
+        public ModifierMask BackwardModifierSecond { get; set; }
 
         [Reactive]
-        public ModifierKey BackwardModifierKeyThird { get; set; }
+        public ModifierMask BackwardModifierThird { get; set; }
 
         [Reactive]
         public int PressCount { get; set; }
@@ -171,10 +172,10 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             this.TrackChanges(vm => vm.ShowConverter, vm => vm.PreferencesModel.ShowConverter);
 
             this.TrackChanges(this.IsCollectionChangedSimple(
-                vm => vm.forwardModifierKeys, vm => vm.PreferencesModel.SwitchSettings.ForwardModifierKeys));
+                vm => vm.forwardModifierKeys, vm => vm.PreferencesModel.SwitchSettings.ForwardModifiers));
 
             this.TrackChanges(this.IsCollectionChangedSimple(
-                vm => vm.backwardModifierKeys, vm => vm.PreferencesModel.SwitchSettings.BackwardModifierKeys));
+                vm => vm.backwardModifierKeys, vm => vm.PreferencesModel.SwitchSettings.BackwardModifiers));
 
             this.TrackChanges(vm => vm.PressCount, vm => vm.PreferencesModel.SwitchSettings.PressCount);
             this.TrackChanges(vm => vm.WaitMilliseconds, vm => vm.PreferencesModel.SwitchSettings.WaitMilliseconds);
@@ -198,8 +199,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
             var switchSettings = this.PreferencesModel.SwitchSettings;
 
-            switchSettings.ForwardModifierKeys = new(this.forwardModifierKeys);
-            switchSettings.BackwardModifierKeys = new(this.backwardModifierKeys);
+            switchSettings.ForwardModifiers = new(this.forwardModifierKeys);
+            switchSettings.BackwardModifiers = new(this.backwardModifierKeys);
             switchSettings.PressCount = this.PressCount;
             switchSettings.WaitMilliseconds = this.WaitMilliseconds;
 
@@ -222,34 +223,34 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
 
             var switchSettings = this.PreferencesModel.SwitchSettings;
 
-            if (switchSettings.ForwardModifierKeys.Count > 0)
+            if (switchSettings.ForwardModifiers.Count > 0)
             {
-                this.ForwardModifierKeyFirst = switchSettings.ForwardModifierKeys[0];
+                this.ForwardModifierFirst = switchSettings.ForwardModifiers[0];
             }
 
-            if (switchSettings.ForwardModifierKeys.Count > 1)
+            if (switchSettings.ForwardModifiers.Count > 1)
             {
-                this.ForwardModifierKeySecond = switchSettings.ForwardModifierKeys[1];
+                this.ForwardModifierSecond = switchSettings.ForwardModifiers[1];
             }
 
-            if (switchSettings.ForwardModifierKeys.Count > 2)
+            if (switchSettings.ForwardModifiers.Count > 2)
             {
-                this.ForwardModifierKeyThird = switchSettings.ForwardModifierKeys[2];
+                this.ForwardModifierThird = switchSettings.ForwardModifiers[2];
             }
 
-            if (switchSettings.BackwardModifierKeys.Count > 0)
+            if (switchSettings.BackwardModifiers.Count > 0)
             {
-                this.BackwardModifierKeyFirst = switchSettings.BackwardModifierKeys[0];
+                this.BackwardModifierFirst = switchSettings.BackwardModifiers[0];
             }
 
-            if (switchSettings.BackwardModifierKeys.Count > 1)
+            if (switchSettings.BackwardModifiers.Count > 1)
             {
-                this.BackwardModifierKeySecond = switchSettings.BackwardModifierKeys[1];
+                this.BackwardModifierSecond = switchSettings.BackwardModifiers[1];
             }
 
-            if (switchSettings.BackwardModifierKeys.Count > 2)
+            if (switchSettings.BackwardModifiers.Count > 2)
             {
-                this.BackwardModifierKeyThird = switchSettings.BackwardModifierKeys[2];
+                this.BackwardModifierThird = switchSettings.BackwardModifiers[2];
             }
 
             this.PressCount = switchSettings.PressCount;
@@ -271,9 +272,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         private void BindKeys()
         {
             this.WhenAnyValue(
-                vm => vm.ForwardModifierKeyFirst,
-                vm => vm.ForwardModifierKeySecond,
-                vm => vm.ForwardModifierKeyThird)
+                vm => vm.ForwardModifierFirst,
+                vm => vm.ForwardModifierSecond,
+                vm => vm.ForwardModifierThird)
                 .Subscribe(keys =>
                     this.forwardModifierKeysSource.Edit(list =>
                     {
@@ -284,9 +285,9 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
                     }));
 
             this.WhenAnyValue(
-                vm => vm.BackwardModifierKeyFirst,
-                vm => vm.BackwardModifierKeySecond,
-                vm => vm.BackwardModifierKeyThird)
+                vm => vm.BackwardModifierFirst,
+                vm => vm.BackwardModifierSecond,
+                vm => vm.BackwardModifierThird)
                 .Subscribe(keys =>
                     this.backwardModifierKeysSource.Edit(list =>
                     {
@@ -318,7 +319,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             var switchMethodsAreDifferent = Observable.CombineLatest(
                 this.forwardModifierKeysSource.Connect().ToCollection(),
                 this.backwardModifierKeysSource.Connect().ToCollection(),
-                (forward, backward) => !new HashSet<ModifierKey>(forward).SetEquals(backward));
+                (forward, backward) => !new HashSet<ModifierMask>(forward).SetEquals(backward));
 
             return this.LocalizedValidationRule(switchMethodsAreDifferent, "SwitchMethodsAreSame");
         }
@@ -342,12 +343,12 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
             return this.LocalizedValidationRule(switchMethodsAreDifferent, "LayoutKeysAreSame");
         }
 
-        private bool ContainsDistinctElements(IReadOnlyCollection<ModifierKey> keys) =>
+        private bool ContainsDistinctElements(IReadOnlyCollection<ModifierMask> keys) =>
             !keys
                 .SelectMany((x, index1) =>
                     keys.Select((y, index2) => (Key1: x, Key2: y, Index1: index1, Index2: index2)))
                 .Where(keys => keys.Index1 < keys.Index2)
-                .Select(keys => (keys.Key1 & keys.Key2) == ModifierKey.None)
+                .Select(keys => (keys.Key1 & keys.Key2) == ModifierMask.None)
                 .Any(equals => !equals);
     }
 }

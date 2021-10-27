@@ -1,15 +1,15 @@
 using System;
 
-using KeyboardSwitch.Core.Keyboard;
-
 using ReactiveUI;
+
+using SharpHook.Native;
 
 namespace KeyboardSwitch.Settings.Converters
 {
-    public sealed class ModifierKeyConverter : IBindingTypeConverter
+    public sealed class ModifierMaskConverter : IBindingTypeConverter
     {
         public int GetAffinityForObjects(Type fromType, Type toType) =>
-            fromType == typeof(ModifierKey) || toType == typeof(ModifierKey)
+            fromType == typeof(ModifierMask) || toType == typeof(ModifierMask)
                 ? 10000
                 : 0;
 
@@ -17,11 +17,11 @@ namespace KeyboardSwitch.Settings.Converters
         {
             switch (from)
             {
-                case ModifierKey key:
-                    result = Convert.ModifierKeyToString(key);
+                case ModifierMask modifier:
+                    result = Convert.ModifierToString(modifier);
                     return true;
                 case string str:
-                    result = Convert.StringToModifierKey(str);
+                    result = Convert.StringToModifier(str);
                     return true;
                 default:
                     result = null;

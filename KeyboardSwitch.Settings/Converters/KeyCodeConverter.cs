@@ -4,9 +4,9 @@ using System.Linq;
 
 using Avalonia.Input;
 
-using KeyboardSwitch.Core.Keyboard;
-
 using ReactiveUI;
+
+using SharpHook.Native;
 
 using static KeyboardSwitch.Core.Util;
 

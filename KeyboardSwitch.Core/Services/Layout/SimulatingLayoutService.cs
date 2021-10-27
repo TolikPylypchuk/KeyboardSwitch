@@ -6,6 +6,8 @@ using KeyboardSwitch.Core.Settings;
 
 using Microsoft.Extensions.Logging;
 
+using SharpHook.Native;
+
 namespace KeyboardSwitch.Core.Services.Layout
 {
     public abstract class SimulatingLayoutService : ILayoutService

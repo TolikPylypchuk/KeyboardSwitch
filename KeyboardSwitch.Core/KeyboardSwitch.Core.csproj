@@ -16,52 +16,11 @@
     <PackageReference Include="akavache" Version="7.3.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+    <PackageReference Include="SharpHook" Version="1.0.0-preview.2" />
+    <PackageReference Include="SharpHook.Reactive" Version="1.0.0-preview.2" />
     <PackageReference Include="System.Interactive" Version="5.0.0" />
     <PackageReference Include="System.Interactive.Async" Version="5.0.0" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
     <PackageReference Include="TextCopy" Version="4.3.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ContentWithTargetPath Include="lib\linux-x64\libuiohook.so">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>libuiohook.so</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="lib\linux-x64\libuiohook.so.1">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>libuiohook.so.1</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="lib\linux-x64\libuiohook.so.1.2.0">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>libuiohook.so.1.2.0</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="lib\macos-x64\libuiohook.dylib" Condition="$(Platform) == 'x64'">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>libuiohook.dylib</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="lib\macos-x64\libuiohook.1.dylib" Condition="$(Platform) == 'x64'">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>libuiohook.1.dylib</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="lib\macos-x64\libuiohook.1.2.0.dylib" Condition="$(Platform) == 'x64'">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>libuiohook.1.2.0.dylib</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="lib\macos-arm64\libuiohook.dylib" Condition="$(Platform) == 'ARM64'">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>libuiohook.dylib</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="lib\macos-arm64\libuiohook.1.dylib" Condition="$(Platform) == 'ARM64'">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>libuiohook.1.dylib</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="lib\macos-arm64\libuiohook.1.2.0.dylib" Condition="$(Platform) == 'ARM64'">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>libuiohook.1.2.0.dylib</TargetPath>
-    </ContentWithTargetPath>
-    <ContentWithTargetPath Include="lib\win-x64\uiohook.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <TargetPath>uiohook.dll</TargetPath>
-    </ContentWithTargetPath>
   </ItemGroup>
 </Project>

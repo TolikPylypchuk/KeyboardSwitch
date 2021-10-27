@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using KeyboardSwitch.Core.Keyboard;
 using KeyboardSwitch.Settings.Properties;
+
+using SharpHook.Native;
 
 using static KeyboardSwitch.Core.Util;
 
@@ -11,55 +12,68 @@ namespace KeyboardSwitch.Settings.Converters
 {
     public static class Convert
     {
-        private static readonly IReadOnlyDictionary<ModifierKey, string> KeysToStrings =
-            Enum.GetValues<ModifierKey>()
-                .Cast<ModifierKey>()
-                .ToDictionary(key => key, KeyToString);
-        
-        private static readonly IReadOnlyDictionary<string, ModifierKey> StringsToKeys =
-            KeysToStrings.ToDictionary(e => e.Value, e => e.Key);
-
-        public static string ModifierKeyToString(ModifierKey modifierKey) =>
-            KeysToStrings[modifierKey];
-
-        public static ModifierKey StringToModifierKey(string str) =>
-            StringsToKeys[str];
-
-        private static string KeyToString(ModifierKey key) =>
-            key switch
+        private static readonly IReadOnlyDictionary<ModifierMask, string> ModifiersToStrings =
+            new List<ModifierMask>
             {
-                ModifierKey.None => Messages.ModifierKeyNone,
+                ModifierMask.None,
+                ModifierMask.LeftShift,
+                ModifierMask.LeftCtrl,
+                ModifierMask.LeftMeta,
+                ModifierMask.LeftAlt,
+                ModifierMask.RightShift,
+                ModifierMask.RightCtrl,
+                ModifierMask.RightMeta,
+                ModifierMask.RightAlt,
+                ModifierMask.Shift,
+                ModifierMask.Ctrl,
+                ModifierMask.Meta,
+                ModifierMask.Alt,
+            }.ToDictionary(modifier => modifier, ModifierMaskToString);
+        
+        private static readonly IReadOnlyDictionary<string, ModifierMask> StringsToModifiers =
+            ModifiersToStrings.ToDictionary(e => e.Value, e => e.Key);
 
-                ModifierKey.LeftCtrl => Messages.ModifierKeyLeftCtrl,
-                ModifierKey.RightCtrl => Messages.ModifierKeyRightCtrl,
-                ModifierKey.Ctrl => Messages.ModifierKeyCtrl,
+        public static string ModifierToString(ModifierMask modifierKey) =>
+            ModifiersToStrings[modifierKey];
 
-                ModifierKey.LeftShift => Messages.ModifierKeyLeftShift,
-                ModifierKey.RightShift => Messages.ModifierKeyRightShift,
-                ModifierKey.Shift => Messages.ModifierKeyShift,
+        public static ModifierMask StringToModifier(string str) =>
+            StringsToModifiers[str];
 
-                ModifierKey.LeftAlt => PlatformDependent(
+        private static string ModifierMaskToString(ModifierMask modifier) =>
+            modifier switch
+            {
+                ModifierMask.None => Messages.ModifierKeyNone,
+
+                ModifierMask.LeftCtrl => Messages.ModifierKeyLeftCtrl,
+                ModifierMask.RightCtrl => Messages.ModifierKeyRightCtrl,
+                ModifierMask.Ctrl => Messages.ModifierKeyCtrl,
+
+                ModifierMask.LeftShift => Messages.ModifierKeyLeftShift,
+                ModifierMask.RightShift => Messages.ModifierKeyRightShift,
+                ModifierMask.Shift => Messages.ModifierKeyShift,
+
+                ModifierMask.LeftAlt => PlatformDependent(
                     windows: () => Messages.ModifierKeyLeftAlt,
                     macos: () => Messages.ModifierKeyLeftOption,
                     linux: () => Messages.ModifierKeyLeftAlt),
-                ModifierKey.RightAlt => PlatformDependent(
+                ModifierMask.RightAlt => PlatformDependent(
                     windows: () => Messages.ModifierKeyRightAlt,
                     macos: () => Messages.ModifierKeyRightOption,
                     linux: () => Messages.ModifierKeyRightAlt),
-                ModifierKey.Alt => PlatformDependent(
+                ModifierMask.Alt => PlatformDependent(
                     windows: () => Messages.ModifierKeyAlt,
                     macos: () => Messages.ModifierKeyOption,
                     linux: () => Messages.ModifierKeyAlt),
 
-                ModifierKey.LeftMeta => PlatformDependent(
+                ModifierMask.LeftMeta => PlatformDependent(
                     windows: () => Messages.ModifierKeyLeftWin,
                     macos: () => Messages.ModifierKeyLeftCommand,
                     linux: () => Messages.ModifierKeyLeftSuper),
-                ModifierKey.RightMeta => PlatformDependent(
+                ModifierMask.RightMeta => PlatformDependent(
                     windows: () => Messages.ModifierKeyRightWin,
                     macos: () => Messages.ModifierKeyRightCommand,
                     linux: () => Messages.ModifierKeyRightSuper),
-                ModifierKey.Meta => PlatformDependent(
+                ModifierMask.Meta => PlatformDependent(
                     windows: () => Messages.ModifierKeyWin,
                     macos: () => Messages.ModifierKeyCommand,
                     linux: () => Messages.ModifierKeySuper),

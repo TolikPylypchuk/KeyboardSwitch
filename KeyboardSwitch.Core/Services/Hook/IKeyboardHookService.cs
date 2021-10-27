@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using KeyboardSwitch.Core.Keyboard;
+using SharpHook.Native;
 
 namespace KeyboardSwitch.Core.Services.Hook
 {
     public interface IKeyboardHookService : IDisposable
     {
-        IObservable<ModifierKey> HotKeyPressed { get; }
+        IObservable<ModifierMask> HotKeyPressed { get; }
 
-        void Register(IEnumerable<ModifierKey> modifierKeys, int pressedCount, int waitMilliseconds);
-        void Unregister(IEnumerable<ModifierKey> modifierKeys);
+        void Register(IEnumerable<ModifierMask> modifiers, int pressedCount, int waitMilliseconds);
+        void Unregister(IEnumerable<ModifierMask> modifiers);
 
         void UnregisterAll();
 

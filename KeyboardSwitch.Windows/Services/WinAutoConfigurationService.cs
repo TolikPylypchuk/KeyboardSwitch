@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using KeyboardSwitch.Core.Keyboard;
 using KeyboardSwitch.Core.Services.AutoConfiguration;
+
+using SharpHook.Native;
 
 using static Vanara.PInvoke.User32;
 

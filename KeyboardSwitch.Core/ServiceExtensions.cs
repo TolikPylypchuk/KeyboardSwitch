@@ -10,6 +10,9 @@ using KeyboardSwitch.Core.Services.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using SharpHook;
+using SharpHook.Reactive;
+
 using TextCopy;
 
 namespace KeyboardSwitch.Core
@@ -18,7 +21,9 @@ namespace KeyboardSwitch.Core
     {
         public static IServiceCollection AddCoreKeyboardSwitchServices(this IServiceCollection services) =>
             services
-                .AddSingleton<IKeyboardHookService, UioHookService>()
+                .AddSingleton<IReactiveGlobalHook>(services => new ReactiveGlobalHookAdapter(
+                    new TaskPoolGlobalHook(TaskPoolGlobalHookOptions.Sequential)))
+                .AddSingleton<IKeyboardHookService, SharpHookService>()
                 .AddSingleton<ITextService, ClipboardTextService>()
                 .AddClipboard()
                 .AddSingleton(BlobCacheFactory.CreateBlobCache)

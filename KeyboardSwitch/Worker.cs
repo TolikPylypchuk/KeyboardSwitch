@@ -96,12 +96,12 @@ namespace KeyboardSwitch
         private void RegisterHotKeys(SwitchSettings settings)
         {
             this.keyboardHookService.Register(
-                settings.ForwardModifierKeys, settings.PressCount, settings.WaitMilliseconds);
+                settings.ForwardModifiers, settings.PressCount, settings.WaitMilliseconds);
             this.keyboardHookService.Register(
-                settings.BackwardModifierKeys, settings.PressCount, settings.WaitMilliseconds);
+                settings.BackwardModifiers, settings.PressCount, settings.WaitMilliseconds);
 
             this.hookSubscription = this.keyboardHookService.HotKeyPressed
-                .Select(key => key.IsSubsetKeyOf(settings.ForwardModifierKeys.Flatten())
+                .Select(key => key.IsSubsetKeyOf(settings.ForwardModifiers.Flatten())
                     ? SwitchDirection.Forward
                     : SwitchDirection.Backward)
                 .SubscribeAsync(this.SwitchTextSafeAsync);
