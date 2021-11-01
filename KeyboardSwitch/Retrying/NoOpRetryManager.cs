@@ -7,8 +7,5 @@ namespace KeyboardSwitch.Retrying
     {
         public Task DoWithRetrying(Func<Task> action) =>
             action();
-
-        public void DoNotRetryWhen(Func<Exception, bool> predicate)
-        { }
     }
 }

@@ -52,8 +52,6 @@ namespace KeyboardSwitch
         {
             try
             {
-                this.retryManager.DoNotRetryWhen(ex => ex is IncompatibleAppVersionException);
-
                 this.logger.LogDebug("Configuring the keyboard switch service");
 
                 await this.RegisterHotKeysAsync();
