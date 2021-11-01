@@ -14,7 +14,7 @@ Documentation=https://docs.keyboardswitch.tolik.io
 
 [Service]
 Type=notify
-ExecStart=$SERVICE_APP
+ExecStart=$SERVICE_APP --retry 5s,10s,15s
 ExecStop=$SERVICE_APP --stop
 ExecReload=$SERVICE_APP --reload-settings
 Environment=\"DISPLAY=:0\"

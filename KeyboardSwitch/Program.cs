@@ -20,6 +20,8 @@ using KeyboardSwitch.Windows;
 using KeyboardSwitch.Linux;
 #endif
 
+using KeyboardSwitch.Retrying;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -76,6 +78,7 @@ namespace KeyboardSwitch
                 .Configure<HostOptions>(o => o.ShutdownTimeout = TimeSpan.FromMilliseconds(100))
                 .Configure<GlobalSettings>(hostContext.Configuration.GetSection("Settings"))
                 .AddSingleton<IScheduler>(Scheduler.Default)
+                .AddRetryManager(hostContext.Configuration)
                 .AddCoreKeyboardSwitchServices()
                 .AddNativeKeyboardSwitchServices();
 

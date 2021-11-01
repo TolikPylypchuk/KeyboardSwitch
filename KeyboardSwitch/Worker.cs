@@ -10,6 +10,7 @@ using KeyboardSwitch.Core.Services.Hook;
 using KeyboardSwitch.Core.Services.Settings;
 using KeyboardSwitch.Core.Services.Switching;
 using KeyboardSwitch.Core.Settings;
+using KeyboardSwitch.Retrying;
 
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -19,6 +20,7 @@ namespace KeyboardSwitch
 {
     public class Worker : BackgroundService
     {
+        private readonly IRetryManager retryManager;
         private readonly IKeyboardHookService keyboardHookService;
         private readonly ISwitchService switchService;
         private readonly IAppSettingsService settingsService;
@@ -29,6 +31,7 @@ namespace KeyboardSwitch
         private IDisposable? hookSubscription;
 
         public Worker(
+            IRetryManager retryManager,
             IKeyboardHookService keyboardHookService,
             ISwitchService switchService,
             IAppSettingsService settingsService,
@@ -36,6 +39,7 @@ namespace KeyboardSwitch
             IOptions<GlobalSettings> globalSettings,
             ILogger<Worker> logger)
         {
+            this.retryManager = retryManager;
             this.keyboardHookService = keyboardHookService;
             this.switchService = switchService;
             this.settingsService = settingsService;
@@ -48,6 +52,8 @@ namespace KeyboardSwitch
         {
             try
             {
+                this.retryManager.DoNotRetryWhen(ex => ex is IncompatibleAppVersionException);
+
                 this.logger.LogDebug("Configuring the keyboard switch service");
 
                 await this.RegisterHotKeysAsync();
@@ -56,7 +62,7 @@ namespace KeyboardSwitch
 
                 this.logger.LogDebug("Starting the service execution");
 
-                await this.keyboardHookService.StartHook(token);
+                await this.retryManager.DoWithRetrying(() => this.keyboardHookService.StartHook(token));
             } catch (IncompatibleAppVersionException e)
             {
                 var settingsPath = Environment.ExpandEnvironmentVariables(this.globalSettings.Path);
