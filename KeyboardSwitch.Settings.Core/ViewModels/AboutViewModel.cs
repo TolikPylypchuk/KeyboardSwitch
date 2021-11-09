@@ -1,6 +1,5 @@
 using System;
-using System.Globalization;
-using System.Net;
+using System.Net.Http;
 using System.Reactive;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -39,8 +38,8 @@ namespace KeyboardSwitch.Settings.Core.ViewModels
         {
             try
             {
-                using var webClient = new WebClient();
-                string version = await Task.Run(() => webClient.DownloadStringTaskAsync(new Uri(VersionInfoLocation)));
+                using var httpClient = new HttpClient();
+                string version = await Task.Run(() => httpClient.GetStringAsync(VersionInfoLocation));
                 return Version.Parse(version.Trim());
             } catch (Exception e)
             {

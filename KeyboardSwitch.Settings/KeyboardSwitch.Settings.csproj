@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net5.0;net5.0-windows</TargetFrameworks>
+    <TargetFrameworks>net6.0;net6.0-windows</TargetFrameworks>
     <Nullable>enable</Nullable>
     <Platforms>x64</Platforms>
     <ApplicationIcon>icon.ico</ApplicationIcon>
@@ -14,11 +14,11 @@
     <OutputPath>$(MSBuildProjectDirectory)\..\bin\$(Platform)\$(Configuration)</OutputPath>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(TargetFramework) == 'net5.0-windows'">
+  <PropertyGroup Condition="$(TargetFramework) == 'net6.0-windows'">
     <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(TargetFramework) == 'net5.0-macos'">
+  <PropertyGroup Condition="$(TargetFramework) == 'net6.0-macos'">
     <DefineConstants>$(DefineConstants);MACOS</DefineConstants>
   </PropertyGroup>
 
@@ -33,15 +33,15 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.10" />
     <PackageReference Include="DynamicData" Version="7.4.3" />
     <PackageReference Include="FluentAvaloniaUI" Version="1.1.5" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
     <PackageReference Include="ReactiveUI" Version="16.3.10" />
     <PackageReference Include="ReactiveUI.Validation" Version="2.2.1" />
     <PackageReference Include="Serilog" Version="2.10.0" />
@@ -80,8 +80,8 @@
   <ItemGroup>
     <ProjectReference Include="..\KeyboardSwitch.Core\KeyboardSwitch.Core.csproj" />
     <ProjectReference Include="..\KeyboardSwitch.Settings.Core\KeyboardSwitch.Settings.Core.csproj" />
-    <ProjectReference Include="..\KeyboardSwitch.Windows\KeyboardSwitch.Windows.csproj" Condition="$(TargetFramework) == 'net5.0-windows'" />
-    <ProjectReference Include="..\KeyboardSwitch.Linux\KeyboardSwitch.Linux.csproj" Condition="$(TargetFramework) == 'net5.0'" />
+    <ProjectReference Include="..\KeyboardSwitch.Windows\KeyboardSwitch.Windows.csproj" Condition="$(TargetFramework) == 'net6.0-windows'" />
+    <ProjectReference Include="..\KeyboardSwitch.Linux\KeyboardSwitch.Linux.csproj" Condition="$(TargetFramework) == 'net6.0'" />
   </ItemGroup>
 
   <ItemGroup>

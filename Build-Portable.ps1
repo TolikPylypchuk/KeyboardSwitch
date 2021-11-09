@@ -5,11 +5,11 @@ if (Test-Path .\bin\KeyboardSwitch)
     Remove-Item -Path .\bin\KeyboardSwitch\* -Recurse -Force
 }
 
-dotnet publish .\KeyboardSwitch --configuration Release --runtime win10-x64 --framework net5.0-windows `
---self-contained true --output .\bin\KeyboardSwitch --nologo -p:Platform=x64 -p:PublishTrimmed=true
+dotnet publish .\KeyboardSwitch --configuration Release --runtime win10-x64 --framework net6.0-windows `
+--self-contained true --output .\bin\KeyboardSwitch --nologo -p:Platform=x64
 
-dotnet publish .\KeyboardSwitch.Settings --configuration Release --runtime win10-x64 --framework net5.0-windows `
---self-contained true --output .\bin\KeyboardSwitch --nologo -p:Platform=x64 -p:PublishTrimmed=true
+dotnet publish .\KeyboardSwitch.Settings --configuration Release --runtime win10-x64 --framework net6.0-windows `
+--self-contained true --output .\bin\KeyboardSwitch --nologo -p:Platform=x64
 
 Remove-Item -Path .\bin\KeyboardSwitch\* -Include *.pdb, *.xml
 Remove-Item -Path .\bin\KeyboardSwitch\appsettings.macos.json
