@@ -1,14 +1,9 @@
-using System.Collections.Generic;
+namespace KeyboardSwitch.Core.Services.Layout;
 
-using KeyboardSwitch.Core.Keyboard;
-
-namespace KeyboardSwitch.Core.Services.Layout
+public interface ILayoutLoaderSrevice
 {
-    public interface ILayoutLoaderSrevice
-    {
-        bool IsLoadingLayoutsSupported { get; }
+    bool IsLoadingLayoutsSupported { get; }
 
-        List<LoadableKeyboardLayout> GetAllSystemLayouts();
-        DisposableLayouts LoadLayouts(IEnumerable<LoadableKeyboardLayout> loadableLayouts);
-    }
+    List<LoadableKeyboardLayout> GetAllSystemLayouts();
+    DisposableLayouts LoadLayouts(IEnumerable<LoadableKeyboardLayout> loadableLayouts);
 }

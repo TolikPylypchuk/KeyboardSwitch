@@ -1,11 +1,6 @@
-using System.Collections.Generic;
+namespace KeyboardSwitch.Core.Services.AutoConfiguration;
 
-using KeyboardSwitch.Core.Keyboard;
-
-namespace KeyboardSwitch.Core.Services.AutoConfiguration
+public interface IAutoConfigurationService
 {
-    public interface IAutoConfigurationService
-    {
-        Dictionary<string, string> CreateCharMappings(IEnumerable<KeyboardLayout> layouts);
-    }
+    Dictionary<string, string> CreateCharMappings(IEnumerable<KeyboardLayout> layouts);
 }

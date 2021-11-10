@@ -1,8 +1,7 @@
-namespace KeyboardSwitch.Core.Services.Simulation
+namespace KeyboardSwitch.Core.Services.Simulation;
+
+public interface IUserActivitySimulator
 {
-    public interface IUserActivitySimulator
-    {
-        void SimulateCopy();
-        void SimulatePaste();
-    }
+    void SimulateCopy();
+    void SimulatePaste();
 }

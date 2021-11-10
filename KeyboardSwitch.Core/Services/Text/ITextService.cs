@@ -1,10 +1,7 @@
-using System.Threading.Tasks;
+namespace KeyboardSwitch.Core.Services.Text;
 
-namespace KeyboardSwitch.Core.Services.Text
+public interface ITextService
 {
-    public interface ITextService
-    {
-        Task<string?> GetTextAsync();
-        Task SetTextAsync(string text);
-    }
+    Task<string?> GetTextAsync();
+    Task SetTextAsync(string text);
 }

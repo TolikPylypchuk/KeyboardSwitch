@@ -1,16 +1,10 @@
-using System.Collections.Generic;
+namespace KeyboardSwitch.Core.Services.Layout;
 
-using KeyboardSwitch.Core.Keyboard;
-using KeyboardSwitch.Core.Settings;
-
-namespace KeyboardSwitch.Core.Services.Layout
+public interface ILayoutService
 {
-    public interface ILayoutService
-    {
-        bool SwitchLayoutsViaKeyboardSimulation { get; }
+    bool SwitchLayoutsViaKeyboardSimulation { get; }
 
-        KeyboardLayout GetCurrentKeyboardLayout();
-        void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings);
-        List<KeyboardLayout> GetKeyboardLayouts();
-    }
+    KeyboardLayout GetCurrentKeyboardLayout();
+    void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings);
+    List<KeyboardLayout> GetKeyboardLayouts();
 }

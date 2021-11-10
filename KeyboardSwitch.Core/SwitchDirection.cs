@@ -1,8 +1,7 @@
-namespace KeyboardSwitch.Core
+namespace KeyboardSwitch.Core;
+
+public enum SwitchDirection
 {
-    public enum SwitchDirection
-    {
-        Forward,
-        Backward
-    }
+    Forward,
+    Backward
 }

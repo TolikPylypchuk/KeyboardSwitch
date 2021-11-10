@@ -1,9 +1,6 @@
-using System.Threading.Tasks;
+namespace KeyboardSwitch.Core.Services.Switching;
 
-namespace KeyboardSwitch.Core.Services.Switching
+public interface ISwitchService
 {
-    public interface ISwitchService
-    {
-        Task SwitchTextAsync(SwitchDirection direction);
-    }
+    Task SwitchTextAsync(SwitchDirection direction);
 }

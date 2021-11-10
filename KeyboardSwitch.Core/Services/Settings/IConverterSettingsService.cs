@@ -1,12 +1,7 @@
-using System.Threading.Tasks;
+namespace KeyboardSwitch.Core.Services.Settings;
 
-using KeyboardSwitch.Core.Settings;
-
-namespace KeyboardSwitch.Core.Services.Settings
+public interface IConverterSettingsService
 {
-    public interface IConverterSettingsService
-    {
-        ValueTask<ConverterSettings> GetConverterSettingsAsync();
-        Task SaveConverterSettingsAsync(ConverterSettings appSettings);
-    }
+    ValueTask<ConverterSettings> GetConverterSettingsAsync();
+    Task SaveConverterSettingsAsync(ConverterSettings appSettings);
 }

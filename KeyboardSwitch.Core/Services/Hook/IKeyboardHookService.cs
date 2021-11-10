@@ -1,21 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+namespace KeyboardSwitch.Core.Services.Hook;
 
-using SharpHook.Native;
-
-namespace KeyboardSwitch.Core.Services.Hook
+public interface IKeyboardHookService : IDisposable
 {
-    public interface IKeyboardHookService : IDisposable
-    {
-        IObservable<ModifierMask> HotKeyPressed { get; }
+    IObservable<ModifierMask> HotKeyPressed { get; }
 
-        void Register(IEnumerable<ModifierMask> modifiers, int pressedCount, int waitMilliseconds);
-        void Unregister(IEnumerable<ModifierMask> modifiers);
+    void Register(IEnumerable<ModifierMask> modifiers, int pressedCount, int waitMilliseconds);
+    void Unregister(IEnumerable<ModifierMask> modifiers);
 
-        void UnregisterAll();
+    void UnregisterAll();
 
-        Task StartHook(CancellationToken token);
-    }
+    Task StartHook(CancellationToken token);
 }

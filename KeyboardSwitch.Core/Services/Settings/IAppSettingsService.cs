@@ -1,18 +1,11 @@
-using System;
-using System.Reactive;
-using System.Threading.Tasks;
+namespace KeyboardSwitch.Core.Services.Settings;
 
-using KeyboardSwitch.Core.Settings;
-
-namespace KeyboardSwitch.Core.Services.Settings
+public interface IAppSettingsService
 {
-    public interface IAppSettingsService
-    {
-        IObservable<Unit> SettingsInvalidated { get; }
+    IObservable<Unit> SettingsInvalidated { get; }
 
-        Task<AppSettings> GetAppSettingsAsync();
-        Task SaveAppSettingsAsync(AppSettings appSettings);
+    Task<AppSettings> GetAppSettingsAsync();
+    Task SaveAppSettingsAsync(AppSettings appSettings);
 
-        void InvalidateAppSettings();
-    }
+    void InvalidateAppSettings();
 }

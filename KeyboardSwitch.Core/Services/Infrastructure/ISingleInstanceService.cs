@@ -1,9 +1,6 @@
-using System.Threading;
+namespace KeyboardSwitch.Core.Services.Infrastructure;
 
-namespace KeyboardSwitch.Core.Services.Infrastructure
+public interface ISingleInstanceService
 {
-    public interface ISingleInstanceService
-    {
-        Mutex TryAcquireMutex();
-    }
+    Mutex TryAcquireMutex();
 }

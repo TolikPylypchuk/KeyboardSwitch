@@ -1,25 +1,21 @@
-using System;
-using System.Threading.Tasks;
+namespace KeyboardSwitch.Core;
 
-namespace KeyboardSwitch.Core
+public abstract class AsyncDisposable : Disposable, IAsyncDisposable
 {
-    public abstract class AsyncDisposable : Disposable, IAsyncDisposable
+    public async ValueTask DisposeAsync()
     {
-        public async ValueTask DisposeAsync()
+        if (!this.Disposed)
         {
-            if (!this.Disposed)
-            {
-                await this.DisposeAsyncCore();
-                this.Dispose(false);
-                GC.SuppressFinalize(this);
+            await this.DisposeAsyncCore();
+            this.Dispose(false);
+            GC.SuppressFinalize(this);
 
-                this.Disposed = true;
-            }
+            this.Disposed = true;
         }
-
-        protected abstract ValueTask DisposeAsyncCore();
-
-        protected override void Dispose(bool disposing)
-        { }
     }
+
+    protected abstract ValueTask DisposeAsyncCore();
+
+    protected override void Dispose(bool disposing)
+    { }
 }

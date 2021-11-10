@@ -1,7 +1,6 @@
-namespace KeyboardSwitch.Core
+namespace KeyboardSwitch.Core;
+
+public static class Constants
 {
-    public static class Constants
-    {
-        public static readonly char MissingCharacter = ' ';
-    }
+    public static readonly char MissingCharacter = ' ';
 }
