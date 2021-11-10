@@ -1,125 +1,106 @@
-using System;
-using System.Linq;
-using System.Reactive.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+namespace KeyboardSwitch;
 
-using KeyboardSwitch.Core;
-using KeyboardSwitch.Core.Keyboard;
-using KeyboardSwitch.Core.Services.Hook;
-using KeyboardSwitch.Core.Services.Settings;
-using KeyboardSwitch.Core.Services.Switching;
-using KeyboardSwitch.Core.Settings;
-using KeyboardSwitch.Retrying;
-
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-
-namespace KeyboardSwitch
+public class Worker : BackgroundService
 {
-    public class Worker : BackgroundService
+    private readonly IRetryManager retryManager;
+    private readonly IKeyboardHookService keyboardHookService;
+    private readonly ISwitchService switchService;
+    private readonly IAppSettingsService settingsService;
+    private readonly IHost host;
+    private readonly GlobalSettings globalSettings;
+    private readonly ILogger<Worker> logger;
+
+    private IDisposable? hookSubscription;
+
+    public Worker(
+        IRetryManager retryManager,
+        IKeyboardHookService keyboardHookService,
+        ISwitchService switchService,
+        IAppSettingsService settingsService,
+        IHost host,
+        IOptions<GlobalSettings> globalSettings,
+        ILogger<Worker> logger)
     {
-        private readonly IRetryManager retryManager;
-        private readonly IKeyboardHookService keyboardHookService;
-        private readonly ISwitchService switchService;
-        private readonly IAppSettingsService settingsService;
-        private readonly IHost host;
-        private readonly GlobalSettings globalSettings;
-        private readonly ILogger<Worker> logger;
+        this.retryManager = retryManager;
+        this.keyboardHookService = keyboardHookService;
+        this.switchService = switchService;
+        this.settingsService = settingsService;
+        this.host = host;
+        this.globalSettings = globalSettings.Value;
+        this.logger = logger;
+    }
 
-        private IDisposable? hookSubscription;
-
-        public Worker(
-            IRetryManager retryManager,
-            IKeyboardHookService keyboardHookService,
-            ISwitchService switchService,
-            IAppSettingsService settingsService,
-            IHost host,
-            IOptions<GlobalSettings> globalSettings,
-            ILogger<Worker> logger)
+    protected override async Task ExecuteAsync(CancellationToken token)
+    {
+        try
         {
-            this.retryManager = retryManager;
-            this.keyboardHookService = keyboardHookService;
-            this.switchService = switchService;
-            this.settingsService = settingsService;
-            this.host = host;
-            this.globalSettings = globalSettings.Value;
-            this.logger = logger;
-        }
+            this.logger.LogDebug("Configuring the keyboard switch service");
 
-        protected override async Task ExecuteAsync(CancellationToken token)
-        {
-            try
-            {
-                this.logger.LogDebug("Configuring the keyboard switch service");
-
-                await this.RegisterHotKeysAsync();
-
-                this.settingsService.SettingsInvalidated.SubscribeAsync(this.RefreshHotKeysAsync);
-
-                this.logger.LogDebug("Starting the service execution");
-
-                await this.retryManager.DoWithRetrying(() => this.keyboardHookService.StartHook(token));
-            } catch (IncompatibleAppVersionException e)
-            {
-                var settingsPath = Environment.ExpandEnvironmentVariables(this.globalSettings.Path);
-
-                this.logger.LogError(e, $"Incompatible app version found in settings: {e.Version}. " +
-                    $"Delete the settings at '{settingsPath}' and let the app recreate a compatible version");
-
-                await this.host.StopAsync(token);
-            } catch (Exception e)
-            {
-                this.logger.LogCritical(e, "The Keyboard Switch service has crashed");
-                await this.host.StopAsync(token);
-            }
-        }
-
-        public override void Dispose()
-        {
-            this.hookSubscription?.Dispose();
-            base.Dispose();
-        }
-
-        private async Task RegisterHotKeysAsync()
-        {
-            this.logger.LogDebug("Registering hot keys to switch forward and backward");
-            var settings = await this.settingsService.GetAppSettingsAsync();
-            this.RegisterHotKeys(settings.SwitchSettings);
-        }
-
-        private async Task RefreshHotKeysAsync()
-        {
-            this.logger.LogDebug("Refreshing the hot key registration to switch forward and backward");
-            this.keyboardHookService.UnregisterAll();
-            this.hookSubscription?.Dispose();
             await this.RegisterHotKeysAsync();
-        }
 
-        private void RegisterHotKeys(SwitchSettings settings)
+            this.settingsService.SettingsInvalidated.SubscribeAsync(this.RefreshHotKeysAsync);
+
+            this.logger.LogDebug("Starting the service execution");
+
+            await this.retryManager.DoWithRetrying(() => this.keyboardHookService.StartHook(token));
+        } catch (IncompatibleAppVersionException e)
         {
-            this.keyboardHookService.Register(
-                settings.ForwardModifiers, settings.PressCount, settings.WaitMilliseconds);
-            this.keyboardHookService.Register(
-                settings.BackwardModifiers, settings.PressCount, settings.WaitMilliseconds);
+            var settingsPath = Environment.ExpandEnvironmentVariables(this.globalSettings.Path);
 
-            this.hookSubscription = this.keyboardHookService.HotKeyPressed
-                .Select(key => key.IsSubsetKeyOf(settings.ForwardModifiers.Flatten())
-                    ? SwitchDirection.Forward
-                    : SwitchDirection.Backward)
-                .SubscribeAsync(this.SwitchTextSafeAsync);
-        }
+            this.logger.LogError(e, $"Incompatible app version found in settings: {e.Version}. " +
+                $"Delete the settings at '{settingsPath}' and let the app recreate a compatible version");
 
-        private async Task SwitchTextSafeAsync(SwitchDirection direction)
+            await this.host.StopAsync(token);
+        } catch (Exception e)
         {
-            try
-            {
-                await this.switchService.SwitchTextAsync(direction);
-            } catch (Exception e)
-            {
-                this.logger.LogError(e, "Error when trying to switch text");
-            }
+            this.logger.LogCritical(e, "The Keyboard Switch service has crashed");
+            await this.host.StopAsync(token);
+        }
+    }
+
+    public override void Dispose()
+    {
+        this.hookSubscription?.Dispose();
+        base.Dispose();
+    }
+
+    private async Task RegisterHotKeysAsync()
+    {
+        this.logger.LogDebug("Registering hot keys to switch forward and backward");
+        var settings = await this.settingsService.GetAppSettingsAsync();
+        this.RegisterHotKeys(settings.SwitchSettings);
+    }
+
+    private async Task RefreshHotKeysAsync()
+    {
+        this.logger.LogDebug("Refreshing the hot key registration to switch forward and backward");
+        this.keyboardHookService.UnregisterAll();
+        this.hookSubscription?.Dispose();
+        await this.RegisterHotKeysAsync();
+    }
+
+    private void RegisterHotKeys(SwitchSettings settings)
+    {
+        this.keyboardHookService.Register(
+            settings.ForwardModifiers, settings.PressCount, settings.WaitMilliseconds);
+        this.keyboardHookService.Register(
+            settings.BackwardModifiers, settings.PressCount, settings.WaitMilliseconds);
+
+        this.hookSubscription = this.keyboardHookService.HotKeyPressed
+            .Select(key => key.IsSubsetKeyOf(settings.ForwardModifiers.Flatten())
+                ? SwitchDirection.Forward
+                : SwitchDirection.Backward)
+            .SubscribeAsync(this.SwitchTextSafeAsync);
+    }
+
+    private async Task SwitchTextSafeAsync(SwitchDirection direction)
+    {
+        try
+        {
+            await this.switchService.SwitchTextAsync(direction);
+        } catch (Exception e)
+        {
+            this.logger.LogError(e, "Error when trying to switch text");
         }
     }
 }

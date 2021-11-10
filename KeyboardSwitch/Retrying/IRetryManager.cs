@@ -1,10 +1,6 @@
-using System;
-using System.Threading.Tasks;
+namespace KeyboardSwitch.Retrying;
 
-namespace KeyboardSwitch.Retrying
+public interface IRetryManager
 {
-    public interface IRetryManager
-    {
-        Task DoWithRetrying(Func<Task> action);
-    }
+    Task DoWithRetrying(Func<Task> action);
 }

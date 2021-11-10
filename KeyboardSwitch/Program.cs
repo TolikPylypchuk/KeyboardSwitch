@@ -1,18 +1,10 @@
-using System;
+namespace KeyboardSwitch;
+
 using System.IO;
 using System.Reactive.Concurrency;
-using System.Reactive.Linq;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 
 using Akavache;
-
-using KeyboardSwitch.Core;
-using KeyboardSwitch.Core.Services;
-using KeyboardSwitch.Core.Services.Infrastructure;
-using KeyboardSwitch.Core.Services.Settings;
-using KeyboardSwitch.Core.Settings;
 
 #if WINDOWS
 using KeyboardSwitch.Windows;
@@ -20,108 +12,97 @@ using KeyboardSwitch.Windows;
 using KeyboardSwitch.Linux;
 #endif
 
-using KeyboardSwitch.Retrying;
-
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-
 using Serilog;
 
-using static KeyboardSwitch.Core.Util;
+using ILogger = ILogger; // From Microsoft.Extensions.Logging
 
-using ILogger = Microsoft.Extensions.Logging.ILogger;
-
-namespace KeyboardSwitch
+public static class Program
 {
-    public static class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
+        Directory.SetCurrentDirectory(
+            Path.GetDirectoryName(Assembly.GetExecutingAssembly()?.Location) ?? String.Empty);
+
+        BlobCache.ApplicationName = nameof(KeyboardSwitch);
+
+        using var host = Host.CreateDefaultBuilder(args)
+            .ConfigureServices(ConfigureServices)
+            .ConfigureLogging(ConfigureLogging)
+            .UseConsoleLifetime()
+            .UseEnvironment(PlatformDependent(windows: () => "windows", macos: () => "macos", linux: () => "linux"))
+            .UseSystemd()
+            .Build();
+
+        var logger = host.Services.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(Program));
+
+        using var mutex = ConfigureSingleInstance(host.Services);
+
+        try
         {
-            Directory.SetCurrentDirectory(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly()?.Location) ?? String.Empty);
+            SubscribeToExternalCommands(host, logger);
 
-            BlobCache.ApplicationName = nameof(KeyboardSwitch);
+            logger.LogInformation("KeyboardSwitch service execution started");
 
-            using var host = Host.CreateDefaultBuilder(args)
-                .ConfigureServices(ConfigureServices)
-                .ConfigureLogging(ConfigureLogging)
-                .UseConsoleLifetime()
-                .UseEnvironment(PlatformDependent(windows: () => "windows", macos: () => "macos", linux: () => "linux"))
-                .UseSystemd()
-                .Build();
+            host.Run();
 
-            var logger = host.Services.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(Program));
-
-            using var mutex = ConfigureSingleInstance(host.Services);
-
-            try
-            {
-                SubscribeToExternalCommands(host, logger);
-
-                logger.LogInformation("KeyboardSwitch service execution started");
-
-                host.Run();
-
-                logger.LogInformation("KeyboardSwitch service execution stopped");
-            } catch (Exception e) when (e is OperationCanceledException || e is TaskCanceledException)
-            {
-                logger.LogInformation("The Keyboard Switch service execution was cancelled");
-            } finally
-            {
-                mutex.ReleaseMutex();
-            }
-        }
-
-        private static void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services) =>
-            services.AddHostedService<Worker>()
-                .Configure<HostOptions>(o => o.ShutdownTimeout = TimeSpan.FromMilliseconds(100))
-                .Configure<GlobalSettings>(hostContext.Configuration.GetSection("Settings"))
-                .AddSingleton<IScheduler>(Scheduler.Default)
-                .AddRetryManager(hostContext.Configuration)
-                .AddCoreKeyboardSwitchServices()
-                .AddNativeKeyboardSwitchServices();
-
-        private static void ConfigureLogging(HostBuilderContext hostingContext, ILoggingBuilder logging) =>
-            logging
-                .ClearProviders()
-                .AddSerilog(
-                    new LoggerConfiguration()
-                        .Enrich.FromLogContext()
-                        .ReadFrom.Configuration(hostingContext.Configuration)
-                        .CreateLogger(),
-                    dispose: true);
-
-        private static Mutex ConfigureSingleInstance(IServiceProvider services)
+            logger.LogInformation("KeyboardSwitch service execution stopped");
+        } catch (Exception e) when (e is OperationCanceledException || e is TaskCanceledException)
         {
-            var singleInstanceProvider = services.GetRequiredService<ServiceProvider<ISingleInstanceService>>();
-            var singleInstanceService = singleInstanceProvider(nameof(KeyboardSwitch));
-
-            return singleInstanceService.TryAcquireMutex();
-        }
-
-        private static void SubscribeToExternalCommands(IHost host, ILogger logger)
+            logger.LogInformation("The Keyboard Switch service execution was cancelled");
+        } finally
         {
-            var namedPipeProvider = host.Services.GetRequiredService<ServiceProvider<INamedPipeService>>();
-            var namedPipeService = namedPipeProvider(nameof(KeyboardSwitch));
-
-            var settingsService = host.Services.GetRequiredService<IAppSettingsService>();
-
-            namedPipeService.StartServer();
-
-            namedPipeService.ReceivedString
-                .Where(command => command.IsCommand(ExternalCommand.Stop))
-                .Do(_ => logger.LogInformation("Stopping the service by external request"))
-                .SubscribeAsync(async _ => await host.StopAsync());
-
-            namedPipeService.ReceivedString
-                .Where(command => command.IsCommand(ExternalCommand.ReloadSettings))
-                .Do(_ => logger.LogInformation("Invalidating the settings by external request"))
-                .Subscribe(_ => settingsService.InvalidateAppSettings());
-
-            namedPipeService.ReceivedString
-                .Where(command => command.IsUnknownCommand())
-                .Subscribe(command => logger.LogWarning($"External request '{command}' is not recognized"));
+            mutex.ReleaseMutex();
         }
+    }
+
+    private static void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services) =>
+        services.AddHostedService<Worker>()
+            .Configure<HostOptions>(o => o.ShutdownTimeout = TimeSpan.FromMilliseconds(100))
+            .Configure<GlobalSettings>(hostContext.Configuration.GetSection("Settings"))
+            .AddSingleton<IScheduler>(Scheduler.Default)
+            .AddRetryManager(hostContext.Configuration)
+            .AddCoreKeyboardSwitchServices()
+            .AddNativeKeyboardSwitchServices();
+
+    private static void ConfigureLogging(HostBuilderContext hostingContext, ILoggingBuilder logging) =>
+        logging
+            .ClearProviders()
+            .AddSerilog(
+                new LoggerConfiguration()
+                    .Enrich.FromLogContext()
+                    .ReadFrom.Configuration(hostingContext.Configuration)
+                    .CreateLogger(),
+                dispose: true);
+
+    private static Mutex ConfigureSingleInstance(IServiceProvider services)
+    {
+        var singleInstanceProvider = services.GetRequiredService<ServiceProvider<ISingleInstanceService>>();
+        var singleInstanceService = singleInstanceProvider(nameof(KeyboardSwitch));
+
+        return singleInstanceService.TryAcquireMutex();
+    }
+
+    private static void SubscribeToExternalCommands(IHost host, ILogger logger)
+    {
+        var namedPipeProvider = host.Services.GetRequiredService<ServiceProvider<INamedPipeService>>();
+        var namedPipeService = namedPipeProvider(nameof(KeyboardSwitch));
+
+        var settingsService = host.Services.GetRequiredService<IAppSettingsService>();
+
+        namedPipeService.StartServer();
+
+        namedPipeService.ReceivedString
+            .Where(command => command.IsCommand(ExternalCommand.Stop))
+            .Do(_ => logger.LogInformation("Stopping the service by external request"))
+            .SubscribeAsync(async _ => await host.StopAsync());
+
+        namedPipeService.ReceivedString
+            .Where(command => command.IsCommand(ExternalCommand.ReloadSettings))
+            .Do(_ => logger.LogInformation("Invalidating the settings by external request"))
+            .Subscribe(_ => settingsService.InvalidateAppSettings());
+
+        namedPipeService.ReceivedString
+            .Where(command => command.IsUnknownCommand())
+            .Subscribe(command => logger.LogWarning($"External request '{command}' is not recognized"));
     }
 }
