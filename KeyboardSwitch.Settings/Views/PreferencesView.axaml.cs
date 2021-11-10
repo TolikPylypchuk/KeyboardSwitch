@@ -1,285 +1,257 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
+namespace KeyboardSwitch.Settings.Views;
 
-using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.ReactiveUI;
+using Convert = Converters.Convert;
 
-using DynamicData;
-using DynamicData.Binding;
-
-using KeyboardSwitch.Core;
-using KeyboardSwitch.Settings.Controls;
-using KeyboardSwitch.Settings.Converters;
-using KeyboardSwitch.Settings.Core.ViewModels;
-using KeyboardSwitch.Settings.Properties;
-
-using ReactiveUI;
-using ReactiveUI.Validation.Extensions;
-
-using SharpHook.Native;
-
-using static KeyboardSwitch.Core.Util;
-
-using Convert = KeyboardSwitch.Settings.Converters.Convert;
-
-namespace KeyboardSwitch.Settings.Views
+public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
 {
-    public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
+    private readonly KeyCodeConverter keyCodeConverter = new();
+
+    public PreferencesView()
     {
-        private readonly KeyCodeConverter keyCodeConverter = new();
+        this.InitializeComponent();
 
-        public PreferencesView()
+        var modifiers = this.Modifiers()
+            .Where(key => key != ModifierMask.None)
+            .Select(Convert.ModifierToString)
+            .ToImmutableList();
+
+        var allModifiers = modifiers.Insert(0, Convert.ModifierToString(ModifierMask.None));
+
+        this.ForwardFirstComboBox.Items = modifiers;
+        this.ForwardSecondComboBox.Items = modifiers;
+        this.ForwardThirdComboBox.Items = allModifiers;
+
+        this.BackwardFirstComboBox.Items = modifiers;
+        this.BackwardSecondComboBox.Items = modifiers;
+        this.BackwardThirdComboBox.Items = allModifiers;
+
+        this.WhenActivated(disposables =>
         {
-            this.InitializeComponent();
+            this.BindCheckboxes(disposables);
+            this.BindControls(disposables);
+            this.BindValidations(disposables);
+            this.BindCommands(disposables);
 
-            var modifiers = this.Modifiers()
-                .Where(key => key != ModifierMask.None)
-                .Select(Convert.ModifierToString)
-                .ToImmutableList();
-
-            var allModifiers = modifiers.Insert(0, Convert.ModifierToString(ModifierMask.None));
-
-            this.ForwardFirstComboBox.Items = modifiers;
-            this.ForwardSecondComboBox.Items = modifiers;
-            this.ForwardThirdComboBox.Items = allModifiers;
-
-            this.BackwardFirstComboBox.Items = modifiers;
-            this.BackwardSecondComboBox.Items = modifiers;
-            this.BackwardThirdComboBox.Items = allModifiers;
-
-            this.WhenActivated(disposables =>
+            if (this.ViewModel!.SwitchLayoutsViaKeyboardSimulation)
             {
-                this.BindCheckboxes(disposables);
-                this.BindControls(disposables);
-                this.BindValidations(disposables);
-                this.BindCommands(disposables);
-
-                if (this.ViewModel!.SwitchLayoutsViaKeyboardSimulation)
-                {
-                    this.BindLayoutKeys(disposables);
-                } else
-                {
-                    this.LayoutKeysPanel.IsVisible = false;
-                }
-            });
-        }
-
-        private void BindCheckboxes(CompositeDisposable disposables)
-        {
-            this.Bind(this.ViewModel, vm => vm.InstantSwitching, v => v.InstantSwitchingCheckBox.IsChecked)
-                .DisposeWith(disposables);
-
-            this.Bind(this.ViewModel, vm => vm.SwitchLayout, v => v.SwitchLayoutCheckBox.IsChecked)
-                .DisposeWith(disposables);
-
-            this.Bind(this.ViewModel, vm => vm.Startup, v => v.StartupCheckBox.IsChecked)
-                .DisposeWith(disposables);
-
-            this.Bind(
-                this.ViewModel,
-                vm => vm.ShowUninstalledLayoutsMessage,
-                v => v.ShowRemovedLayoutsMessageCheckBox.IsChecked)
-                .DisposeWith(disposables);
-
-            this.Bind(this.ViewModel, vm => vm.ShowConverter, v => v.ShowConverterCheckBox.IsChecked)
-                .DisposeWith(disposables);
-        }
-
-        private void BindControls(CompositeDisposable disposables)
-        {
-            this.Bind(this.ViewModel, vm => vm.ForwardModifierFirst, v => v.ForwardFirstComboBox.SelectedItem)
-                .DisposeWith(disposables);
-
-            this.Bind(this.ViewModel, vm => vm.ForwardModifierSecond, v => v.ForwardSecondComboBox.SelectedItem)
-                .DisposeWith(disposables);
-
-            this.Bind(this.ViewModel, vm => vm.ForwardModifierThird, v => v.ForwardThirdComboBox.SelectedItem)
-                .DisposeWith(disposables);
-
-            this.Bind(this.ViewModel, vm => vm.BackwardModifierFirst, v => v.BackwardFirstComboBox.SelectedItem)
-                .DisposeWith(disposables);
-
-            this.Bind(this.ViewModel, vm => vm.BackwardModifierSecond, v => v.BackwardSecondComboBox.SelectedItem)
-                .DisposeWith(disposables);
-
-            this.Bind(this.ViewModel, vm => vm.BackwardModifierThird, v => v.BackwardThirdComboBox.SelectedItem)
-                .DisposeWith(disposables);
-
-            this.Bind(this.ViewModel, vm => vm.PressCount, v => v.PressCountBox.Value)
-                .DisposeWith(disposables);
-
-            this.Bind(this.ViewModel, vm => vm.WaitMilliseconds, v => v.WaitMillisecondsBox.Value)
-                .DisposeWith(disposables);
-        }
-
-        private void BindLayoutKeys(CompositeDisposable disposables)
-        {
-            this.ViewModel!.LayoutForwardKeyCodes
-                .ToObservableChangeSet()
-                .ToCollection()
-                .Select(this.ConvertKeyCodesToString)
-                .BindTo(this, v => v.LayoutForwardKeysTextBox.Text)
-                .DisposeWith(disposables);
-
-            this.ViewModel!.LayoutBackwardKeyCodes
-                .ToObservableChangeSet()
-                .ToCollection()
-                .Select(this.ConvertKeyCodesToString)
-                .BindTo(this, v => v.LayoutBackwardKeysTextBox.Text)
-                .DisposeWith(disposables);
-
-            this.LayoutForwardKeysTextBox.GetObservable(KeysBox.KeyPressedEvent)
-                .Select(e => e.Key)
-                .Select(this.keyCodeConverter.ConvertToKeyCode)
-                .WhereValueNotNull()
-                .InvokeCommand(this.ViewModel!.AddLayoutForwardKeyCode)
-                .DisposeWith(disposables);
-
-            this.LayoutBackwardKeysTextBox.GetObservable(KeysBox.KeyPressedEvent)
-                .Select(e => e.Key)
-                .Select(this.keyCodeConverter.ConvertToKeyCode)
-                .WhereValueNotNull()
-                .InvokeCommand(this.ViewModel!.AddLayoutBackwardKeyCode)
-                .DisposeWith(disposables);
-
-            this.BindCommand(
-                this.ViewModel, vm => vm.ClearLayoutForwardKeyCodes, v => v.ClearLayoutForwardKeysButton)
-                .DisposeWith(disposables);
-
-            this.BindCommand(
-                this.ViewModel, vm => vm.ClearLayoutBackwardKeyCodes, v => v.ClearLayoutBackwardKeysButton)
-                .DisposeWith(disposables);
-
-            var shouldShowManualMetaButtons = PlatformDependent(
-                windows: () => false, macos: () => false, linux: () => true);
-
-            if (shouldShowManualMetaButtons)
-            {
-                this.EnableManualMetaButtons(disposables);
+                this.BindLayoutKeys(disposables);
             } else
             {
-                this.AddLeftMetaForwardButton.IsVisible = false;
-                this.AddRightMetaForwardButton.IsVisible = false;
-                this.AddLeftMetaBackwardButton.IsVisible = false;
-                this.AddRightMetaBackwardButton.IsVisible = false;
-            } 
-        }
+                this.LayoutKeysPanel.IsVisible = false;
+            }
+        });
+    }
 
-        private void EnableManualMetaButtons(CompositeDisposable disposables)
+    private void BindCheckboxes(CompositeDisposable disposables)
+    {
+        this.Bind(this.ViewModel, vm => vm.InstantSwitching, v => v.InstantSwitchingCheckBox.IsChecked)
+            .DisposeWith(disposables);
+
+        this.Bind(this.ViewModel, vm => vm.SwitchLayout, v => v.SwitchLayoutCheckBox.IsChecked)
+            .DisposeWith(disposables);
+
+        this.Bind(this.ViewModel, vm => vm.Startup, v => v.StartupCheckBox.IsChecked)
+            .DisposeWith(disposables);
+
+        this.Bind(
+            this.ViewModel,
+            vm => vm.ShowUninstalledLayoutsMessage,
+            v => v.ShowRemovedLayoutsMessageCheckBox.IsChecked)
+            .DisposeWith(disposables);
+
+        this.Bind(this.ViewModel, vm => vm.ShowConverter, v => v.ShowConverterCheckBox.IsChecked)
+            .DisposeWith(disposables);
+    }
+
+    private void BindControls(CompositeDisposable disposables)
+    {
+        this.Bind(this.ViewModel, vm => vm.ForwardModifierFirst, v => v.ForwardFirstComboBox.SelectedItem)
+            .DisposeWith(disposables);
+
+        this.Bind(this.ViewModel, vm => vm.ForwardModifierSecond, v => v.ForwardSecondComboBox.SelectedItem)
+            .DisposeWith(disposables);
+
+        this.Bind(this.ViewModel, vm => vm.ForwardModifierThird, v => v.ForwardThirdComboBox.SelectedItem)
+            .DisposeWith(disposables);
+
+        this.Bind(this.ViewModel, vm => vm.BackwardModifierFirst, v => v.BackwardFirstComboBox.SelectedItem)
+            .DisposeWith(disposables);
+
+        this.Bind(this.ViewModel, vm => vm.BackwardModifierSecond, v => v.BackwardSecondComboBox.SelectedItem)
+            .DisposeWith(disposables);
+
+        this.Bind(this.ViewModel, vm => vm.BackwardModifierThird, v => v.BackwardThirdComboBox.SelectedItem)
+            .DisposeWith(disposables);
+
+        this.Bind(this.ViewModel, vm => vm.PressCount, v => v.PressCountBox.Value)
+            .DisposeWith(disposables);
+
+        this.Bind(this.ViewModel, vm => vm.WaitMilliseconds, v => v.WaitMillisecondsBox.Value)
+            .DisposeWith(disposables);
+    }
+
+    private void BindLayoutKeys(CompositeDisposable disposables)
+    {
+        this.ViewModel!.LayoutForwardKeyCodes
+            .ToObservableChangeSet()
+            .ToCollection()
+            .Select(this.ConvertKeyCodesToString)
+            .BindTo(this, v => v.LayoutForwardKeysTextBox.Text)
+            .DisposeWith(disposables);
+
+        this.ViewModel!.LayoutBackwardKeyCodes
+            .ToObservableChangeSet()
+            .ToCollection()
+            .Select(this.ConvertKeyCodesToString)
+            .BindTo(this, v => v.LayoutBackwardKeysTextBox.Text)
+            .DisposeWith(disposables);
+
+        this.LayoutForwardKeysTextBox.GetObservable(KeysBox.KeyPressedEvent)
+            .Select(e => e.Key)
+            .Select(this.keyCodeConverter.ConvertToKeyCode)
+            .WhereValueNotNull()
+            .InvokeCommand(this.ViewModel!.AddLayoutForwardKeyCode)
+            .DisposeWith(disposables);
+
+        this.LayoutBackwardKeysTextBox.GetObservable(KeysBox.KeyPressedEvent)
+            .Select(e => e.Key)
+            .Select(this.keyCodeConverter.ConvertToKeyCode)
+            .WhereValueNotNull()
+            .InvokeCommand(this.ViewModel!.AddLayoutBackwardKeyCode)
+            .DisposeWith(disposables);
+
+        this.BindCommand(
+            this.ViewModel, vm => vm.ClearLayoutForwardKeyCodes, v => v.ClearLayoutForwardKeysButton)
+            .DisposeWith(disposables);
+
+        this.BindCommand(
+            this.ViewModel, vm => vm.ClearLayoutBackwardKeyCodes, v => v.ClearLayoutBackwardKeysButton)
+            .DisposeWith(disposables);
+
+        var shouldShowManualMetaButtons = PlatformDependent(
+            windows: () => false, macos: () => false, linux: () => true);
+
+        if (shouldShowManualMetaButtons)
         {
-            this.AddLeftMetaForwardButton.Content =
-                    String.Format(Messages.AddKeyFormat, Messages.ModifierKeyLeftSuper);
+            this.EnableManualMetaButtons(disposables);
+        } else
+        {
+            this.AddLeftMetaForwardButton.IsVisible = false;
+            this.AddRightMetaForwardButton.IsVisible = false;
+            this.AddLeftMetaBackwardButton.IsVisible = false;
+            this.AddRightMetaBackwardButton.IsVisible = false;
+        }
+    }
 
-            this.AddRightMetaForwardButton.Content =
-                String.Format(Messages.AddKeyFormat, Messages.ModifierKeyRightSuper);
-
-            this.AddLeftMetaBackwardButton.Content =
+    private void EnableManualMetaButtons(CompositeDisposable disposables)
+    {
+        this.AddLeftMetaForwardButton.Content =
                 String.Format(Messages.AddKeyFormat, Messages.ModifierKeyLeftSuper);
 
-            this.AddRightMetaBackwardButton.Content =
-                String.Format(Messages.AddKeyFormat, Messages.ModifierKeyRightSuper);
+        this.AddRightMetaForwardButton.Content =
+            String.Format(Messages.AddKeyFormat, Messages.ModifierKeyRightSuper);
 
-            this.AddLeftMetaForwardButton.GetObservable(Button.ClickEvent)
-                .Select(e => KeyCode.VcLeftMeta)
-                .InvokeCommand(this.ViewModel!.AddLayoutForwardKeyCode)
-                .DisposeWith(disposables);
+        this.AddLeftMetaBackwardButton.Content =
+            String.Format(Messages.AddKeyFormat, Messages.ModifierKeyLeftSuper);
 
-            this.AddRightMetaForwardButton.GetObservable(Button.ClickEvent)
-                .Select(e => KeyCode.VcRightMeta)
-                .InvokeCommand(this.ViewModel!.AddLayoutForwardKeyCode)
-                .DisposeWith(disposables);
+        this.AddRightMetaBackwardButton.Content =
+            String.Format(Messages.AddKeyFormat, Messages.ModifierKeyRightSuper);
 
-            this.AddLeftMetaBackwardButton.GetObservable(Button.ClickEvent)
-                .Select(e => KeyCode.VcLeftMeta)
-                .InvokeCommand(this.ViewModel!.AddLayoutBackwardKeyCode)
-                .DisposeWith(disposables);
+        this.AddLeftMetaForwardButton.GetObservable(Button.ClickEvent)
+            .Select(e => KeyCode.VcLeftMeta)
+            .InvokeCommand(this.ViewModel!.AddLayoutForwardKeyCode)
+            .DisposeWith(disposables);
 
-            this.AddRightMetaBackwardButton.GetObservable(Button.ClickEvent)
-                .Select(e => KeyCode.VcRightMeta)
-                .InvokeCommand(this.ViewModel!.AddLayoutBackwardKeyCode)
-                .DisposeWith(disposables);
-        }
+        this.AddRightMetaForwardButton.GetObservable(Button.ClickEvent)
+            .Select(e => KeyCode.VcRightMeta)
+            .InvokeCommand(this.ViewModel!.AddLayoutForwardKeyCode)
+            .DisposeWith(disposables);
 
-        private void BindValidations(CompositeDisposable disposables)
+        this.AddLeftMetaBackwardButton.GetObservable(Button.ClickEvent)
+            .Select(e => KeyCode.VcLeftMeta)
+            .InvokeCommand(this.ViewModel!.AddLayoutBackwardKeyCode)
+            .DisposeWith(disposables);
+
+        this.AddRightMetaBackwardButton.GetObservable(Button.ClickEvent)
+            .Select(e => KeyCode.VcRightMeta)
+            .InvokeCommand(this.ViewModel!.AddLayoutBackwardKeyCode)
+            .DisposeWith(disposables);
+    }
+
+    private void BindValidations(CompositeDisposable disposables)
+    {
+        this.BindValidation(
+            this.ViewModel, vm => vm.PressCount, v => v.PressCountValidationTextBlock.Text)
+            .DisposeWith(disposables);
+
+        this.BindValidation(
+            this.ViewModel, vm => vm.WaitMilliseconds, v => v.WaitMillisecondsValidationTextBlock.Text)
+            .DisposeWith(disposables);
+
+        this.BindValidation(
+            this.ViewModel, vm => vm!.ModifierKeysAreDifferentRule, v => v.ModifierKeysValidationTextBlock.Text)
+            .DisposeWith(disposables);
+
+        this.BindValidation(
+            this.ViewModel, vm => vm!.SwitchMethodsAreDifferentRule, v => v.SwitchMethodsValidationTextBlock.Text)
+            .DisposeWith(disposables);
+
+        this.BindValidation(
+            this.ViewModel,
+            vm => vm!.LayoutForwardKeysAreNotEmptyRule,
+            v => v.LayoutForwardKeysAreNotEmptyValidationTextBlock.Text)
+            .DisposeWith(disposables);
+
+        this.BindValidation(
+            this.ViewModel,
+            vm => vm!.LayoutBackwardKeysAreNotEmptyRule,
+            v => v.LayoutBackwardKeysAreNotEmptyValidationTextBlock.Text)
+            .DisposeWith(disposables);
+
+        this.BindValidation(
+            this.ViewModel,
+            vm => vm!.LayoutKeysAreDifferentRule,
+            v => v.LayoutKeysAreDifferentValidationTextBlock.Text)
+            .DisposeWith(disposables);
+    }
+
+    private void BindCommands(CompositeDisposable disposables)
+    {
+        this.BindCommand(this.ViewModel, vm => vm.Save, v => v.SaveButton)
+            .DisposeWith(disposables);
+
+        this.BindCommand(this.ViewModel, vm => vm.Cancel, v => v.CancelButton)
+            .DisposeWith(disposables);
+
+        this.ViewModel!.Cancel.CanExecute
+            .BindTo(this, v => v.ActionPanel.IsVisible)
+            .DisposeWith(disposables);
+    }
+
+    private List<ModifierMask> Modifiers() =>
+        new()
         {
-            this.BindValidation(
-                this.ViewModel, vm => vm.PressCount, v => v.PressCountValidationTextBlock.Text)
-                .DisposeWith(disposables);
+            ModifierMask.None,
+            ModifierMask.Ctrl,
+            ModifierMask.Shift,
+            ModifierMask.Alt,
+            ModifierMask.Meta,
+            ModifierMask.LeftCtrl,
+            ModifierMask.LeftShift,
+            ModifierMask.LeftAlt,
+            ModifierMask.LeftMeta,
+            ModifierMask.RightCtrl,
+            ModifierMask.RightShift,
+            ModifierMask.RightAlt,
+            ModifierMask.RightMeta
+        };
 
-            this.BindValidation(
-                this.ViewModel, vm => vm.WaitMilliseconds, v => v.WaitMillisecondsValidationTextBlock.Text)
-                .DisposeWith(disposables);
+    private string ConvertKeyCodesToString(IEnumerable<KeyCode> keyCodes)
+    {
+        string names = keyCodes
+            .Select(this.keyCodeConverter.GetName)
+            .Aggregate(String.Empty, (acc, KeyCode) => $"{acc}+{KeyCode}");
 
-            this.BindValidation(
-                this.ViewModel, vm => vm!.ModifierKeysAreDifferentRule, v => v.ModifierKeysValidationTextBlock.Text)
-                .DisposeWith(disposables);
-
-            this.BindValidation(
-                this.ViewModel, vm => vm!.SwitchMethodsAreDifferentRule, v => v.SwitchMethodsValidationTextBlock.Text)
-                .DisposeWith(disposables);
-
-            this.BindValidation(
-                this.ViewModel,
-                vm => vm!.LayoutForwardKeysAreNotEmptyRule,
-                v => v.LayoutForwardKeysAreNotEmptyValidationTextBlock.Text)
-                .DisposeWith(disposables);
-
-            this.BindValidation(
-                this.ViewModel,
-                vm => vm!.LayoutBackwardKeysAreNotEmptyRule,
-                v => v.LayoutBackwardKeysAreNotEmptyValidationTextBlock.Text)
-                .DisposeWith(disposables);
-
-            this.BindValidation(
-                this.ViewModel,
-                vm => vm!.LayoutKeysAreDifferentRule,
-                v => v.LayoutKeysAreDifferentValidationTextBlock.Text)
-                .DisposeWith(disposables);
-        }
-
-        private void BindCommands(CompositeDisposable disposables)
-        {
-            this.BindCommand(this.ViewModel, vm => vm.Save, v => v.SaveButton)
-                .DisposeWith(disposables);
-
-            this.BindCommand(this.ViewModel, vm => vm.Cancel, v => v.CancelButton)
-                .DisposeWith(disposables);
-
-            this.ViewModel!.Cancel.CanExecute
-                .BindTo(this, v => v.ActionPanel.IsVisible)
-                .DisposeWith(disposables);
-        }
-
-        private List<ModifierMask> Modifiers() =>
-            new()
-            {
-                ModifierMask.None,
-                ModifierMask.Ctrl,
-                ModifierMask.Shift,
-                ModifierMask.Alt,
-                ModifierMask.Meta,
-                ModifierMask.LeftCtrl,
-                ModifierMask.LeftShift,
-                ModifierMask.LeftAlt,
-                ModifierMask.LeftMeta,
-                ModifierMask.RightCtrl,
-                ModifierMask.RightShift,
-                ModifierMask.RightAlt,
-                ModifierMask.RightMeta
-            };
-
-        private string ConvertKeyCodesToString(IEnumerable<KeyCode> keyCodes)
-        {
-            string names = keyCodes
-                .Select(this.keyCodeConverter.GetName)
-                .Aggregate(String.Empty, (acc, KeyCode) => $"{acc}+{KeyCode}");
-
-            return !String.IsNullOrEmpty(names) ? names[1..] : names;
-        }
+        return !String.IsNullOrEmpty(names) ? names[1..] : names;
     }
 }

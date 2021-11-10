@@ -1,6 +1,5 @@
 namespace KeyboardSwitch;
 
-using System.IO;
 using System.Reactive.Concurrency;
 using System.Reflection;
 

@@ -1,26 +1,17 @@
-using System.Reactive.Disposables;
+namespace KeyboardSwitch.Settings.Views;
 
-using Avalonia.ReactiveUI;
-
-using KeyboardSwitch.Settings.Core.ViewModels;
-
-using ReactiveUI;
-
-namespace KeyboardSwitch.Settings.Views
+public partial class LoadableLayoutView : ReactiveUserControl<LoadableLayoutViewModel>
 {
-    public partial class LoadableLayoutView : ReactiveUserControl<LoadableLayoutViewModel>
+    public LoadableLayoutView()
     {
-        public LoadableLayoutView()
+        this.InitializeComponent();
+
+        this.WhenActivated(disposables =>
         {
-            this.InitializeComponent();
+            this.NameTextBlock.Text = this.ViewModel!.Layout.Name;
 
-            this.WhenActivated(disposables =>
-            {
-                this.NameTextBlock.Text = this.ViewModel!.Layout.Name;
-
-                this.BindCommand(this.ViewModel, vm => vm.Delete, v => v.DeleteButton)
-                    .DisposeWith(disposables);
-            });
-        }
+            this.BindCommand(this.ViewModel, vm => vm.Delete, v => v.DeleteButton)
+                .DisposeWith(disposables);
+        });
     }
 }

@@ -1,10 +1,7 @@
-using Avalonia.Controls;
+namespace KeyboardSwitch.Settings.Views;
 
-namespace KeyboardSwitch.Settings.Views
+public partial class SandboxView : UserControl
 {
-    public partial class SandboxView : UserControl
-    {
-        public SandboxView() =>
-            this.InitializeComponent();
-    }
+    public SandboxView() =>
+        this.InitializeComponent();
 }

@@ -1,22 +1,17 @@
-using System;
-using System.IO;
+namespace KeyboardSwitch.Settings;
+
 using System.Reflection;
 
-using Avalonia;
-
-namespace KeyboardSwitch.Settings
+public static class Program
 {
-    public static class Program
+    public static int Main(string[] args)
     {
-        public static int Main(string[] args)
-        {
-            Directory.SetCurrentDirectory(
-                Path.GetDirectoryName(Assembly.GetExecutingAssembly()?.Location) ?? String.Empty);
+        Directory.SetCurrentDirectory(
+            Path.GetDirectoryName(Assembly.GetExecutingAssembly()?.Location) ?? String.Empty);
 
-            return AppBuilder.Configure<App>()
-                .UsePlatformDetect()
-                .LogToTrace()
-                .StartWithClassicDesktopLifetime(args);
-        }
+        return AppBuilder.Configure<App>()
+            .UsePlatformDetect()
+            .LogToTrace()
+            .StartWithClassicDesktopLifetime(args);
     }
 }
