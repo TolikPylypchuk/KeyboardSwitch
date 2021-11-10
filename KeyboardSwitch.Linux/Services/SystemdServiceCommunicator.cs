@@ -1,67 +1,59 @@
-using System.Threading.Tasks;
+namespace KeyboardSwitch.Linux.Services;
 
-using KeyboardSwitch.Core.Services.Infrastructure;
-using KeyboardSwitch.Core.Settings;
-
-using Microsoft.Extensions.Options;
-
-namespace KeyboardSwitch.Linux.Services
+internal sealed class SystemdServiceCommunicator : IServiceCommunicator
 {
-    internal sealed class SystemdServiceCommunicator : IServiceCommunicator
+    private readonly IServiceCommunicator fallbackCommunicator;
+    private readonly string serviceName;
+
+    public SystemdServiceCommunicator(
+        IServiceCommunicator fallbackCommunicator,
+        IOptions<GlobalSettings> globalSettings)
     {
-        private readonly IServiceCommunicator fallbackCommunicator;
-        private readonly string serviceName;
+        this.fallbackCommunicator = fallbackCommunicator;
+        this.serviceName = globalSettings.Value.SystemdService;
+    }
 
-        public SystemdServiceCommunicator(
-            IServiceCommunicator fallbackCommunicator,
-            IOptions<GlobalSettings> globalSettings)
+    public bool IsServiceRunning() =>
+        Systemd.IsLoaded(this.serviceName)
+            ? Systemd.IsActive(this.serviceName)
+            : this.fallbackCommunicator.IsServiceRunning();
+
+    public async Task StartServiceAsync()
+    {
+        if (Systemd.IsLoaded(this.serviceName))
         {
-            this.fallbackCommunicator = fallbackCommunicator;
-            this.serviceName = globalSettings.Value.SystemdService;
+            Systemd.Start(this.serviceName);
+        } else
+        {
+            await this.fallbackCommunicator.StartServiceAsync();
         }
+    }
 
-        public bool IsServiceRunning() =>
-            Systemd.IsLoaded(this.serviceName)
-                ? Systemd.IsActive(this.serviceName)
-                : this.fallbackCommunicator.IsServiceRunning();
-
-        public async Task StartServiceAsync()
+    public void ReloadService()
+    {
+        if (Systemd.IsLoaded(this.serviceName))
         {
-            if (Systemd.IsLoaded(this.serviceName))
+            Systemd.Reload(this.serviceName);
+        } else
+        {
+            this.fallbackCommunicator.ReloadService();
+        }
+    }
+
+    public void StopService(bool kill)
+    {
+        if (Systemd.IsLoaded(this.serviceName))
+        {
+            if (kill)
             {
-                Systemd.Start(this.serviceName);
+                Systemd.Kill(this.serviceName);
             } else
             {
-                await this.fallbackCommunicator.StartServiceAsync();
+                Systemd.Stop(this.serviceName);
             }
-        }
-
-        public void ReloadService()
+        } else
         {
-            if (Systemd.IsLoaded(this.serviceName))
-            {
-                Systemd.Reload(this.serviceName);
-            } else
-            {
-                this.fallbackCommunicator.ReloadService();
-            }
-        }
-
-        public void StopService(bool kill)
-        {
-            if (Systemd.IsLoaded(this.serviceName))
-            {
-                if (kill)
-                {
-                    Systemd.Kill(this.serviceName);
-                } else
-                {
-                    Systemd.Stop(this.serviceName);
-                }
-            } else
-            {
-                this.fallbackCommunicator.StopService(kill);
-            }
+            this.fallbackCommunicator.StopService(kill);
         }
     }
 }
