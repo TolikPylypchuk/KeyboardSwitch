@@ -1,57 +1,43 @@
-using System;
-using System.Net.Http;
-using System.Reactive;
+namespace KeyboardSwitch.Settings.Core.ViewModels;
+
 using System.Reflection;
-using System.Threading.Tasks;
 
-using KeyboardSwitch.Core;
-
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-
-using Splat;
-
-using static KeyboardSwitch.Settings.Core.Constants;
-
-namespace KeyboardSwitch.Settings.Core.ViewModels
+public class AboutViewModel : ReactiveObject
 {
-    public class AboutViewModel : ReactiveObject
+    public AboutViewModel()
     {
-        public AboutViewModel()
-        {
-            this.AppVersion = Assembly.GetExecutingAssembly().GetName().Version!;
-            this.CheckForUpdates = ReactiveCommand.CreateFromTask(this.OnCheckForUpdates);
-            this.GetNewVersion = ReactiveCommand.Create(this.OnGetNewVersion);
-            this.OpenDocs = ReactiveCommand.Create(this.OnOpenDocs);
+        this.AppVersion = Assembly.GetExecutingAssembly().GetName().Version!;
+        this.CheckForUpdates = ReactiveCommand.CreateFromTask(this.OnCheckForUpdates);
+        this.GetNewVersion = ReactiveCommand.Create(this.OnGetNewVersion);
+        this.OpenDocs = ReactiveCommand.Create(this.OnOpenDocs);
 
-            this.CheckForUpdates.ToPropertyEx(this, vm => vm.LatestVersion, initialValue: this.AppVersion);
-        }
-
-        public Version AppVersion { get; }
-        public Version LatestVersion { [ObservableAsProperty] get; } = null!;
-
-        public ReactiveCommand<Unit, Version> CheckForUpdates { get; }
-        public ReactiveCommand<Unit, Unit> GetNewVersion { get; }
-        public ReactiveCommand<Unit, Unit> OpenDocs { get; }
-
-        public async Task<Version> OnCheckForUpdates()
-        {
-            try
-            {
-                using var httpClient = new HttpClient();
-                string version = await Task.Run(() => httpClient.GetStringAsync(VersionInfoLocation));
-                return Version.Parse(version.Trim());
-            } catch (Exception e)
-            {
-                this.Log().Error(e, "Cannot get the latest version info when checking for updates");
-                return this.AppVersion;
-            }
-        }
-
-        public void OnGetNewVersion() =>
-            new Uri(AppReleasesLocation).OpenInBrowser();
-
-        public void OnOpenDocs() =>
-            new Uri(DocsLocation).OpenInBrowser();
+        this.CheckForUpdates.ToPropertyEx(this, vm => vm.LatestVersion, initialValue: this.AppVersion);
     }
+
+    public Version AppVersion { get; }
+    public Version LatestVersion { [ObservableAsProperty] get; } = null!;
+
+    public ReactiveCommand<Unit, Version> CheckForUpdates { get; }
+    public ReactiveCommand<Unit, Unit> GetNewVersion { get; }
+    public ReactiveCommand<Unit, Unit> OpenDocs { get; }
+
+    public async Task<Version> OnCheckForUpdates()
+    {
+        try
+        {
+            using var httpClient = new HttpClient();
+            string version = await Task.Run(() => httpClient.GetStringAsync(VersionInfoLocation));
+            return Version.Parse(version.Trim());
+        } catch (Exception e)
+        {
+            this.Log().Error(e, "Cannot get the latest version info when checking for updates");
+            return this.AppVersion;
+        }
+    }
+
+    public void OnGetNewVersion() =>
+        new Uri(AppReleasesLocation).OpenInBrowser();
+
+    public void OnOpenDocs() =>
+        new Uri(DocsLocation).OpenInBrowser();
 }

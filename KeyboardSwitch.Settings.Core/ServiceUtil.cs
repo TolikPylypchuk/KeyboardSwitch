@@ -1,13 +1,8 @@
-using System;
+namespace KeyboardSwitch.Settings.Core;
 
-using Splat;
-
-namespace KeyboardSwitch.Settings.Core
+public static class ServiceUtil
 {
-    public static class ServiceUtil
-    {
-        public static T GetDefaultService<T>() =>
-            Locator.Current.GetService<T>() ??
-                throw new InvalidOperationException($"{typeof(T).FullName} not found");
-    }
+    public static T GetDefaultService<T>() =>
+        Locator.Current.GetService<T>() ??
+            throw new InvalidOperationException($"{typeof(T).FullName} not found");
 }

@@ -1,94 +1,79 @@
-using System;
-using System.Globalization;
-using System.Linq;
-using System.Reactive.Concurrency;
-using System.Resources;
-using System.Threading.Tasks;
+namespace KeyboardSwitch.Settings.Core.ViewModels;
 
-using KeyboardSwitch.Settings.Core.Models;
-
-using ReactiveUI.Fody.Helpers;
-using ReactiveUI.Validation.Extensions;
-
-using static KeyboardSwitch.Core.Constants;
-
-namespace KeyboardSwitch.Settings.Core.ViewModels
+public sealed class CustomLayoutViewModel : ReactiveForm<CustomLayoutModel, CustomLayoutViewModel>
 {
-    public sealed class CustomLayoutViewModel : ReactiveForm<CustomLayoutModel, CustomLayoutViewModel>
+    public CustomLayoutViewModel(
+        CustomLayoutModel customLayoutModel,
+        bool isNew,
+        ResourceManager? resourceManager = null,
+        IScheduler? scheduler = null)
+        : base(resourceManager, scheduler)
     {
-        public CustomLayoutViewModel(
-            CustomLayoutModel customLayoutModel,
-            bool isNew,
-            ResourceManager? resourceManager = null,
-            IScheduler? scheduler = null)
-            : base(resourceManager, scheduler)
-        {
-            this.CustomLayoutModel = customLayoutModel;
-            this.IsNew = isNew;
+        this.CustomLayoutModel = customLayoutModel;
+        this.IsNew = isNew;
 
-            this.ValidationRule(
-                vm => vm.Name,
-                name => !String.IsNullOrWhiteSpace(name),
-                this.ResourceManager.GetString("NameEmpty") ?? String.Empty);
+        this.ValidationRule(
+            vm => vm.Name,
+            name => !String.IsNullOrWhiteSpace(name),
+            this.ResourceManager.GetString("NameEmpty") ?? String.Empty);
 
-            this.ValidationRule(
-                vm => vm.Chars,
-                chars => chars != null &&
-                    chars.Distinct().Count(ch => ch != MissingCharacter) == chars.Count(ch => ch != MissingCharacter),
-                chars => chars != null
-                    ? String.Format(
-                        CultureInfo.InvariantCulture,
-                        this.ResourceManager.GetString("CharsDuplicatedFormat") ?? String.Empty,
-                        chars
-                            .Where(ch => ch != MissingCharacter)
-                            .GroupBy(ch => ch)
-                            .Where(chs => chs.Count() > 1)
-                            .Select(chs => chs.Key.ToString())
-                            .Aggregate((acc, ch) => $"{acc}, {ch}"))
-                    : String.Empty);
+        this.ValidationRule(
+            vm => vm.Chars,
+            chars => chars != null &&
+                chars.Distinct().Count(ch => ch != MissingCharacter) == chars.Count(ch => ch != MissingCharacter),
+            chars => chars != null
+                ? String.Format(
+                    CultureInfo.InvariantCulture,
+                    this.ResourceManager.GetString("CharsDuplicatedFormat") ?? String.Empty,
+                    chars
+                        .Where(ch => ch != MissingCharacter)
+                        .GroupBy(ch => ch)
+                        .Where(chs => chs.Count() > 1)
+                        .Select(chs => chs.Key.ToString())
+                        .Aggregate((acc, ch) => $"{acc}, {ch}"))
+                : String.Empty);
 
-            this.CopyProperties();
-            this.CanAlwaysDelete();
-            this.EnableChangeTracking();
-        }
+        this.CopyProperties();
+        this.CanAlwaysDelete();
+        this.EnableChangeTracking();
+    }
 
-        public CustomLayoutModel CustomLayoutModel { get; }
+    public CustomLayoutModel CustomLayoutModel { get; }
 
-        [Reactive]
-        public string Name { get; set; } = String.Empty;
+    [Reactive]
+    public string Name { get; set; } = String.Empty;
 
-        [Reactive]
-        public string Chars { get; set; } = String.Empty;
+    [Reactive]
+    public string Chars { get; set; } = String.Empty;
 
-        protected override CustomLayoutViewModel Self => this;
+    protected override CustomLayoutViewModel Self => this;
 
-        protected override void EnableChangeTracking()
-        {
-            this.TrackChanges(vm => vm.Name, vm => vm.CustomLayoutModel.Name);
-            this.TrackChanges(vm => vm.Chars, vm => vm.CustomLayoutModel.Chars);
+    protected override void EnableChangeTracking()
+    {
+        this.TrackChanges(vm => vm.Name, vm => vm.CustomLayoutModel.Name);
+        this.TrackChanges(vm => vm.Chars, vm => vm.CustomLayoutModel.Chars);
 
-            base.EnableChangeTracking();
-        }
+        base.EnableChangeTracking();
+    }
 
-        protected override Task<CustomLayoutModel> OnSaveAsync()
-        {
-            this.CustomLayoutModel.Name = this.Name;
-            this.CustomLayoutModel.Chars = this.Chars;
-            this.IsNew = false;
+    protected override Task<CustomLayoutModel> OnSaveAsync()
+    {
+        this.CustomLayoutModel.Name = this.Name;
+        this.CustomLayoutModel.Chars = this.Chars;
+        this.IsNew = false;
 
-            return Task.FromResult(this.CustomLayoutModel);
-        }
+        return Task.FromResult(this.CustomLayoutModel);
+    }
 
-        protected override Task<CustomLayoutModel?> OnDeleteAsync()
-        {
-            this.IsDeleted = true;
-            return Task.FromResult<CustomLayoutModel?>(this.CustomLayoutModel);
-        }
+    protected override Task<CustomLayoutModel?> OnDeleteAsync()
+    {
+        this.IsDeleted = true;
+        return Task.FromResult<CustomLayoutModel?>(this.CustomLayoutModel);
+    }
 
-        protected override void CopyProperties()
-        {
-            this.Name = this.CustomLayoutModel.Name;
-            this.Chars = this.CustomLayoutModel.Chars;
-        }
+    protected override void CopyProperties()
+    {
+        this.Name = this.CustomLayoutModel.Name;
+        this.Chars = this.CustomLayoutModel.Chars;
     }
 }

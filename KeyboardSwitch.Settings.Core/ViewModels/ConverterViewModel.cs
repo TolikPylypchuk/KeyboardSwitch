@@ -1,124 +1,96 @@
-using System;
-using System.Collections.ObjectModel;
-using System.Reactive;
-using System.Reactive.Linq;
-using System.Resources;
-using System.Threading.Tasks;
+namespace KeyboardSwitch.Settings.Core.ViewModels;
 
-using DynamicData;
-using DynamicData.Binding;
-
-using KeyboardSwitch.Core;
-using KeyboardSwitch.Core.Services.Layout;
-using KeyboardSwitch.Core.Services.Settings;
-using KeyboardSwitch.Core.Services.Switching;
-using KeyboardSwitch.Core.Services.Text;
-using KeyboardSwitch.Settings.Core.Models;
-using KeyboardSwitch.Settings.Core.Services;
-
-using Microsoft.Extensions.Logging;
-
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-using ReactiveUI.Validation.Extensions;
-using ReactiveUI.Validation.Helpers;
-
-using static KeyboardSwitch.Settings.Core.ServiceUtil;
-
-namespace KeyboardSwitch.Settings.Core.ViewModels
+public sealed class ConverterViewModel : ReactiveValidationObject, ITextService
 {
-    public sealed class ConverterViewModel : ReactiveValidationObject, ITextService
+    private readonly ISwitchService switchService;
+
+    private readonly ReadOnlyObservableCollection<CustomLayoutModel> layouts;
+
+    public ConverterViewModel(
+        ConverterModel converterModel,
+        ILayoutService? layoutService = null,
+        IAppSettingsService? settingsService = null,
+        ResourceManager? resourceManager = null)
     {
-        private readonly ISwitchService switchService;
+        this.ConverterModel = converterModel;
 
-        private readonly ReadOnlyObservableCollection<CustomLayoutModel> layouts;
+        this.switchService = this.CreateSwitchService(layoutService, settingsService);
 
-        public ConverterViewModel(
-            ConverterModel converterModel,
-            ILayoutService? layoutService = null,
-            IAppSettingsService? settingsService = null,
-            ResourceManager? resourceManager = null)
-        {
-            this.ConverterModel = converterModel;
+        resourceManager ??= GetDefaultService<ResourceManager>();
 
-            this.switchService = this.CreateSwitchService(layoutService, settingsService);
+        this.ConverterModel.Layouts
+            .ToObservableChangeSet()
+            .Sort(SortExpressionComparer<CustomLayoutModel>.Ascending(layout => layout.Id))
+            .Bind(out this.layouts)
+            .Subscribe();
 
-            resourceManager ??= GetDefaultService<ResourceManager>();
+        this.LayoutsAreDifferentRule = this.ValidationRule(
+            this.WhenAnyValue(v => v.SourceLayout, v => v.TargetLayout, (s, t) => s == null || t == null || s != t),
+            resourceManager.GetString("CustomLayoutsAreSame") ?? String.Empty);
 
-            this.ConverterModel.Layouts
-                .ToObservableChangeSet()
-                .Sort(SortExpressionComparer<CustomLayoutModel>.Ascending(layout => layout.Id))
-                .Bind(out this.layouts)
-                .Subscribe();
+        var canConvert = this.WhenAnyValue(
+            vm => vm.SourceLayout, vm => vm.TargetLayout, (s, t) => s != null && t != null)
+            .CombineLatest(this.IsValid(), (a, b) => a && b);
 
-            this.LayoutsAreDifferentRule = this.ValidationRule(
-                this.WhenAnyValue(v => v.SourceLayout, v => v.TargetLayout, (s, t) => s == null || t == null || s != t),
-                resourceManager.GetString("CustomLayoutsAreSame") ?? String.Empty);
+        this.Convert = ReactiveCommand.CreateFromTask(this.ConvertAsync, canConvert);
+        this.SwapLayouts = ReactiveCommand.Create(this.OnSwapLayouts);
+        this.Clear = ReactiveCommand.Create(this.OnClear);
+    }
 
-            var canConvert = this.WhenAnyValue(
-                vm => vm.SourceLayout, vm => vm.TargetLayout, (s, t) => s != null && t != null)
-                .CombineLatest(this.IsValid(), (a, b) => a && b);
+    public ConverterModel ConverterModel { get; }
 
-            this.Convert = ReactiveCommand.CreateFromTask(this.ConvertAsync, canConvert);
-            this.SwapLayouts = ReactiveCommand.Create(this.OnSwapLayouts);
-            this.Clear = ReactiveCommand.Create(this.OnClear);
-        }
+    [Reactive]
+    public string SourceText { get; set; } = String.Empty;
 
-        public ConverterModel ConverterModel { get; }
+    [Reactive]
+    public string TargetText { get; set; } = String.Empty;
 
-        [Reactive]
-        public string SourceText { get; set; } = String.Empty;
+    public ReadOnlyObservableCollection<CustomLayoutModel> Layouts => this.layouts;
 
-        [Reactive]
-        public string TargetText { get; set; } = String.Empty;
+    [Reactive]
+    public CustomLayoutModel? SourceLayout { get; set; }
 
-        public ReadOnlyObservableCollection<CustomLayoutModel> Layouts => this.layouts;
+    [Reactive]
+    public CustomLayoutModel? TargetLayout { get; set; }
 
-        [Reactive]
-        public CustomLayoutModel? SourceLayout { get; set; }
+    public ValidationHelper LayoutsAreDifferentRule { get; }
 
-        [Reactive]
-        public CustomLayoutModel? TargetLayout { get; set; }
+    public ReactiveCommand<Unit, Unit> Convert { get; }
+    public ReactiveCommand<Unit, Unit> SwapLayouts { get; }
+    public ReactiveCommand<Unit, Unit> Clear { get; }
 
-        public ValidationHelper LayoutsAreDifferentRule { get; }
+    private Task ConvertAsync() =>
+        this.switchService.SwitchTextAsync(SwitchDirection.Forward);
 
-        public ReactiveCommand<Unit, Unit> Convert { get; }
-        public ReactiveCommand<Unit, Unit> SwapLayouts { get; }
-        public ReactiveCommand<Unit, Unit> Clear { get; }
+    private void OnSwapLayouts()
+    {
+        (this.SourceLayout, this.TargetLayout) = (this.TargetLayout, this.SourceLayout);
+        (this.SourceText, this.TargetText) = (this.TargetText, this.SourceText);
+    }
 
-        private Task ConvertAsync() =>
-            this.switchService.SwitchTextAsync(SwitchDirection.Forward);
+    private void OnClear() =>
+        this.SourceText = this.TargetText = String.Empty;
 
-        private void OnSwapLayouts()
-        {
-            (this.SourceLayout, this.TargetLayout) = (this.TargetLayout, this.SourceLayout);
-            (this.SourceText, this.TargetText) = (this.TargetText, this.SourceText);
-        }
+    private ISwitchService CreateSwitchService(
+        ILayoutService? layoutService = null,
+        IAppSettingsService? settingsService = null)
+    {
+        var sourceLayout = this.WhenAnyValue(vm => vm.SourceLayout).WhereNotNull();
+        var targetLayout = this.WhenAnyValue(vm => vm.TargetLayout).WhereNotNull();
 
-        private void OnClear() =>
-            this.SourceText = this.TargetText = String.Empty;
+        return new SwitchService(
+            this,
+            layoutService ?? new ConverterLayoutService(sourceLayout, targetLayout),
+            settingsService ?? new ConverterAppSettingsService(sourceLayout, targetLayout),
+            GetDefaultService<ILogger<SwitchService>>());
+    }
 
-        private ISwitchService CreateSwitchService(
-            ILayoutService? layoutService = null,
-            IAppSettingsService? settingsService = null)
-        {
-            var sourceLayout = this.WhenAnyValue(vm => vm.SourceLayout).WhereNotNull();
-            var targetLayout = this.WhenAnyValue(vm => vm.TargetLayout).WhereNotNull();
+    Task<string?> ITextService.GetTextAsync() =>
+        Task.FromResult<string?>(this.SourceText);
 
-            return new SwitchService(
-                this,
-                layoutService ?? new ConverterLayoutService(sourceLayout, targetLayout),
-                settingsService ?? new ConverterAppSettingsService(sourceLayout, targetLayout),
-                GetDefaultService<ILogger<SwitchService>>());
-        }
-
-        Task<string?> ITextService.GetTextAsync() =>
-            Task.FromResult<string?>(this.SourceText);
-
-        Task ITextService.SetTextAsync(string text)
-        {
-            this.TargetText = text;
-            return Task.CompletedTask;
-        }
+    Task ITextService.SetTextAsync(string text)
+    {
+        this.TargetText = text;
+        return Task.CompletedTask;
     }
 }

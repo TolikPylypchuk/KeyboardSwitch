@@ -1,14 +1,9 @@
-using System;
+namespace KeyboardSwitch.Settings.Core.ViewModels;
 
-using ReactiveUI;
-
-namespace KeyboardSwitch.Settings.Core.ViewModels
+public interface IReactiveForm : IReactiveObject
 {
-    public interface IReactiveForm : IReactiveObject
-    {
-        IObservable<bool> FormChanged { get; }
-        bool IsFormChanged { get; }
+    IObservable<bool> FormChanged { get; }
+    bool IsFormChanged { get; }
 
-        IObservable<bool> Valid { get; }
-    }
+    IObservable<bool> Valid { get; }
 }

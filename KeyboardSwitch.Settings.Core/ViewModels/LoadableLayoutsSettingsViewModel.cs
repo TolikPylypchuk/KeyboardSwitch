@@ -1,83 +1,68 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Reactive;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
+namespace KeyboardSwitch.Settings.Core.ViewModels;
 
-using DynamicData;
-using DynamicData.Binding;
-
-using KeyboardSwitch.Core.Keyboard;
-
-using ReactiveUI;
-
-namespace KeyboardSwitch.Settings.Core.ViewModels
+public sealed class LoadableLayoutsSettingsViewModel : ReactiveObject
 {
-    public sealed class LoadableLayoutsSettingsViewModel : ReactiveObject
+    private readonly SourceCache<LoadableKeyboardLayout, string> addableLayoutsSource = new(layout => layout.Tag);
+    private readonly SourceCache<LoadableKeyboardLayout, string> addedLayoutsSource = new(layout => layout.Tag);
+
+    private readonly ReadOnlyObservableCollection<LoadableLayoutViewModel> addableLayouts;
+    private readonly ReadOnlyObservableCollection<LoadableLayoutViewModel> addedLayouts;
+
+    public LoadableLayoutsSettingsViewModel(IEnumerable<LoadableKeyboardLayout> layouts)
     {
-        private readonly SourceCache<LoadableKeyboardLayout, string> addableLayoutsSource = new(layout => layout.Tag);
-        private readonly SourceCache<LoadableKeyboardLayout, string> addedLayoutsSource = new(layout => layout.Tag);
+        var comparer = SortExpressionComparer<LoadableLayoutViewModel>.Ascending(layout => layout.Layout.Name);
 
-        private readonly ReadOnlyObservableCollection<LoadableLayoutViewModel> addableLayouts;
-        private readonly ReadOnlyObservableCollection<LoadableLayoutViewModel> addedLayouts;
+        this.addableLayoutsSource.Connect()
+            .Transform(this.CreateLayoutViewModel)
+            .Sort(comparer)
+            .Bind(out this.addableLayouts)
+            .Subscribe();
 
-        public LoadableLayoutsSettingsViewModel(IEnumerable<LoadableKeyboardLayout> layouts)
-        {
-            var comparer = SortExpressionComparer<LoadableLayoutViewModel>.Ascending(layout => layout.Layout.Name);
+        this.addedLayoutsSource.Connect()
+            .Transform(this.CreateLayoutViewModel)
+            .Bind(out this.addedLayouts)
+            .Subscribe();
 
-            this.addableLayoutsSource.Connect()
-                .Transform(this.CreateLayoutViewModel)
-                .Sort(comparer)
-                .Bind(out this.addableLayouts)
-                .Subscribe();
+        this.AddLayout = ReactiveCommand.Create<LoadableLayoutViewModel>(this.OnAddLayout);
+        this.RemoveLayout = ReactiveCommand.Create<LoadableLayoutViewModel>(this.OnRemoveLayout);
+        this.Finish = ReactiveCommand.Create<bool, bool>(shouldLoad => shouldLoad);
 
-            this.addedLayoutsSource.Connect()
-                .Transform(this.CreateLayoutViewModel)
-                .Bind(out this.addedLayouts)
-                .Subscribe();
+        this.addableLayoutsSource.AddOrUpdate(layouts);
+    }
 
-            this.AddLayout = ReactiveCommand.Create<LoadableLayoutViewModel>(this.OnAddLayout);
-            this.RemoveLayout = ReactiveCommand.Create<LoadableLayoutViewModel>(this.OnRemoveLayout);
-            this.Finish = ReactiveCommand.Create<bool, bool>(shouldLoad => shouldLoad);
+    public ReadOnlyObservableCollection<LoadableLayoutViewModel> AddableLayouts => this.addableLayouts;
+    public ReadOnlyObservableCollection<LoadableLayoutViewModel> AddedLayouts => this.addedLayouts;
 
-            this.addableLayoutsSource.AddOrUpdate(layouts);
-        }
+    public ReactiveCommand<LoadableLayoutViewModel, Unit> AddLayout { get; }
+    public ReactiveCommand<LoadableLayoutViewModel, Unit> RemoveLayout { get; }
+    public ReactiveCommand<bool, bool> Finish { get; }
 
-        public ReadOnlyObservableCollection<LoadableLayoutViewModel> AddableLayouts => this.addableLayouts;
-        public ReadOnlyObservableCollection<LoadableLayoutViewModel> AddedLayouts => this.addedLayouts;
+    private LoadableLayoutViewModel CreateLayoutViewModel(LoadableKeyboardLayout layout)
+    {
+        var vm = new LoadableLayoutViewModel(layout);
+        var subscriptions = new CompositeDisposable();
 
-        public ReactiveCommand<LoadableLayoutViewModel, Unit> AddLayout { get; }
-        public ReactiveCommand<LoadableLayoutViewModel, Unit> RemoveLayout { get; }
-        public ReactiveCommand<bool, bool> Finish { get; }
+        vm.Delete
+            .Select(_ => vm)
+            .InvokeCommand(this.RemoveLayout)
+            .DisposeWith(subscriptions);
 
-        private LoadableLayoutViewModel CreateLayoutViewModel(LoadableKeyboardLayout layout)
-        {
-            var vm = new LoadableLayoutViewModel(layout);
-            var subscriptions = new CompositeDisposable();
+        vm.Delete
+            .Subscribe(_ => subscriptions.Dispose())
+            .DisposeWith(subscriptions);
 
-            vm.Delete
-                .Select(_ => vm)
-                .InvokeCommand(this.RemoveLayout)
-                .DisposeWith(subscriptions);
+        return vm;
+    }
 
-            vm.Delete
-                .Subscribe(_ => subscriptions.Dispose())
-                .DisposeWith(subscriptions);
+    private void OnAddLayout(LoadableLayoutViewModel vm)
+    {
+        this.addableLayoutsSource.Remove(vm.Layout.Tag);
+        this.addedLayoutsSource.AddOrUpdate(vm.Layout);
+    }
 
-            return vm;
-        }
-
-        private void OnAddLayout(LoadableLayoutViewModel vm)
-        {
-            this.addableLayoutsSource.Remove(vm.Layout.Tag);
-            this.addedLayoutsSource.AddOrUpdate(vm.Layout);
-        }
-
-        private void OnRemoveLayout(LoadableLayoutViewModel vm)
-        {
-            this.addedLayoutsSource.Remove(vm.Layout.Tag);
-            this.addableLayoutsSource.AddOrUpdate(vm.Layout);
-        }
+    private void OnRemoveLayout(LoadableLayoutViewModel vm)
+    {
+        this.addedLayoutsSource.Remove(vm.Layout.Tag);
+        this.addableLayoutsSource.AddOrUpdate(vm.Layout);
     }
 }

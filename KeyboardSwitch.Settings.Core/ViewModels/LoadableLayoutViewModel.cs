@@ -1,21 +1,14 @@
-using System.Reactive;
+namespace KeyboardSwitch.Settings.Core.ViewModels;
 
-using KeyboardSwitch.Core.Keyboard;
-
-using ReactiveUI;
-
-namespace KeyboardSwitch.Settings.Core.ViewModels
+public sealed class LoadableLayoutViewModel : ReactiveObject
 {
-    public sealed class LoadableLayoutViewModel : ReactiveObject
+    public LoadableLayoutViewModel(LoadableKeyboardLayout layout)
     {
-        public LoadableLayoutViewModel(LoadableKeyboardLayout layout)
-        {
-            this.Layout = layout;
-            this.Delete = ReactiveCommand.Create(() => { });
-        }
-
-        public LoadableKeyboardLayout Layout { get; }
-
-        public ReactiveCommand<Unit, Unit> Delete { get; }
+        this.Layout = layout;
+        this.Delete = ReactiveCommand.Create(() => { });
     }
+
+    public LoadableKeyboardLayout Layout { get; }
+
+    public ReactiveCommand<Unit, Unit> Delete { get; }
 }
