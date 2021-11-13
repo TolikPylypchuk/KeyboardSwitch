@@ -14,7 +14,7 @@ public abstract class SimulatingLayoutService : ILayoutService
 
     public void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
     {
-        this.logger.LogDebug($"Switching the current layout {direction.AsString()} via keyboard simulation");
+        this.logger.LogDebug("Switching the current layout {Direction} via keyboard simulation", direction.AsString());
 
         var keys = direction switch
         {

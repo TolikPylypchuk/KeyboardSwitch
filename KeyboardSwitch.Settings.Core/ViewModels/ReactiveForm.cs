@@ -62,7 +62,7 @@ public abstract class ReactiveForm<TModel, TForm> : ReactiveValidationObject, IR
             this.Self.WhenAnyValue(property)
                 .Select(value => !Equals(value, itemValue(this.Self)))
                 .Do(changed => this.Log().Debug(
-                    changed ? $"{propertyName} is changed" : $"{propertyName} is unchanged")));
+                    "{Property} is {State}", propertyName, changed ? "changed" : "unchanged")));
     }
 
     protected void TrackValidation(IObservable<bool> validation) =>
@@ -87,7 +87,7 @@ public abstract class ReactiveForm<TModel, TForm> : ReactiveValidationObject, IR
                 vms.Count != itemCollection(this.Self).Count ||
                 vms.Any(vm => vm.IsFormChanged || !this.IsNew && vm.IsNew))
             .Do(changed => this.Log().Debug(
-                changed ? $"{propertyName} are changed" : $"{propertyName} are unchanged"))
+                "{Property} are {State}", propertyName, changed ? "changed" : "unchanged"))
             .Merge(this.Save.Select(_ => false))
             .Merge(this.Cancel.Select(_ => false));
     }
@@ -103,7 +103,7 @@ public abstract class ReactiveForm<TModel, TForm> : ReactiveValidationObject, IR
             .ToCollection()
             .Select(items => !Enumerable.SequenceEqual(items, itemCollection(this.Self)))
             .Do(changed => this.Log().Debug(
-                changed ? $"{propertyName} are changed" : $"{propertyName} are unchanged"))
+                "{Property} are {State}", propertyName, changed ? "changed" : "unchanged"))
             .Merge(this.Save.Select(_ => false))
             .Merge(this.Cancel.Select(_ => false));
     }

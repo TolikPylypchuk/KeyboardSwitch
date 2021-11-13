@@ -42,9 +42,10 @@ internal sealed class SingleInstanceService : ISingleInstanceService
     {
         try
         {
-            this.namedPipeService.Write(GetCommand() ?? String.Empty);
+            string? command = GetCommand();
+            this.namedPipeService.Write(command ?? String.Empty);
 
-            this.logger.LogDebug("Sent the command to the original instance");
+            this.logger.LogDebug("Sent the command to the original instance: {Command}", command);
         } catch (Exception e)
         {
             this.logger.LogError(e, "Unknown error during sending a command to the original instance");

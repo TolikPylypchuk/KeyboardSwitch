@@ -47,29 +47,29 @@ public static class Program
             logger.LogInformation("KeyboardSwitch service execution stopped");
         } catch (Exception e) when (e is OperationCanceledException || e is TaskCanceledException)
         {
-            logger.LogInformation("The Keyboard Switch service execution was cancelled");
+            logger.LogInformation("KeyboardSwitch service execution cancelled");
         } finally
         {
             mutex.ReleaseMutex();
         }
     }
 
-    private static void ConfigureServices(HostBuilderContext hostContext, IServiceCollection services) =>
+    private static void ConfigureServices(HostBuilderContext context, IServiceCollection services) =>
         services.AddHostedService<Worker>()
             .Configure<HostOptions>(o => o.ShutdownTimeout = TimeSpan.FromMilliseconds(100))
-            .Configure<GlobalSettings>(hostContext.Configuration.GetSection("Settings"))
+            .Configure<GlobalSettings>(context.Configuration.GetSection("Settings"))
             .AddSingleton<IScheduler>(Scheduler.Default)
-            .AddRetryManager(hostContext.Configuration)
+            .AddRetryManager(context.Configuration)
             .AddCoreKeyboardSwitchServices()
             .AddNativeKeyboardSwitchServices();
 
-    private static void ConfigureLogging(HostBuilderContext hostingContext, ILoggingBuilder logging) =>
+    private static void ConfigureLogging(HostBuilderContext context, ILoggingBuilder logging) =>
         logging
             .ClearProviders()
             .AddSerilog(
                 new LoggerConfiguration()
                     .Enrich.FromLogContext()
-                    .ReadFrom.Configuration(hostingContext.Configuration)
+                    .ReadFrom.Configuration(context.Configuration)
                     .CreateLogger(),
                 dispose: true);
 
@@ -102,6 +102,6 @@ public static class Program
 
         namedPipeService.ReceivedString
             .Where(command => command.IsUnknownCommand())
-            .Subscribe(command => logger.LogWarning($"External request '{command}' is not recognized"));
+            .Subscribe(command => logger.LogWarning("External request '{Command}' is not recognized", command));
     }
 }

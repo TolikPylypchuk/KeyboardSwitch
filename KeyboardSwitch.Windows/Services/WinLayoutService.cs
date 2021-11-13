@@ -33,7 +33,8 @@ internal sealed class WinLayoutService : ILayoutService, ILayoutLoaderSrevice
 
     public void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
     {
-        this.logger.LogDebug($"Switching the keyboard layout of the foregound process {direction.AsString()}");
+        this.logger.LogDebug(
+            "Switching the keyboard layout of the foregound process {Direction}", direction.AsString());
 
         var foregroundWindowHandle = GetForegroundWindow();
         uint foregroundWindowThreadId = GetWindowThreadProcessId(foregroundWindowHandle, out uint _);
@@ -74,7 +75,7 @@ internal sealed class WinLayoutService : ILayoutService, ILayoutLoaderSrevice
 
         if (result == 0)
         {
-            this.logger.LogCritical($"Could not get the list of installed keyboard layouts");
+            this.logger.LogCritical("Could not get the list of installed keyboard layouts");
             throw new Win32Exception(result);
         }
 
@@ -124,7 +125,7 @@ internal sealed class WinLayoutService : ILayoutService, ILayoutLoaderSrevice
             var layout = LoadKeyboardLayout(loadableLayout.Tag, KLF.KLF_NOTELLSHELL);
             unloadDisposable.Add(layout);
 
-            this.logger.LogDebug($"Loaded layout: {loadableLayout.Name}");
+            this.logger.LogDebug("Loaded layout: {Layout}", loadableLayout.Name);
 
             int id = (int)layout.DangerousGetHandle();
             var culture = this.GetCultureInfo(id, loadableLayout.Name);
@@ -180,7 +181,7 @@ internal sealed class WinLayoutService : ILayoutService, ILayoutLoaderSrevice
             return CultureInfo.GetCultureInfo(lcid);
         } catch (CultureNotFoundException e)
         {
-            this.logger.LogError(e, $"Did not find culture for layout: {layoutName} (LCID {lcid})");
+            this.logger.LogError(e, "Did not find culture for layout: {Layout} (LCID {Lcid})", layoutName, lcid);
             return CultureInfo.InvariantCulture;
         }
     }

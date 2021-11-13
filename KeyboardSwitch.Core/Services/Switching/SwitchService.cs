@@ -21,7 +21,7 @@ public class SwitchService : ISwitchService
 
     public async Task SwitchTextAsync(SwitchDirection direction)
     {
-        this.logger.LogDebug($"Switching the text {direction.AsString()}");
+        this.logger.LogDebug("Switching the text {Direction}", direction.AsString());
 
         string? textToSwitch = await this.textService.GetTextAsync();
 

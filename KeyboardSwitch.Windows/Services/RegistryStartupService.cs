@@ -18,7 +18,7 @@ internal class RegistryStartupService : IStartupService
         using var key = Registry.CurrentUser.OpenSubKey(StartupRegistryKey);
         bool isConfigured = key?.GetValue(StartupRegistryName) != null;
 
-        this.logger.LogDebug($"KeyboardSwitch {(isConfigured ? "is" : "is not")} configured to run on startup");
+        this.logger.LogDebug("KeyboardSwitch is configured to run on startup: {IsConfigured}", isConfigured);
 
         return isConfigured;
     }
@@ -26,7 +26,7 @@ internal class RegistryStartupService : IStartupService
     public void ConfigureStartup(AppSettings settings, bool startup)
     {
         this.logger.LogDebug(
-            $"Configuring to {(startup ? "start" : "stop")} running the KeyboardSwitch service on startup");
+            "Configuring to {Action} running the KeyboardSwitch service on startup", startup ? "start" : "stop");
 
         using var startupKey = Registry.CurrentUser.OpenSubKey(StartupRegistryKey, true);
 
@@ -39,7 +39,7 @@ internal class RegistryStartupService : IStartupService
         }
 
         this.logger.LogDebug(
-            $"Configured to {(startup ? "start" : "stop")} running the KeyboardSwitch service on startup");
+            "Configured to {Action} running the KeyboardSwitch service on startup", startup ? "start" : "stop");
     }
 
     private string GetServicePath(AppSettings settings)

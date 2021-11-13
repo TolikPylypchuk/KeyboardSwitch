@@ -34,7 +34,7 @@ public class Worker : BackgroundService
     {
         try
         {
-            this.logger.LogDebug("Configuring the keyboard switch service");
+            this.logger.LogDebug("Configuring the KeyboardSwitch service");
 
             await this.RegisterHotKeysAsync();
 
@@ -47,13 +47,17 @@ public class Worker : BackgroundService
         {
             var settingsPath = Environment.ExpandEnvironmentVariables(this.globalSettings.Path);
 
-            this.logger.LogError(e, $"Incompatible app version found in settings: {e.Version}. " +
-                $"Delete the settings at '{settingsPath}' and let the app recreate a compatible version");
+            this.logger.LogCritical(
+                e,
+                "Incompatible app version found in settings: {Version}. " +
+                "Delete the settings at '{SettingsPath}' and let the app recreate a compatible version",
+                e.Version,
+                settingsPath);
 
             await this.host.StopAsync(token);
         } catch (Exception e)
         {
-            this.logger.LogCritical(e, "The Keyboard Switch service has crashed");
+            this.logger.LogCritical(e, "The KeyboardSwitch service has crashed");
             await this.host.StopAsync(token);
         }
     }

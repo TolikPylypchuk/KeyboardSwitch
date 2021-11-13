@@ -15,7 +15,7 @@ public sealed class CustomLayoutModel : IEquatable<CustomLayoutModel>
         obj is CustomLayoutModel other && this.Equals(other);
 
     public bool Equals(CustomLayoutModel? other) =>
-        !(other is null) && this.Name == other.Name && this.Chars == other.Chars;
+        other is not null && this.Name == other.Name && this.Chars == other.Chars;
 
     public override int GetHashCode() =>
         HashCode.Combine(this.Name, this.Chars);

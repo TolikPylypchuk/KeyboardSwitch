@@ -4,7 +4,7 @@ internal class XMapHandle : XHandleBase
 {
     private readonly XkbMapComponentMask componentMask;
 
-    private XMapHandle()
+    public XMapHandle()
     { }
 
     public XMapHandle(IntPtr handle, XkbMapComponentMask componentMask)

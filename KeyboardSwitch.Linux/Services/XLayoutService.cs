@@ -112,7 +112,7 @@ public sealed class XLayoutService : SimulatingLayoutService
 
     private string GetGroupName(XDisplayHandle display, Atom group)
     {
-        this.logger.LogDebug($"Getting a group name for atom: {group}");
+        this.logger.LogDebug("Getting a group name for atom: {Group}", group);
 
         using var atomNameHandle = XGetAtomName(display, group);
         var atomNameRawHandle = atomNameHandle.DangerousGetHandle();
@@ -245,7 +245,7 @@ public sealed class XLayoutService : SimulatingLayoutService
 
     private int FindGroup(List<string> groupNames, List<string> symbolNames, int groupNum)
     {
-        this.logger.LogDebug($"Finding group #{groupNum}");
+        this.logger.LogDebug("Finding group #{GroupNumber}", groupNum);
 
         string sourceText = groupNames[groupNum];
         int result = groupNum;

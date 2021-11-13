@@ -102,8 +102,12 @@ public class App : Application, IEnableLogger
             var settingsPath = Environment.ExpandEnvironmentVariables(
                 GetDefaultService<IOptions<GlobalSettings>>().Value.Path);
 
-            this.Log().Error(e, $"Incompatible app version found in settings: {e.Version}. " +
-                $"Delete the settings at '{settingsPath}' and let the app recreate a compatible version");
+            this.Log().Error(
+                e,
+                "Incompatible app version found in settings: {Version}. " +
+                "Delete the settings at '{SettingsPath}' and let the app recreate a compatible version",
+                e.Version,
+                settingsPath);
 
             this.desktop.Shutdown(1);
             return null!;

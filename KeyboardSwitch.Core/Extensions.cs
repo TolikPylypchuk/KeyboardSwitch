@@ -32,8 +32,7 @@ public static class Extensions
 
     public static void OpenInBrowser(this Uri uri) =>
         PlatformDependent(
-            windows: () => Process.Start(
-                new ProcessStartInfo { FileName = uri.ToString(), UseShellExecute = true }),
+            windows: () => Process.Start(new ProcessStartInfo { FileName = uri.ToString(), UseShellExecute = true }),
             macos: () => Process.Start("open", uri.ToString()),
             linux: () => Process.Start("xdg-open", uri.ToString()));
 }

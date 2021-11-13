@@ -33,14 +33,13 @@ public sealed class DelayedRetryManager : IRetryManager
         {
             if (attempt < delays.Count - 1)
             {
-                this.logger.LogWarning(e, $"Exception in a retryable action on attempt {attempt + 1}: {e.Message}");
+                this.logger.LogWarning(e, "Exception in a retryable action on attempt {Attempt}", attempt + 1);
 
                 await Task.Delay(this.delays[attempt]);
                 await this.DoWithRetrying(action, attempt + 1);
             } else
             {
-                this.logger.LogError(
-                    e, $"Exception in a retryable action on last attempt {attempt + 1}: {e.Message}");
+                this.logger.LogError(e, "Exception in a retryable action on last attempt {Attempt}", attempt + 1);
                 throw;
             }
         }

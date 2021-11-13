@@ -74,7 +74,9 @@ internal sealed class BlobCacheSettingsService : AsyncDisposable, IAppSettingsSe
         var defaultSettings = this.CreateDefaultAppSettings();
 
         this.logger.LogInformation(
-            $"Migrating settings from version {this.appSettings.AppVersion} to {defaultSettings.AppVersion}");
+            "Migrating settings from version {SourceVersion} to {TargetVersion}",
+            this.appSettings.AppVersion,
+            defaultSettings.AppVersion);
 
         this.appSettings.AppVersion = defaultSettings.AppVersion;
         this.appSettings.SwitchSettings = defaultSettings.SwitchSettings;

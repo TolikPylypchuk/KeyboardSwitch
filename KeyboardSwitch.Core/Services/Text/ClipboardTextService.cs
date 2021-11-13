@@ -31,8 +31,6 @@ public sealed class ClipboardTextService : ITextService
 
     public async Task<string?> GetTextAsync()
     {
-        this.logger.LogDebug("Getting the text from the clipboard");
-
         var settings = await this.settingsService.GetAppSettingsAsync();
 
         if (settings.InstantSwitching)
@@ -44,6 +42,8 @@ public sealed class ClipboardTextService : ITextService
             this.simulator.SimulateCopy();
             Thread.Sleep(50);
         }
+
+        this.logger.LogDebug("Getting the text from the clipboard");
 
         return await this.clipboard.GetTextAsync();
     }

@@ -11,9 +11,9 @@ internal sealed class SharpHookService : Disposable, IKeyboardHookService
 
     private readonly HashSet<ModifierMask> hotKeys = new();
 
-    private readonly Subject<ModifierMask> rawModifierPressedSubject = new();
+    private readonly Subject<ModifierMask> rawHotKeyPressedSubject = new();
     private readonly Subject<ModifierMask> hotKeyPressedSubject = new();
-    private readonly Dictionary<ModifierMask, IDisposable> hotModifierKeyPressedSubscriptions = new();
+    private readonly Dictionary<ModifierMask, IDisposable> hotKeyPressedSubscriptions = new();
 
     private readonly HashSet<KeyCode> pressedKeys = new();
     private readonly HashSet<KeyCode> releasedKeys = new();
@@ -37,7 +37,7 @@ internal sealed class SharpHookService : Disposable, IKeyboardHookService
     }
 
     ~SharpHookService() =>
-        this.Dispose();
+        this.Dispose(false);
 
     public IObservable<ModifierMask> HotKeyPressed =>
         this.hotKeyPressedSubject.AsObservable();
@@ -46,41 +46,41 @@ internal sealed class SharpHookService : Disposable, IKeyboardHookService
     {
         this.ThrowIfDisposed();
 
-        var modifier = modifiers.Flatten();
+        var hotKey = modifiers.Flatten();
 
-        this.logger.LogDebug($"Registering a hot key: {modifier}");
+        this.logger.LogDebug("Registering a hot key: {HotKey}", hotKey);
 
-        this.hotKeys.Add(modifier);
+        this.hotKeys.Add(hotKey);
 
         var subscription = pressedCount == 1
-            ? this.SubscribeToKeyPressesSimple(modifier)
-            : this.SubscribeToKeyPresses(modifier, pressedCount, TimeSpan.FromMilliseconds(waitMilliseconds));
+            ? this.SubscribeToKeyPressesSimple(hotKey)
+            : this.SubscribeToKeyPresses(hotKey, pressedCount, TimeSpan.FromMilliseconds(waitMilliseconds));
 
-        this.hotModifierKeyPressedSubscriptions.Add(modifier, subscription);
+        this.hotKeyPressedSubscriptions.Add(hotKey, subscription);
 
-        this.logger.LogDebug($"Registered a hot key: {modifier}");
+        this.logger.LogDebug("Registered a hot key: {HotKey}", hotKey);
     }
 
-    public void Unregister(IEnumerable<ModifierMask> modifierKeys)
+    public void Unregister(IEnumerable<ModifierMask> modifiers)
     {
         this.ThrowIfDisposed();
 
-        var modifierKey = modifierKeys.Flatten();
+        var hotKey = modifiers.Flatten();
 
-        this.logger.LogDebug($"Unregistering a hot key: {modifierKey}");
+        this.logger.LogDebug("Unregistering a hot key: {HotKey}", hotKey);
 
-        if (!this.hotKeys.Contains(modifierKey))
+        if (!this.hotKeys.Contains(hotKey))
         {
-            this.logger.LogWarning($"Modifier key {modifierKey} not found");
+            this.logger.LogWarning("Hot key {HotKey} not found", hotKey);
             return;
         }
 
-        this.hotKeys.Remove(modifierKey);
+        this.hotKeys.Remove(hotKey);
 
-        this.hotModifierKeyPressedSubscriptions[modifierKey].Dispose();
-        this.hotModifierKeyPressedSubscriptions.Remove(modifierKey);
+        this.hotKeyPressedSubscriptions[hotKey].Dispose();
+        this.hotKeyPressedSubscriptions.Remove(hotKey);
 
-        this.logger.LogDebug($"Unregistered a hot modifier key: {modifierKey}");
+        this.logger.LogDebug("Unregistered a hot key: {HotKey}", hotKey);
     }
 
     public void UnregisterAll()
@@ -91,8 +91,8 @@ internal sealed class SharpHookService : Disposable, IKeyboardHookService
 
         this.hotKeys.Clear();
 
-        this.hotModifierKeyPressedSubscriptions.Values.ForEach(subscription => subscription.Dispose());
-        this.hotModifierKeyPressedSubscriptions.Clear();
+        this.hotKeyPressedSubscriptions.Values.ForEach(subscription => subscription.Dispose());
+        this.hotKeyPressedSubscriptions.Clear();
 
         this.logger.LogDebug("Unregistered all hot keys");
     }
@@ -108,28 +108,30 @@ internal sealed class SharpHookService : Disposable, IKeyboardHookService
     {
         if (disposing)
         {
+            this.logger.LogDebug("Destroying a global hook");
+
             this.hook.Dispose();
-            this.rawModifierPressedSubject.Dispose();
+            this.rawHotKeyPressedSubject.Dispose();
             this.hotKeyPressedSubject.Dispose();
 
-            foreach (var subscription in this.hotModifierKeyPressedSubscriptions.Values)
+            foreach (var subscription in this.hotKeyPressedSubscriptions.Values)
             {
                 subscription.Dispose();
             }
 
-            this.hotModifierKeyPressedSubscriptions.Clear();
+            this.hotKeyPressedSubscriptions.Clear();
         }
     }
 
     private IDisposable SubscribeToKeyPressesSimple(ModifierMask modifier) =>
-        this.rawModifierPressedSubject
+        this.rawHotKeyPressedSubject
             .Where(key => key.IsSubsetKeyOf(modifier))
             .Subscribe(this.hotKeyPressedSubject);
 
     private IDisposable SubscribeToKeyPresses(ModifierMask modifier, int pressedCount, TimeSpan waitTime) =>
-        this.rawModifierPressedSubject
+        this.rawHotKeyPressedSubject
             .Where(key => key.IsSubsetKeyOf(modifier))
-            .Buffer(this.rawModifierPressedSubject
+            .Buffer(this.rawHotKeyPressedSubject
                 .Scan(
                     DateTimeOffset.MinValue,
                     (lastKeyPressTime, _) => this.scheduler.Now - lastKeyPressTime > waitTime
@@ -175,9 +177,9 @@ internal sealed class SharpHookService : Disposable, IKeyboardHookService
 
         if (!modifiers.Any(key => key is null) && modifiers.Count > 1)
         {
-            var modifierKey = modifiers.Select(key => key!.Value).Flatten();
-            this.logger.LogDebug($"Key combination activated: {modifierKey}");
-            this.rawModifierPressedSubject.OnNext(modifierKey);
+            var hotKey = modifiers.Select(key => key!.Value).Flatten();
+            this.logger.LogDebug("Hot key activated: {HotKey}", hotKey);
+            this.rawHotKeyPressedSubject.OnNext(hotKey);
         }
     }
 }

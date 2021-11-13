@@ -9,7 +9,7 @@ public static class BlobCacheFactory
     {
         var logger = services.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(BlobCacheFactory));
 
-        logger.LogInformation("Spinning up the blob cache");
+        logger.LogDebug("Spinning up the blob cache");
 
         var options = services.GetRequiredService<IOptions<GlobalSettings>>();
         var scheduler = services.GetService<IScheduler>();
@@ -17,7 +17,7 @@ public static class BlobCacheFactory
 
         if (!File.Exists(path))
         {
-            logger.LogInformation("The blob cache file for settings not found - creating a new file");
+            logger.LogInformation("Settings file not found - creating a new file");
 
             var file = new FileInfo(path);
             file.Directory?.Create();
