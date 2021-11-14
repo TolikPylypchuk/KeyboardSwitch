@@ -1,10 +1,12 @@
 #!/bin/bash
 
+INSTALL_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+
 SYSTEMD_SERVICE=keyboard-switch
 UNIT_FILE=/etc/systemd/user/$SYSTEMD_SERVICE.service
 
-SERVICE_APP=$PWD/KeyboardSwitch
-SETTINGS_APP=$PWD/KeyboardSwitchSettings
+SERVICE_APP=$INSTALL_DIR/KeyboardSwitch
+SETTINGS_APP=$INSTALL_DIR/KeyboardSwitchSettings
 
 DESKTOP_FILE=$HOME/keyboard-switch.desktop
 
@@ -32,8 +34,8 @@ Version=1.0
 Name=Keyboard Switch Settings
 Comment=An application to switch typed text as if it were typed with another keyboard layout
 Exec=$SETTINGS_APP
-Path=$PWD
-Icon=$PWD/icon.png
+Path=$INSTALL_DIR
+Icon=$INSTALL_DIR/icon.png
 Terminal=false
 Type=Application
 Categories=Utility
