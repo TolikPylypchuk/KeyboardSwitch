@@ -9,8 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitattributes = .gitattributes
 		.gitbook.yaml = .gitbook.yaml
 		.gitignore = .gitignore
-		Build-Portable.ps1 = Build-Portable.ps1
-		build.sh = build.sh
 		CHANGELOG.md = CHANGELOG.md
 		LICENSE = LICENSE
 		README.md = README.md
@@ -30,6 +28,27 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardSwitch.Windows.Setup", "KeyboardSwitch.Windows.Setup\KeyboardSwitch.Windows.Setup.csproj", "{C9A243E5-6443-4A00-ACAC-C20A61286264}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Linux", "KeyboardSwitch.Linux\KeyboardSwitch.Linux.csproj", "{8F1EB1FC-CF92-4000-81C9-7C40260858C0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Windows", "Build Windows", "{8E0EEA7C-28C5-4592-89B1-51A6990B9008}"
+	ProjectSection(SolutionItems) = preProject
+		build\windows\Build-Portable.ps1 = build\windows\Build-Portable.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Tar", "Build Tar", "{2D2AAF6E-39D7-432C-B30D-EDAB26EC8F9D}"
+	ProjectSection(SolutionItems) = preProject
+		build\tar\build-tar.sh = build\tar\build-tar.sh
+		build\tar\install.sh = build\tar\install.sh
+		build\tar\uninstall.sh = build\tar\uninstall.sh
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Deb", "Build Deb", "{BEF22692-75CB-4B7C-9177-1186925839EB}"
+	ProjectSection(SolutionItems) = preProject
+		build\deb\build-deb.sh = build\deb\build-deb.sh
+		build\deb\control = build\deb\control
+		build\deb\copyright = build\deb\copyright
+		build\deb\postinst = build\deb\postinst
+		build\deb\prerm = build\deb\prerm
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
