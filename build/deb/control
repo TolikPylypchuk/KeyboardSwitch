@@ -1,0 +1,9 @@
+Package: keyboard-switch
+Version: 4.0
+Architecture: amd64
+Maintainer: Tolik Pylypchuk <pylypchuk.tolik@gmail.com>
+Description: An application which switches typed text as if it were typed with another keyboard layout.
+Homepage: https://keyboardswitch.tolik.io
+Vcs-Browser: https://github.com/TolikPylypchuk/KeyboardSwitch
+Vcs-Git: https://github.com/TolikPylypchuk/KeyboardSwitch.git
+Depends: xsel, libxtst-dev

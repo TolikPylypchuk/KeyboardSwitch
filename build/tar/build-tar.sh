@@ -15,8 +15,11 @@ find ./KeyboardSwitch -name "*.xml" -type f -delete
 rm ./KeyboardSwitch/appsettings.windows.json
 rm ./KeyboardSwitch/appsettings.macos.json
 
-rm ./KeyboardSwitch.tar.gz 2> /dev/null
+cp ../build/tar/install.sh ./KeyboardSwitch
+cp ../build/tar/uninstall.sh ./KeyboardSwitch
 
-tar -czf ./KeyboardSwitch.tar.gz ./KeyboardSwitch
+rm ./keyboard-switch.tar.gz 2> /dev/null
 
-rm -rf ./KeyboardSwitch 2> /dev/null
+tar -czf ./keyboard-switch.tar.gz ./KeyboardSwitch
+
+rm -rf ./keyboard-switch 2> /dev/null
