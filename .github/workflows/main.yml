@@ -21,7 +21,6 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.1
         with:
-          vs-version: '[17.0,)'
           msbuild-architecture: x64
 
       - name: Build the Installer
@@ -47,13 +46,13 @@ jobs:
 
       - name: Build the Zip Archive
         shell: pwsh
-        run: .\build\windows\KeyboardSwitch-Portable.zip
+        run: .\build\windows\Build-Portable.ps1
 
       - name: Upload the Zip Archive
         uses: actions/upload-artifact@v2
         with:
           name: nightly-build
-          path: .\bin\KeyboardSwitch.zip
+          path: .\bin\KeyboardSwitch-Portable.zip
 
   build-tar:
     runs-on: ubuntu-latest
