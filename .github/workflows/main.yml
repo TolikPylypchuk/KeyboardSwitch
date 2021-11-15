@@ -42,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: nightly-build
-          path: .\KeyboardSwitch.Windows.Setup\bin\x64\Release\KeyboardSwitch-4.0.msi
+          path: .\KeyboardSwitch.Windows.Setup\bin\x64\Release\KeyboardSwitch-4.0-x64-win.msi
 
   build-zip:
     runs-on: windows-latest
