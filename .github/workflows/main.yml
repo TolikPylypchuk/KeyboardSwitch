@@ -1,0 +1,99 @@
+name: Build KeyboardSwitch
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build-installer:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1
+        with:
+          vs-version: '[17.0,)'
+          msbuild-architecture: x64
+
+      - name: Build the Installer
+        shell: pwsh
+        run: msbuild .\KeyboardSwitch.Windows.Setup\KeyboardSwitch.Windows.Setup.csproj /p:Platform=x64 /p:Configuration=Release
+
+      - name: Upload the Installer
+        uses: actions/upload-artifact@v2
+        with:
+          name: nightly-build
+          path: .\KeyboardSwitch.Windows.Setup\bin\x64\Release\KeyboardSwitch.msi
+
+  build-zip:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Build the Zip Archive
+        shell: pwsh
+        run: .\build\windows\KeyboardSwitch-Portable.zip
+
+      - name: Upload the Zip Archive
+        uses: actions/upload-artifact@v2
+        with:
+          name: nightly-build
+          path: .\bin\KeyboardSwitch.zip
+
+  build-tar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Build the Tar Archive
+        shell: bash
+        run: ./build/tar/build-tar.sh
+
+      - name: Upload the Tar Archive
+        uses: actions/upload-artifact@v2
+        with:
+          name: nightly-build
+          path: ./bin/keyboard-switch.tar.gz
+
+  build-deb:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Build the Tar Archive
+        shell: bash
+        run: ./build/deb/build-deb.sh
+
+      - name: Upload the Deb Package
+        uses: actions/upload-artifact@v2
+        with:
+          name: nightly-build
+          path: ./bin/keyboard-switch_4.0-1_amd64.deb
+
