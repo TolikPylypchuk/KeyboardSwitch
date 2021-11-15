@@ -18,8 +18,8 @@ rm ./KeyboardSwitch/appsettings.macos.json
 cp ../build/tar/install.sh ./KeyboardSwitch
 cp ../build/tar/uninstall.sh ./KeyboardSwitch
 
-rm ./keyboard-switch.tar.gz 2> /dev/null
+rm ./keyboard-switch-4.0-x64.tar.gz 2> /dev/null
 
-tar -czf ./keyboard-switch.tar.gz ./KeyboardSwitch
+tar -czf ./keyboard-switch-4.0-x64.tar.gz ./KeyboardSwitch
 
-rm -rf ./keyboard-switch 2> /dev/null
+rm -rf ./KeyboardSwitch 2> /dev/null
