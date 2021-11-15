@@ -5,10 +5,10 @@ mkdir -p ./bin
 cd ./bin
 
 dotnet publish ../KeyboardSwitch --configuration Release --runtime linux-x64 --framework net6.0 \
---self-contained true --output ./KeyboardSwitch --nologo -p:Platform=x64
+--self-contained true --output ./KeyboardSwitch --nologo -p:Platform=x64 -p:ContinuousIntegrationBuild=true
 
 dotnet publish ../KeyboardSwitch.Settings --configuration Release --runtime linux-x64 --framework net6.0 \
---self-contained true --output ./KeyboardSwitch --nologo -p:Platform=x64
+--self-contained true --output ./KeyboardSwitch --nologo -p:Platform=x64 -p:ContinuousIntegrationBuild=true
 
 find ./KeyboardSwitch -name "*.pdb" -type f -delete
 find ./KeyboardSwitch -name "*.xml" -type f -delete

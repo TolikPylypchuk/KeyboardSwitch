@@ -110,8 +110,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>call dotnet publish $(MSBuildProjectDirectory)\..\KeyboardSwitch\ --configuration Release --runtime win10-x64 --framework net6.0-windows --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=x64
-call dotnet publish $(MSBuildProjectDirectory)\..\KeyboardSwitch.Settings\ --configuration Release --runtime win10-x64 --framework net6.0-windows --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=x64</PreBuildEvent>
+    <PreBuildEvent>call dotnet publish $(MSBuildProjectDirectory)\..\KeyboardSwitch\ --configuration Release --runtime win10-x64 --framework net6.0-windows --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=x64 -p:ContinuousIntegrationBuild=true
+call dotnet publish $(MSBuildProjectDirectory)\..\KeyboardSwitch.Settings\ --configuration Release --runtime win10-x64 --framework net6.0-windows --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=x64 -p:ContinuousIntegrationBuild=true</PreBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\WixSharp.bin.1.19.0\build\WixSharp.bin.targets" Condition="Exists('..\packages\WixSharp.bin.1.19.0\build\WixSharp.bin.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
