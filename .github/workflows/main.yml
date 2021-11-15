@@ -36,7 +36,7 @@ jobs:
 
       - name: Rename the Installer
         shell: pwsh
-        run: Rename-Item -Path ".\KeyboardSwitch.Windows.Setup\bin\x64\Release\Keyboard Switch.msi" -NewName KeyboardSwitch-4.0.msi
+        run: Rename-Item -Path ".\KeyboardSwitch.Windows.Setup\bin\x64\Release\Keyboard Switch.msi" -NewName KeyboardSwitch-4.0-x64-win.msi
 
       - name: Upload the Installer
         uses: actions/upload-artifact@v2
@@ -63,7 +63,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: nightly-build
-          path: .\bin\KeyboardSwitch-Portable.zip
+          path: .\bin\KeyboardSwitch-4.0-x64-win.zip
 
   build-tar:
     runs-on: ubuntu-latest
@@ -84,7 +84,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: nightly-build
-          path: ./bin/keyboard-switch.tar.gz
+          path: ./bin/keyboard-switch-4.0-x64.tar.gz
 
   build-deb:
     runs-on: ubuntu-latest
