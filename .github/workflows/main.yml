@@ -23,6 +23,13 @@ jobs:
         with:
           msbuild-architecture: x64
 
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1.0.5
+
+      - name: Restore the NuGet Packages
+        shell: pwsh
+        run: nuget restore .\KeyboardSwitch.sln
+
       - name: Build the Installer
         shell: pwsh
         run: msbuild .\KeyboardSwitch.Windows.Setup\KeyboardSwitch.Windows.Setup.csproj /p:Platform=x64 /p:Configuration=Release
