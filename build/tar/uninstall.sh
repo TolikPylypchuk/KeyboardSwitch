@@ -1,18 +1,13 @@
 #!/bin/bash
 
-SYSTEMD_SERVICE=keyboard-switch
-UNIT_FILE=/etc/systemd/user/$SYSTEMD_SERVICE.service
+SERVICE_DESKTOP_FILE=$HOME/.config/autostart/keyboard-switch.desktop
+SETTINGS_DESKTOP_FILE=$HOME/.local/share/applications/keyboard-switch-settings.desktop
 
-systemctl --user disable $SYSTEMD_SERVICE
-systemctl --user stop $SYSTEMD_SERVICE
+if [ -f "$SERVICE_DESKTOP_FILE" ] ; then
+    rm "$SERVICE_DESKTOP_FILE"
+fi
 
-sudo rm $UNIT_FILE
-
-systemctl --user daemon-reload
-
-DESKTOP_FILE=$HOME/.local/share/applications/keyboard-switch.desktop
-
-if [ -f "$DESKTOP_FILE" ] ; then
-    rm "$DESKTOP_FILE"
+if [ -f "$SETTINGS_DESKTOP_FILE" ] ; then
+    rm "$SETTINGS_DESKTOP_FILE"
     sudo update-desktop-database
 fi

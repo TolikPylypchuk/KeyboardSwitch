@@ -130,7 +130,7 @@ public class App : Application, IEnableLogger
             .AddSingleton<IActivationForViewFetcher>(new AvaloniaActivationForViewFetcher())
             .AddSuspensionDriver()
             .AddCoreKeyboardSwitchServices()
-            .AddNativeKeyboardSwitchServices()
+            .AddNativeKeyboardSwitchServices(config)
             .UseMicrosoftDependencyResolver();
 
         BlobCache.ApplicationName = nameof(KeyboardSwitch);

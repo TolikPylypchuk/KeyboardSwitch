@@ -61,7 +61,7 @@ public static class Program
             .AddSingleton<IScheduler>(Scheduler.Default)
             .AddRetryManager(context.Configuration)
             .AddCoreKeyboardSwitchServices()
-            .AddNativeKeyboardSwitchServices();
+            .AddNativeKeyboardSwitchServices(context.Configuration);
 
     private static void ConfigureLogging(HostBuilderContext context, ILoggingBuilder logging) =>
         logging

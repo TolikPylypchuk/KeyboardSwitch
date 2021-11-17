@@ -1,10 +1,13 @@
 namespace KeyboardSwitch.Windows;
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 public static class SerivceExtensions
 {
-    public static IServiceCollection AddNativeKeyboardSwitchServices(this IServiceCollection services) =>
+    public static IServiceCollection AddNativeKeyboardSwitchServices(
+        this IServiceCollection services,
+        IConfiguration config) =>
         services
             .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
             .AddSingleton<IKeyboardSimulator>(new KeyboardSimulator())

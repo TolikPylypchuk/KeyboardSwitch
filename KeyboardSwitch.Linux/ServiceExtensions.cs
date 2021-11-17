@@ -1,21 +1,19 @@
 namespace KeyboardSwitch.Linux;
 
+using Microsoft.Extensions.Configuration;
+
 public static class ServiceExtensions
 {
-    public static IServiceCollection AddNativeKeyboardSwitchServices(this IServiceCollection services) =>
+    public static IServiceCollection AddNativeKeyboardSwitchServices(
+        this IServiceCollection services,
+        IConfiguration config) =>
         services
-            .AddSingleton(ServiceCommunicator)
+            .Configure<StartupSettings>(config.GetSection("Startup"))
+            .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
             .AddSingleton<ITextService, ClipboardTextService>()
             .AddSingleton<IUserActivitySimulator, XUserActivitySimulator>()
             .AddSingleton<ILayoutService, XLayoutService>()
             .AddSingleton<ILayoutLoaderSrevice, NotSupportedLayoutLoaderService>()
-            .AddSingleton<IStartupService, SystemdStartupService>()
+            .AddSingleton<IStartupService, FreedesktopStartupService>()
             .AddSingleton<IAutoConfigurationService, XAutoConfigurationService>();
-
-    private static IServiceCommunicator ServiceCommunicator(IServiceProvider services)
-    {
-        var directCommunicator = ActivatorUtilities.CreateInstance<DirectServiceCommunicator>(services);
-        return new SystemdServiceCommunicator(
-            directCommunicator, services.GetRequiredService<IOptions<GlobalSettings>>());
-    }
 }
