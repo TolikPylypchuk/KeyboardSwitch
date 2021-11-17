@@ -29,7 +29,6 @@ public static class Program
             .ConfigureLogging(ConfigureLogging)
             .UseConsoleLifetime()
             .UseEnvironment(PlatformDependent(windows: () => "windows", macos: () => "macos", linux: () => "linux"))
-            .UseSystemd()
             .Build();
 
         var logger = host.Services.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(Program));
