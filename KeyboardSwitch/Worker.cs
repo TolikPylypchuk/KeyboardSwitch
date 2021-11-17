@@ -2,7 +2,6 @@ namespace KeyboardSwitch;
 
 public class Worker : BackgroundService
 {
-    private readonly IRetryManager retryManager;
     private readonly IKeyboardHookService keyboardHookService;
     private readonly ISwitchService switchService;
     private readonly IAppSettingsService settingsService;
@@ -13,7 +12,6 @@ public class Worker : BackgroundService
     private IDisposable? hookSubscription;
 
     public Worker(
-        IRetryManager retryManager,
         IKeyboardHookService keyboardHookService,
         ISwitchService switchService,
         IAppSettingsService settingsService,
@@ -21,7 +19,6 @@ public class Worker : BackgroundService
         IOptions<GlobalSettings> globalSettings,
         ILogger<Worker> logger)
     {
-        this.retryManager = retryManager;
         this.keyboardHookService = keyboardHookService;
         this.switchService = switchService;
         this.settingsService = settingsService;
@@ -42,7 +39,7 @@ public class Worker : BackgroundService
 
             this.logger.LogDebug("Starting the service execution");
 
-            await this.retryManager.DoWithRetrying(() => this.keyboardHookService.StartHook(token));
+            await this.keyboardHookService.StartHook(token);
         } catch (IncompatibleAppVersionException e)
         {
             var settingsPath = Environment.ExpandEnvironmentVariables(this.globalSettings.Path);

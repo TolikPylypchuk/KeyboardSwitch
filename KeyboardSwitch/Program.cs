@@ -59,7 +59,6 @@ public static class Program
             .Configure<HostOptions>(o => o.ShutdownTimeout = TimeSpan.FromMilliseconds(100))
             .Configure<GlobalSettings>(context.Configuration.GetSection("Settings"))
             .AddSingleton<IScheduler>(Scheduler.Default)
-            .AddRetryManager(context.Configuration)
             .AddCoreKeyboardSwitchServices()
             .AddNativeKeyboardSwitchServices(context.Configuration);
 
