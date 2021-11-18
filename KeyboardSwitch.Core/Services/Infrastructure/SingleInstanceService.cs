@@ -55,25 +55,8 @@ internal sealed class SingleInstanceService : ISingleInstanceService
         }
     }
 
-    private string? GetCommand()
-    {
-        if (Environment.GetCommandLineArgs().Length <= 1)
-        {
-            return null;
-        }
-
-        string arg = Environment.GetCommandLineArgs()[1];
-
-        if (arg.StartsWith("--", StringComparison.InvariantCulture))
-        {
-            return arg[2..];
-        }
-
-        if (arg.StartsWith('-') || arg.StartsWith('/'))
-        {
-            return arg[1..];
-        }
-
-        return arg;
-    }
+    private string? GetCommand() =>
+        Environment.GetCommandLineArgs().Length <= 1
+            ? null
+            : StripCommandLineArgument(Environment.GetCommandLineArgs()[1]);
 }

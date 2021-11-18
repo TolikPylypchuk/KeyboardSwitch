@@ -5,6 +5,7 @@ public class Worker : BackgroundService
     private readonly IKeyboardHookService keyboardHookService;
     private readonly ISwitchService switchService;
     private readonly IAppSettingsService settingsService;
+    private readonly IExitCodeSetter exitCodeSetter;
     private readonly IHost host;
     private readonly GlobalSettings globalSettings;
     private readonly ILogger<Worker> logger;
@@ -15,6 +16,7 @@ public class Worker : BackgroundService
         IKeyboardHookService keyboardHookService,
         ISwitchService switchService,
         IAppSettingsService settingsService,
+        IExitCodeSetter exitCodeSetter,
         IHost host,
         IOptions<GlobalSettings> globalSettings,
         ILogger<Worker> logger)
@@ -22,6 +24,7 @@ public class Worker : BackgroundService
         this.keyboardHookService = keyboardHookService;
         this.switchService = switchService;
         this.settingsService = settingsService;
+        this.exitCodeSetter = exitCodeSetter;
         this.host = host;
         this.globalSettings = globalSettings.Value;
         this.logger = logger;
@@ -51,10 +54,13 @@ public class Worker : BackgroundService
                 e.Version,
                 settingsPath);
 
+            this.exitCodeSetter.AppExitCode = ExitCode.IncompatibleSettingsVersion;
+
             await this.host.StopAsync(token);
         } catch (Exception e)
         {
             this.logger.LogCritical(e, "The KeyboardSwitch service has crashed");
+            this.exitCodeSetter.AppExitCode = ExitCode.Error;
             await this.host.StopAsync(token);
         }
     }

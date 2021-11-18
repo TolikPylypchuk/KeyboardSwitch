@@ -8,6 +8,7 @@ global using KeyboardSwitch.Core.Services.Infrastructure;
 global using KeyboardSwitch.Core.Services.Settings;
 global using KeyboardSwitch.Core.Services.Switching;
 global using KeyboardSwitch.Core.Settings;
+global using KeyboardSwitch.Services;
 
 global using Microsoft.Extensions.Options;
 

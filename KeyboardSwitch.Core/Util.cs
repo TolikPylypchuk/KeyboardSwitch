@@ -21,4 +21,19 @@ public static class Util
 
         throw new PlatformNotSupportedException();
     }
+
+    public static string StripCommandLineArgument(string arg)
+    {
+        if (arg.StartsWith("--", StringComparison.InvariantCulture))
+        {
+            return arg[2..];
+        }
+
+        if (arg.StartsWith('-') || arg.StartsWith('/'))
+        {
+            return arg[1..];
+        }
+
+        return arg;
+    }
 }

@@ -1,5 +1,6 @@
 namespace KeyboardSwitch;
 
+using System.Diagnostics;
 using System.Reactive.Concurrency;
 using System.Reflection;
 
@@ -17,7 +18,35 @@ using ILogger = ILogger; // From Microsoft.Extensions.Logging
 
 public static class Program
 {
-    public static void Main(string[] args)
+    private static readonly ExitCodeAccessor exitCodeAccessor = new();
+
+    public static int Main(string[] args)
+    {
+        var command = ParseCommand(args);
+
+        switch (command)
+        {
+            case Command.Run:
+            case Command.Stop:
+            case Command.ReloadSettings:
+                Run(args);
+                break;
+            case Command.CheckIfRunning:
+                ShowIfRunning();
+                break;
+            case Command.ShowHelp:
+                Help.Show(Console.Out);
+                break;
+            case Command.None:
+                Help.Show(Console.Error);
+                exitCodeAccessor.AppExitCode = ExitCode.UnknownCommand;
+                break;
+        }
+
+        return (int)exitCodeAccessor.AppExitCode;
+    }
+
+    private static void Run(string[] args)
     {
         Directory.SetCurrentDirectory(
             Path.GetDirectoryName(Assembly.GetExecutingAssembly()?.Location) ?? String.Empty);
@@ -31,25 +60,31 @@ public static class Program
             .UseEnvironment(PlatformDependent(windows: () => "windows", macos: () => "macos", linux: () => "linux"))
             .Build();
 
-        var logger = host.Services.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(Program));
-
         using var mutex = ConfigureSingleInstance(host.Services);
 
-        try
+        if (args.Length == 0)
         {
-            SubscribeToExternalCommands(host, logger);
+            var logger = host.Services.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(Program));
 
-            logger.LogInformation("KeyboardSwitch service execution started");
+            try
+            {
+                SubscribeToExternalCommands(host, logger);
 
-            host.Run();
+                logger.LogInformation("KeyboardSwitch service execution started");
 
-            logger.LogInformation("KeyboardSwitch service execution stopped");
-        } catch (Exception e) when (e is OperationCanceledException || e is TaskCanceledException)
+                host.Run();
+
+                logger.LogInformation("KeyboardSwitch service execution stopped");
+            } catch (Exception e) when (e is OperationCanceledException || e is TaskCanceledException)
+            {
+                logger.LogInformation("KeyboardSwitch service execution cancelled");
+            } finally
+            {
+                mutex.ReleaseMutex();
+            }
+        } else
         {
-            logger.LogInformation("KeyboardSwitch service execution cancelled");
-        } finally
-        {
-            mutex.ReleaseMutex();
+            exitCodeAccessor.AppExitCode = ExitCode.KeyboardSwitchNotRunning;
         }
     }
 
@@ -58,6 +93,7 @@ public static class Program
             .Configure<HostOptions>(o => o.ShutdownTimeout = TimeSpan.FromMilliseconds(100))
             .Configure<GlobalSettings>(context.Configuration.GetSection("Settings"))
             .AddSingleton<IScheduler>(Scheduler.Default)
+            .AddSingleton<IExitCodeSetter>(exitCodeAccessor)
             .AddCoreKeyboardSwitchServices()
             .AddNativeKeyboardSwitchServices(context.Configuration);
 
@@ -101,5 +137,39 @@ public static class Program
         namedPipeService.ReceivedString
             .Where(command => command.IsUnknownCommand())
             .Subscribe(command => logger.LogWarning("External request '{Command}' is not recognized", command));
+    }
+
+    private static void ShowIfRunning()
+    {
+        var processes = Process.GetProcessesByName(nameof(KeyboardSwitch));
+        bool isRunning = processes != null && processes.Length > 1;
+
+        Console.WriteLine(isRunning ? "KeyboardSwitch is running" : "KeyboardSwitch is not running");
+
+        if (!isRunning)
+        {
+            exitCodeAccessor.AppExitCode = ExitCode.KeyboardSwitchNotRunning;
+        }
+    }
+
+    private static Command ParseCommand(string[] args)
+    {
+        if (args.Length == 0)
+        {
+            return Command.Run;
+        } else if (args.Length > 1)
+        {
+            return Command.None;
+        }
+
+        return StripCommandLineArgument(args[0]) switch
+        {
+            "stop" => Command.Stop,
+            "reload-settings" => Command.ReloadSettings,
+            "check" => Command.CheckIfRunning,
+            "help" => Command.ShowHelp,
+            "?" => Command.ShowHelp,
+            _ => Command.None
+        };
     }
 }
