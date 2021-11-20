@@ -1,6 +1,6 @@
 #!/bin/bash
 
-INSTALL_DIR=/opt/KeyboardSwitch
+INSTALL_DIR=/opt/keyboard-switch
 AUTOSTART_DIR=.config/autostart
 
 SERVICE_APP=$INSTALL_DIR/KeyboardSwitch

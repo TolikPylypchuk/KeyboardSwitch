@@ -1,9 +1,11 @@
 #!/bin/bash
 
+INSTALL_DIR=/opt/keyboard-switch
+
 SERVICE_DESKTOP_FILE=.config/autostart/keyboard-switch.desktop
 SETTINGS_DESKTOP_FILE=/usr/share/applications/keyboard-switch-settings.desktop
 
-/opt/KeyboardSwitch --stop
+$INSTALL_DIR/KeyboardSwitch --stop
 
 awk -F: '($3 >= 1000) && ($3 < 60000) && ($1 != "nobody") { print $1 }' /etc/passwd | while read -r CURRENT_USER
 do
