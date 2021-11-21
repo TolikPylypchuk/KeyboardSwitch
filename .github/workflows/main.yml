@@ -63,7 +63,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: nightly-build
-          path: .\bin\KeyboardSwitch-4.0-x64-win.zip
+          path: .\bin\*.zip
 
   build-tar:
     runs-on: ubuntu-latest
@@ -84,7 +84,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: nightly-build
-          path: ./bin/keyboard-switch-4.0-x64.tar.gz
+          path: ./bin/*.tar.gz
 
   build-deb:
     runs-on: ubuntu-latest
@@ -97,7 +97,7 @@ jobs:
         with:
           dotnet-version: 6.0.x
 
-      - name: Build the Tar Archive
+      - name: Build the Deb Package
         shell: bash
         run: ./build/deb/build-deb.sh
 
@@ -105,5 +105,29 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: nightly-build
-          path: ./bin/keyboard-switch_4.0-1_amd64.deb
+          path: ./bin/*.deb
 
+  build-rpm:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Setup RPM Build Tools
+        shell: bash
+        run: sudo apt update && sudo apt install rpm -y
+
+      - name: Build the RPM Package
+        shell: bash
+        run: ./build/rpm/build-rpm.sh
+
+      - name: Upload the RPM Package
+        uses: actions/upload-artifact@v2
+        with:
+          name: nightly-build
+          path: ./bin/*.rpm
