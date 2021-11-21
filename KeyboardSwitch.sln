@@ -51,6 +51,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Deb", "Build Deb", "{
 		build\deb\prerm = build\deb\prerm
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Rpm", "Build Rpm", "{B2C16AEE-1495-4D0B-96A0-35CA247B5A80}"
+	ProjectSection(SolutionItems) = preProject
+		build\rpm\build-rpm.sh = build\rpm\build-rpm.sh
+		build\rpm\keyboard-switch.spec = build\rpm\keyboard-switch.spec
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
