@@ -9,6 +9,7 @@ URL: https://keyboardswitch.tolik.io
 
 ExclusiveArch: x86_64
 Requires: xsel libXtst
+AutoReq: no
 
 %description
 An application which switches typed text as if it were typed with another keyboard layout
