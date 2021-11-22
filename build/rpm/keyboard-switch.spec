@@ -8,7 +8,7 @@ Packager: Tolik Pylypchuk <pylypchuk.tolik@gmail.com>
 URL: https://keyboardswitch.tolik.io
 
 ExclusiveArch: x86_64
-Requires: epel-release xsel libXtst-devel
+Requires: xsel libXtst
 
 %description
 An application which switches typed text as if it were typed with another keyboard layout

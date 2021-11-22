@@ -6,4 +6,4 @@ Description: An application which switches typed text as if it were typed with a
 Homepage: https://keyboardswitch.tolik.io
 Vcs-Browser: https://github.com/TolikPylypchuk/KeyboardSwitch
 Vcs-Git: https://github.com/TolikPylypchuk/KeyboardSwitch.git
-Depends: xsel, libxtst-dev
+Depends: xsel, libxtst6
