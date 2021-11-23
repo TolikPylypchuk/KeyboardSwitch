@@ -46,6 +46,7 @@ SETTINGS_DESKTOP_FILE=/tmp/keyboard-switch-settings.desktop
 awk -F: '($3 >= 1000) && ($3 < 60000) && ($1 != "nobody") { print $1 }' /etc/passwd | while read -r CURRENT_USER
 do
     mkdir -p "$(eval echo ~$CURRENT_USER)/$AUTOSTART_DIR"
+    chown -R $CURRENT_USER: "$(eval echo ~$CURRENT_USER)/$AUTOSTART_DIR"
 
     echo "[Desktop Entry]
 Version=1.0
@@ -59,6 +60,8 @@ Terminal=false
 Type=Application
 Categories=Utility
 " | tee -a "$(eval echo ~$CURRENT_USER)/$SERVICE_DESKTOP_FILE" > /dev/null
+
+    chown $CURRENT_USER: "$(eval echo ~$CURRENT_USER)/$SERVICE_DESKTOP_FILE"
 done
 
 echo "[Desktop Entry]
