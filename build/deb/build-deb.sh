@@ -29,7 +29,7 @@ cp ../../../build/deb/postinst .
 cp ../../../build/deb/prerm .
 cp ../../../build/deb/postrm .
 
-sudo chmod 555 ./postinst ./prerm
+sudo chmod 555 ./postinst ./prerm ./postrm
 
 cd ..
 mkdir ./opt
