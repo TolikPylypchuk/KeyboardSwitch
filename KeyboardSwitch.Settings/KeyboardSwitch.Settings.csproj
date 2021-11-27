@@ -71,10 +71,10 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="Splat" Version="13.1.42" />
-    <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="13.1.42" />
-    <PackageReference Include="Splat.Microsoft.Extensions.Logging" Version="13.1.42" />
-    <PackageReference Include="Splat.Serilog" Version="13.1.42" />
+    <PackageReference Include="Splat" Version="13.1.63" />
+    <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="13.1.63" />
+    <PackageReference Include="Splat.Microsoft.Extensions.Logging" Version="13.1.63" />
+    <PackageReference Include="Splat.Serilog" Version="13.1.63" />
     <PackageReference Include="System.Interactive" Version="5.0.0" />
     <PackageReference Include="System.Interactive.Async" Version="5.0.0" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />

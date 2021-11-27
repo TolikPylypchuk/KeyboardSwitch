@@ -25,7 +25,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="akavache" Version="7.3.1" />
+    <PackageReference Include="akavache" Version="7.3.47" />
     <PackageReference Include="DynamicData" Version="7.4.3" />
     <PackageReference Include="Fody" Version="6.6.0">
       <PrivateAssets>all</PrivateAssets>
@@ -34,7 +34,7 @@
     <PackageReference Include="ReactiveUI" Version="16.3.10" />
     <PackageReference Include="ReactiveUI.Fody" Version="16.3.10" />
     <PackageReference Include="ReactiveUI.Validation" Version="2.2.1" />
-    <PackageReference Include="Splat" Version="13.1.42" />
+    <PackageReference Include="Splat" Version="13.1.63" />
     <PackageReference Include="System.Interactive" Version="5.0.0" />
     <PackageReference Include="System.Interactive.Async" Version="5.0.0" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
