@@ -48,6 +48,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Deb", "Build Deb", "{
 		build\deb\control = build\deb\control
 		build\deb\copyright = build\deb\copyright
 		build\deb\postinst = build\deb\postinst
+		build\deb\postrm = build\deb\postrm
 		build\deb\prerm = build\deb\prerm
 	EndProjectSection
 EndProject
