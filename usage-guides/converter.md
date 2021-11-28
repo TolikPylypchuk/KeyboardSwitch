@@ -1,9 +1,5 @@
 # Converter
 
-{% hint style="warning" %}
-Version 4.0 is not yet completed. You'll have to get a [nightly build](https://github.com/TolikPylypchuk/KeyboardSwitch/actions/workflows/main.yml) if you want to install the app. It works on Windows and Linux; macOS support will come in a future release. The app itself and these docs may change at any moment without warning until version 4.0 is released.
-{% endhint %}
-
 The converter lets you manually convert text between arbitrary layouts, not just those installed in your system. In order to enable it, check the 'Show the converter' check-box in the Preferences tab.
 
 {% hint style="info" %}

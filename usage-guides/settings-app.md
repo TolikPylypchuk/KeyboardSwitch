@@ -1,9 +1,5 @@
 # The Settings App
 
-{% hint style="warning" %}
-Version 4.0 is not yet completed. You'll have to get a [nightly build](https://github.com/TolikPylypchuk/KeyboardSwitch/actions/workflows/main.yml) if you want to install the app. It works on Windows and Linux; macOS support will come in a future release. The app itself and these docs may change at any moment without warning until version 4.0 is released.
-{% endhint %}
-
 Keyboard Switch Settings is a simple app which controls the behavior of the Keyboard Switch service. You can find the app in the list of your installed apps (e.g. the Start menu on Windows). Here's how it looks:
 
 ![](../.gitbook/assets/v4.0-screen-char-mappings.png)

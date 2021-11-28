@@ -1,9 +1,5 @@
 # Command Line Interface
 
-{% hint style="warning" %}
-Version 4.0 is not yet completed. You'll have to get a [nightly build](https://github.com/TolikPylypchuk/KeyboardSwitch/actions/workflows/main.yml) if you want to install the app. It works on Windows and Linux; macOS support will come in a future release. The app itself and these docs may change at any moment without warning until version 4.0 is released.
-{% endhint %}
-
 The KeyboardSwitch service app has a CLI which you can use to control it. On Windows it's not really convenient as GUI apps cannot output anything to the console, but can be used as well.
 
 The name of the executable is `KeyboardSwitch`. This article will assume it's installed on Linux in the `/opt/keyboard-switch` directory.

@@ -1,10 +1,6 @@
 # Character Mappings
 
-{% hint style="warning" %}
-Version 4.0 is not yet completed. You'll have to get a [nightly build](https://github.com/TolikPylypchuk/KeyboardSwitch/actions/workflows/main.yml) if you want to install the app. It works on Windows and Linux; macOS support will come in a future release. The app itself and these docs may change at any moment without warning until version 4.0 is released.
-{% endhint %}
-
-In order for the Keyboard Switch service to know how to map characters, you have to configure the character mappings yourself. The app reads the list of installed layouts in the system, so it knows which layouts you use and in what order. What it doesn't (and can't) know is the physical layout of your keyboard, so it doesn't know what happens if you press certain keys on your keboard.
+In order for the Keyboard Switch service to know how to map characters, you have to configure the character mappings yourself. The app reads the list of installed layouts in the system, so it knows which layouts you use and in what order. What it doesn't (and can't) know is the physical layout of your keyboard, so it doesn't know what happens if you press certain keys on your keyboard.
 
 ## Text vs Keyboard
 

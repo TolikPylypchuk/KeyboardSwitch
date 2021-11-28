@@ -1,9 +1,5 @@
 # Technical Stuff
 
-{% hint style="warning" %}
-Version 4.0 is not yet completed. You'll have to get a [nightly build](https://github.com/TolikPylypchuk/KeyboardSwitch/actions/workflows/main.yml) if you want to install the app. It works on Windows and Linux; macOS support will come in a future release. The app itself and these docs may change at any moment without warning until version 4.0 is released.
-{% endhint %}
-
 Keyboard Switch is written using [C#](https://github.com/dotnet/csharplang) and [.NET 6](https://dotnet.microsoft.com/download/dotnet/6.0). Following is the list of technologies used in this app and some other technical aspects.
 
 ## UI
@@ -28,7 +24,7 @@ In the previous versions (up to 3.0) the service and the settings app were not s
 
 At first I decided to run the app as a systemd service, but it proved not to provide much value, so I've since reverted this decision.
 
-The service app uses X11, especially the X Keyboard Extension, and the X Test Extension. Thus I'm not sure it will work on Wayland, but it's not yet tested. It uses the [X11](https://www.nuget.org/packages/X11/) package to call various native Xlib functions.
+The service app uses X11, especially the X Keyboard Extension, and the X Test Extension. Currently it doesn't work on Wayland, even through XWayland. It uses the [X11](https://www.nuget.org/packages/X11/) package to call various native Xlib functions.
 
 The app also uses Bash and [xsel](https://github.com/kfish/xsel), but those are not used directly - rather they are used by the [TextCopy library](https://github.com/CopyText/TextCopy) which the app uses for copying and pasting text.
 
@@ -86,7 +82,7 @@ Building the service app and the settings app is quite straightforward.
 
 On Windows you can simply use the _Build-Portable.ps1_ script located in the _build/windows_ directory. Bear in mind that you have to call this script from the solution root directory: `.\build\windows\Build-Portable.ps1`. It will create the _KeyboardSwitch-Portable.zip_ file in the _bin_ directory which you can then unpack into wherever you like.
 
-On Linux you should use the _build-tar.sh_ script to build the tar.gz file, or the build-deb.sh script to build the deb package. They are located in the _build/tar_ and _build/deb_ directories respectively. As with the Windows script, you have to execute these scripts from the solution root: `./build/tar/build-tar.sh` and `./build/deb/build-deb.sh`. The scripts' results will be in the _bin_ directory.
+On Linux you should use the _build-tar.sh_ script to build the tar.gz file, the _build-deb.sh_ script to build the deb package, and the _build-rpm.sh_ script to build the RPM package. They are located in the _build/tar_, _build/deb_, and _build/rpm_ directories respectively. As with the Windows script, you have to execute these scripts from the solution root: `./build/tar/build-tar.sh`, `./build/deb/build-deb.sh`, and `./build/rpm/build-rpm.sh`. The scripts' results will be in the _bin_ directory.
 
 Alternatively, you can build the projects using Visual Studio 2019 or later, or with the `dotnet` tool. Note however that you have to build the whole solution. The startup project is `KeyboardSwitch.Settings`, and if you build it, it won't actually build the `KeyboardSwitch` project, because the settings app doesn't directly depend on the service app.
 
@@ -98,6 +94,6 @@ The installer project is excluded from the solution build sequence as it's not a
 
 ### Building the Windows Installer
 
-If you want to properly install the app, you can build the installer. Unlike the other projects, this one requires .NET Framework 4.8. This is because it's built with [WixSharp](https://github.com/oleg-shilo/wixsharp), which in turn is based on [the WiX toolset](https://wixtoolset.org), and as of version 3.11.2 WiX doesn't support .NET 6.
+If you want to properly install the app on Windows, you can build the installer. Unlike the other projects, this one requires .NET Framework 4.8. This is because it's built with [WixSharp](https://github.com/oleg-shilo/wixsharp), which in turn is based on [the WiX toolset](https://wixtoolset.org), and as of version 3.11.2 WiX doesn't support .NET 6.
 
 Simply run the build, and it will generate the MSI installer in the project's _bin_ folder. Before the build, it calls `dotnet publish` to use its output.

@@ -1,9 +1,5 @@
 # Preferences
 
-{% hint style="warning" %}
-Version 4.0 is not yet completed. You'll have to get a [nightly build](https://github.com/TolikPylypchuk/KeyboardSwitch/actions/workflows/main.yml) if you want to install the app. It works on Windows and Linux; macOS support will come in a future release. The app itself and these docs may change at any moment without warning until version 4.0 is released.
-{% endhint %}
-
 The Preferences tab contains other settings which control the behavior of the Keyboard Switch service. Here's how it looks:
 
 ![](../.gitbook/assets/v4.0-screen-preferences.png)
@@ -57,6 +53,6 @@ These settings are present only on Linux, because unlike Windows, the app doesn'
 These settings should rarely be changed since the defaults will almost certainly work.
 {% endhint %}
 
-The settings include the key combinations to switch forward or backward, and buttons to clear these key combinations. The defaults are _Left Super+Space_ to switch forward, and _Left Shift+Left Super+Space_ to switch backward. The _Super_ key is also known as the _Windows_ key (or simply _Win_) since it's the one with the Windows logo on most keyboards. But if you do want to change them, clear the key combination, click on the text field, and press the key combination of your choice. The app will then use this key combination to switch layouts.
+The settings include the key combinations to switch forward or backward, and buttons to clear these key combinations. The defaults are _Left Super+Space_ to switch forward, and _Left Shift+Left Super+Space_ to switch backward. The _Super_ key is also known as the _Windows_ key (or simply _Win_) since it's the one with the Windows logo on most keyboards. If you do want to change them, clear the key combination, click on the text field, and press the key combination of your choice. The app will then use this key combination to switch layouts.
 
 Since GNOME doesn't let the app react to pressing the _Super_ keys, those keys can be added manually using the _Add Left Super_ or _Add Right Super_ buttons.

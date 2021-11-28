@@ -1,25 +1,23 @@
 # About
 
-Keyboard Switch: version 4.0. Created by [Tolik Pylypchuk](https://github.com/TolikPylypchuk).
+Keyboard Switch. Version 4.0. Created by [Tolik Pylypchuk](https://github.com/TolikPylypchuk).
 
 ## Acknowledgements
 
-Icon made by [Smashicons](https://smashicons.com) from [www.flaticon.com](https://www.flaticon.com).
-
-The UI for the settings app was created using [Avalonia](https://avaloniaui.net) with [ReactiveUI](https://www.reactiveui.net) and [FluentAvalonia](https://github.com/amwx/FluentAvalonia).
-
-The global keyboard hook is implemented using [libuiohook](https://github.com/kwhat/libuiohook).
-
-Docs are built using [GitBook](https://www.gitbook.com).
+The UI for the settings app was created using [Avalonia](https://avaloniaui.net) with [ReactiveUI](https://www.reactiveui.net) and [FluentAvalonia](https://github.com/amwx/FluentAvalonia). The global keyboard hook is implemented using [libuiohook](https://github.com/kwhat/libuiohook). Docs are built using [GitBook](https://www.gitbook.com). Icon made by [Smashicons](https://smashicons.com) from [www.flaticon.com](https://www.flaticon.com).
 
 ## Changelog
 
-### v4.0 (TBA)
+### [v4.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.0) (28 November 2021)
 
-* The app is cross-platform now, and works on Linux
+* The app now works on Linux (via X11 only; Wayland is not supported)
+* The legacy hot-key mode was removed - only the modifier keys mode is available
 * The UI theme is overhauled
 * The converter is hidden by default
 * .NET 6 is used instead of .NET Core 3.1
+* The app's performance was improved, though it's still not ideal
+
+This is the first major version of the app which is not completely rewritten, though it was significantly changed. From now on, most changes (like macOS support) will come as minor versions, and version 4 will be the major version for the foreseeable future.
 
 ### [v3.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v3.0) (4 August 2020)
 

@@ -8,15 +8,11 @@ If you ever write some text and then realize that you have written it using a wr
 
 I hope this app will make your life at least 1% easier :)
 
-{% hint style="warning" %}
-Version 4.0 is not yet completed. You'll have to get a [nightly build](https://github.com/TolikPylypchuk/KeyboardSwitch/actions/workflows/main.yml) if you want to install the app. It works on Windows and Linux; macOS support will come in a future release. The app itself and these docs may change at any moment without warning until version 4.0 is released.
-{% endhint %}
-
 ## Quick Start
 
 ### Windows
 
-~~You can get the latest version of the app from the ~~[~~releases page on GitHub~~](https://github.com/TolikPylypchuk/KeyboardSwitch/releases)~~. Download the _.msi_ file and run it to install the app.~~ You'll have to get a [nightly build](https://github.com/TolikPylypchuk/KeyboardSwitch/actions/workflows/main.yml) if you want to install the app.
+You can get the latest version of the app from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download the _.msi_ file and run it to install the app.
 
 After installation, the Keyboard Switch Settings app will start. It may take some time as the app will do some initial setup. If it doesn't start for some reason, then find it in the list of your apps.
 
@@ -28,9 +24,11 @@ Press _Start_.
 
 That's it! You're ready to use Keyboard Switch in it's basic configuration. There's a big chance you won't need to configure it further. But if you do, then all the info you'll ever need is provided in these docs.
 
+To switch text forward, select the text, and press _Ctrl+Shift_ twice. To switch it backward, press _Ctrl+Alt+Shift_ twice instead.
+
 ### Linux
 
-The app is available as a deb package (for Debian-based distributions, such as Ubuntu, Mint etc.), an RPM package (for RHEL-based distributions, like CentOS or Fedora, as well as SUSE), and a simple _tar.gz_ file. You'll have to get a [nightly build](https://github.com/TolikPylypchuk/KeyboardSwitch/actions/workflows/main.yml) to get those files.
+The app is available as a deb package (for Debian-based distributions, such as Ubuntu, Mint etc.), an RPM package (for RHEL-based distributions, like CentOS or Fedora, as well as SUSE), and a simple _tar.gz_ file. You can get these files from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases).
 
 {% hint style="info" %}
 If you're using an RPM package there are a couple things to note before installing the app (which you can find in the [installation](usage-guides/installation.md#installing-the-app) article).
@@ -50,6 +48,8 @@ Press _Start_.
 
 That's it! You're ready to use Keyboard Switch in it's basic configuration. There's a big chance you won't need to configure it further. But if you do, then all the info you'll ever need is provided in these docs.
 
+To switch text forward, select the text, and press _Ctrl+Shift_ twice. To switch it backward, press _Ctrl+Alt+Shift_ twice instead.
+
 ## How the App Works
 
 The app is composed of two parts: the Keyboard Switch service and the Keyboard Switch Settings app. The service always runs in the background (and starts when you log into the system) and listens to key presses. When you press the magic key combination, it reacts by copying the selected text, transforming it, and pasting it for you. The settings app is used for configuring the service and for starting/stopping it manually.
@@ -62,17 +62,15 @@ Here are the basic steps you should take to switch the text:
 * Press the magic key combination (the default is pressing _Ctrl+Shift_ twice)
 * Profit
 
-The app uses the clipboard to get the text to transform, and then puts the transformed text back into the clipboard. Bear this in mind when you use it - if you have anything else in the clipboard, it will be lost. This isn't that big of an issue since Windows 10 October 2019 Update, because you can enable multiple items in the clipboard. Starting with v4.0, the app will try to preserve the text that was in the clipboard before switching, and restoring it afterwards. It doesn't guarantee that the text will be restored though. Also, any non-text data (e.g. a file or a picture) will not be restored.
+The app uses the clipboard to get the text to transform, and then puts the transformed text back into the clipboard. The app will try to preserve the text that was in the clipboard before switching, and restoring it afterwards. It doesn't guarantee that the text will be restored though. Also, any non-text data (e.g. a file or a picture) will not be restored.
 
 {% hint style="info" %}
 **Note:** The app simulates pressing _Ctrl+C_ to copy and _Ctrl+V_ to paste text. This is the default behavior for most (if not all) applications. But if you are working in an app which behaves differently on those key presses, this app will not be able to instantly switch text. You can disable this behavior, and copy/paste the text manually.
 {% endhint %}
 
-
-
 ## Supported Platforms
 
-keyboard Switch currently works on Windows 10/11 and on Linux. It can probably work on older versions of Windows as well, but I'm not going to support them. As for Linux, it needs several prerequisites to run (more on that on the installation page).
+keyboard Switch currently works on Windows 10/11 and on Linux via X11. It can probably work on older versions of Windows as well, but I'm not going to support them. As for Linux, it needs several prerequisites to run (more on that on [the installation page](usage-guides/installation.md#linux)).
 
 Only the x64 architecture is supported. It would be ideal to also support Arm64, but it's unlikely in the nearest future.
 

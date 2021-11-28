@@ -1,16 +1,12 @@
 # Installation
 
-{% hint style="warning" %}
-Version 4.0 is not yet completed. You'll have to get a [nightly build](https://github.com/TolikPylypchuk/KeyboardSwitch/actions/workflows/main.yml) if you want to install the app. It works on Windows and Linux; macOS support will come in a future release. The app itself and these docs may change at any moment without warning until version 4.0 is released.
-{% endhint %}
-
 ## Windows
 
 ### Using a Windows Installer
 
-~~You can get the latest version of the app from the ~~[~~releases page on GitHub~~](https://github.com/TolikPylypchuk/KeyboardSwitch/releases)~~. Download the _.msi_ file and run it to install the app.~~ You'll have to get a [nightly build](https://github.com/TolikPylypchuk/KeyboardSwitch/actions/workflows/main.yml) if you want to install the app.
+You can get the latest version of the app from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download the _.msi_ file and run it to install the app.
 
-After installing the app, the installer will run the settings app. Currently it's not really optimized, so the startup time is not perfect; it can take a couple seconds for the app to get started. On the first start up the settings app will configure the service to run when you log into the system.
+After installing the app, the installer will run the settings app. Currently it's not really optimized, so the startup time is not perfect; it can take a couple seconds for the app to get started. On the first start-up the settings app will configure the service to run when you log into the system.
 
 If multiple users use the PC, then bear in mind that the app configures itself to run on log-in only for the user that installed the app. Other users have to configure it manually.
 
@@ -36,7 +32,7 @@ Upon uninstallation the installer will ask whether you want to delete the app's 
 
 ### Using the Portable Version
 
-If you don't want to install the app (or can't), you can use the portable version of the app. It's literally the same as the installable version; there are no differences. ~~Again, go to the ~~[~~releases page on GitHub~~](https://github.com/TolikPylypchuk/KeyboardSwitch/releases)~~ and download _KeyboardSwitch-Portable.zip_.~~ You'll have to get a [nightly build](https://github.com/TolikPylypchuk/KeyboardSwitch/actions/workflows/main.yml) if you want to get the archive. Extract the archive to anywhere you want and start _KeyboardSwitchSettings.exe_. You can configure the app to run when you log in just like the installed version. The configuration for the portable version is also stored under the user's local app data folder.
+If you don't want to install the app (or can't), you can use the portable version of the app. It's literally the same as the installable version; there are no differences. Again, go to the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases) and download _KeyboardSwitch-Portable.zip_. Extract the archive to anywhere you want and start _KeyboardSwitchSettings.exe_. You can configure the app to run when you log in just like the installed version. The configuration for the portable version is also stored under the user's local app data folder.
 
 ## Linux
 
@@ -48,10 +44,10 @@ There are several prerequisites for running the app on Linux:
 
 * X11
 * X Keyboard Extension (XKB) which is enabled by default
-* X Test Extension (XTEST) - used to simulate pressing keys like _Ctrl+C_ and _Ctrl+V_ for you
+* X Test Extension - used to simulate pressing keys like _Ctrl+C_ and _Ctrl+V_ for you
 * [xsel](https://github.com/kfish/xsel) - used to copy and paste text
 * Bash - used to call xsel, but you don't need to have it as your default shell
-* Freedesktop - used to make the service app start when you log in, and to make the settings app appear in the list of your installed apps (not required for the app itself though)
+* Freedesktop conventions - used to make the service app start when you log in, and to make the settings app appear in the list of your installed apps (not required for the app itself though)
 
 Keyboard Switch doesn't support Wayland (even with XWayland apparently).
 
@@ -61,7 +57,7 @@ The most popular desktop systems (at least GNOME, KDE Plasma, Xfce, and LXQt) al
 
 #### Using a Deb Package
 
-If you're running a Debian-based distribution (e.g. Ubuntu or Mint), then you can install KeyboardSwitch using a deb package. You'll have to get a [nightly build](https://github.com/TolikPylypchuk/KeyboardSwitch/actions/workflows/main.yml) if you want to install the app.
+If you're running a Debian-based distribution (e.g. Ubuntu or Mint), then you can install KeyboardSwitch using a deb package. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases).
 
 The package takes care of xsel and the X Test extension, so you don't need to install them yourself.
 
@@ -69,7 +65,7 @@ After installation, the settings app will be available in the list of installed 
 
 #### Using an RPM Package
 
-If you're running a RHEL-based distribution (e.g. CentOS or Fedora), or SUSE, then you can install KeyboardSwitch using an RPM package. You'll have to get a [nightly build](https://github.com/TolikPylypchuk/KeyboardSwitch/actions/workflows/main.yml) if you want to install the app.
+If you're running a RHEL-based distribution (e.g. CentOS or Fedora), or SUSE, then you can install KeyboardSwitch using an RPM package. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases).
 
 The package takes care of xsel and the X Test extension, so you don't need to install them yourself.
 
@@ -85,7 +81,7 @@ After installation, the settings app will be available in the list of installed 
 
 #### Using a Tar Archive
 
-KeyboardSwitch is also available as a _tar.gz_ fie. You'll have to get a [nightly build](https://github.com/TolikPylypchuk/KeyboardSwitch/actions/workflows/main.yml) if you want to get it. You can then extract it to anywhere you like (e.g. into the _/opt_ directory). The deployed app includes two scripts - _install.sh_ and _uninstall.sh_. _install.sh_ configures Freedesktop to start the KeyboardSwitch service when you log in, and to add the settings app to the list of installed apps. _uninstall.sh_ deletes this configuration.
+KeyboardSwitch is also available as a _tar.gz_ fie. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). You can then extract it to anywhere you like (e.g. into the _/opt_ directory). The deployed app includes two scripts - _install.sh_ and _uninstall.sh_. _install.sh_ configures Freedesktop to start the KeyboardSwitch service when you log in, and to add the settings app to the list of installed apps. _uninstall.sh_ deletes this configuration.
 
 Here are the steps required for installing the app on Debian, Ubuntu, Linux Mint, etc.:
 
@@ -94,7 +90,7 @@ sudo apt update
 sudo apt install xsel libxtst6  # Install xsel and the X Test Extension
 tar -xzf keyboard-switch-4.0-x64.tar.gz -C /opt
 cd /opt/keyboard-switch
-sudo chmod 777 install.sh uninstall.sh  # Let every user use the app
+sudo chmod 755 install.sh uninstall.sh  # Let every user use the app
 ./install.sh
 ```
 
@@ -106,7 +102,7 @@ sudo dnf install xsel          # Install xsel
 sudo dnf install libXtst       # Install the X Test Extension
 tar -xzf keyboard-switch-4.0-x64.tar.gz -C /opt
 cd /opt/keyboard-switch
-sudo chmod 777 install.sh uninstall.sh  # Let every user use the app
+sudo chmod 755 install.sh uninstall.sh  # Let every user use the app
 ./install.sh
 ```
 
@@ -117,7 +113,7 @@ sudo zypper install xsel      # Install xsel
 sudo zypper install libXtst6  # Install the X Test Extension
 tar -xzf keyboard-switch-4.0-x64.tar.gz -C /opt
 cd /opt/keyboard-switch
-sudo chmod 777 install.sh uninstall.sh  # Let every user use the app
+sudo chmod 755 install.sh uninstall.sh  # Let every user use the app
 ./install.sh
 ```
 
@@ -128,14 +124,10 @@ sudo pacman -S xsel     # Install xsel
 sudo pacman -S libxtst  # Install the X Test Extension
 tar -xzf keyboard-switch-4.0-x64.tar.gz -C /opt
 cd /opt/keyboard-switch
-sudo chmod 777 install.sh uninstall.sh  # Let every user use the app
+sudo chmod 755 install.sh uninstall.sh  # Let every user use the app
 ./install.sh
 ```
 
 ### Uninstalling the App
 
 For the deb and RPM packages, it's simple - just uninstall the package. For the _tar.gz_ file, run the included _uninstall.sh_ script, and delete the app's directory. If you want to delete the app's configuration as well, then delete the _\~/.keyboard-switch_ directory.
-
-## macOS
-
-The app is not supported on macOS yet, and not planned for version 4.0, though it will most probably be included in a future 4.x version, so stay posted for updates.
