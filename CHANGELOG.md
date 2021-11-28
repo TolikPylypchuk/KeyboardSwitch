@@ -1,3 +1,16 @@
+# [v4.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.0) (28 November 2021)
+
+- The app now works on Linux (via X11 only; Wayland is not supported)
+- The legacy hot-key mode was removed - only the modifier keys mode is available
+- The UI theme is overhauled
+- The converter is hidden by default
+- .NET 6 is used instead of .NET Core 3.1
+- The app's performance was improved, though it's still not ideal
+
+This is the first major version of the app which is not completely rewritten, though it was significantly changed. From
+now on, most changes (like macOS support) will come as minor versions, and version 4 will be the major version for the
+foreseeable future.
+
 # [v3.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v3.0) (4 August 2020)
 
 - A completely rewritten app based on .NET Core and working as a truly UI-less app instead of an app with a hidden
