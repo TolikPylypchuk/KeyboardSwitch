@@ -16,82 +16,74 @@ combination
 
 - Keyboard Switch Settings - this app is used to configure the service app
 
-# Installing the App
-
-You can find the latest release of the app [here](https://github.com/TolikPylypchuk/KeyboardSwitch/releases).
-
-## Windows
-
-You can use the installer to install the app, or you can download the portable version of the app. There's not much
-difference between them.
-
-## Linux
-
-Work on the Linux version is currently in progress, but you can build from source, and it will most probably work. You
-can find more info on GitHub.
+![App screen](/assets/images/app-screen.png)
 
 # Quick Start
 
-Firstly, start the settings app. If you use the installer to get the app, then the settings app will start on its own
-right after installation.
+You can find the latest release of the app [in the releases page](https://github.com/TolikPylypchuk/KeyboardSwitch/releases).
 
-![App screen](/assets/images/app-screen.png)
+## Windows
 
-You need to let the app know how to map characters of your layouts. You can do that yourself, or you can let the app
-auto-configure it.
+Use the installer to install the app.
 
-Next, start the service app. To do that, press the 'Start' button at the bottom of the settings app's window.
+After installation, the Keyboard Switch Settings app will start. It may take some time as the app will do some initial
+setup. If it doesn't start for some reason, then find it in the list of your apps.
 
-Now that you've configured Keyboard Switch, you don't really need to open the settings app ever again (unless you
-change system settings of your keyboard or you want to chagne the app's settings).
+In the opened app press the _Auto-configure_ button.
 
-To switch the text forward, select the text, and press _Ctrl+Shift_ twice. To switch it backward, press _Ctrl+Alt+Shift_
+Press _Save_.
+
+Press _Start_.
+
+That's it! You're ready to use Keyboard Switch in it's basic configuration. There's a big chance you won't need to
+configure it further. But if you do, the you can read more [in the docs](https://docs.keyboardswitch.tolik.io/).
+
+To switch text forward, select the text, and press _Ctrl+Shift_ twice. To switch it backward, press _Ctrl+Alt+Shift_
 twice instead.
 
-# Settings
+## Linux
 
-The app is completely customizable. Before using this app you should make sure the characters are mapped correctly
-according to the physical layout of keys on your keyboard.
+The app is available as a deb package (for Debian-based distributions, such as Ubuntu, Mint etc.), an RPM package (for
+RHEL-based distributions, like CentOS or Fedora, as well as SUSE), and a simple _tar.gz_ file.
 
-To configure the character mappings you have to enter every character you can think of (which can be entered using
-your keyboard) into the text fields which correspond to layouts. For example, press the Q key, then press the W key,
-and so on. Then press Shift+Q, then Shift+W etc. to add uppercase letters. Remember that you should press the keys in
-the same order for all layouts.
+Bear in mind that KeyboardSwitch only works on X11 - it won't work on Wayland (even with XWayland apparently).
 
-If you don't want to map a character into a certain layout, you can map it to the space character. The space character
-is used as a don't map this character instruction.
+If you use the deb or RPM package, then simply install it either by double-clicking on it, or through the terminal. If
+you use the _tar.gz_ file, then the set-up is not quite as quick, so you can read about it in
+[the installation page](https://docs.keyboardswitch.tolik.io/usage-guides/installation#linux).
 
-# Layouts
+Bear in mind that an RPM package may need
+[additional setup](https://docs.keyboardswitch.tolik.io/usage-guides/installation#linux).
 
-The app uses the list of your layouts in the same order as defined by the system. You can switch both forward and
-backward through this list. The app also automatically changes your layouts, so you don't have to do it yourself. You
-can disable this as well if you so wish. You cannot add a layout that's not present as one of the system's layouts. If
-you add/remove a layout while the app is running, you'll have configure it in the settings and restart the service.
+After installing the app, open Keyboard Switch Settings - it should appear in the list of your apps (if you desktop
+environment groups your apps, then it will most probably appear under the _Utilities_ or _Accessories_ group).
 
-**Note:** This app is "Western-oriented". I developed it specifically to handle switching between Cyrillic and Latin
-scripts. I don't know how it will work (if at all) with Eastern languages/scripts.
+In the opened app press the _Auto-configure_ button.
 
-# Limitations
+Press _Save_.
 
-You can map every character only once per layout. Otherwise, it would be impossible to map characters deterministically.
+Press _Start_.
 
-Characters are always mapped one to one. You cannot map one character to several characters.
+That's it! You're ready to use Keyboard Switch in it's basic configuration. There's a big chance you won't need to
+configure it further. But if you do, the you can read more [in the docs](https://docs.keyboardswitch.tolik.io/).
 
-Dead keys are not supported (because of the previous limitation).
-
-The space character cannot be mapped to other characters. This is not really a limitation, because the space character
-is the same in every layout (at least that's the assumption).
+To switch text forward, select the text, and press _Ctrl+Shift_ twice. To switch it backward, press _Ctrl+Alt+Shift_
+twice instead.
 
 # Supported Platforms
 
-Version 3.0 works only on Windows 10. It can probably work on earlier versions of Windows as well, but I'm not going to
-build or test it for them. Version 4.0 on the other hand will be cross-platform - it already works on Linux (via X11)
-and I'm planning on making it work on macOS as well.
+Version 4.0 works on Windows 10/11, and Linux via X11. macOS support will come in a future version (most probably 4.1).
+Versions up to 4.0 were Windows-only.
 
-Only the x64 architecture is supported. It would be ideal to also support arm64, but not all dependencies of this app
-currently support it. And even if they did, I don't have any devices with arm64 to test the app there.
+Only the x64 architecture is supported. It would be ideal to also support Arm64, but not all dependencies of this app
+currently support it. And even if they did, I don't have any devices with Arm64 to test the app there.
 
-# Docs
+# More Info
 
-The docs for this app are available [here](https://docs.keyboardswitch.tolik.io) and contain extensive info on how to use
-the app.
+If you want to know more about the Keyboard Switch app and how to use it, check out the docs:
+[https://docs.keyboardswitch.tolik.io](https://docs.keyboardswitch.tolik.io).
+
+# Changelog
+
+See the [changlog file](https://github.com/TolikPylypchuk/KeyboardSwitch/blob/master/CHANGELOG.md) for the detailed list
+of changes across versions.
