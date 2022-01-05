@@ -25,13 +25,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="akavache" Version="7.3.47" />
+    <PackageReference Include="akavache" Version="8.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
-    <PackageReference Include="SharpHook" Version="1.0.1" />
-    <PackageReference Include="SharpHook.Reactive" Version="1.0.1" />
-    <PackageReference Include="System.Interactive" Version="5.0.0" />
-    <PackageReference Include="System.Interactive.Async" Version="5.0.0" />
+    <PackageReference Include="SharpHook" Version="1.1.0" />
+    <PackageReference Include="SharpHook.Reactive" Version="1.1.0" />
+    <PackageReference Include="System.Interactive" Version="5.1.0" />
+    <PackageReference Include="System.Interactive.Async" Version="5.1.0" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
     <PackageReference Include="TextCopy" Version="4.3.1" />
   </ItemGroup>

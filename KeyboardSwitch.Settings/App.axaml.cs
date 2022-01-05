@@ -51,7 +51,11 @@ public class App : Application, IEnableLogger
             var mainViewModel = await this.InitializeApp();
 
             var fluentAvaloniaTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
-            fluentAvaloniaTheme.RequestedTheme = "Light";
+
+            if (fluentAvaloniaTheme != null)
+            {
+                fluentAvaloniaTheme.RequestedTheme = "Light";
+            }
 
             this.desktop.MainWindow = await this.CreateMainWindow(mainViewModel);
             this.desktop.MainWindow.Show();
