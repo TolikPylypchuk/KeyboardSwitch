@@ -1,7 +1,5 @@
 namespace KeyboardSwitch.Linux.Xorg;
 
-using static X11.Xlib;
-
 internal static class XUtil
 {
     public static XDisplayHandle OpenXDisplay()
@@ -26,25 +24,6 @@ internal static class XUtil
         var keyboardDesc = Marshal.PtrToStructure<XkbDesc>(keyboardDescHandle.DangerousGetHandle());
 
         return (keyboardDesc.MinKeyCode, keyboardDesc.MaxKeyCode);
-    }
-
-    public static void SimulateKeyPresses(params XKeySym[] keys)
-    {
-        using var display = new XDisplayHandle(XOpenDisplay(String.Empty));
-
-        var keyCodes = keys.Select(key => XKeysymToKeycode(display.DangerousGetHandle(), (KeySym)key)).ToList();
-
-        foreach (var key in keyCodes)
-        {
-            XTestFakeKeyEvent(display, key, isPress: true, 0);
-        }
-
-        keyCodes.Reverse();
-
-        foreach (var key in keyCodes)
-        {
-            XTestFakeKeyEvent(display, key, isPress: false, 0);
-        }
     }
 
     private static void ValidateXOpenDisplayResult(XOpenDisplayResult result)

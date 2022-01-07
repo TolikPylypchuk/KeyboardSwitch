@@ -2,10 +2,14 @@ namespace KeyboardSwitch.Core.Services.Layout;
 
 public abstract class SimulatingLayoutService : ILayoutService
 {
+    private readonly IEventSimulator eventSimulator;
     private readonly ILogger logger;
 
-    public SimulatingLayoutService(ILogger logger) =>
+    public SimulatingLayoutService(IEventSimulator eventSimulator, ILogger logger)
+    {
+        this.eventSimulator = eventSimulator;
         this.logger = logger;
+    }
 
     public bool SwitchLayoutsViaKeyboardSimulation => true;
 
@@ -23,8 +27,14 @@ public abstract class SimulatingLayoutService : ILayoutService
             _ => throw new InvalidOperationException($"Invalid switch direction: {direction}")
         };
 
-        this.SimulateKeyPresses(keys);
-    }
+        foreach (var key in keys)
+        {
+            eventSimulator.SimulateKeyPress(key);
+        }
 
-    protected abstract void SimulateKeyPresses(IEnumerable<KeyCode> keys);
+        foreach (var key in Enumerable.Reverse(keys))
+        {
+            eventSimulator.SimulateKeyRelease(key);
+        }
+    }
 }

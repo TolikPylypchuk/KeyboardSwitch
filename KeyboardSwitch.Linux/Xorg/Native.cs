@@ -11,7 +11,6 @@ internal static class Native
     public const int XkbMaxShiftLevel = 63;
 
     private const string X11 = "libX11.so.6";
-    private const string XTest = "libXtst.so.6";
 
     [DllImport(X11)]
     public static extern bool XkbIgnoreExtension(bool ignore);
@@ -80,11 +79,4 @@ internal static class Native
 
     [DllImport(X11)]
     public static extern ulong XkbKeycodeToKeysym(XDisplayHandle display, KeyCode keyCode, int group, int level);
-
-    [DllImport(XTest)]
-    internal static extern int XTestFakeKeyEvent(
-        XDisplayHandle display,
-        KeyCode keyCode,
-        bool isPress,
-        ulong delay);
 }

@@ -3,7 +3,7 @@ namespace KeyboardSwitch.Linux.Services;
 using System.Runtime.InteropServices;
 using System.Text;
 
-using KeyCode = SharpHook.Native.KeyCode;
+using SharpHook;
 
 public sealed class XLayoutService : SimulatingLayoutService
 {
@@ -11,8 +11,8 @@ public sealed class XLayoutService : SimulatingLayoutService
 
     private readonly ILogger<XLayoutService> logger;
 
-    public XLayoutService(ILogger<XLayoutService> logger)
-        : base(logger) =>
+    public XLayoutService(IEventSimulator eventSimulator, ILogger<XLayoutService> logger)
+        : base(eventSimulator, logger) =>
         this.logger = logger;
 
     public override KeyboardLayout GetCurrentKeyboardLayout()
@@ -44,9 +44,6 @@ public sealed class XLayoutService : SimulatingLayoutService
         using var display = OpenXDisplay();
         return this.GetKeyboardLayoutsInternal(display);
     }
-
-    protected override void SimulateKeyPresses(IEnumerable<KeyCode> keys) =>
-        XUtil.SimulateKeyPresses(keys.Select(key => key.ToKeySym()).ToArray());
 
     private static KeyboardLayout CreateKeyboardLayout(string group, string symbol, string variant) =>
         new(

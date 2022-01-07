@@ -1,7 +1,5 @@
 namespace KeyboardSwitch.Linux.Services;
 
-using KeyCode = global::X11.KeyCode;
-
 public sealed class XAutoConfigurationService : AutoConfigurationServiceBase
 {
     protected override IEnumerable<List<KeyToCharResult>> GetChars(List<string> layoutIds)

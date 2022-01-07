@@ -11,7 +11,6 @@ public static class ServiceExtensions
             .Configure<StartupSettings>(config.GetSection("Startup"))
             .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
             .AddSingleton<ITextService, ClipboardTextService>()
-            .AddSingleton<IUserActivitySimulator, XUserActivitySimulator>()
             .AddSingleton<ILayoutService, XLayoutService>()
             .AddSingleton<ILayoutLoaderSrevice, NotSupportedLayoutLoaderService>()
             .AddSingleton<IStartupService, FreedesktopStartupService>()

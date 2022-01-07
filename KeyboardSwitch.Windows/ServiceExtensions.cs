@@ -16,8 +16,6 @@ public static class SerivceExtensions
         IConfiguration config) =>
         services
             .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
-            .AddSingleton<IKeyboardSimulator>(new KeyboardSimulator())
-            .AddSingleton<IUserActivitySimulator, WinUserActivitySimulator>()
             .AddSingleton<WinLayoutService>()
             .AddSingleton<ILayoutService>(provider => provider.GetRequiredService<WinLayoutService>())
             .AddSingleton<ILayoutLoaderSrevice>(provider => provider.GetRequiredService<WinLayoutService>())

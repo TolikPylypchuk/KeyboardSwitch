@@ -39,8 +39,8 @@ public sealed class ClipboardTextService : ITextService
 
             this.savedClipboardText = await this.clipboard.GetTextAsync();
             this.saveTime = this.scheduler.Now;
-            this.simulator.SimulateCopy();
-            Thread.Sleep(50);
+
+            await this.simulator.SimulateCopyAsync();
         }
 
         this.logger.LogDebug("Getting the text from the clipboard");
@@ -60,8 +60,7 @@ public sealed class ClipboardTextService : ITextService
         {
             this.logger.LogDebug("Simulating pasting and restoring the text into the clipboard");
 
-            Thread.Sleep(50);
-            this.simulator.SimulatePaste();
+            await this.simulator.SimulatePasteAsync();
 
             if (this.savedClipboardText != null &&
                 this.saveTime != null &&

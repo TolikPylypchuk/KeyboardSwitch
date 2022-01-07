@@ -10,6 +10,8 @@ public static class ServiceExtensions
                 new TaskPoolGlobalHook(TaskPoolGlobalHookOptions.Sequential)))
             .AddSingleton<IKeyboardHookService, SharpHookService>()
             .AddSingleton<ITextService, ClipboardTextService>()
+            .AddSingleton<IEventSimulator, EventSimulator>()
+            .AddSingleton<IUserActivitySimulator, UserActivitySimulator>()
             .AddClipboard()
             .AddSingleton(BlobCacheFactory.CreateBlobCache)
             .AddSingleton<BlobCacheSettingsService>()
