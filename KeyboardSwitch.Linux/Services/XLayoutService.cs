@@ -12,8 +12,6 @@ public class XLayoutService : ILayoutService
     public XLayoutService(ILogger<XLayoutService> logger) =>
         this.logger = logger;
 
-    public bool SwitchLayoutsViaKeyboardSimulation { get; } = false;
-
     public KeyboardLayout GetCurrentKeyboardLayout()
     {
         this.logger.LogDebug("Getting current keyboard layout");

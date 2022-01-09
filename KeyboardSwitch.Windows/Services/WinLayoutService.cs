@@ -20,8 +20,6 @@ internal sealed class WinLayoutService : ILayoutService, ILayoutLoaderSrevice
     public WinLayoutService(ILogger<WinLayoutService> logger) =>
         this.logger = logger;
 
-    public bool SwitchLayoutsViaKeyboardSimulation => false;
-
     public bool IsLoadingLayoutsSupported => true;
 
     public KeyboardLayout GetCurrentKeyboardLayout()

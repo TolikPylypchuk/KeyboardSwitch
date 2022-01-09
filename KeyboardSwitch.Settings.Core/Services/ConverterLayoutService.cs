@@ -15,8 +15,6 @@ public class ConverterLayoutService : ReactiveObject, ILayoutService
             .ToPropertyEx(this, vm => vm.TargetLayout);
     }
 
-    public bool SwitchLayoutsViaKeyboardSimulation => false;
-
     private KeyboardLayout SourceLayout { [ObservableAsProperty] get; } = null!;
     private KeyboardLayout TargetLayout { [ObservableAsProperty] get; } = null!;
 

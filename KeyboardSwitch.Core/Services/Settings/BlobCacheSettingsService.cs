@@ -153,9 +153,7 @@ internal sealed class BlobCacheSettingsService : AsyncDisposable, IAppSettingsSe
                 ForwardModifiers = new() { ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.None },
                 BackwardModifiers = new() { ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.Alt },
                 PressCount = 2,
-                WaitMilliseconds = 400,
-                LayoutForwardKeys = new() { KeyCode.VcLeftMeta, KeyCode.VcSpace },
-                LayoutBackwardKeys = new() { KeyCode.VcLeftMeta, KeyCode.VcLeftShift, KeyCode.VcSpace }
+                WaitMilliseconds = 400
             },
             CharsByKeyboardLayoutId = this.layoutService.GetKeyboardLayouts()
                 .ToDictionary(layout => layout.Id, _ => String.Empty),

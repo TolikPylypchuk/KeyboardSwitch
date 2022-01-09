@@ -4,8 +4,6 @@ using Convert = Converters.Convert;
 
 public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
 {
-    private readonly KeyCodeConverter keyCodeConverter = new();
-
     public PreferencesView()
     {
         this.InitializeComponent();
@@ -31,14 +29,6 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
             this.BindControls(disposables);
             this.BindValidations(disposables);
             this.BindCommands(disposables);
-
-            if (this.ViewModel!.SwitchLayoutsViaKeyboardSimulation)
-            {
-                this.BindLayoutKeys(disposables);
-            } else
-            {
-                this.LayoutKeysPanel.IsVisible = false;
-            }
         });
     }
 
@@ -90,94 +80,6 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
             .DisposeWith(disposables);
     }
 
-    private void BindLayoutKeys(CompositeDisposable disposables)
-    {
-        this.ViewModel!.LayoutForwardKeyCodes
-            .ToObservableChangeSet()
-            .ToCollection()
-            .Select(this.ConvertKeyCodesToString)
-            .BindTo(this, v => v.LayoutForwardKeysTextBox.Text)
-            .DisposeWith(disposables);
-
-        this.ViewModel!.LayoutBackwardKeyCodes
-            .ToObservableChangeSet()
-            .ToCollection()
-            .Select(this.ConvertKeyCodesToString)
-            .BindTo(this, v => v.LayoutBackwardKeysTextBox.Text)
-            .DisposeWith(disposables);
-
-        this.LayoutForwardKeysTextBox.GetObservable(KeysBox.KeyPressedEvent)
-            .Select(e => e.Key)
-            .Select(this.keyCodeConverter.ConvertToKeyCode)
-            .WhereValueNotNull()
-            .InvokeCommand(this.ViewModel!.AddLayoutForwardKeyCode)
-            .DisposeWith(disposables);
-
-        this.LayoutBackwardKeysTextBox.GetObservable(KeysBox.KeyPressedEvent)
-            .Select(e => e.Key)
-            .Select(this.keyCodeConverter.ConvertToKeyCode)
-            .WhereValueNotNull()
-            .InvokeCommand(this.ViewModel!.AddLayoutBackwardKeyCode)
-            .DisposeWith(disposables);
-
-        this.BindCommand(
-            this.ViewModel, vm => vm.ClearLayoutForwardKeyCodes, v => v.ClearLayoutForwardKeysButton)
-            .DisposeWith(disposables);
-
-        this.BindCommand(
-            this.ViewModel, vm => vm.ClearLayoutBackwardKeyCodes, v => v.ClearLayoutBackwardKeysButton)
-            .DisposeWith(disposables);
-
-        var shouldShowManualMetaButtons = PlatformDependent(
-            windows: () => false, macos: () => false, linux: () => true);
-
-        if (shouldShowManualMetaButtons)
-        {
-            this.EnableManualMetaButtons(disposables);
-        } else
-        {
-            this.AddLeftMetaForwardButton.IsVisible = false;
-            this.AddRightMetaForwardButton.IsVisible = false;
-            this.AddLeftMetaBackwardButton.IsVisible = false;
-            this.AddRightMetaBackwardButton.IsVisible = false;
-        }
-    }
-
-    private void EnableManualMetaButtons(CompositeDisposable disposables)
-    {
-        this.AddLeftMetaForwardButton.Content =
-                String.Format(Messages.AddKeyFormat, Messages.ModifierKeyLeftSuper);
-
-        this.AddRightMetaForwardButton.Content =
-            String.Format(Messages.AddKeyFormat, Messages.ModifierKeyRightSuper);
-
-        this.AddLeftMetaBackwardButton.Content =
-            String.Format(Messages.AddKeyFormat, Messages.ModifierKeyLeftSuper);
-
-        this.AddRightMetaBackwardButton.Content =
-            String.Format(Messages.AddKeyFormat, Messages.ModifierKeyRightSuper);
-
-        this.AddLeftMetaForwardButton.GetObservable(Button.ClickEvent)
-            .Select(e => KeyCode.VcLeftMeta)
-            .InvokeCommand(this.ViewModel!.AddLayoutForwardKeyCode)
-            .DisposeWith(disposables);
-
-        this.AddRightMetaForwardButton.GetObservable(Button.ClickEvent)
-            .Select(e => KeyCode.VcRightMeta)
-            .InvokeCommand(this.ViewModel!.AddLayoutForwardKeyCode)
-            .DisposeWith(disposables);
-
-        this.AddLeftMetaBackwardButton.GetObservable(Button.ClickEvent)
-            .Select(e => KeyCode.VcLeftMeta)
-            .InvokeCommand(this.ViewModel!.AddLayoutBackwardKeyCode)
-            .DisposeWith(disposables);
-
-        this.AddRightMetaBackwardButton.GetObservable(Button.ClickEvent)
-            .Select(e => KeyCode.VcRightMeta)
-            .InvokeCommand(this.ViewModel!.AddLayoutBackwardKeyCode)
-            .DisposeWith(disposables);
-    }
-
     private void BindValidations(CompositeDisposable disposables)
     {
         this.BindValidation(
@@ -194,24 +96,6 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
 
         this.BindValidation(
             this.ViewModel, vm => vm!.SwitchMethodsAreDifferentRule, v => v.SwitchMethodsValidationTextBlock.Text)
-            .DisposeWith(disposables);
-
-        this.BindValidation(
-            this.ViewModel,
-            vm => vm!.LayoutForwardKeysAreNotEmptyRule,
-            v => v.LayoutForwardKeysAreNotEmptyValidationTextBlock.Text)
-            .DisposeWith(disposables);
-
-        this.BindValidation(
-            this.ViewModel,
-            vm => vm!.LayoutBackwardKeysAreNotEmptyRule,
-            v => v.LayoutBackwardKeysAreNotEmptyValidationTextBlock.Text)
-            .DisposeWith(disposables);
-
-        this.BindValidation(
-            this.ViewModel,
-            vm => vm!.LayoutKeysAreDifferentRule,
-            v => v.LayoutKeysAreDifferentValidationTextBlock.Text)
             .DisposeWith(disposables);
     }
 
@@ -245,13 +129,4 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
             ModifierMask.RightAlt,
             ModifierMask.RightMeta
         };
-
-    private string ConvertKeyCodesToString(IEnumerable<KeyCode> keyCodes)
-    {
-        string names = keyCodes
-            .Select(this.keyCodeConverter.GetName)
-            .Aggregate(String.Empty, (acc, KeyCode) => $"{acc}+{KeyCode}");
-
-        return !String.IsNullOrEmpty(names) ? names[1..] : names;
-    }
 }

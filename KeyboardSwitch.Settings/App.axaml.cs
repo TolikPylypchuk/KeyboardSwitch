@@ -149,7 +149,6 @@ public class App : Application, IEnableLogger
         Locator.CurrentMutable.InitializeReactiveUI();
         Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
         Locator.CurrentMutable.RegisterConstant(RxApp.TaskpoolScheduler, TaskPoolKey);
-        Locator.CurrentMutable.RegisterConstant<IBindingTypeConverter>(new KeyCodeConverter());
         Locator.CurrentMutable.RegisterConstant<IBindingTypeConverter>(new ModifierMaskConverter());
 
         RxApp.MainThreadScheduler = AvaloniaScheduler.Instance;

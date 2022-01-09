@@ -66,44 +66,6 @@
                 <TextBlock x:Name="WaitMillisecondsValidationTextBlock" Classes="Error" />
                 <TextBlock x:Name="ModifierKeysValidationTextBlock" Classes="Error" />
                 <TextBlock x:Name="SwitchMethodsValidationTextBlock" Classes="Error" />
-
-                <StackPanel x:Name="LayoutKeysPanel">
-                    <TextBlock Text="{l:Translate KeysToSwitchLayouts}" Margin="10 5" />
-
-                    <Grid RowDefinitions="Auto,Auto" Margin="10 5" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto">
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{l:Translate Forward}" Classes="Label" />
-
-                        <c:KeysBox x:Name="LayoutForwardKeysTextBox" Grid.Row="0" Grid.Column="1" CaretBrush="Transparent"
-                                   Margin="0 5 10 5" VerticalAlignment="Center" />
-
-                        <Button x:Name="ClearLayoutForwardKeysButton" Grid.Row="0" Grid.Column="2"
-                                Content="{l:Translate Clear}" VerticalAlignment="Center" />
-
-                        <Button x:Name="AddLeftMetaForwardButton" Grid.Row="0" Grid.Column="3"
-                                VerticalAlignment="Center" />
-
-                        <Button x:Name="AddRightMetaForwardButton" Grid.Row="0" Grid.Column="4"
-                                VerticalAlignment="Center" />
-
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{l:Translate Backward}" Classes="Label" />
-
-                        <c:KeysBox x:Name="LayoutBackwardKeysTextBox" Grid.Row="1" Grid.Column="1" CaretBrush="Transparent"
-                                   Margin="0 5 10 5" VerticalAlignment="Center" />
-
-                        <Button x:Name="ClearLayoutBackwardKeysButton" Grid.Row="1" Grid.Column="2"
-                                Content="{l:Translate Clear}" VerticalAlignment="Center" />
-
-                        <Button x:Name="AddLeftMetaBackwardButton" Grid.Row="1" Grid.Column="3"
-                                VerticalAlignment="Center" />
-
-                        <Button x:Name="AddRightMetaBackwardButton" Grid.Row="1" Grid.Column="4"
-                                VerticalAlignment="Center" />
-                    </Grid>
-
-                    <TextBlock x:Name="LayoutForwardKeysAreNotEmptyValidationTextBlock" Classes="Error" />
-                    <TextBlock x:Name="LayoutBackwardKeysAreNotEmptyValidationTextBlock" Classes="Error" />
-                    <TextBlock x:Name="LayoutKeysAreDifferentValidationTextBlock" Classes="Error" />
-                </StackPanel>
             </StackPanel>
         </ScrollViewer>
     </DockPanel>

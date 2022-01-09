@@ -7,18 +7,11 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
     private readonly SourceList<ModifierMask> forwardModifierKeysSource = new();
     private readonly SourceList<ModifierMask> backwardModifierKeysSource = new();
 
-    private readonly SourceCache<KeyCode, KeyCode> layoutForwardKeyCodesSource = new(keyCode => keyCode);
-    private readonly SourceCache<KeyCode, KeyCode> layoutBackwardKeyCodesSource = new(keyCode => keyCode);
-
     private readonly ReadOnlyObservableCollection<ModifierMask> forwardModifierKeys;
     private readonly ReadOnlyObservableCollection<ModifierMask> backwardModifierKeys;
 
-    private readonly ReadOnlyObservableCollection<KeyCode> layoutForwardKeyCodes;
-    private readonly ReadOnlyObservableCollection<KeyCode> layoutBackwardKeyCodes;
-
     public PreferencesViewModel(
         PreferencesModel preferencesModel,
-        ILayoutService? layoutService = null,
         ResourceManager? resourceManager = null,
         IScheduler? scheduler = null)
         : base(resourceManager, scheduler)
@@ -34,42 +27,13 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
             .Bind(out this.backwardModifierKeys)
             .Subscribe();
 
-        this.layoutForwardKeyCodesSource.Connect()
-            .Bind(out this.layoutForwardKeyCodes)
-            .Subscribe();
-
-        this.layoutBackwardKeyCodesSource.Connect()
-            .Bind(out this.layoutBackwardKeyCodes)
-            .Subscribe();
-
         this.BindKeys();
-
-        this.AddLayoutForwardKeyCode = ReactiveCommand.Create<KeyCode>(
-            this.layoutForwardKeyCodesSource.AddOrUpdate);
-
-        this.AddLayoutBackwardKeyCode = ReactiveCommand.Create<KeyCode>(
-            this.layoutBackwardKeyCodesSource.AddOrUpdate);
-
-        this.ClearLayoutForwardKeyCodes = ReactiveCommand.Create(this.layoutForwardKeyCodesSource.Clear);
-        this.ClearLayoutBackwardKeyCodes = ReactiveCommand.Create(this.layoutBackwardKeyCodesSource.Clear);
 
         this.LocalizedValidationRule(vm => vm.PressCount, count => count > 0 && count <= 10);
         this.LocalizedValidationRule(vm => vm.WaitMilliseconds, wait => wait >= 100 && wait <= 1000);
 
         this.ModifierKeysAreDifferentRule = this.InitModifierKeysAreDifferentRule();
         this.SwitchMethodsAreDifferentRule = this.InitSwitchMethodsAreDifferentRule();
-
-        this.LayoutForwardKeysAreNotEmptyRule = this.InitLayoutKeysAreNotEmptyRule(
-            this.layoutForwardKeyCodesSource, "LayoutForwardKeysEmpty");
-
-        this.LayoutBackwardKeysAreNotEmptyRule = this.InitLayoutKeysAreNotEmptyRule(
-            this.layoutBackwardKeyCodesSource, "LayoutBackwardKeysEmpty");
-
-        this.LayoutKeysAreDifferentRule = this.InitLayoutKeysAreDifferentRule();
-
-        layoutService ??= Locator.Current.GetService<ILayoutService>();
-
-        this.SwitchLayoutsViaKeyboardSimulation = layoutService?.SwitchLayoutsViaKeyboardSimulation ?? false;
 
         this.EnableChangeTracking();
     }
@@ -115,26 +79,8 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
     [Reactive]
     public int WaitMilliseconds { get; set; }
 
-    public ReadOnlyObservableCollection<KeyCode> LayoutForwardKeyCodes =>
-        this.layoutForwardKeyCodes;
-
-    public ReadOnlyObservableCollection<KeyCode> LayoutBackwardKeyCodes =>
-        this.layoutBackwardKeyCodes;
-
-    public ReactiveCommand<KeyCode, Unit> AddLayoutForwardKeyCode { get; }
-    public ReactiveCommand<KeyCode, Unit> AddLayoutBackwardKeyCode { get; }
-
-    public ReactiveCommand<Unit, Unit> ClearLayoutForwardKeyCodes { get; }
-    public ReactiveCommand<Unit, Unit> ClearLayoutBackwardKeyCodes { get; }
-
     public ValidationHelper ModifierKeysAreDifferentRule { get; }
     public ValidationHelper SwitchMethodsAreDifferentRule { get; }
-
-    public ValidationHelper LayoutForwardKeysAreNotEmptyRule { get; }
-    public ValidationHelper LayoutBackwardKeysAreNotEmptyRule { get; }
-    public ValidationHelper LayoutKeysAreDifferentRule { get; }
-
-    public bool SwitchLayoutsViaKeyboardSimulation { get; }
 
     protected override PreferencesViewModel Self => this;
 
@@ -158,12 +104,6 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
         this.TrackChanges(vm => vm.PressCount, vm => vm.PreferencesModel.SwitchSettings.PressCount);
         this.TrackChanges(vm => vm.WaitMilliseconds, vm => vm.PreferencesModel.SwitchSettings.WaitMilliseconds);
 
-        this.TrackChanges(this.IsCollectionChangedSimple(
-            vm => vm.LayoutForwardKeyCodes, vm => vm.PreferencesModel.SwitchSettings.LayoutForwardKeys));
-
-        this.TrackChanges(this.IsCollectionChangedSimple(
-            vm => vm.LayoutBackwardKeyCodes, vm => vm.PreferencesModel.SwitchSettings.LayoutBackwardKeys));
-
         base.EnableChangeTracking();
     }
 
@@ -181,12 +121,6 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
         switchSettings.BackwardModifiers = new(this.backwardModifierKeys);
         switchSettings.PressCount = this.PressCount;
         switchSettings.WaitMilliseconds = this.WaitMilliseconds;
-
-        switchSettings.LayoutForwardKeys.Clear();
-        switchSettings.LayoutForwardKeys.AddRange(this.LayoutForwardKeyCodes);
-
-        switchSettings.LayoutBackwardKeys.Clear();
-        switchSettings.LayoutBackwardKeys.AddRange(this.LayoutBackwardKeyCodes);
 
         return Task.FromResult(this.PreferencesModel);
     }
@@ -233,18 +167,6 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
 
         this.PressCount = switchSettings.PressCount;
         this.WaitMilliseconds = switchSettings.WaitMilliseconds;
-
-        this.layoutForwardKeyCodesSource.Edit(list =>
-        {
-            list.Clear();
-            switchSettings.LayoutForwardKeys.ForEach(list.AddOrUpdate);
-        });
-
-        this.layoutBackwardKeyCodesSource.Edit(list =>
-        {
-            list.Clear();
-            switchSettings.LayoutBackwardKeys.ForEach(list.AddOrUpdate);
-        });
     }
 
     private void BindKeys()
@@ -300,25 +222,6 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
             (forward, backward) => !new HashSet<ModifierMask>(forward).SetEquals(backward));
 
         return this.LocalizedValidationRule(switchMethodsAreDifferent, "SwitchMethodsAreSame");
-    }
-
-    private ValidationHelper InitLayoutKeysAreNotEmptyRule(SourceCache<KeyCode, KeyCode> keys, string messageKey)
-    {
-        var layoutKeysAreNotEmptyRule = keys.Connect()
-            .ToCollection()
-            .Select(k => k.Count != 0);
-
-        return this.LocalizedValidationRule(layoutKeysAreNotEmptyRule, messageKey);
-    }
-
-    private ValidationHelper InitLayoutKeysAreDifferentRule()
-    {
-        var switchMethodsAreDifferent = Observable.CombineLatest(
-            this.layoutForwardKeyCodesSource.Connect().ToCollection(),
-            this.layoutBackwardKeyCodesSource.Connect().ToCollection(),
-            (forward, backward) => !new HashSet<KeyCode>(forward).SetEquals(backward));
-
-        return this.LocalizedValidationRule(switchMethodsAreDifferent, "LayoutKeysAreSame");
     }
 
     private bool ContainsDistinctElements(IReadOnlyCollection<ModifierMask> keys) =>
