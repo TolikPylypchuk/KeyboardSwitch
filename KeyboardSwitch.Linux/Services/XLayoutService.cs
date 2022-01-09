@@ -3,19 +3,18 @@ namespace KeyboardSwitch.Linux.Services;
 using System.Runtime.InteropServices;
 using System.Text;
 
-using SharpHook;
-
-public sealed class XLayoutService : SimulatingLayoutService
+public class XLayoutService : ILayoutService
 {
     private static readonly ImmutableList<string> NonSymbols = ImmutableList.Create("group", "inet", "pc");
 
     private readonly ILogger<XLayoutService> logger;
 
-    public XLayoutService(IEventSimulator eventSimulator, ILogger<XLayoutService> logger)
-        : base(eventSimulator, logger) =>
+    public XLayoutService(ILogger<XLayoutService> logger) =>
         this.logger = logger;
 
-    public override KeyboardLayout GetCurrentKeyboardLayout()
+    public bool SwitchLayoutsViaKeyboardSimulation { get; } = false;
+
+    public KeyboardLayout GetCurrentKeyboardLayout()
     {
         this.logger.LogDebug("Getting current keyboard layout");
 
@@ -37,13 +36,39 @@ public sealed class XLayoutService : SimulatingLayoutService
             : throw new XException("Current input group is invalid");
     }
 
-    public override List<KeyboardLayout> GetKeyboardLayouts()
+    public void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
+    {
+        this.logger.LogDebug("Switching the current layout {Direction}", direction.AsString());
+
+        using var display = OpenXDisplay();
+        var allLayouts = this.GetKeyboardLayoutsInternal(display);
+
+        XkbSelectEventDetails(
+            display,
+            XkbUseCoreKbd,
+            XkbEventType.XkbStateNotify,
+            XStateMask.XkbAllStateComponentsMask,
+            XStateMask.XkbGroupStateMask);
+
+        var state = new XkbState();
+        XkbGetState(display, XkbUseCoreKbd, ref state);
+
+        int offset = direction == SwitchDirection.Forward ? 1 : -1;
+        int newGroup = (state.Group + offset + allLayouts.Count) % allLayouts.Count;
+
+        this.SetLayout(display, (uint)newGroup);
+    }
+
+    public List<KeyboardLayout> GetKeyboardLayouts()
     {
         this.logger.LogDebug("Getting all keyboard layouts");
 
         using var display = OpenXDisplay();
         return this.GetKeyboardLayoutsInternal(display);
     }
+
+    private protected virtual void SetLayout(XDisplayHandle display, uint group) =>
+        XkbLockGroup(display, XkbUseCoreKbd, group);
 
     private static KeyboardLayout CreateKeyboardLayout(string group, string symbol, string variant) =>
         new(

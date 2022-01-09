@@ -11,8 +11,20 @@ public static class ServiceExtensions
             .Configure<StartupSettings>(config.GetSection("Startup"))
             .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
             .AddSingleton<ITextService, ClipboardTextService>()
-            .AddSingleton<ILayoutService, XLayoutService>()
+            .AddLayoutService()
             .AddSingleton<ILayoutLoaderSrevice, NotSupportedLayoutLoaderService>()
             .AddSingleton<IStartupService, FreedesktopStartupService>()
             .AddSingleton<IAutoConfigurationService, XAutoConfigurationService>();
+
+    private static IServiceCollection AddLayoutService(this IServiceCollection services)
+    {
+        var currentDesktopEnvironment = Environment.GetEnvironmentVariable("XDG_CURRENT_DESKTOP");
+        bool isGnome = currentDesktopEnvironment != null &&
+            (currentDesktopEnvironment.ToLower().Contains("gnome") ||
+            currentDesktopEnvironment.ToLower().Contains("unity"));
+
+        return isGnome
+            ? services.AddSingleton<ILayoutService, GnomeLayoutService>()
+            : services.AddSingleton<ILayoutService, XLayoutService>();
+    }
 }

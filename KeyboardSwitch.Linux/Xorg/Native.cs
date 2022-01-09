@@ -79,4 +79,7 @@ internal static class Native
 
     [DllImport(X11)]
     public static extern ulong XkbKeycodeToKeysym(XDisplayHandle display, KeyCode keyCode, int group, int level);
+
+    [DllImport(X11)]
+    public static extern int XkbLockGroup(XDisplayHandle display, uint deviceId, uint group);
 }
