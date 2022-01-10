@@ -33,7 +33,7 @@ public class SwitchService : ISwitchService
 
             if (direction == SwitchDirection.Backward)
             {
-                allLayouts.Reverse();
+                allLayouts = Enumerable.Reverse(allLayouts).ToList();
             }
 
             var currentLayout = this.layoutService.GetCurrentKeyboardLayout();

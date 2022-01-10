@@ -81,7 +81,7 @@ internal sealed class WinLayoutService : ILayoutService, ILayoutLoaderSrevice
             .Select(keyboardLayoutId => this.CreateKeyboardLayout(keyboardLayoutId))
             .ToList();
 
-        return this.systemLayouts;
+        return new List<KeyboardLayout>(this.systemLayouts);
     }
 
     public List<LoadableKeyboardLayout> GetAllSystemLayouts()
