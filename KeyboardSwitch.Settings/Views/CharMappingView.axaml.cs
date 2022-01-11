@@ -68,12 +68,5 @@ public partial class CharMappingView : ReactiveUserControl<CharMappingViewModel>
         this.WhenAnyValue(v => v.ViewModel!.CanRemoveLayouts)
             .BindTo(this, v => v.RemoveLayoutsPanel.IsVisible)
             .DisposeWith(disposables);
-
-        Observable.CombineLatest(
-            this.WhenAnyValue(v => v.ViewModel!.HasNewLayouts),
-            this.WhenAnyValue(v => v.ViewModel!.ShouldRemoveLayouts))
-            .AnyTrue()
-            .BindTo(this, v => v.RestartServiceTextBlock.IsVisible)
-            .DisposeWith(disposables);
     }
 }

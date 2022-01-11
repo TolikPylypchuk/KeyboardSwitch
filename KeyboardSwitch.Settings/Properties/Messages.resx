@@ -351,9 +351,6 @@
   <data name="RemoveLayoutsHint" xml:space="preserve">
     <value>It appears that you have uninstalled one or more layouts. You can delete their configuration from the app's settings</value>
   </data>
-  <data name="RestartServiceHint" xml:space="preserve">
-    <value>If you save these changes, you should restart the Keyboard Switch service</value>
-  </data>
   <data name="Sandbox" xml:space="preserve">
     <value>Sandbox</value>
   </data>
