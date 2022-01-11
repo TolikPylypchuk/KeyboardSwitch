@@ -22,6 +22,8 @@ internal sealed class BlobCacheSettingsService : AsyncDisposable, IAppSettingsSe
         this.cache = cache;
         this.layoutService = layoutService;
         this.logger = logger;
+
+        this.settingsInvalidated.Subscribe(this.layoutService.SettingsInvalidated);
     }
 
     public IObservable<Unit> SettingsInvalidated =>

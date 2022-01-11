@@ -3,7 +3,7 @@ namespace KeyboardSwitch.Linux.Services;
 using System.Runtime.InteropServices;
 using System.Text;
 
-public class XLayoutService : ILayoutService
+public class XLayoutService : CachingLayoutService
 {
     private static readonly ImmutableList<string> NonSymbols = ImmutableList.Create("group", "inet", "pc");
 
@@ -12,12 +12,13 @@ public class XLayoutService : ILayoutService
     public XLayoutService(ILogger<XLayoutService> logger) =>
         this.logger = logger;
 
-    public KeyboardLayout GetCurrentKeyboardLayout()
+    public override KeyboardLayout GetCurrentKeyboardLayout()
     {
         this.logger.LogDebug("Getting current keyboard layout");
 
+        var allLayouts = this.GetKeyboardLayouts();
+
         using var display = OpenXDisplay();
-        var allLayouts = this.GetKeyboardLayoutsInternal(display);
 
         XkbSelectEventDetails(
             display,
@@ -34,12 +35,13 @@ public class XLayoutService : ILayoutService
             : throw new XException("Current input group is invalid");
     }
 
-    public void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
+    public override void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
     {
         this.logger.LogDebug("Switching the current layout {Direction}", direction.AsString());
 
+        var allLayouts = this.GetKeyboardLayouts();
+
         using var display = OpenXDisplay();
-        var allLayouts = this.GetKeyboardLayoutsInternal(display);
 
         XkbSelectEventDetails(
             display,
@@ -57,29 +59,12 @@ public class XLayoutService : ILayoutService
         this.SetLayout(display, (uint)newGroup);
     }
 
-    public List<KeyboardLayout> GetKeyboardLayouts()
+    protected override unsafe List<KeyboardLayout> GetKeyboardLayoutsInternal()
     {
         this.logger.LogDebug("Getting all keyboard layouts");
 
         using var display = OpenXDisplay();
-        return this.GetKeyboardLayoutsInternal(display);
-    }
 
-    private protected virtual void SetLayout(XDisplayHandle display, uint group) =>
-        XkbLockGroup(display, XkbUseCoreKbd, group);
-
-    private static KeyboardLayout CreateKeyboardLayout(string group, string symbol, string variant) =>
-        new(
-            $"{symbol}:{variant}",
-            group,
-            String.IsNullOrEmpty(variant) ? symbol : $"{symbol} ({variant})",
-            String.Empty);
-
-    private static bool IsXkbLayoutSymbol(string symbol) =>
-        !NonSymbols.Contains(symbol);
-
-    private unsafe List<KeyboardLayout> GetKeyboardLayoutsInternal(XDisplayHandle display)
-    {
         int major = XkbMajorVersion;
         int minor = XkbMinorVersion;
 
@@ -121,14 +106,24 @@ public class XLayoutService : ILayoutService
 
         this.FreeKeyboard(keyboardHandle);
 
-        return groupNames
-            .Zip(symbolNames, (group, symbol) => (Group: group, Symbol: symbol))
-            .Zip(variantNames, (gs, variant) => (GroupAndSymbol: gs, Variant: variant))
-            .Select(items => CreateKeyboardLayout(
-                items.GroupAndSymbol.Group, items.GroupAndSymbol.Symbol, items.Variant))
+        return Enumerable.Zip(groupNames, symbolNames, variantNames)
+            .Select(items => CreateKeyboardLayout(items.First, items.Second, items.Third))
             .Distinct()
             .ToList();
     }
+
+    private protected virtual void SetLayout(XDisplayHandle display, uint group) =>
+        XkbLockGroup(display, XkbUseCoreKbd, group);
+
+    private static KeyboardLayout CreateKeyboardLayout(string group, string symbol, string variant) =>
+        new(
+            $"{symbol}:{variant}",
+            group,
+            String.IsNullOrEmpty(variant) ? symbol : $"{symbol} ({variant})",
+            String.Empty);
+
+    private static bool IsXkbLayoutSymbol(string symbol) =>
+        !NonSymbols.Contains(symbol);
 
     private string GetGroupName(XDisplayHandle display, Atom group)
     {

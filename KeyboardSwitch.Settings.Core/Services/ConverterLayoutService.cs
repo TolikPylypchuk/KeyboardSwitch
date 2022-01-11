@@ -21,12 +21,14 @@ public class ConverterLayoutService : ReactiveObject, ILayoutService
     public KeyboardLayout GetCurrentKeyboardLayout() =>
         this.SourceLayout;
 
-    public List<KeyboardLayout> GetKeyboardLayouts() =>
-        new() { this.SourceLayout, this.TargetLayout };
-
-    public void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
-    { }
+    public IReadOnlyList<KeyboardLayout> GetKeyboardLayouts() =>
+        new List<KeyboardLayout>() { this.SourceLayout, this.TargetLayout }.AsReadOnly();
 
     private KeyboardLayout CreateFakeKeyboardLayout(CustomLayoutModel layout, string index) =>
         new(index, CultureInfo.InvariantCulture.EnglishName, layout.Name, index);
+
+    IObserver<Unit> ILayoutService.SettingsInvalidated { get; } = Observer.Create<Unit>(unit => { });
+
+    void ILayoutService.SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
+    { }
 }

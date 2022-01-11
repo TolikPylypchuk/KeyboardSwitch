@@ -3,7 +3,7 @@ namespace KeyboardSwitch.Windows.Services;
 using System.ComponentModel;
 using System.Globalization;
 
-internal sealed class WinLayoutService : ILayoutService, ILayoutLoaderSrevice
+internal sealed class WinLayoutService : CachingLayoutService, ILayoutLoaderSrevice
 {
     private const string KeyboardLayoutsRegistryKey = @"SYSTEM\CurrentControlSet\Control\Keyboard Layouts";
     private const string KeyboardLayoutNameRegistryKeyFormat = KeyboardLayoutsRegistryKey + @"\{0}";
@@ -15,21 +15,19 @@ internal sealed class WinLayoutService : ILayoutService, ILayoutLoaderSrevice
 
     private readonly ILogger<WinLayoutService> logger;
 
-    private List<KeyboardLayout>? systemLayouts;
-
     public WinLayoutService(ILogger<WinLayoutService> logger) =>
         this.logger = logger;
 
     public bool IsLoadingLayoutsSupported => true;
 
-    public KeyboardLayout GetCurrentKeyboardLayout()
+    public override KeyboardLayout GetCurrentKeyboardLayout()
     {
         this.logger.LogDebug("Getting the keyboard layout of the foreground process");
         uint foregroundWindowThreadId = GetWindowThreadProcessId(GetForegroundWindow(), out _);
         return this.GetThreadKeyboardLayout(foregroundWindowThreadId);
     }
 
-    public void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
+    public override void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
     {
         this.logger.LogDebug(
             "Switching the keyboard layout of the foregound process {Direction}", direction.AsString());
@@ -57,13 +55,8 @@ internal sealed class WinLayoutService : ILayoutService, ILayoutLoaderSrevice
         }
     }
 
-    public List<KeyboardLayout> GetKeyboardLayouts()
+    protected override List<KeyboardLayout> GetKeyboardLayoutsInternal()
     {
-        if (this.systemLayouts != null)
-        {
-            return this.systemLayouts;
-        }
-
         this.logger.LogDebug("Getting the list of installed keyboard layouts");
 
         int count = GetKeyboardLayoutList(0, null);
@@ -77,20 +70,18 @@ internal sealed class WinLayoutService : ILayoutService, ILayoutLoaderSrevice
             throw new Win32Exception(result);
         }
 
-        this.systemLayouts = keyboardLayoutIds
+        return keyboardLayoutIds
             .Select(keyboardLayoutId => this.CreateKeyboardLayout(keyboardLayoutId))
             .ToList();
-
-        return new List<KeyboardLayout>(this.systemLayouts);
     }
 
-    public List<LoadableKeyboardLayout> GetAllSystemLayouts()
+    public IReadOnlyList<LoadableKeyboardLayout> GetAllSystemLayouts()
     {
         this.logger.LogDebug("Getting the list of all keyboard layouts in the system");
 
         using var layouts = Registry.LocalMachine.OpenSubKey(KeyboardLayoutsRegistryKey);
 
-        return layouts
+        var result = layouts
             ?.GetSubKeyNames()
             .Select(layoutKey =>
             {
@@ -101,6 +92,8 @@ internal sealed class WinLayoutService : ILayoutService, ILayoutLoaderSrevice
             })
             .ToList()
             ?? new();
+
+        return result.AsReadOnly();
     }
 
     public DisposableLayouts LoadLayouts(IEnumerable<LoadableKeyboardLayout> loadableLayouts)

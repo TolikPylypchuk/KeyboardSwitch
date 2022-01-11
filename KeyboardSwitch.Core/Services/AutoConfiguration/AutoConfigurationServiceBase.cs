@@ -1,5 +1,7 @@
 namespace KeyboardSwitch.Core.Services.AutoConfiguration;
 
+using System.Collections.ObjectModel;
+
 public abstract class AutoConfigurationServiceBase : IAutoConfigurationService
 {
     protected struct KeyToCharResult
@@ -41,17 +43,19 @@ public abstract class AutoConfigurationServiceBase : IAutoConfigurationService
         public ImmutableDictionary<string, ImmutableList<char>> DistinctChars { get; }
     }
 
-    public Dictionary<string, string> CreateCharMappings(IEnumerable<KeyboardLayout> layouts)
+    public IReadOnlyDictionary<string, string> CreateCharMappings(IEnumerable<KeyboardLayout> layouts)
     {
         var layoutIds = layouts.Select(layout => layout.Id).ToList();
 
-        return this.GetChars(layoutIds)
+        var result = this.GetChars(layoutIds)
             .Where(results => results.All(result => result.IsSuccess))
             .Aggregate(DistinctCharsState.Initial(layoutIds), this.RemoveDuplicateChars)
             .Results
             .SelectMany(results => results)
             .GroupBy(result => result.LayoutId, result => result.Char)
             .ToDictionary(result => result.Key.ToString(), result => new string(result.ToArray()));
+
+        return new ReadOnlyDictionary<string, string>(result);
     }
 
     protected abstract IEnumerable<List<KeyToCharResult>> GetChars(List<string> layoutIds);

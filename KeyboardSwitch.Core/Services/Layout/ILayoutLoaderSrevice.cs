@@ -4,6 +4,6 @@ public interface ILayoutLoaderSrevice
 {
     bool IsLoadingLayoutsSupported { get; }
 
-    List<LoadableKeyboardLayout> GetAllSystemLayouts();
+    IReadOnlyList<LoadableKeyboardLayout> GetAllSystemLayouts();
     DisposableLayouts LoadLayouts(IEnumerable<LoadableKeyboardLayout> loadableLayouts);
 }
