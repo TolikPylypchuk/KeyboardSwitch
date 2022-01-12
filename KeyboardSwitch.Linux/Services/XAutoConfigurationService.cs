@@ -30,7 +30,7 @@ public sealed class XAutoConfigurationService : AutoConfigurationServiceBase
         List<string> layoutIds) =>
         layoutIds.Select((id, index) =>
         {
-            var keysym = (XKeySym)XkbKeycodeToKeysym(display, (KeyCode)keyCode, index, level);
+            var keysym = XkbKeycodeToKeysym(display, keyCode, index, level);
             char ch = keysym != XKeySym.NoSymbol ? keysym.ToChar() : '\0';
             return ch != '\0' ? KeyToCharResult.Success(ch, id) : KeyToCharResult.Failure();
         })

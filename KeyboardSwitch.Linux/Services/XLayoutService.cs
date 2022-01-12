@@ -22,13 +22,13 @@ public class XLayoutService : CachingLayoutService
 
         XkbSelectEventDetails(
             display,
-            XkbUseCoreKbd,
+            XkbKeyboardSpec.XkbUseCoreKbd,
             XkbEventType.XkbStateNotify,
             XStateMask.XkbAllStateComponentsMask,
             XStateMask.XkbGroupStateMask);
 
         var state = new XkbState();
-        XkbGetState(display, XkbUseCoreKbd, ref state);
+        XkbGetState(display, XkbKeyboardSpec.XkbUseCoreKbd, ref state);
 
         return state.Group < allLayouts.Count
             ? allLayouts[state.Group]
@@ -45,13 +45,13 @@ public class XLayoutService : CachingLayoutService
 
         XkbSelectEventDetails(
             display,
-            XkbUseCoreKbd,
+            XkbKeyboardSpec.XkbUseCoreKbd,
             XkbEventType.XkbStateNotify,
             XStateMask.XkbAllStateComponentsMask,
             XStateMask.XkbGroupStateMask);
 
         var state = new XkbState();
-        XkbGetState(display, XkbUseCoreKbd, ref state);
+        XkbGetState(display, XkbKeyboardSpec.XkbUseCoreKbd, ref state);
 
         int offset = direction == SwitchDirection.Forward ? 1 : -1;
         int newGroup = (state.Group + offset + allLayouts.Count) % allLayouts.Count;
@@ -113,7 +113,7 @@ public class XLayoutService : CachingLayoutService
     }
 
     private protected virtual void SetLayout(XDisplayHandle display, uint group) =>
-        XkbLockGroup(display, XkbUseCoreKbd, group);
+        XkbLockGroup(display, XkbKeyboardSpec.XkbUseCoreKbd, group);
 
     private static KeyboardLayout CreateKeyboardLayout(string group, string symbol, string variant) =>
         new(

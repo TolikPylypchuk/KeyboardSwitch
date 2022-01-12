@@ -1,4 +1,4 @@
-namespace KeyboardSwitch.Linux.Xorg;
+namespace KeyboardSwitch.Linux.X11;
 
 using System.Runtime.Serialization;
 

@@ -1,4 +1,4 @@
-namespace KeyboardSwitch.Linux.Xorg;
+namespace KeyboardSwitch.Linux.X11;
 
 [StructLayout(LayoutKind.Sequential)]
 internal struct XkbState

@@ -10,13 +10,11 @@ global using KeyboardSwitch.Core.Services.Startup;
 global using KeyboardSwitch.Core.Services.Text;
 global using KeyboardSwitch.Core.Settings;
 global using KeyboardSwitch.Linux.Services;
-global using KeyboardSwitch.Linux.Xorg;
+global using KeyboardSwitch.Linux.X11;
 
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Options;
 
-global using X11;
-
-global using static KeyboardSwitch.Linux.Xorg.Native;
-global using static KeyboardSwitch.Linux.Xorg.XUtil;
+global using static KeyboardSwitch.Linux.X11.Native;
+global using static KeyboardSwitch.Linux.X11.XUtil;

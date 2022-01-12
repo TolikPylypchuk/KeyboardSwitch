@@ -1,7 +1,7 @@
-namespace KeyboardSwitch.Linux.Xorg;
+namespace KeyboardSwitch.Linux.X11;
 
 internal sealed class XHandle : XHandleBase
 {
     protected override bool ReleaseHandle() =>
-        XFree(this.handle);
+        XFree(this.handle) != XStatus.Failure;
 }

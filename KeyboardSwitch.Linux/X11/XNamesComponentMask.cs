@@ -1,4 +1,4 @@
-namespace KeyboardSwitch.Linux.Xorg;
+namespace KeyboardSwitch.Linux.X11;
 
 [Flags]
 internal enum XNamesComponentMask : uint

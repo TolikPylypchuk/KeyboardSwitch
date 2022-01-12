@@ -1,12 +1,13 @@
-namespace KeyboardSwitch.Linux.Xorg;
+namespace KeyboardSwitch.Linux.X11;
 
 internal static class Native
 {
     public const int XkbMajorVersion = 1;
     public const int XkbMinorVersion = 0;
-    public const uint XkbUseCoreKbd = 0x0100;
+
     public const int XkbNumVirtualMods = 16;
     public const int XkbNumIndicators = 32;
+
     public const int XkbNumKbdGroups = 4;
     public const int XkbMaxShiftLevel = 63;
 
@@ -25,6 +26,9 @@ internal static class Native
         out XOpenDisplayResult result);
 
     [DllImport(X11)]
+    public static extern XStatus XCloseDisplay(IntPtr display);
+
+    [DllImport(X11)]
     public static extern bool XkbQueryExtension(
         XDisplayHandle display,
         out int opCode,
@@ -37,33 +41,33 @@ internal static class Native
     public static extern XHandle XkbAllocKeyboard();
 
     [DllImport(X11)]
-    public static extern bool XFree(IntPtr handle);
+    public static extern XStatus XFree(IntPtr handle);
 
     [DllImport(X11)]
-    public static extern Status XkbGetControls(XDisplayHandle display, XControlsDetailMask which, XHandle desc);
+    public static extern XStatus XkbGetControls(XDisplayHandle display, XControlsDetailMask which, XHandle desc);
 
     [DllImport(X11)]
     public static extern void XkbFreeControls(XHandle desc, XControlsDetailMask which, bool freeMap);
 
     [DllImport(X11)]
-    public static extern Status XkbGetNames(XDisplayHandle display, XNamesComponentMask which, XHandle desc);
+    public static extern XStatus XkbGetNames(XDisplayHandle display, XNamesComponentMask which, XHandle desc);
 
     [DllImport(X11)]
-    public static extern Status XkbFreeNames(XHandle desc, XNamesComponentMask which, bool freeMap);
+    public static extern XStatus XkbFreeNames(XHandle desc, XNamesComponentMask which, bool freeMap);
 
     [DllImport(X11)]
     public static extern XHandle XGetAtomName(XDisplayHandle dispaly, Atom atom);
 
     [DllImport(X11)]
-    public static extern Status XkbGetState(
+    public static extern XStatus XkbGetState(
         XDisplayHandle display,
-        uint deviceSpec,
+        XkbKeyboardSpec deviceSpec,
         [In, Out] ref XkbState state);
 
     [DllImport(X11)]
-    public static extern Status XkbSelectEventDetails(
+    public static extern XStatus XkbSelectEventDetails(
         XDisplayHandle display,
-        uint deviceId,
+        XkbKeyboardSpec deviceId,
         XkbEventType eventType,
         XStateMask affect,
         XStateMask details);
@@ -78,8 +82,8 @@ internal static class Native
     public static extern void XkbFreeClientMap(IntPtr map, XkbMapComponentMask which, bool freeMap);
 
     [DllImport(X11)]
-    public static extern ulong XkbKeycodeToKeysym(XDisplayHandle display, KeyCode keyCode, int group, int level);
+    public static extern XKeySym XkbKeycodeToKeysym(XDisplayHandle display, byte keyCode, int group, int level);
 
     [DllImport(X11)]
-    public static extern int XkbLockGroup(XDisplayHandle display, uint deviceId, uint group);
+    public static extern int XkbLockGroup(XDisplayHandle display, XkbKeyboardSpec deviceId, uint group);
 }
