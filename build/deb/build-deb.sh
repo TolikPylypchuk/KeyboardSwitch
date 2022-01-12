@@ -15,11 +15,11 @@ find ./keyboard-switch -name "*.xml" -type f -delete
 rm ./keyboard-switch/appsettings.windows.json
 rm ./keyboard-switch/appsettings.macos.json
 
-rm ./keyboard-switch_4.0-1_amd64.deb 2> /dev/null
-rm -rf ./keyboard-switch_4.0-1_amd64 2> /dev/null
+rm ./keyboard-switch_4.1-1_amd64.deb 2> /dev/null
+rm -rf ./keyboard-switch_4.1-1_amd64 2> /dev/null
 
-mkdir keyboard-switch_4.0-1_amd64
-cd keyboard-switch_4.0-1_amd64
+mkdir keyboard-switch_4.1-1_amd64
+cd keyboard-switch_4.1-1_amd64
 
 mkdir DEBIAN
 cd DEBIAN
@@ -44,5 +44,5 @@ mv ./usr/share/icons/hicolor/512x512/app/icon.png ./usr/share/icons/hicolor/512x
 sudo chmod 644 ./usr/share/icons/hicolor/512x512/app/keyboard-switch.png
 
 cd ..
-dpkg-deb --build --root-owner-group keyboard-switch_4.0-1_amd64
-rm -rf keyboard-switch_4.0-1_amd64
+dpkg-deb --build --root-owner-group keyboard-switch_4.1-1_amd64
+rm -rf keyboard-switch_4.1-1_amd64

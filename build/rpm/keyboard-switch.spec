@@ -1,7 +1,7 @@
 Name: keyboard-switch
-Version: 4.0
+Version: 4.1
 Release: 1
-Summary: An application which switches typed text as if it were typed with another keyboard layout
+Summary: Switches typed text as if it were typed with another keyboard layout
 
 License: MIT
 Packager: Tolik Pylypchuk <pylypchuk.tolik@gmail.com>
@@ -12,7 +12,7 @@ Requires: xsel libXtst
 AutoReqProv: no
 
 %description
-An application which switches typed text as if it were typed with another keyboard layout
+Switches typed text as if it were typed with another keyboard layout
 
 %prep
 

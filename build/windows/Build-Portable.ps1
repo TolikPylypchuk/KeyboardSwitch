@@ -15,12 +15,12 @@ Remove-Item -Path .\bin\KeyboardSwitch\* -Include *.pdb, *.xml
 Remove-Item -Path .\bin\KeyboardSwitch\appsettings.macos.json
 Remove-Item -Path .\bin\KeyboardSwitch\appsettings.linux.json
 
-if (Test-Path .\bin\KeyboardSwitch-4.0-x64-win.zip)
+if (Test-Path .\bin\KeyboardSwitch-4.1-x64-win.zip)
 {
-    Remove-Item -Path .\bin\KeyboardSwitch-4.0-x64-win.zip
+    Remove-Item -Path .\bin\KeyboardSwitch-4.1-x64-win.zip
 }
 
-Compress-Archive -Path .\bin\KeyboardSwitch -DestinationPath .\bin\KeyboardSwitch-4.0-x64-win.zip
+Compress-Archive -Path .\bin\KeyboardSwitch -DestinationPath .\bin\KeyboardSwitch-4.1-x64-win.zip
 
 Get-ChildItem -Path .\bin\KeyboardSwitch\* -File -Recurse | foreach { $_.Delete() }
 Start-Sleep -Seconds 0.2
