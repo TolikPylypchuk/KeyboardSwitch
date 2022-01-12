@@ -36,13 +36,13 @@ jobs:
 
       - name: Rename the Installer
         shell: pwsh
-        run: Rename-Item -Path ".\KeyboardSwitch.Windows.Setup\bin\x64\Release\Keyboard Switch.msi" -NewName KeyboardSwitch-4.0-x64-win.msi
+        run: Rename-Item -Path ".\KeyboardSwitch.Windows.Setup\bin\x64\Release\Keyboard Switch.msi" -NewName KeyboardSwitch-4.1-x64-win.msi
 
       - name: Upload the Installer
         uses: actions/upload-artifact@v2
         with:
           name: nightly-build
-          path: .\KeyboardSwitch.Windows.Setup\bin\x64\Release\KeyboardSwitch-4.0-x64-win.msi
+          path: .\KeyboardSwitch.Windows.Setup\bin\x64\Release\KeyboardSwitch-4.1-x64-win.msi
 
   build-zip:
     runs-on: windows-latest
