@@ -5,7 +5,7 @@ internal sealed class FreedesktopStartupService : IStartupService
     private const string StartFileContent = @"[Desktop Entry]
 Version=1.0
 Name=Keyboard Switch
-Comment=An application to switch typed text as if it were typed with another keyboard layout
+Comment=Switches typed text as if it were typed with another keyboard layout
 Exec=$SERVICE_APP
 TryExec=$SERVICE_APP
 Path=$DIRECTORY

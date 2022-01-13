@@ -13,7 +13,7 @@ mkdir -p $HOME/.config/autostart
 echo "[Desktop Entry]
 Version=1.0
 Name=Keyboard Switch
-Comment=An application to switch typed text as if it were typed with another keyboard layout
+Comment=Switches typed text as if it were typed with another keyboard layout
 Exec=$SERVICE_APP
 TryExec=$SERVICE_APP
 Path=$INSTALL_DIR
@@ -26,7 +26,7 @@ Categories=Utility
 echo "[Desktop Entry]
 Version=1.0
 Name=Keyboard Switch Settings
-Comment=An application to switch typed text as if it were typed with another keyboard layout
+Comment=Switches typed text as if it were typed with another keyboard layout
 Exec=$SETTINGS_APP
 TryExec=$SETTINGS_APP
 Path=$INSTALL_DIR
