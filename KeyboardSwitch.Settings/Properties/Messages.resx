@@ -283,7 +283,7 @@
     <value>Right Alt</value>
   </data>
   <data name="ModifierKeyRightCommand" xml:space="preserve">
-    <value>RightCommand</value>
+    <value>Right Command</value>
   </data>
   <data name="ModifierKeyRightCtrl" xml:space="preserve">
     <value>Right Ctrl</value>

@@ -556,7 +556,7 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to RightCommand.
+        ///   Looks up a localized string similar to Right Command.
         /// </summary>
         internal static string ModifierKeyRightCommand {
             get {
