@@ -10,7 +10,9 @@ using Avalonia.Threading;
 
 #if WINDOWS
 using KeyboardSwitch.Windows;
-#else
+#elif MACOS
+using KeyboardSwitch.MacOS;
+#elif LINUX
 using KeyboardSwitch.Linux;
 #endif
 
@@ -134,7 +136,9 @@ public class App : Application, IEnableLogger
             .AddSingleton<IActivationForViewFetcher>(new AvaloniaActivationForViewFetcher())
             .AddSuspensionDriver()
             .AddCoreKeyboardSwitchServices()
+#if WINDOWS || MACOS || LINUX
             .AddNativeKeyboardSwitchServices(config)
+#endif
             .UseMicrosoftDependencyResolver();
 
         BlobCache.ApplicationName = nameof(KeyboardSwitch);

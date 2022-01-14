@@ -8,7 +8,9 @@ using Akavache;
 
 #if WINDOWS
 using KeyboardSwitch.Windows;
-#else
+#elif MACOS
+using KeyboardSwitch.MacOS;
+#elif LINUX
 using KeyboardSwitch.Linux;
 #endif
 
@@ -93,9 +95,11 @@ public static class Program
             .Configure<HostOptions>(o => o.ShutdownTimeout = TimeSpan.FromMilliseconds(100))
             .Configure<GlobalSettings>(context.Configuration.GetSection("Settings"))
             .AddSingleton<IScheduler>(Scheduler.Default)
-            .AddSingleton<IExitCodeSetter>(exitCodeAccessor)
             .AddCoreKeyboardSwitchServices()
-            .AddNativeKeyboardSwitchServices(context.Configuration);
+#if WINDOWS || MACOS || LINUX
+            .AddNativeKeyboardSwitchServices(context.Configuration)
+#endif
+            .AddSingleton<IExitCodeSetter>(exitCodeAccessor);
 
     private static void ConfigureLogging(HostBuilderContext context, ILoggingBuilder logging) =>
         logging

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0-windows;net6.0-macos;net6.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net6.0-windows</TargetFrameworks>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <Platforms>x64</Platforms>
@@ -30,8 +30,12 @@
     <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(TargetFramework) == 'net6.0-macos'">
+  <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
     <DefineConstants>$(DefineConstants);MACOS</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">
+    <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -58,7 +62,7 @@
   <ItemGroup>
     <ProjectReference Include="..\KeyboardSwitch.Core\KeyboardSwitch.Core.csproj" />
     <ProjectReference Include="..\KeyboardSwitch.Windows\KeyboardSwitch.Windows.csproj" Condition="$(TargetFramework) == 'net6.0-windows'" />
-    <ProjectReference Include="..\KeyboardSwitch.MacOS\KeyboardSwitch.MacOS.csproj" Condition="$(TargetFramework) == 'net6.0-macos'" />
-    <ProjectReference Include="..\KeyboardSwitch.Linux\KeyboardSwitch.Linux.csproj" Condition="$(TargetFramework) == 'net6.0'" />
+    <ProjectReference Include="..\KeyboardSwitch.MacOS\KeyboardSwitch.MacOS.csproj" Condition="$([MSBuild]::IsOSPlatform('OSX'))" />
+    <ProjectReference Include="..\KeyboardSwitch.Linux\KeyboardSwitch.Linux.csproj" Condition="$([MSBuild]::IsOSPlatform('Linux'))" />
   </ItemGroup>
 </Project>
