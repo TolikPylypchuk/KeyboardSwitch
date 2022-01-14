@@ -28,12 +28,19 @@ internal sealed class SharpHookService : Disposable, IKeyboardHookService
         this.logger = logger;
 
         this.hook.KeyPressed
-            .Select(hookEvent => hookEvent.Args.Data.KeyCode)
-            .Subscribe(this.HandleKeyDown);
-
-        this.hook.KeyReleased
-            .Select(hookEvent => hookEvent.Args.Data.KeyCode)
-            .Subscribe(this.HandleKeyUp);
+            .Merge(this.hook.KeyReleased)
+            .Delay(TimeSpan.FromMilliseconds(16))
+            .Select(hookEvent => hookEvent.Args)
+            .Subscribe(args =>
+            {
+                if (args.RawEvent.Type == EventType.KeyPressed)
+                {
+                    this.HandleKeyDown(args.Data.KeyCode);
+                } else
+                {
+                    this.HandleKeyUp(args.Data.KeyCode);
+                }
+            });
     }
 
     ~SharpHookService() =>

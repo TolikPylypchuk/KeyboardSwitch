@@ -6,8 +6,7 @@ public static class ServiceExtensions
 {
     public static IServiceCollection AddCoreKeyboardSwitchServices(this IServiceCollection services) =>
         services
-            .AddSingleton<IReactiveGlobalHook>(services => new ReactiveGlobalHookAdapter(
-                new TaskPoolGlobalHook(TaskPoolGlobalHookOptions.Sequential)))
+            .AddSingleton<IReactiveGlobalHook, BlockingReactiveGlobalHook>()
             .AddSingleton<IKeyboardHookService, SharpHookService>()
             .AddSingleton<ITextService, ClipboardTextService>()
             .AddSingleton<IEventSimulator, EventSimulator>()
