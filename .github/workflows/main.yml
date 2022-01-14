@@ -18,6 +18,10 @@ jobs:
         with:
           dotnet-version: 6.0.x
 
+      - name: Add the macOS Workload
+        shell: pwsh
+        run: dotnet workload install macos
+
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.1
         with:
@@ -55,6 +59,10 @@ jobs:
         with:
           dotnet-version: 6.0.x
 
+      - name: Add the macOS Workload
+        shell: pwsh
+        run: dotnet workload install macos
+
       - name: Build the Zip Archive
         shell: pwsh
         run: .\build\windows\Build-Portable.ps1
@@ -75,6 +83,10 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 6.0.x
+
+      - name: Add the macOS Workload
+        shell: pwsh
+        run: dotnet workload install macos
 
       - name: Build the Tar Archive
         shell: bash
@@ -97,6 +109,10 @@ jobs:
         with:
           dotnet-version: 6.0.x
 
+      - name: Add the macOS Workload
+        shell: pwsh
+        run: dotnet workload install macos
+
       - name: Build the Deb Package
         shell: bash
         run: ./build/deb/build-deb.sh
@@ -117,6 +133,10 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 6.0.x
+
+      - name: Add the macOS Workload
+        shell: pwsh
+        run: dotnet workload install macos
 
       - name: Setup RPM Build Tools
         shell: bash
