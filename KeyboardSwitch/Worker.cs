@@ -1,5 +1,7 @@
 namespace KeyboardSwitch;
 
+using Nito.AsyncEx;
+
 public class Worker : BackgroundService
 {
     private readonly IKeyboardHookService keyboardHookService;
@@ -34,15 +36,7 @@ public class Worker : BackgroundService
     {
         try
         {
-            this.logger.LogDebug("Configuring the KeyboardSwitch service");
-
-            await this.RegisterHotKeysAsync();
-
-            this.settingsService.SettingsInvalidated.SubscribeAsync(this.RefreshHotKeysAsync);
-
-            this.logger.LogDebug("Starting the service execution");
-
-            await this.keyboardHookService.StartHook(token);
+            AsyncContext.Run(() => this.ExecuteSequentiallyAsync(token));
         } catch (IncompatibleAppVersionException e)
         {
             var settingsPath = Environment.ExpandEnvironmentVariables(this.globalSettings.Path);
@@ -69,6 +63,19 @@ public class Worker : BackgroundService
     {
         this.hookSubscription?.Dispose();
         base.Dispose();
+    }
+
+    private async Task ExecuteSequentiallyAsync(CancellationToken token)
+    {
+        this.logger.LogDebug("Configuring the KeyboardSwitch service");
+
+        await this.RegisterHotKeysAsync();
+
+        this.settingsService.SettingsInvalidated.SubscribeAsync(this.RefreshHotKeysAsync);
+
+        this.logger.LogDebug("Starting the service execution");
+
+        await this.keyboardHookService.StartHook(token);
     }
 
     private async Task RegisterHotKeysAsync()
