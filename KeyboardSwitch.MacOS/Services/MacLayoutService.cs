@@ -48,5 +48,5 @@ internal class MacLayoutService : CachingLayoutService
     }
 
     private bool IsActuallyKeyboardLayout(KeyboardLayout layout) =>
-        layout.KeyboardName.StartsWith(KeyboardLayoutPrefix);
+        layout.Id.StartsWith(KeyboardLayoutPrefix);
 }
