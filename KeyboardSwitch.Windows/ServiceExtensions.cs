@@ -15,10 +15,10 @@ public static class SerivceExtensions
         this IServiceCollection services,
         IConfiguration config) =>
         services
-            .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
             .AddSingleton<WinLayoutService>()
             .AddSingleton<ILayoutService>(provider => provider.GetRequiredService<WinLayoutService>())
             .AddSingleton<ILayoutLoaderSrevice>(provider => provider.GetRequiredService<WinLayoutService>())
+            .AddSingleton<IUserActivitySimulator, SharpUserActivitySimulator>()
             .AddSingleton<IStartupService, RegistryStartupService>()
             .AddSingleton<IAutoConfigurationService, WinAutoConfigurationService>();
 }

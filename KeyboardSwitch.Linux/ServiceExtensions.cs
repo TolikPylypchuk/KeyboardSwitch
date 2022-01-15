@@ -9,8 +9,6 @@ public static class ServiceExtensions
         IConfiguration config) =>
         services
             .Configure<StartupSettings>(config.GetSection("Startup"))
-            .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
-            .AddSingleton<ITextService, ClipboardTextService>()
             .AddLayoutService()
             .AddSingleton<ILayoutLoaderSrevice, NotSupportedLayoutLoaderService>()
             .AddSingleton<IStartupService, FreedesktopStartupService>()

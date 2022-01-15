@@ -14,8 +14,7 @@ public static class ServiceExtensions
         this IServiceCollection services,
         IConfiguration config) =>
         services
-            .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
-            .AddSingleton<ITextService, ClipboardTextService>()
+            .AddSingleton<IUserActivitySimulator, MacUserActivitySimulator>()
             .AddSingleton<ILayoutService, MacLayoutService>()
             .AddSingleton<ILayoutLoaderSrevice, NotSupportedLayoutLoaderService>()
             .AddSingleton<IStartupService, MacStartupService>()

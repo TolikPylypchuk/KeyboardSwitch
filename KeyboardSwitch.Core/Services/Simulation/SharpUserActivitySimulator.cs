@@ -1,12 +1,12 @@
 namespace KeyboardSwitch.Core.Services.Simulation;
 
-internal class UserActivitySimulator : IUserActivitySimulator
+public class SharpUserActivitySimulator : IUserActivitySimulator
 {
     private const int Delay = 16;
 
     private readonly IEventSimulator eventSimulator;
 
-    public UserActivitySimulator(IEventSimulator eventSimulator) =>
+    public SharpUserActivitySimulator(IEventSimulator eventSimulator) =>
         this.eventSimulator = eventSimulator;
 
     public async Task SimulateCopyAsync()

@@ -6,12 +6,12 @@ public static class ServiceExtensions
 {
     public static IServiceCollection AddCoreKeyboardSwitchServices(this IServiceCollection services) =>
         services
+            .AddClipboard()
             .AddSingleton<IReactiveGlobalHook, BlockingReactiveGlobalHook>()
+            .AddSingleton<IEventSimulator, EventSimulator>()
             .AddSingleton<IKeyboardHookService, SharpHookService>()
             .AddSingleton<ITextService, ClipboardTextService>()
-            .AddSingleton<IEventSimulator, EventSimulator>()
-            .AddSingleton<IUserActivitySimulator, UserActivitySimulator>()
-            .AddClipboard()
+            .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
             .AddSingleton(BlobCacheFactory.CreateBlobCache)
             .AddSingleton<BlobCacheSettingsService>()
             .AddSingleton<IAppSettingsService>(provider =>
@@ -25,8 +25,7 @@ public static class ServiceExtensions
                 new SingleInstanceService(
                     s.GetRequiredService<ServiceProvider<INamedPipeService>>(),
                     s.GetRequiredService<ILogger<SingleInstanceService>>(),
-                    name))
-            .AddSingleton<IScheduler>(Scheduler.Default);
+                    name));
 
     public static IServiceCollection AddClipboard(this IServiceCollection services)
     {
