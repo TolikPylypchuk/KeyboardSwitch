@@ -238,7 +238,7 @@ public class App : Application, IEnableLogger
 
     private void ConfigureSingleInstance(IServiceProvider services)
     {
-        string assemblyName = Assembly.GetExecutingAssembly().FullName ?? String.Empty;
+        string assemblyName = Assembly.GetExecutingAssembly().GetName()?.Name ?? String.Empty;
 
         var singleInstanceProvider = services.GetRequiredService<ServiceProvider<ISingleInstanceService>>();
         var singleInstanceService = singleInstanceProvider(assemblyName);
