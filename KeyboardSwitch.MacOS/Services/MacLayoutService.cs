@@ -11,7 +11,32 @@ internal class MacLayoutService : CachingLayoutService
     }
 
     public override void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
-    { }
+    {
+        using var sources = HIToolbox.TISCreateInputSourceList(new CFDictionaryRef(), includeAllInstalled: false);
+        long count = CoreFoundation.CFArrayGetCount(sources);
+
+        var sourcesList = Enumerable.Range(0, (int)count)
+            .Select(i => new TISInputSourceRef(CoreFoundation.CFArrayGetValueAtIndex(sources, i)))
+            .ToList();
+
+        if (direction == SwitchDirection.Backward)
+        {
+            sourcesList.Reverse();
+        }
+
+        var currentLayout = this.GetCurrentKeyboardLayout();
+
+        var sourceToSet = sourcesList
+            .Select(source => (Source: source, Layout: this.CreateKeyboardLayout(source)))
+            .Where(sourceAndLayout => this.IsActuallyKeyboardLayout(sourceAndLayout.Layout))
+            .SkipWhile(sourceAndLayout => sourceAndLayout.Layout.Id != currentLayout.Id)
+            .Skip(1)
+            .Select(sourceAndLayout => sourceAndLayout.Source)
+            .FirstOrDefault()
+            ?? this.GetFirstKeyboardSource(sourcesList);
+
+        HIToolbox.TISSelectInputSource(sourceToSet);
+    }
 
     protected override List<KeyboardLayout> GetKeyboardLayoutsInternal()
     {
@@ -46,6 +71,10 @@ internal class MacLayoutService : CachingLayoutService
 
         return new(name, localizedName, name[KeyboardLayoutPrefix.Length..], String.Empty);
     }
+
+    private TISInputSourceRef GetFirstKeyboardSource(List<TISInputSourceRef> sources) =>
+        sources.FirstOrDefault(source => this.IsActuallyKeyboardLayout(this.CreateKeyboardLayout(source)))
+            ?? throw new ArgumentOutOfRangeException(nameof(sources), "No input sources are keyboard sources");
 
     private bool IsActuallyKeyboardLayout(KeyboardLayout layout) =>
         layout.Id.StartsWith(KeyboardLayoutPrefix);
