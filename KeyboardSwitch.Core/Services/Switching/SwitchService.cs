@@ -38,7 +38,7 @@ public class SwitchService : ISwitchService
 
             var currentLayout = this.layoutService.GetCurrentKeyboardLayout();
 
-            var newLayout = allLayouts.SkipWhile(layout => layout != currentLayout)
+            var newLayout = allLayouts.SkipWhile(layout => layout.Id != currentLayout.Id)
                 .Skip(1)
                 .FirstOrDefault()
                 ?? allLayouts[0];

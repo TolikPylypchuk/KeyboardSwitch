@@ -6,8 +6,16 @@ internal abstract class CFTypeRef : SafeHandle
         : base(IntPtr.Zero, true)
     { }
 
+    private protected CFTypeRef(bool ownsHandle)
+        : base(IntPtr.Zero, ownsHandle)
+    { }
+
     private protected CFTypeRef(IntPtr ptr)
         : base(ptr, true)
+    { }
+
+    private protected CFTypeRef(IntPtr ptr, bool ownsHandle)
+        : base(ptr, ownsHandle)
     { }
 
     public override bool IsInvalid =>
@@ -15,7 +23,11 @@ internal abstract class CFTypeRef : SafeHandle
 
     protected override bool ReleaseHandle()
     {
-        CoreFoundation.CFRelease(this.handle);
+        if (!this.IsInvalid)
+        {
+            CoreFoundation.CFRelease(this.handle);
+        }
+
         return true;
     }
 }
