@@ -31,6 +31,6 @@ internal static class NativeUtils
 
         bool success = CoreFoundation.CFStringGetCString(@ref, buffer, maxSize, CFStringEncoding.CFStringEncodingUTF8);
 
-        return success ? Encoding.UTF8.GetString(buffer) : String.Empty;
+        return success ? Encoding.UTF8.GetString(buffer).Trim('\0') : String.Empty;
     }
 }
