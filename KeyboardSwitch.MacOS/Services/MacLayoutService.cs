@@ -43,21 +43,11 @@ internal class MacLayoutService : CachingLayoutService
         using var sources = HIToolbox.TISCreateInputSourceList(new CFDictionaryRef(), includeAllInstalled: false);
         long count = CoreFoundation.CFArrayGetCount(sources);
 
-        var result = new List<KeyboardLayout>((int)count);
-
-        for (int i = 0; i < count; i++)
-        {
-            using var source = new TISInputSourceRef(CoreFoundation.CFArrayGetValueAtIndex(sources, i));
-
-            var layout = this.CreateKeyboardLayout(source);
-
-            if (this.IsActuallyKeyboardLayout(layout))
-            {
-                result.Add(layout);
-            }
-        }
-
-        return result;
+        return Enumerable.Range(0, (int)count)
+            .Select(i => new TISInputSourceRef(CoreFoundation.CFArrayGetValueAtIndex(sources, i)))
+            .Select(this.CreateKeyboardLayout)
+            .Where(this.IsActuallyKeyboardLayout)
+            .ToList();
     }
 
     private KeyboardLayout CreateKeyboardLayout(TISInputSourceRef source)
@@ -69,7 +59,7 @@ internal class MacLayoutService : CachingLayoutService
         var name = GetStringValue(nameRef);
         var localizedName = GetStringValue(localizedNameRef);
 
-        return new(name, localizedName, name[KeyboardLayoutPrefix.Length..], String.Empty);
+        return new(name, localizedName, name[KeyboardLayoutPrefix.Length..].Replace('.', ' '), String.Empty);
     }
 
     private TISInputSourceRef GetFirstKeyboardSource(List<TISInputSourceRef> sources) =>
