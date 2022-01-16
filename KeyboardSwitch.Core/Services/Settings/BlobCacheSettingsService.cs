@@ -163,8 +163,7 @@ internal sealed class BlobCacheSettingsService : AsyncDisposable, IAppSettingsSe
             SwitchLayout = true,
             ShowUninstalledLayoutsMessage = true,
             ShowConverter = false,
-            AppVersion = this.GetAppVersion(),
-            ServicePath = nameof(KeyboardSwitch)
+            AppVersion = this.GetAppVersion()
         };
 
     private Version GetAppVersion() =>

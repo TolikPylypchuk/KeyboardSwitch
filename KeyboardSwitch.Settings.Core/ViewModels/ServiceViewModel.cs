@@ -22,7 +22,7 @@ public sealed class ServiceViewModel : ReactiveObject
         var canStopService = serviceStatus.Select(status => status == ServiceStatus.Running);
         var canKillService = serviceStatus.Select(status => status == ServiceStatus.ShuttingDown);
 
-        this.StartService = ReactiveCommand.CreateFromTask(this.StartServiceAsync, canStartService);
+        this.StartService = ReactiveCommand.Create(this.OnStartService, canStartService);
         this.StopService = ReactiveCommand.Create(this.OnStopService, canStopService);
         this.KillService = ReactiveCommand.Create(this.OnKillService, canKillService);
         this.ReloadSettings = ReactiveCommand.Create(this.OnReloadSettings);
@@ -57,8 +57,8 @@ public sealed class ServiceViewModel : ReactiveObject
             : ServiceStatus.Stopped;
     }
 
-    private Task StartServiceAsync() =>
-        this.serviceCommunicator.StartServiceAsync();
+    private void OnStartService() =>
+        this.serviceCommunicator.StartService();
 
     private void OnStopService()
     {

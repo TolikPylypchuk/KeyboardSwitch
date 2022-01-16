@@ -39,7 +39,7 @@ public class Worker : BackgroundService
             AsyncContext.Run(() => this.ExecuteSequentiallyAsync(token));
         } catch (IncompatibleAppVersionException e)
         {
-            var settingsPath = Environment.ExpandEnvironmentVariables(this.globalSettings.Path);
+            var settingsPath = Environment.ExpandEnvironmentVariables(this.globalSettings.SettingsFilePath);
 
             this.logger.LogCritical(
                 e,

@@ -24,8 +24,5 @@ public sealed class AppSettings
     public bool ShowConverter { get; set; }
 
     [DataMember]
-    public string ServicePath { get; set; } = String.Empty;
-
-    [DataMember]
     public Version AppVersion { get; set; } = null!;
 }

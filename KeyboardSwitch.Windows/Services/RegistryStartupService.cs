@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Options;
+
 namespace KeyboardSwitch.Windows.Services;
 
 internal class RegistryStartupService : IStartupService
@@ -6,12 +8,16 @@ internal class RegistryStartupService : IStartupService
     private const string StartupRegistryName = "Keyboard Switch";
     private const string ExecutableExtension = ".exe";
 
+    private readonly GlobalSettings globalSettings;
     private readonly ILogger<RegistryStartupService> logger;
 
-    public RegistryStartupService(ILogger<RegistryStartupService> logger) =>
+    public RegistryStartupService(IOptions<GlobalSettings> globalSettings, ILogger<RegistryStartupService> logger)
+    {
+        this.globalSettings = globalSettings.Value;
         this.logger = logger;
+    }
 
-    public bool IsStartupConfigured(AppSettings settings)
+    public bool IsStartupConfigured()
     {
         this.logger.LogDebug("Checking if the KeyboardSwitch service is configured to run on startup");
 
@@ -23,7 +29,7 @@ internal class RegistryStartupService : IStartupService
         return isConfigured;
     }
 
-    public void ConfigureStartup(AppSettings settings, bool startup)
+    public void ConfigureStartup(bool startup)
     {
         this.logger.LogDebug(
             "Configuring to {Action} running the KeyboardSwitch service on startup", startup ? "start" : "stop");
@@ -32,7 +38,7 @@ internal class RegistryStartupService : IStartupService
 
         if (startup)
         {
-            startupKey?.SetValue(StartupRegistryName, this.GetServicePath(settings), RegistryValueKind.String);
+            startupKey?.SetValue(StartupRegistryName, this.GetServicePath(), RegistryValueKind.String);
         } else
         {
             startupKey?.DeleteValue(StartupRegistryName);
@@ -42,11 +48,12 @@ internal class RegistryStartupService : IStartupService
             "Configured to {Action} running the KeyboardSwitch service on startup", startup ? "start" : "stop");
     }
 
-    private string GetServicePath(AppSettings settings)
+    private string GetServicePath()
     {
-        var path = settings.ServicePath.EndsWith(ExecutableExtension, StringComparison.InvariantCultureIgnoreCase)
-            ? settings.ServicePath
-            : settings.ServicePath + ExecutableExtension;
+        var path = this.globalSettings.ServicePath.EndsWith(
+            ExecutableExtension, StringComparison.InvariantCultureIgnoreCase)
+            ? this.globalSettings.ServicePath
+            : this.globalSettings.ServicePath + ExecutableExtension;
 
         return $"\"{Path.GetFullPath(path)}\"";
     }

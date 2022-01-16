@@ -13,7 +13,7 @@ public static class BlobCacheFactory
 
         var options = services.GetRequiredService<IOptions<GlobalSettings>>();
         var scheduler = services.GetService<IScheduler>();
-        var path = Environment.ExpandEnvironmentVariables(options.Value.Path);
+        var path = Environment.ExpandEnvironmentVariables(options.Value.SettingsFilePath);
 
         if (!File.Exists(path))
         {

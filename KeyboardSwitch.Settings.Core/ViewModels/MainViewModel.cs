@@ -17,7 +17,7 @@ public class MainViewModel : ReactiveObject
 
         this.MainContentViewModel = new MainContentViewModel(
             this.CreateCharMappingModel(),
-            new PreferencesModel(appSettings, startupService.IsStartupConfigured(appSettings)),
+            new PreferencesModel(appSettings, startupService.IsStartupConfigured()),
             this.CreateConverterModel(converterSettings));
 
         this.ServiceViewModel = new ServiceViewModel();

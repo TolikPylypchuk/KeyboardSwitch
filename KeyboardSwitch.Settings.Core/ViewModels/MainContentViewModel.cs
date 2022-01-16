@@ -96,9 +96,9 @@ public sealed class MainContentViewModel : ReactiveObject
 
         await this.appSettingsService.SaveAppSettingsAsync(settings);
 
-        if (this.startupService.IsStartupConfigured(settings) != preferencesModel.Startup)
+        if (this.startupService.IsStartupConfigured() != preferencesModel.Startup)
         {
-            this.startupService.ConfigureStartup(settings, preferencesModel.Startup);
+            this.startupService.ConfigureStartup(preferencesModel.Startup);
         }
 
         this.ShowConverter = preferencesModel.ShowConverter;

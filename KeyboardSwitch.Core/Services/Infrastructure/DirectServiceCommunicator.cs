@@ -4,25 +4,22 @@ using System.Diagnostics;
 
 public sealed class DirectServiceCommunicator : IServiceCommunicator
 {
-    private readonly IAppSettingsService settingsService;
+    private readonly GlobalSettings globalSettings;
     private readonly INamedPipeService namedPipeService;
 
     public DirectServiceCommunicator(
-        IAppSettingsService settingsService,
+        IOptions<GlobalSettings> globalSettings,
         ServiceProvider<INamedPipeService> namedPipeServiceProvider)
     {
-        this.settingsService = settingsService;
+        this.globalSettings = globalSettings.Value;
         this.namedPipeService = namedPipeServiceProvider(nameof(KeyboardSwitch));
     }
 
     public bool IsServiceRunning() =>
         Process.GetProcessesByName(nameof(KeyboardSwitch)).Length > 0;
 
-    public async Task StartServiceAsync()
-    {
-        var settings = await settingsService.GetAppSettingsAsync();
-        Process.Start(settings.ServicePath);
-    }
+    public void StartService() =>
+        Process.Start(globalSettings.ServicePath);
 
     public void StopService(bool kill)
     {

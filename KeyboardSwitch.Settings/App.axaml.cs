@@ -86,14 +86,14 @@ public class App : Application, IEnableLogger
 
         try
         {
-            var appSettings = await GetDefaultService<IAppSettingsService>().GetAppSettingsAsync();
-
             if (File.Exists(SetStartupFile))
             {
                 this.Log().Info("Setting the app to run at system startup");
-                GetDefaultService<IStartupService>().ConfigureStartup(appSettings, true);
+                GetDefaultService<IStartupService>().ConfigureStartup(true);
                 File.Delete(SetStartupFile);
             }
+
+            var appSettings = await GetDefaultService<IAppSettingsService>().GetAppSettingsAsync();
 
             var converterSettings = await GetDefaultService<IConverterSettingsService>()
                 .GetConverterSettingsAsync();
@@ -106,7 +106,7 @@ public class App : Application, IEnableLogger
         } catch (IncompatibleAppVersionException e)
         {
             var settingsPath = Environment.ExpandEnvironmentVariables(
-                GetDefaultService<IOptions<GlobalSettings>>().Value.Path);
+                GetDefaultService<IOptions<GlobalSettings>>().Value.SettingsFilePath);
 
             this.Log().Error(
                 e,

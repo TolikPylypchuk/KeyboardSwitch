@@ -2,9 +2,9 @@ namespace KeyboardSwitch.MacOS.Services;
 
 internal class MacStartupService : IStartupService
 {
-    public void ConfigureStartup(AppSettings settings, bool startup)
+    public void ConfigureStartup(bool startup)
     { }
 
-    public bool IsStartupConfigured(AppSettings settings) =>
+    public bool IsStartupConfigured() =>
         false;
 }
