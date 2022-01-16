@@ -25,11 +25,11 @@ internal static class NativeUtils
         }
 
         long length = CoreFoundation.CFStringGetLength(@ref);
-        long maxSize = CoreFoundation.CFStringGetMaximumSizeForEncoding(length, CFStringEncoding.CFStringEncodingUTF8);
+        long maxSize = CoreFoundation.CFStringGetMaximumSizeForEncoding(length, CFStringEncoding.UTF8);
 
         var buffer = new byte[(int)maxSize + 1];
 
-        bool success = CoreFoundation.CFStringGetCString(@ref, buffer, maxSize, CFStringEncoding.CFStringEncodingUTF8);
+        bool success = CoreFoundation.CFStringGetCString(@ref, buffer, maxSize, CFStringEncoding.UTF8);
 
         return success ? Encoding.UTF8.GetString(buffer).Trim('\0') : String.Empty;
     }

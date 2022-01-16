@@ -2,7 +2,7 @@ namespace KeyboardSwitch.MacOS.Native;
 
 internal enum CGEventTapLocation : uint
 {
-    CGHIDEventTap = 0,
-    CGSessionEventTap = 1,
-    CGAnnotatedSessionEventTap = 2
+    HIDEventTap = 0,
+    SessionEventTap = 1,
+    AnnotatedSessionEventTap = 2
 }
