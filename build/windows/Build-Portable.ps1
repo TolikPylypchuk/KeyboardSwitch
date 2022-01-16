@@ -14,6 +14,8 @@ dotnet publish .\KeyboardSwitch.Settings --configuration Release --runtime win10
 Remove-Item -Path .\bin\KeyboardSwitch\* -Include *.pdb, *.xml
 Remove-Item -Path .\bin\KeyboardSwitch\appsettings.macos.json
 Remove-Item -Path .\bin\KeyboardSwitch\appsettings.linux.json
+Remove-Item -Path .\bin\KeyboardSwitch\icon.icns
+Remove-Item -Path .\bin\KeyboardSwitch\icon.png
 
 if (Test-Path .\bin\KeyboardSwitch-4.1-x64-win.zip)
 {

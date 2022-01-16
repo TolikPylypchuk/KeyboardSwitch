@@ -2,7 +2,6 @@ namespace KeyboardSwitch;
 
 using System.Diagnostics;
 using System.Reactive.Concurrency;
-using System.Reflection;
 
 using Akavache;
 
@@ -51,7 +50,7 @@ public static class Program
     private static void Run(string[] args)
     {
         Directory.SetCurrentDirectory(
-            Path.GetDirectoryName(Assembly.GetExecutingAssembly()?.Location) ?? String.Empty);
+            Path.GetDirectoryName(AppContext.BaseDirectory) ?? String.Empty);
 
         BlobCache.ApplicationName = nameof(KeyboardSwitch);
 

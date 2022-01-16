@@ -14,6 +14,7 @@ find ./keyboard-switch -name "*.pdb" -type f -delete
 find ./keyboard-switch -name "*.xml" -type f -delete
 rm ./keyboard-switch/appsettings.windows.json
 rm ./keyboard-switch/appsettings.macos.json
+rm ./keyboard-switch/icon.icns
 
 rm ./keyboard-switch_4.1-1_amd64.deb 2> /dev/null
 rm -rf ./keyboard-switch_4.1-1_amd64 2> /dev/null

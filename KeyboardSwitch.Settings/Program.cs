@@ -1,13 +1,11 @@
 namespace KeyboardSwitch.Settings;
 
-using System.Reflection;
-
 public static class Program
 {
     public static int Main(string[] args)
     {
         Directory.SetCurrentDirectory(
-            Path.GetDirectoryName(Assembly.GetExecutingAssembly()?.Location) ?? String.Empty);
+            Path.GetDirectoryName(AppContext.BaseDirectory) ?? String.Empty);
 
         return AppBuilder.Configure<App>()
             .UsePlatformDetect()

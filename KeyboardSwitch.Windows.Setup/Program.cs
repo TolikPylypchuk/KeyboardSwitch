@@ -23,7 +23,15 @@ namespace KeyboardSwitch.Windows.Setup
         private const string BuildDirectory = @"..\bin\publish\*.*";
         private static readonly string TargetDirectory = @$"%ProgramFiles%\{nameof(KeyboardSwitch)}";
 
-        private static readonly List<string> ExcludedFileExtensions = new List<string> { ".pdb", ".xml" };
+        private static readonly List<string> ExcludedFileExtensions = new List<string>
+        {
+            ".pdb",
+            ".xml",
+            ".macos.json",
+            ".linux.json",
+            ".icns",
+            ".png"
+        };
 
         private const string InstallationDirectory = "[INSTALLDIR]";
         private const string StartMenuDirectory = "%ProgramMenu%";
