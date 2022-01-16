@@ -5,6 +5,7 @@ global using KeyboardSwitch.Core;
 global using KeyboardSwitch.Core.Keyboard;
 global using KeyboardSwitch.Core.Services.AutoConfiguration;
 global using KeyboardSwitch.Core.Services.Layout;
+global using KeyboardSwitch.Core.Services.Simulation;
 global using KeyboardSwitch.Core.Services.Startup;
 global using KeyboardSwitch.Core.Settings;
 global using KeyboardSwitch.Linux.Services;

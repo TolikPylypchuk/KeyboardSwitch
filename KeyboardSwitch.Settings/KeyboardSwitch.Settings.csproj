@@ -35,6 +35,10 @@
     <DefineConstants>$(DefineConstants);MACOS</DefineConstants>
   </PropertyGroup>
 
+  <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">
+    <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <TrimmerRootAssembly Include="Microsoft.Extensions.Logging.Configuration" />
   </ItemGroup>
