@@ -103,6 +103,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="icon.icns">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="icon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
