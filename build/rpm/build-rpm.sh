@@ -14,6 +14,9 @@ find ./keyboard-switch -name "*.pdb" -type f -delete
 find ./keyboard-switch -name "*.xml" -type f -delete
 rm ./keyboard-switch/appsettings.windows.json
 rm ./keyboard-switch/appsettings.macos.json
+rm ./keyboard-switch/libuiohook.so.1
+rm ./keyboard-switch/libuiohook.so.1.2.0
+rm ./keyboard-switch/icon.icns
 
 cp ../build/rpm/keyboard-switch.spec .
 cp ../LICENSE .
