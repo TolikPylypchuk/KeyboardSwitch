@@ -1,4 +1,6 @@
+global using System.Collections.Immutable;
 global using System.Runtime.InteropServices;
+global using System.Text;
 
 global using KeyboardSwitch.Core;
 global using KeyboardSwitch.Core.Keyboard;

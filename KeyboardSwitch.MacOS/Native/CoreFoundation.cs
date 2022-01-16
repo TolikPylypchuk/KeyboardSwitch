@@ -25,4 +25,7 @@ internal static class CoreFoundation
 
     [DllImport(CoreFoundationLib)]
     public static extern IntPtr CFArrayGetValueAtIndex(CFArrayRef theArray, long index);
+
+    [DllImport(CoreFoundationLib)]
+    public static extern IntPtr CFDataGetBytePtr(CFDataRef @ref);
 }

@@ -1,5 +1,7 @@
 namespace KeyboardSwitch.Windows.Services;
 
+using System.Collections.Immutable;
+
 using SharpHook.Native;
 
 internal class WinAutoConfigurationService : AutoConfigurationServiceBase
@@ -12,7 +14,7 @@ internal class WinAutoConfigurationService : AutoConfigurationServiceBase
     private const int ResultSuccess = 1;
     private const int ResultDeadKey = -1;
 
-    private static readonly List<KeyCode> KeyCodesToMap = new()
+    private static readonly ImmutableList<KeyCode> KeyCodesToMap = new List<KeyCode>
     {
         KeyCode.VcQ,
         KeyCode.VcW,
@@ -61,7 +63,7 @@ internal class WinAutoConfigurationService : AutoConfigurationServiceBase
         KeyCode.Vc0,
         KeyCode.VcMinus,
         KeyCode.VcEquals
-    };
+    }.ToImmutableList();
 
     protected override IEnumerable<List<KeyToCharResult>> GetChars(List<string> layoutIds) =>
         KeyCodesToMap

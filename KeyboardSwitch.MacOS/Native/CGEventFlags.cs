@@ -3,6 +3,7 @@ namespace KeyboardSwitch.MacOS.Native;
 [Flags]
 internal enum CGEventFlags : ulong
 {
+    NoMask = 0,
     MaskNonCoalesced = 0x00000100,
     MaskAlphaShift = 0x00010000,
     MaskShift = 0x00020000,

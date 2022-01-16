@@ -2,8 +2,6 @@ namespace KeyboardSwitch.MacOS.Services;
 
 internal class MacLayoutService : CachingLayoutService
 {
-    private const string KeyboardLayoutPrefix = "com.apple.keylayout.";
-
     public override KeyboardLayout GetCurrentKeyboardLayout()
     {
         using var source = HIToolbox.TISCopyCurrentKeyboardInputSource();
@@ -17,6 +15,7 @@ internal class MacLayoutService : CachingLayoutService
 
         var sourcesList = Enumerable.Range(0, (int)count)
             .Select(i => new TISInputSourceRef(CoreFoundation.CFArrayGetValueAtIndex(sources, i)))
+            .Where(IsKeyboardInputSource)
             .ToList();
 
         if (direction == SwitchDirection.Backward)
@@ -24,19 +23,18 @@ internal class MacLayoutService : CachingLayoutService
             sourcesList.Reverse();
         }
 
-        var currentLayout = this.GetCurrentKeyboardLayout();
+        using var currentSource = HIToolbox.TISCopyCurrentKeyboardInputSource();
+        string currentSourceName = GetInputSourceName(currentSource);
 
         var sourceToSet = sourcesList
-            .Select(source => (Source: source, Layout: this.CreateKeyboardLayout(source)))
-            .Where(sourceAndLayout => this.IsActuallyKeyboardLayout(sourceAndLayout.Layout))
-            .SkipWhile(sourceAndLayout => sourceAndLayout.Layout.Id != currentLayout.Id)
+            .SkipWhile(source => GetInputSourceName(source) != currentSourceName)
             .Skip(1)
-            .Select(sourceAndLayout => sourceAndLayout.Source)
             .FirstOrDefault()
             ?? this.GetFirstKeyboardSource(sourcesList);
 
         HIToolbox.TISSelectInputSource(sourceToSet);
     }
+
 
     protected override List<KeyboardLayout> GetKeyboardLayoutsInternal()
     {
@@ -45,27 +43,20 @@ internal class MacLayoutService : CachingLayoutService
 
         return Enumerable.Range(0, (int)count)
             .Select(i => new TISInputSourceRef(CoreFoundation.CFArrayGetValueAtIndex(sources, i)))
+            .Where(IsKeyboardInputSource)
             .Select(this.CreateKeyboardLayout)
-            .Where(this.IsActuallyKeyboardLayout)
             .ToList();
     }
 
     private KeyboardLayout CreateKeyboardLayout(TISInputSourceRef source)
     {
-        using var nameRef = HIToolbox.TISGetInputSourceProperty(source, HIToolbox.GetTISPropertyInputSourceID());
-        using var localizedNameRef = HIToolbox.TISGetInputSourceProperty(
-            source, HIToolbox.GetTISPropertyLocalizedName());
-
-        var name = GetStringValue(nameRef);
-        var localizedName = GetStringValue(localizedNameRef);
+        var name = GetInputSourceName(source);
+        var localizedName = GetInputSourceLocalizedName(source);
 
         return new(name, localizedName, name[KeyboardLayoutPrefix.Length..].Replace('.', ' '), String.Empty);
     }
 
     private TISInputSourceRef GetFirstKeyboardSource(List<TISInputSourceRef> sources) =>
-        sources.FirstOrDefault(source => this.IsActuallyKeyboardLayout(this.CreateKeyboardLayout(source)))
+        sources.FirstOrDefault(IsKeyboardInputSource)
             ?? throw new ArgumentOutOfRangeException(nameof(sources), "No input sources are keyboard sources");
-
-    private bool IsActuallyKeyboardLayout(KeyboardLayout layout) =>
-        layout.Id.StartsWith(KeyboardLayoutPrefix);
 }

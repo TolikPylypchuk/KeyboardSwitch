@@ -1,9 +1,9 @@
 namespace KeyboardSwitch.MacOS.Native;
 
-using System.Text;
-
 internal static class NativeUtils
 {
+    public const string KeyboardLayoutPrefix = "com.apple.keylayout.";
+
     public static IntPtr GetExportedConstant(string libName, string constant)
     {
         if (NativeLibrary.TryLoad(libName, out var lib))
@@ -15,6 +15,25 @@ internal static class NativeUtils
         }
 
         return IntPtr.Zero;
+    }
+
+    public static bool IsKeyboardInputSource(TISInputSourceRef source) =>
+        GetInputSourceName(source).StartsWith(KeyboardLayoutPrefix);
+
+    public static string GetInputSourceName(TISInputSourceRef source)
+    {
+        using var name = new CFStringRef(HIToolbox.TISGetInputSourceProperty(
+            source, HIToolbox.GetTISPropertyInputSourceID()));
+
+        return GetStringValue(name);
+    }
+
+    public static string GetInputSourceLocalizedName(TISInputSourceRef source)
+    {
+        using var localizedName = new CFStringRef(HIToolbox.TISGetInputSourceProperty(
+            source, HIToolbox.GetTISPropertyLocalizedName()));
+
+        return GetStringValue(localizedName);
     }
 
     public static string GetStringValue(CFStringRef @ref)
