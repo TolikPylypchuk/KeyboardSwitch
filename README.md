@@ -1,6 +1,6 @@
 # Keyboard Switch
 
-Version 4.0. Created by Tolik Pylypchuk.
+Version 4.0 (4.1 in progress). Created by Tolik Pylypchuk.
 
 Keyboard Switch is an application which switches typed text as if it were typed with another keyboard layout.
 
@@ -67,13 +67,19 @@ configure it further. But if you do, the you can read more [in the docs](https:/
 To switch text forward, select the text, and press _Ctrl+Shift_ twice. To switch it backward, press _Ctrl+Alt+Shift_
 twice instead.
 
+### macOS
+
+macOS support is in progress, and will be available in version 4.1, so stay tuned.
+
 ## Supported Platforms
 
-Version 4.0 works on Windows 10/11, and Linux via X11. macOS support will come in a future version (most probably 4.1).
+Version 4.0 works on Windows 10/11, and Linux via X11. macOS support will come in version 4.1. Wayland support may come
+in a future version, but there are [several prerequisites](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/54).
 Versions up to 4.0 were Windows-only.
 
-Only the x64 architecture is supported. It would be ideal to also support Arm64, but not all dependencies of this app
-currently support it. And even if they did, I don't have any devices with Arm64 to test the app there.
+Only the x64 architecture is supported. Arm64 support will come in version 4.1, but for Windows and Linux it will be
+experimental - the builds will be provided, but I have no way of testing them, so if they don't work, I won't be able to
+fix them.
 
 ## More Info
 
@@ -87,4 +93,4 @@ of changes across versions.
 
 ## Icon
 
-Icon made by [Smashicons](https://smashicons.com/) from [www.flaticon.com](https://www.flaticon.com/).
+Icon made by [Smashicons](https://smashicons.com) from [www.flaticon.com](https://www.flaticon.com).
