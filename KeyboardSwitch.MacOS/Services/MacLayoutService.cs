@@ -35,7 +35,6 @@ internal class MacLayoutService : CachingLayoutService
         HIToolbox.TISSelectInputSource(sourceToSet);
     }
 
-
     protected override List<KeyboardLayout> GetKeyboardLayoutsInternal()
     {
         using var sources = HIToolbox.TISCreateInputSourceList(new CFDictionaryRef(), includeAllInstalled: false);
