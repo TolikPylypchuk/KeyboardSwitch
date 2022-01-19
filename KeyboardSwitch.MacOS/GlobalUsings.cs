@@ -13,5 +13,6 @@ global using KeyboardSwitch.MacOS.Native;
 global using KeyboardSwitch.MacOS.Services;
 
 global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Logging;
 
 global using static KeyboardSwitch.MacOS.Native.NativeUtils;
