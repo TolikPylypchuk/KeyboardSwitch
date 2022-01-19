@@ -122,9 +122,10 @@ public class App : Application, IEnableLogger
 
     private void ConfigureServices(IServiceCollection services)
     {
+        var configDir = this.GetConfigDirectory();
         var environment = PlatformDependent(windows: () => "windows", macos: () => "macos", linux: () => "linux");
-        var genericProvider = this.JsonProvider("appsettings.json");
-        var platformSpecificProvider = this.JsonProvider($"appsettings.{environment}.json");
+        var genericProvider = this.JsonProvider(configDir, "appsettings.json");
+        var platformSpecificProvider = this.JsonProvider(configDir, $"appsettings.{environment}.json");
 
         var config = new ConfigurationRoot(
             new List<IConfigurationProvider> { genericProvider, platformSpecificProvider });
@@ -158,6 +159,19 @@ public class App : Application, IEnableLogger
         RxApp.MainThreadScheduler = AvaloniaScheduler.Instance;
     }
 
+    private string GetConfigDirectory()
+    {
+        var currentDirectory = Directory.GetCurrentDirectory();
+        return this.IsInMacOsBundle(currentDirectory)
+            ? Path.Combine(Path.GetDirectoryName(currentDirectory) ?? String.Empty, "Resources")
+            : currentDirectory;
+    }
+
+    private bool IsInMacOsBundle(string directory) =>
+        OperatingSystem.IsMacOS() &&
+            directory.Split(Path.DirectorySeparatorChar, StringSplitOptions.RemoveEmptyEntries)
+                .Any(dir => dir.EndsWith(".app"));
+
     private void ConfigureSuspensionDriver()
     {
         var autoSuspendHelper = new AutoSuspendHelper(this.desktop);
@@ -168,11 +182,12 @@ public class App : Application, IEnableLogger
         autoSuspendHelper.OnFrameworkInitializationCompleted();
     }
 
-    private IConfigurationProvider JsonProvider(string fileName) =>
+    private IConfigurationProvider JsonProvider(string directory, string fileName) =>
         new JsonConfigurationProvider(new JsonConfigurationSource
         {
             Path = fileName,
-            FileProvider = new PhysicalFileProvider(Environment.CurrentDirectory)
+            FileProvider = new PhysicalFileProvider(directory),
+            Optional = true
         });
 
     private async Task<MainWindow> CreateMainWindow(MainViewModel viewModel)

@@ -17,6 +17,8 @@ Remove-Item -Path .\bin\KeyboardSwitch\appsettings.linux.json
 Remove-Item -Path .\bin\KeyboardSwitch\icon.icns
 Remove-Item -Path .\bin\KeyboardSwitch\icon.png
 
+Rename-Item -Path .\bin\KeyboardSwitch\appsettings.windows.json -NewName appsettings.json
+
 if (Test-Path .\bin\KeyboardSwitch-4.1-x64-win.zip)
 {
     Remove-Item -Path .\bin\KeyboardSwitch-4.1-x64-win.zip

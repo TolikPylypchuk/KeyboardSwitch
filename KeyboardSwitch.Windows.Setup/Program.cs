@@ -13,6 +13,8 @@ using WixSharp;
 
 using Assembly = System.Reflection.Assembly;
 
+using File = WixSharp.File;
+
 namespace KeyboardSwitch.Windows.Setup
 {
     public class Program
@@ -20,13 +22,14 @@ namespace KeyboardSwitch.Windows.Setup
         private const string ProductName = "Keyboard Switch";
         private const string ProductSettingsName = "Keyboard Switch Settings";
 
-        private const string BuildDirectory = @"..\bin\publish\*.*";
-        private static readonly string TargetDirectory = @$"%ProgramFiles%\{nameof(KeyboardSwitch)}";
+        private const string BuildDirectory = @"..\bin\publish";
+        private static readonly string TargetDirectory = @"%ProgramFiles%\Keyboard Switch";
 
         private static readonly List<string> ExcludedFileExtensions = new List<string>
         {
             ".pdb",
             ".xml",
+            ".windows.json",
             ".macos.json",
             ".linux.json",
             ".icns",
@@ -52,7 +55,11 @@ namespace KeyboardSwitch.Windows.Setup
         {
             var files = new Dir(
                 TargetDirectory,
-                new Files(BuildDirectory, file => !ExcludedFileExtensions.Any(file.EndsWith)));
+                new Files(@$"{BuildDirectory}\*.*", file => !ExcludedFileExtensions.Any(file.EndsWith)),
+                new File(Path.Combine(BuildDirectory, "appsettings.windows.json"))
+                {
+                    AttributesDefinition = "Name=appsettings.json"
+                });
 
             var startMenuShortcut = new Dir(
                 StartMenuDirectory,

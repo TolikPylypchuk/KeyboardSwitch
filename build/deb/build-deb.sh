@@ -18,6 +18,8 @@ rm ./keyboard-switch/libuiohook.so.1
 rm ./keyboard-switch/libuiohook.so.1.2.0
 rm ./keyboard-switch/icon.icns
 
+mv ./keyboard-switch/appsettings.linux.json ./keyboard-switch/appsettings.json
+
 rm ./keyboard-switch_4.1-1_amd64.deb 2> /dev/null
 rm -rf ./keyboard-switch_4.1-1_amd64 2> /dev/null
 

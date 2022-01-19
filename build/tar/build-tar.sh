@@ -18,6 +18,8 @@ rm ./keyboard-switch/libuiohook.so.1
 rm ./keyboard-switch/libuiohook.so.1.2.0
 rm ./keyboard-switch/icon.icns
 
+mv ./keyboard-switch/appsettings.linux.json ./keyboard-switch/appsettings.json
+
 cp ../build/tar/install.sh ./keyboard-switch
 cp ../build/tar/uninstall.sh ./keyboard-switch
 
