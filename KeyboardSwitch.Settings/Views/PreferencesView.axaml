@@ -31,7 +31,7 @@
 
                 <TextBlock Text="{l:Translate KeysToSwitchText}" Margin="10 5" />
 
-                <Grid RowDefinitions="Auto,Auto" Margin="10"
+                <Grid RowDefinitions="Auto,10,Auto" Margin="10"
                       ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="{l:Translate Forward}" Classes="Label" />
                     <ComboBox x:Name="ForwardFirstComboBox" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch"
@@ -47,18 +47,18 @@
                     <ui:NumberBox x:Name="PressCountBox" Grid.Row="0" Grid.Column="7" Classes="FormControl"
                                   Minimum="1" Maximum="10" />
 
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{l:Translate Backward}" Classes="Label" />
-                    <ComboBox x:Name="BackwardFirstComboBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch"
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{l:Translate Backward}" Classes="Label" />
+                    <ComboBox x:Name="BackwardFirstComboBox" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch"
                               Classes="FormControl ModifierKey" />
-                    <TextBlock Grid.Row="1" Grid.Column="2" Text="{l:Translate ModifierKeySeparator}" Classes="Label" />
-                    <ComboBox x:Name="BackwardSecondComboBox" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch"
+                    <TextBlock Grid.Row="2" Grid.Column="2" Text="{l:Translate ModifierKeySeparator}" Classes="Label" />
+                    <ComboBox x:Name="BackwardSecondComboBox" Grid.Row="2" Grid.Column="3" HorizontalAlignment="Stretch"
                               Classes="FormControl ModifierKey" />
-                    <TextBlock Grid.Row="1" Grid.Column="4" Text="{l:Translate ModifierKeySeparator}" Classes="Label" />
-                    <ComboBox x:Name="BackwardThirdComboBox" Grid.Row="1" Grid.Column="5" HorizontalAlignment="Stretch"
+                    <TextBlock Grid.Row="2" Grid.Column="4" Text="{l:Translate ModifierKeySeparator}" Classes="Label" />
+                    <ComboBox x:Name="BackwardThirdComboBox" Grid.Row="2" Grid.Column="5" HorizontalAlignment="Stretch"
                               Classes="FormControl ModifierKey" />
 
-                    <TextBlock Grid.Row="1" Grid.Column="6" Text="{l:Translate WaitMilliseconds}" Classes="Label" />
-                    <ui:NumberBox x:Name="WaitMillisecondsBox" Grid.Row="1" Grid.Column="7" Classes="FormControl"
+                    <TextBlock Grid.Row="2" Grid.Column="6" Text="{l:Translate WaitMilliseconds}" Classes="Label" />
+                    <ui:NumberBox x:Name="WaitMillisecondsBox" Grid.Row="2" Grid.Column="7" Classes="FormControl"
                                   Minimum="100" Maximum="1000" />
                 </Grid>
 

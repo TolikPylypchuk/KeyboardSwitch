@@ -32,6 +32,7 @@
 
         <Style Selector="ComboBox.ModifierKey">
             <Setter Property="MaxDropDownHeight" Value="300" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
 
         <Style Selector="ui|NumberBox.FormControl">
@@ -39,13 +40,22 @@
             <Setter Property="SpinButtonPlacementMode" Value="Inline" />
             <Setter Property="ToolTip.Tip" Value="{l:Translate NumberBoxHint}" />
             <Setter Property="ValidationMode" Value="InvalidInputOverwritten" />
-            <Setter Property="Margin" Value="0 0 10 5" />
+            <Setter Property="Margin" Value="0 0 10 0" />
+        </Style>
+
+        <Style Selector="ui|NumberBox.FormControl /template/ TextBox#InputBox">
+            <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
 
         <Style Selector="Button">
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Margin" Value="5" />
             <Setter Property="Padding" Value="10 5" />
+        </Style>
+
+        <Style Selector="CheckBox">
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="8 0 0 0" />
         </Style>
 
         <Style Selector="StackPanel#ActionPanel">
