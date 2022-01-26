@@ -7,6 +7,10 @@ internal class TISInputSourceRef : CFTypeRef
     { }
 
     public TISInputSourceRef(IntPtr ptr)
-        : base(ptr, false)
+        : base(ptr, true)
+    { }
+
+    public TISInputSourceRef(IntPtr ptr, bool shouldRelease)
+        : base(ptr, shouldRelease)
     { }
 }

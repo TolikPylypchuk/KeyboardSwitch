@@ -5,6 +5,19 @@ internal static class HIToolbox
     private const string HIToolboxLib =
         "/System/Library/Frameworks/Carbon.framework/Frameworks/HIToolbox.framework/HIToolbox";
 
+    static HIToolbox()
+    {
+        TISPropertyInputSourceID = new(GetExportedConstant(HIToolboxLib, "kTISPropertyInputSourceID"));
+        TISPropertyLocalizedName = new(GetExportedConstant(HIToolboxLib, "kTISPropertyLocalizedName"));
+        TISPropertyUnicodeKeyLayoutData = new(GetExportedConstant(HIToolboxLib, "kTISPropertyUnicodeKeyLayoutData"));
+    }
+
+    public static CFStringRef TISPropertyInputSourceID { get; }
+
+    public static CFStringRef TISPropertyLocalizedName { get; }
+
+    public static CFStringRef TISPropertyUnicodeKeyLayoutData { get; }
+
     [DllImport(HIToolboxLib)]
     public static extern byte LMGetKbdType();
 
@@ -19,13 +32,4 @@ internal static class HIToolbox
 
     [DllImport(HIToolboxLib)]
     public static extern OSStatus TISSelectInputSource(TISInputSourceRef inputSource);
-
-    public static CFStringRef GetTISPropertyInputSourceID() =>
-        new(GetExportedConstant(HIToolboxLib, "kTISPropertyInputSourceID"));
-
-    public static CFStringRef GetTISPropertyLocalizedName() =>
-        new(GetExportedConstant(HIToolboxLib, "kTISPropertyLocalizedName"));
-
-    public static CFStringRef GetTISPropertyUnicodeKeyLayoutData() =>
-        new(GetExportedConstant(HIToolboxLib, "kTISPropertyUnicodeKeyLayoutData"));
 }

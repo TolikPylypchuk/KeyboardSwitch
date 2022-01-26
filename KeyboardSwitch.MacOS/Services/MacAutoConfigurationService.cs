@@ -61,20 +61,18 @@ internal class MacAutoConfigurationService : AutoConfigurationServiceBase
         long count = CoreFoundation.CFArrayGetCount(sources);
 
         var sourcesByName = Enumerable.Range(0, (int)count)
-            .Select(i => new TISInputSourceRef(CoreFoundation.CFArrayGetValueAtIndex(sources, i)))
+            .Select(i => new TISInputSourceRef(CoreFoundation.CFArrayGetValueAtIndex(sources, i), shouldRelease: false))
             .Where(IsKeyboardInputSource)
             .ToDictionary(GetInputSourceName, source => source);
 
-        using var layoutDataProperty = HIToolbox.GetTISPropertyUnicodeKeyLayoutData();
-
         return KeyCodesToMap.Select(keyCode =>
-                this.GetCharsFromKey(keyCode, shift: false, alt: false, layoutDataProperty, layoutIds, sourcesByName))
+                this.GetCharsFromKey(keyCode, shift: false, alt: false, layoutIds, sourcesByName))
             .Concat(KeyCodesToMap.Select(keyCode =>
-                this.GetCharsFromKey(keyCode, shift: true, alt: false, layoutDataProperty, layoutIds, sourcesByName)))
+                this.GetCharsFromKey(keyCode, shift: true, alt: false, layoutIds, sourcesByName)))
             .Concat(KeyCodesToMap.Select(keyCode =>
-                this.GetCharsFromKey(keyCode, shift: false, alt: true, layoutDataProperty, layoutIds, sourcesByName)))
+                this.GetCharsFromKey(keyCode, shift: false, alt: true, layoutIds, sourcesByName)))
             .Concat(KeyCodesToMap.Select(keyCode =>
-                this.GetCharsFromKey(keyCode, shift: true, alt: true, layoutDataProperty, layoutIds, sourcesByName)))
+                this.GetCharsFromKey(keyCode, shift: true, alt: true, layoutIds, sourcesByName)))
             .ToList();
     }
 
@@ -82,19 +80,16 @@ internal class MacAutoConfigurationService : AutoConfigurationServiceBase
         CGKeyCode keyCode,
         bool shift,
         bool alt,
-        CFStringRef layoutDataProperty,
         List<string> layoutIds,
         Dictionary<string, TISInputSourceRef> sourcesByName) =>
         layoutIds
-            .Select(layoutId => this.GetCharFromKey(
-                keyCode, shift, alt, layoutDataProperty, layoutId, sourcesByName[layoutId]))
+            .Select(layoutId => this.GetCharFromKey(keyCode, shift, alt, layoutId, sourcesByName[layoutId]))
             .ToList();
 
     private KeyToCharResult GetCharFromKey(
         CGKeyCode keyCode,
         bool shift,
         bool alt,
-        CFStringRef layoutDataProperty,
         string layoutId,
         TISInputSourceRef source)
     {
@@ -113,7 +108,8 @@ internal class MacAutoConfigurationService : AutoConfigurationServiceBase
         var unicodeString = new byte[MaxStringLength];
         uint deadKeyState = 0;
 
-        using var layoutData = new CFDataRef(HIToolbox.TISGetInputSourceProperty(source, layoutDataProperty));
+        using var layoutData = new CFDataRef(HIToolbox.TISGetInputSourceProperty(
+            source, HIToolbox.TISPropertyUnicodeKeyLayoutData));
 
         var layoutPtr = CoreFoundation.CFDataGetBytePtr(layoutData);
 

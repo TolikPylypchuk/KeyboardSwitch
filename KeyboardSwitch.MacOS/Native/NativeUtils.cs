@@ -23,7 +23,7 @@ internal static class NativeUtils
     public static string GetInputSourceName(TISInputSourceRef source)
     {
         using var name = new CFStringRef(HIToolbox.TISGetInputSourceProperty(
-            source, HIToolbox.GetTISPropertyInputSourceID()));
+            source, HIToolbox.TISPropertyInputSourceID));
 
         return GetStringValue(name);
     }
@@ -31,7 +31,7 @@ internal static class NativeUtils
     public static string GetInputSourceLocalizedName(TISInputSourceRef source)
     {
         using var localizedName = new CFStringRef(HIToolbox.TISGetInputSourceProperty(
-            source, HIToolbox.GetTISPropertyLocalizedName()));
+            source, HIToolbox.TISPropertyLocalizedName));
 
         return GetStringValue(localizedName);
     }

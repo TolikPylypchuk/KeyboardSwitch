@@ -14,7 +14,7 @@ internal class MacLayoutService : CachingLayoutService
         long count = CoreFoundation.CFArrayGetCount(sources);
 
         var sourcesList = Enumerable.Range(0, (int)count)
-            .Select(i => new TISInputSourceRef(CoreFoundation.CFArrayGetValueAtIndex(sources, i)))
+            .Select(i => new TISInputSourceRef(CoreFoundation.CFArrayGetValueAtIndex(sources, i), shouldRelease: false))
             .Where(IsKeyboardInputSource)
             .ToList();
 
@@ -41,7 +41,7 @@ internal class MacLayoutService : CachingLayoutService
         long count = CoreFoundation.CFArrayGetCount(sources);
 
         return Enumerable.Range(0, (int)count)
-            .Select(i => new TISInputSourceRef(CoreFoundation.CFArrayGetValueAtIndex(sources, i)))
+            .Select(i => new TISInputSourceRef(CoreFoundation.CFArrayGetValueAtIndex(sources, i), shouldRelease: false))
             .Where(IsKeyboardInputSource)
             .Select(this.CreateKeyboardLayout)
             .ToList();
