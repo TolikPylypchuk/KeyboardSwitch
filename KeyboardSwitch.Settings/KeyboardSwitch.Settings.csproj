@@ -5,7 +5,7 @@
     <TargetFrameworks>net6.0;net6.0-windows</TargetFrameworks>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Platforms>x64</Platforms>
+    <Platforms>x64;ARM64</Platforms>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <AssemblyVersion>4.1.0.0</AssemblyVersion>
     <FileVersion>4.1.0.0</FileVersion>
