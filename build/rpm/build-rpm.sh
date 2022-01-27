@@ -10,7 +10,8 @@ while getopts p: opts; do
    esac
 done
 
-if [ -z "$PLATFORM" ] then
+if [ -z "$PLATFORM" ]
+then
     PLATFORM="x64"
 fi
 
