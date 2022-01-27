@@ -47,6 +47,10 @@ jobs:
   build-zip:
     runs-on: windows-latest
 
+    strategy:
+      matrix:
+        arch: [ x64, arm64 ]
+
     steps:
       - uses: actions/checkout@v2
 
@@ -57,7 +61,7 @@ jobs:
 
       - name: Build the Zip Archive
         shell: pwsh
-        run: .\build\windows\Build-Portable.ps1
+        run: .\build\windows\Build-Portable.ps1 -Platrofm ${{ matrix.arch }}
 
       - name: Upload the Zip Archive
         uses: actions/upload-artifact@v2
@@ -67,6 +71,10 @@ jobs:
 
   build-tar:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        arch: [ x64, arm64 ]
 
     steps:
       - uses: actions/checkout@v2
@@ -78,7 +86,7 @@ jobs:
 
       - name: Build the Tar Archive
         shell: bash
-        run: ./build/tar/build-tar.sh
+        run: ./build/tar/build-tar.sh -p ${{ matrix.arch }}
 
       - name: Upload the Tar Archive
         uses: actions/upload-artifact@v2
@@ -88,6 +96,10 @@ jobs:
 
   build-deb:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        arch: [ x64, arm64 ]
 
     steps:
       - uses: actions/checkout@v2
@@ -99,7 +111,7 @@ jobs:
 
       - name: Build the Deb Package
         shell: bash
-        run: ./build/deb/build-deb.sh
+        run: ./build/deb/build-deb.sh -p ${{ matrix.arch }}
 
       - name: Upload the Deb Package
         uses: actions/upload-artifact@v2
@@ -109,6 +121,10 @@ jobs:
 
   build-rpm:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        arch: [ x64, arm64 ]
 
     steps:
       - uses: actions/checkout@v2
@@ -124,7 +140,7 @@ jobs:
 
       - name: Build the RPM Package
         shell: bash
-        run: ./build/rpm/build-rpm.sh
+        run: ./build/rpm/build-rpm.sh -p ${{ matrix.arch }}
 
       - name: Upload the RPM Package
         uses: actions/upload-artifact@v2
