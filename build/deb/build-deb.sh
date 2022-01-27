@@ -10,26 +10,23 @@ while getopts p: opts; do
    esac
 done
 
-if [ -z "$PLATFORM" ]
-then
+if [ -z "$PLATFORM" ] then
     PLATFORM="x64"
 fi
 
 PLATFORM=$(echo "$PLATFORM" | tr '[:upper:]' '[:lower:]')
 
 case $PLATFORM in
-    "arm64") RUNTIME="linux-arm64";;
-    *) RUNTIME="linux-x64";;
-esac
-
-case $PLATFORM in
-    "arm64") MSBUILD_PLATFORM="ARM64";;
-    *) MSBUILD_PLATFORM="x64";;
-esac
-
-case $PLATFORM in
-    "arm64") ARCH="arm64";;
-    *) ARCH="amd64";;
+    "arm64")
+        RUNTIME="linux-arm64"
+        MSBUILD_PLATFORM="ARM64"
+        ARCH="arm64"
+        ;;
+    *)
+        RUNTIME="linux-x64"
+        MSBUILD_PLATFORM="x64"
+        ARCH="amd64"
+        ;;
 esac
 
 dotnet publish ../KeyboardSwitch --configuration Release --runtime "$RUNTIME" --framework net6.0 \
