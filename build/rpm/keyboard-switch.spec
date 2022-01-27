@@ -7,7 +7,7 @@ License: MIT
 Packager: Tolik Pylypchuk <pylypchuk.tolik@gmail.com>
 URL: https://keyboardswitch.tolik.io
 
-ExclusiveArch: x86_64
+ExclusiveArch: %ARCH%
 Requires: xsel libXtst
 AutoReqProv: no
 

@@ -4,11 +4,41 @@ rm -rf ./bin/keyboard-switch 2> /dev/null
 mkdir -p ./bin
 cd ./bin
 
-dotnet publish ../KeyboardSwitch --configuration Release --runtime linux-x64 --framework net6.0 \
---self-contained true --output ./keyboard-switch --nologo -p:Platform=x64 -p:ContinuousIntegrationBuild=true
+while getopts p: opts; do
+   case ${opts} in
+      p) PLATFORM=${OPTARG};;
+   esac
+done
 
-dotnet publish ../KeyboardSwitch.Settings --configuration Release --runtime linux-x64 --framework net6.0 \
---self-contained true --output ./keyboard-switch --nologo -p:Platform=x64 -p:ContinuousIntegrationBuild=true
+if [ -z "$PLATFORM" ]
+then
+    PLATFORM="x64"
+fi
+
+PLATFORM=$(echo "$PLATFORM" | tr '[:upper:]' '[:lower:]')
+
+case $PLATFORM in
+    "arm64") RUNTIME="linux-arm64";;
+    *) RUNTIME="linux-x64";;
+esac
+
+case $PLATFORM in
+    "arm64") MSBUILD_PLATFORM="ARM64";;
+    *) MSBUILD_PLATFORM="x64";;
+esac
+
+case $PLATFORM in
+    "arm64") ARCH="aarch64";;
+    *) ARCH="x86_64";;
+esac
+
+dotnet publish ../KeyboardSwitch --configuration Release --runtime "$RUNTIME" --framework net6.0 \
+--self-contained true --output ./keyboard-switch --nologo -p:Platform="$MSBUILD_PLATFORM" \
+-p:ContinuousIntegrationBuild=true
+
+dotnet publish ../KeyboardSwitch.Settings --configuration Release --runtime "$RUNTIME" --framework net6.0 \
+--self-contained true --output ./keyboard-switch --nologo -p:Platform="$MSBUILD_PLATFORM" \
+-p:ContinuousIntegrationBuild=true
 
 find ./keyboard-switch -name "*.pdb" -type f -delete
 find ./keyboard-switch -name "*.xml" -type f -delete
@@ -23,6 +53,11 @@ mv ./keyboard-switch/appsettings.linux.json ./keyboard-switch/appsettings.json
 cp ../build/rpm/keyboard-switch.spec .
 cp ../LICENSE .
 
-rpmbuild -bb --build-in-place --define "_topdir $(pwd)/rpm" keyboard-switch.spec
+sed -i "s/%ARCH%/$ARCH/g" ./keyboard-switch.spec
+
+rpmbuild -bb --build-in-place --define "_topdir $(pwd)/rpm" --target "$ARCH" keyboard-switch.spec
 mv rpm/RPMS/*/*.rpm .
+
 rm -rf rpm
+rm keyboard-switch.spec
+rm LICENSE
