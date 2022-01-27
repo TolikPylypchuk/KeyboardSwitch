@@ -61,7 +61,7 @@ jobs:
 
       - name: Build the Zip Archive
         shell: pwsh
-        run: .\build\windows\Build-Portable.ps1 -Platrofm ${{ matrix.arch }}
+        run: .\build\windows\Build-Portable.ps1 -Platform ${{ matrix.arch }}
 
       - name: Upload the Zip Archive
         uses: actions/upload-artifact@v2
