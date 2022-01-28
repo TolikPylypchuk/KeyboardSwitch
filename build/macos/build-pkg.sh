@@ -53,10 +53,10 @@ cp ../build/macos/entitlements.plist .
 mkdir "Keyboard Switch Service.app"
 mkdir "Keyboard Switch Service.app/Contents"
 mkdir "Keyboard Switch Service.app/Contents/MacOS"
-mkdir "Keyboard Switch Service.app/Contents/Resouces"
+mkdir "Keyboard Switch Service.app/Contents/Resources"
 
 cp ./keyboard-switch/KeyboardSwitch "Keyboard Switch Service.app/Contents/MacOS/"
-cp ./keyboard-switch/libe_sqlite.dylib "Keyboard Switch Service.app/Contents/MacOS/"
+cp ./keyboard-switch/libe_sqlite3.dylib "Keyboard Switch Service.app/Contents/MacOS/"
 cp ./keyboard-switch/libuiohook.dylib "Keyboard Switch Service.app/Contents/MacOS/"
 
 cp ./keyboard-switch/appsettings.json "Keyboard Switch Service.app/Contents/Resources/"
@@ -71,11 +71,11 @@ sed -i '' "s/%ARCH%/$ARCH/g" "Keyboard Switch Service.app/Contents/Info.plist"
 mkdir "Keyboard Switch Settings.app"
 mkdir "Keyboard Switch Settings.app/Contents"
 mkdir "Keyboard Switch Settings.app/Contents/MacOS"
-mkdir "Keyboard Switch Settings.app/Contents/Resouces"
+mkdir "Keyboard Switch Settings.app/Contents/Resources"
 
-cp ./keyboard-switch/KeyboardSwitch "Keyboard Switch Settings.app/Contents/MacOS/"
+cp ./keyboard-switch/KeyboardSwitchSettings "Keyboard Switch Settings.app/Contents/MacOS/"
 cp ./keyboard-switch/libAvaloniaNative.dylib "Keyboard Switch Settings.app/Contents/MacOS/"
-cp ./keyboard-switch/libe_sqlite.dylib "Keyboard Switch Settings.app/Contents/MacOS/"
+cp ./keyboard-switch/libe_sqlite3.dylib "Keyboard Switch Settings.app/Contents/MacOS/"
 cp ./keyboard-switch/libHarfBuzzSharp.dylib "Keyboard Switch Settings.app/Contents/MacOS/"
 cp ./keyboard-switch/libSkiaSharp.dylib "Keyboard Switch Settings.app/Contents/MacOS/"
 
@@ -91,7 +91,7 @@ sed -i '' "s/%ARCH%/$ARCH/g" "Keyboard Switch Settings.app/Contents/Info.plist"
 codesign --remove-signature "Keyboard Switch Service.app/Contents/MacOS/KeyboardSwitch"
 
 codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitlements entitlements.plist \
-"Keyboard Switch Service.app/Contents/MacOS/libe_sqlite.dylib"
+"Keyboard Switch Service.app/Contents/MacOS/libe_sqlite3.dylib"
 
 codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitlements entitlements.plist \
 "Keyboard Switch Service.app/Contents/MacOS/libuiohook.dylib"
@@ -108,7 +108,7 @@ codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entit
 "Keyboard Switch Settings.app/Contents/MacOS/libAvaloniaNative.dylib"
 
 codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitlements entitlements.plist \
-"Keyboard Switch Settings.app/Contents/MacOS/libe_sqlite.dylib"
+"Keyboard Switch Settings.app/Contents/MacOS/libe_sqlite3.dylib"
 
 codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitlements entitlements.plist \
 "Keyboard Switch Settings.app/Contents/MacOS/libHarfBuzzSharp.dylib"
