@@ -12,6 +12,7 @@ public static class ServiceExtensions
             .AddLayoutService()
             .AddSingleton<ILayoutLoaderSrevice, NotSupportedLayoutLoaderService>()
             .AddSingleton<IStartupService, FreedesktopStartupService>()
+            .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
             .AddSingleton<IUserActivitySimulator, SharpUserActivitySimulator>()
             .AddSingleton<IAutoConfigurationService, XAutoConfigurationService>();
 

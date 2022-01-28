@@ -18,6 +18,7 @@ public static class SerivceExtensions
             .AddSingleton<WinLayoutService>()
             .AddSingleton<ILayoutService>(provider => provider.GetRequiredService<WinLayoutService>())
             .AddSingleton<ILayoutLoaderSrevice>(provider => provider.GetRequiredService<WinLayoutService>())
+            .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
             .AddSingleton<IUserActivitySimulator, SharpUserActivitySimulator>()
             .AddSingleton<IStartupService, RegistryStartupService>()
             .AddSingleton<IAutoConfigurationService, WinAutoConfigurationService>();

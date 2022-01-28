@@ -4,13 +4,14 @@ using System.Diagnostics;
 
 internal class LaunchdStartupService : IStartupService
 {
-    private const string Launchctl = "launchctl";
-    private const string KeyboardSwitchService = "io.tolik.keyboardswitch";
-
+    private readonly string serivceName;
     private readonly ILogger<LaunchdStartupService> logger;
 
-    public LaunchdStartupService(ILogger<LaunchdStartupService> logger) =>
+    public LaunchdStartupService(IOptions<GlobalSettings> globalSettings, ILogger<LaunchdStartupService> logger)
+    {
+        this.serivceName = globalSettings.Value.ServicePath;
         this.logger = logger;
+    }
 
     public bool IsStartupConfigured()
     {
@@ -21,14 +22,14 @@ internal class LaunchdStartupService : IStartupService
         if (id != null)
         {
             var launchctl = Process.Start(
-                new ProcessStartInfo(Launchctl, $"print gui/{id}") { RedirectStandardOutput = true });
+                new ProcessStartInfo(LaunchCtl, $"print gui/{id}") { RedirectStandardOutput = true });
 
             if (launchctl != null)
             {
                 string output = launchctl.StandardOutput.ReadToEnd();
 
                 int searchStart = output.IndexOf("disabled services");
-                return searchStart == -1 || !output[searchStart..].Contains($"\"{KeyboardSwitchService}\" => true");
+                return searchStart == -1 || !output[searchStart..].Contains($"\"{this.serivceName}\" => true");
             }
         } else
         {
@@ -49,7 +50,7 @@ internal class LaunchdStartupService : IStartupService
 
         if (id != null)
         {
-            Process.Start(Launchctl, $"{(startup ? "enable" : "disable")} gui/{id}/{KeyboardSwitchService}");
+            Process.Start(LaunchCtl, $"{(startup ? "enable" : "disable")} gui/{id}/{this.serivceName}");
 
             this.logger.LogDebug(
                 "Configured to {Action} running the KeyboardSwitch service on startup", startup ? "start" : "stop");

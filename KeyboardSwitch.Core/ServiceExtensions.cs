@@ -11,7 +11,6 @@ public static class ServiceExtensions
             .AddSingleton<IEventSimulator, EventSimulator>()
             .AddSingleton<IKeyboardHookService, SharpHookService>()
             .AddSingleton<ITextService, ClipboardTextService>()
-            .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
             .AddSingleton(BlobCacheFactory.CreateBlobCache)
             .AddSingleton<BlobCacheSettingsService>()
             .AddSingleton<IAppSettingsService>(provider =>
