@@ -122,7 +122,7 @@ public class App : Application, IEnableLogger
 
     private void ConfigureServices(IServiceCollection services)
     {
-        var configDir = this.GetConfigDirectory();
+        var configDir = GetConfigDirectory();
         var environment = PlatformDependent(windows: () => "windows", macos: () => "macos", linux: () => "linux");
         var genericProvider = this.JsonProvider(configDir, "appsettings.json");
         var platformSpecificProvider = this.JsonProvider(configDir, $"appsettings.{environment}.json");
@@ -158,19 +158,6 @@ public class App : Application, IEnableLogger
 
         RxApp.MainThreadScheduler = AvaloniaScheduler.Instance;
     }
-
-    private string GetConfigDirectory()
-    {
-        var currentDirectory = Directory.GetCurrentDirectory();
-        return this.IsInMacOsBundle(currentDirectory)
-            ? Path.Combine(Path.GetDirectoryName(currentDirectory) ?? String.Empty, "Resources")
-            : currentDirectory;
-    }
-
-    private bool IsInMacOsBundle(string directory) =>
-        OperatingSystem.IsMacOS() &&
-            directory.Split(Path.DirectorySeparatorChar, StringSplitOptions.RemoveEmptyEntries)
-                .Any(dir => dir.EndsWith(".app"));
 
     private void ConfigureSuspensionDriver()
     {

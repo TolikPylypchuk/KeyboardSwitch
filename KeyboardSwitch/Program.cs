@@ -55,6 +55,7 @@ public static class Program
         BlobCache.ApplicationName = nameof(KeyboardSwitch);
 
         using var host = Host.CreateDefaultBuilder(args)
+            .UseContentRoot(GetConfigDirectory())
             .ConfigureServices(ConfigureServices)
             .ConfigureLogging(ConfigureLogging)
             .UseConsoleLifetime()
