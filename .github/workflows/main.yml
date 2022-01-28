@@ -69,6 +69,61 @@ jobs:
           name: nightly-build
           path: .\bin\*.zip
 
+  build-pkg:
+    runs-on: macos-latest
+
+    strategy:
+      matrix:
+        arch: [ x64, arm64 ]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Install Apple Certificates
+        env:
+          APPLE_APPLICATION_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_APPLICATION_CERTIFICATE_PASSWORD }}
+          APPLE_APPLICATION_CERTIFICATE_VALUE: ${{ secrets.APPLE_APPLICATION_CERTIFICATE_VALUE }}
+          APPLE_INSTALLER_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_INSTALLER_CERTIFICATE_PASSWORD }}
+          APPLE_INSTALLER_CERTIFICATE_VALUE: ${{ secrets.APPLE_INSTALLER_CERTIFICATE_VALUE }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        shell: bash
+        run: |
+          APPLICATION_CERTIFICATE_PATH=$RUNNER_TEMP/application_certificate.p12
+          INSTALLER_CERTIFICATE_PATH=$RUNNER_TEMP/installer_certificate.p12
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+
+          echo -n "$APPLE_APPLICATION_CERTIFICATE_VALUE" | base64 --decode --output $APPLICATION_CERTIFICATE_PATH
+          echo -n "$APPLE_INSTALLER_CERTIFICATE_VALUE" | base64 --decode --output $INSTALLER_CERTIFICATE_PATH
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+          security import $APPLICATION_CERTIFICATE_PATH -P "$APPLE_APPLICATION_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security import $INSTALLER_CERTIFICATE_PATH -P "$APPLE_INSTALLER_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+      - name: Build the Package File
+        env:
+          APPLE_APPLICATION_CERTIFICATE: ${{ secrets.APPLE_APPLICATION_CERTIFICATE }}
+          APPLE_INSTALLER_CERTIFICATE: ${{ secrets.APPLE_INSTALLER_CERTIFICATE }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          NOTARIZATION_PASSWORD: ${{ secrets.NOTARIZATION_PASSWORD }}
+        shell: bash
+        run: ./build/macos/build-pkg.sh -p ${{ matrix.arch }}
+
+      - name: Upload the Package File
+        uses: actions/upload-artifact@v2
+        with:
+          name: nightly-build
+          path: .\bin\*.pkg
+
   build-tar:
     runs-on: ubuntu-latest
 
