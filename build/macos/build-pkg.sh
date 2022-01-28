@@ -66,7 +66,7 @@ cp ../build/macos/KeyboardSwitchService.plist "Keyboard Switch Service.app/Conte
 mv "Keyboard Switch Service.app/Contents/KeyboardSwitchService.plist" \
 "Keyboard Switch Service.app/Contents/Info.plist"
 
-sed -i "s/%ARCH%/$ARCH/g" "Keyboard Switch Service.app/Contents/Info.plist"
+sed -i '' "s/%ARCH%/$ARCH/g" "Keyboard Switch Service.app/Contents/Info.plist"
 
 mkdir "Keyboard Switch Settings.app"
 mkdir "Keyboard Switch Settings.app/Contents"
@@ -86,17 +86,17 @@ cp ../build/macos/KeyboardSwitchSettings.plist "Keyboard Switch Settings.app/Con
 mv "Keyboard Switch Settings.app/Contents/KeyboardSwitchSettings.plist" \
 "Keyboard Switch Settings.app/Contents/Info.plist"
 
-sed -i "s/%ARCH%/$ARCH/g" "Keyboard Switch Settings.app/Contents/Info.plist"
+sed -i '' "s/%ARCH%/$ARCH/g" "Keyboard Switch Settings.app/Contents/Info.plist"
 
 codesign --remove-signature "Keyboard Switch Service.app/Contents/MacOS/KeyboardSwitch"
 
-codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitelements entitlements.plist \
+codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitlements entitlements.plist \
 "Keyboard Switch Service.app/Contents/MacOS/libe_sqlite.dylib"
 
-codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitelements entitlements.plist \
+codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitlements entitlements.plist \
 "Keyboard Switch Service.app/Contents/MacOS/libuiohook.dylib"
 
-codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitelements entitlements.plist \
+codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitlements entitlements.plist \
 --options=runtime "Keyboard Switch Service.app/Contents/MacOS/KeyboardSwitch"
 
 codesign --remove-signature "Keyboard Switch Settings.app/Contents/MacOS/KeyboardSwitchSettings"
@@ -104,22 +104,25 @@ codesign --remove-signature "Keyboard Switch Settings.app/Contents/MacOS/libAval
 codesign --remove-signature "Keyboard Switch Settings.app/Contents/MacOS/libHarfBuzzSharp.dylib"
 codesign --remove-signature "Keyboard Switch Settings.app/Contents/MacOS/libSkiaSharp.dylib"
 
-codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitelements entitlements.plist \
+codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitlements entitlements.plist \
 "Keyboard Switch Settings.app/Contents/MacOS/libAvaloniaNative.dylib"
 
-codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitelements entitlements.plist \
+codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitlements entitlements.plist \
 "Keyboard Switch Settings.app/Contents/MacOS/libe_sqlite.dylib"
 
-codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitelements entitlements.plist \
+codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitlements entitlements.plist \
 "Keyboard Switch Settings.app/Contents/MacOS/libHarfBuzzSharp.dylib"
 
-codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitelements entitlements.plist \
---options=runtime "Keyboard Switch Settings.app/Contents/MacOS/KeyboardSwitch"
+codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitlements entitlements.plist \
+"Keyboard Switch Settings.app/Contents/MacOS/libSkiaSharp.dylib"
+
+codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitlements entitlements.plist \
+--options=runtime "Keyboard Switch Settings.app/Contents/MacOS/KeyboardSwitchSettings"
 
 productbuild --sign "$APPLE_INSTALLER_CERTIFICATE" --component "Keyboard Switch Service.app" /opt \
 --component "Keyboard Switch Settings.app" /Applications "KeyboardSwitch-4.1-$ARCH.pkg"
 
 xcrun notarytool submit "KeyboardSwitch-4.1-$ARCH.pkg" --wait \
---apple-id "$APPLE_ID" --team-id "$APPLE_TEAM_ID" --pasword "$NOTARIZATION_PASSWORD"
+--apple-id "$APPLE_ID" --team-id "$APPLE_TEAM_ID" --password "$NOTARIZATION_PASSWORD"
 
 xcrun stapler staple "KeyboardSwitch-4.1-$ARCH.pkg"
