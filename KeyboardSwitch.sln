@@ -62,7 +62,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Rpm", "Build Rpm", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build macOS", "Build macOS", "{42A4B33E-9B04-4D46-B7FD-97707DEC96E5}"
 	ProjectSection(SolutionItems) = preProject
+		build\macos\build-pkg.sh = build\macos\build-pkg.sh
+		build\macos\entitlements.plist = build\macos\entitlements.plist
 		build\macos\io.tolik.keyboardswitch.plist = build\macos\io.tolik.keyboardswitch.plist
+		build\macos\KeyboardSwitchService.plist = build\macos\KeyboardSwitchService.plist
+		build\macos\KeyboardSwitchSettings.plist = build\macos\KeyboardSwitchSettings.plist
 	EndProjectSection
 EndProject
 Global

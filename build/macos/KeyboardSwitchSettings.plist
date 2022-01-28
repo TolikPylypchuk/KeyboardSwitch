@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleGetInfoString</key>
+	<string>Keyboard Switch Settings</string>
+	<key>CFBundleExecutable</key>
+	<string>KeyboardSwitchSettings</string>
+	<key>LSExecutableArchitectures</key>
+	<array>
+		<string>%ARCH%</string>
+	</array>
+	<key>CFBundleIdentifier</key>
+	<string>io.tolik.keyboardswitch</string>
+	<key>CFBundleName</key>
+	<string>Keyboard Switch Settings</string>
+	<key>CFBundleDisplayName</key>
+	<string>Keyboard Switch Settings</string>
+	<key>CFBundleIconFile</key>
+	<string>KeyboardSwitch.icns</string>
+	<key>CFBundleVersion</key>
+	<string>4.1.0</string>
+	<key>CFBundleShortVersionString</key>
+	<string>4.1.0</string>
+	<key>IFMajorVersion</key>
+	<integer>4</integer>
+	<key>IFMinorVersion</key>
+	<integer>1</integer>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.10</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.utilities</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+</dict>
+</plist>
