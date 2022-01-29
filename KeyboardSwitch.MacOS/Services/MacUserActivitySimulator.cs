@@ -1,6 +1,6 @@
 namespace KeyboardSwitch.MacOS.Services;
 
-internal class MacUserActivitySimulator : IUserActivitySimulator
+internal sealed class MacUserActivitySimulator : IUserActivitySimulator
 {
     private const int Delay = 16;
 

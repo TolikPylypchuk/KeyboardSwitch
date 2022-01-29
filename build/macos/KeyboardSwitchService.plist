@@ -26,6 +26,8 @@
 	<integer>4</integer>
 	<key>IFMinorVersion</key>
 	<integer>1</integer>
+    <key>LSMinimumSystemVersion</key>
+    <string>10.11</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>

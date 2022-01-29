@@ -1,6 +1,6 @@
 namespace KeyboardSwitch.MacOS.Services;
 
-internal class MacLayoutService : CachingLayoutService
+internal sealed class MacLayoutService : CachingLayoutService
 {
     public override KeyboardLayout GetCurrentKeyboardLayout()
     {

@@ -1,6 +1,6 @@
 namespace KeyboardSwitch.MacOS.Services;
 
-internal class MacAutoConfigurationService : AutoConfigurationServiceBase
+internal sealed class MacAutoConfigurationService : AutoConfigurationServiceBase
 {
     private const int MaxStringLength = 255;
 

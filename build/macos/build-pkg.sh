@@ -64,6 +64,8 @@ cp ../build/macos/KeyboardSwitchService.plist "Keyboard Switch Service.app/Conte
 mv "Keyboard Switch Service.app/Contents/KeyboardSwitchService.plist" \
 "Keyboard Switch Service.app/Contents/Info.plist"
 
+cp ../build/macos/io.tolik.keyboardswitch.plist "Keyboard Switch Service.app/Contents/Resources/"
+
 sed -i '' "s/%ARCH%/$ARCH/g" "Keyboard Switch Service.app/Contents/Info.plist"
 
 mkdir "Keyboard Switch Settings.app"

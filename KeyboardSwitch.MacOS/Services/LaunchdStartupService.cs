@@ -2,7 +2,7 @@ namespace KeyboardSwitch.MacOS.Services;
 
 using System.Diagnostics;
 
-internal class LaunchdStartupService : IStartupService
+internal sealed class LaunchdStartupService : IStartupService
 {
     private readonly string serivceName;
     private readonly ILogger<LaunchdStartupService> logger;
