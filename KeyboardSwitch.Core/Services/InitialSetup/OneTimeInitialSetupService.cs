@@ -28,6 +28,6 @@ public abstract class OneTimeInitialSetupService : IInitialSetupService
         string? processPath = Environment.ProcessPath;
 
         return processPath != null &&
-            File.GetLastWriteTimeUtc(this.initialSetupFilePath) > File.GetCreationTimeUtc(processPath);
+            File.GetLastWriteTimeUtc(this.initialSetupFilePath) < File.GetCreationTimeUtc(processPath);
     }
 }
