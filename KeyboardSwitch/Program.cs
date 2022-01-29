@@ -68,6 +68,13 @@ public static class Program
         {
             var logger = host.Services.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(Program));
 
+            if (!SettingsExist(host))
+            {
+                logger.LogError("The settings file does not exist - open Keyboard Switch Settings to create them");
+                exitCodeAccessor.AppExitCode = ExitCode.SettingsDoNotExist;
+                return;
+            }
+
             try
             {
                 SubscribeToExternalCommands(host, logger);
@@ -117,6 +124,14 @@ public static class Program
         var singleInstanceService = singleInstanceProvider(nameof(KeyboardSwitch));
 
         return singleInstanceService.TryAcquireMutex();
+    }
+
+    private static bool SettingsExist(IHost host)
+    {
+        var globalSettings = host.Services.GetRequiredService<IOptions<GlobalSettings>>();
+        var settingsPath = Environment.ExpandEnvironmentVariables(globalSettings.Value.SettingsFilePath);
+
+        return File.Exists(settingsPath);
     }
 
     private static void SubscribeToExternalCommands(IHost host, ILogger logger)

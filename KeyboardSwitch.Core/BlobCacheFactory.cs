@@ -11,9 +11,8 @@ public static class BlobCacheFactory
 
         logger.LogDebug("Spinning up the blob cache");
 
-        var options = services.GetRequiredService<IOptions<GlobalSettings>>();
-        var scheduler = services.GetService<IScheduler>();
-        var path = Environment.ExpandEnvironmentVariables(options.Value.SettingsFilePath);
+        var globalSettings = services.GetRequiredService<IOptions<GlobalSettings>>();
+        var path = Environment.ExpandEnvironmentVariables(globalSettings.Value.SettingsFilePath);
 
         if (!File.Exists(path))
         {
@@ -24,6 +23,6 @@ public static class BlobCacheFactory
             file.Create().Dispose();
         }
 
-        return new SqlRawPersistentBlobCache(path, scheduler);
+        return new SqlRawPersistentBlobCache(path, services.GetService<IScheduler>());
     }
 }
