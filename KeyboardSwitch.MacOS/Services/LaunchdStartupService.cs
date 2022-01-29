@@ -1,15 +1,13 @@
 namespace KeyboardSwitch.MacOS.Services;
 
-using System.Diagnostics;
-
 internal sealed class LaunchdStartupService : IStartupService
 {
     private readonly string serivceName;
     private readonly ILogger<LaunchdStartupService> logger;
 
-    public LaunchdStartupService(IOptions<GlobalSettings> globalSettings, ILogger<LaunchdStartupService> logger)
+    public LaunchdStartupService(IOptions<LaunchdSettings> launchdSettings, ILogger<LaunchdStartupService> logger)
     {
-        this.serivceName = globalSettings.Value.ServicePath;
+        this.serivceName = launchdSettings.Value.ServiceName;
         this.logger = logger;
     }
 
@@ -17,7 +15,7 @@ internal sealed class LaunchdStartupService : IStartupService
     {
         this.logger.LogDebug("Checking if the KeyboardSwitch service is configured to run on startup");
 
-        int? id = this.GetCurrentUserId();
+        int? id = GetCurrentUserId();
 
         if (id != null)
         {
@@ -61,18 +59,5 @@ internal sealed class LaunchdStartupService : IStartupService
                 "couldn't find the current user's ID",
                 startup ? "start" : "stop");
         }
-    }
-
-    private int? GetCurrentUserId()
-    {
-        var id = Process.Start(new ProcessStartInfo("id", "-u") { RedirectStandardOutput = true });
-
-        if (id != null)
-        {
-            string output = id.StandardOutput.ReadToEnd();
-            return Int32.TryParse(output.Trim() ?? String.Empty, out int result) ? result : null;
-        }
-
-        return null;
     }
 }

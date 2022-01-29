@@ -86,12 +86,7 @@ public class App : Application, IEnableLogger
 
         try
         {
-            if (File.Exists(SetStartupFile))
-            {
-                this.Log().Info("Setting the app to run at system startup");
-                GetDefaultService<IStartupService>().ConfigureStartup(true);
-                File.Delete(SetStartupFile);
-            }
+            GetDefaultService<IInitialSetupService>().InitializeKeyboardSwitchSetup();
 
             var appSettings = await GetDefaultService<IAppSettingsService>().GetAppSettingsAsync();
 

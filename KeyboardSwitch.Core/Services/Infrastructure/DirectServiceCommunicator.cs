@@ -4,14 +4,14 @@ using System.Diagnostics;
 
 public class DirectServiceCommunicator : IServiceCommunicator
 {
-    protected readonly GlobalSettings GlobalSettings;
+    private readonly GlobalSettings globalSettings;
     private readonly INamedPipeService namedPipeService;
 
     public DirectServiceCommunicator(
         IOptions<GlobalSettings> globalSettings,
         ServiceProvider<INamedPipeService> namedPipeServiceProvider)
     {
-        this.GlobalSettings = globalSettings.Value;
+        this.globalSettings = globalSettings.Value;
         this.namedPipeService = namedPipeServiceProvider(nameof(KeyboardSwitch));
     }
 
@@ -19,7 +19,7 @@ public class DirectServiceCommunicator : IServiceCommunicator
         Process.GetProcessesByName(nameof(KeyboardSwitch)).Length > 0;
 
     public virtual void StartService() =>
-        Process.Start(this.GlobalSettings.ServicePath);
+        Process.Start(this.globalSettings.ServicePath);
 
     public virtual void StopService(bool kill)
     {

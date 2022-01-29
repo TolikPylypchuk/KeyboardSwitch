@@ -14,7 +14,8 @@ public static class ServiceExtensions
             .AddSingleton<IStartupService, FreedesktopStartupService>()
             .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
             .AddSingleton<IUserActivitySimulator, SharpUserActivitySimulator>()
-            .AddSingleton<IAutoConfigurationService, XAutoConfigurationService>();
+            .AddSingleton<IAutoConfigurationService, XAutoConfigurationService>()
+            .AddSingleton<IInitialSetupService, StartupSetupService>();
 
     private static IServiceCollection AddLayoutService(this IServiceCollection services)
     {

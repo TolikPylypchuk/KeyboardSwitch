@@ -1,34 +1,8 @@
 #!/bin/bash
 
 INSTALL_DIR=/opt/keyboard-switch
-AUTOSTART_DIR=.config/autostart
-
-SERVICE_APP=$INSTALL_DIR/KeyboardSwitch
 SETTINGS_APP=$INSTALL_DIR/KeyboardSwitchSettings
-
-SERVICE_DESKTOP_FILE=$AUTOSTART_DIR/keyboard-switch.desktop
 SETTINGS_DESKTOP_FILE=/tmp/keyboard-switch-settings.desktop
-
-awk -F: '($3 >= 1000) && ($3 < 60000) && ($1 != "nobody") { print $1 }' /etc/passwd | while read -r CURRENT_USER
-do
-    mkdir -p "$(eval echo ~$CURRENT_USER)/$AUTOSTART_DIR"
-    chown -R $CURRENT_USER: "$(eval echo ~$CURRENT_USER)/$AUTOSTART_DIR"
-
-    echo "[Desktop Entry]
-Version=1.0
-Name=Keyboard Switch
-Comment=Switches typed text as if it were typed with another keyboard layout
-Exec=$SERVICE_APP
-TryExec=$SERVICE_APP
-Path=$INSTALL_DIR
-Icon=$INSTALL_DIR/icon.png
-Terminal=false
-Type=Application
-Categories=Utility
-" | tee -a "$(eval echo ~$CURRENT_USER)/$SERVICE_DESKTOP_FILE" > /dev/null
-
-    chown $CURRENT_USER: "$(eval echo ~$CURRENT_USER)/$SERVICE_DESKTOP_FILE"
-done
 
 echo "[Desktop Entry]
 Version=1.0
