@@ -63,14 +63,18 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build macOS", "Build macOS", "{42A4B33E-9B04-4D46-B7FD-97707DEC96E5}"
 	ProjectSection(SolutionItems) = preProject
 		build\macos\build-pkg.sh = build\macos\build-pkg.sh
-		build\macos\dist.xml = build\macos\dist.xml
+		build\macos\build-uninstaller-pkg.sh = build\macos\build-uninstaller-pkg.sh
+		build\macos\dist-pkg.xml = build\macos\dist-pkg.xml
+		build\macos\dist-uninstaller-pkg.xml = build\macos\dist-uninstaller-pkg.xml
 		build\macos\entitlements.plist = build\macos\entitlements.plist
 		build\macos\io.tolik.keyboardswitch.plist = build\macos\io.tolik.keyboardswitch.plist
 		build\macos\KeyboardSwitchService.plist = build\macos\KeyboardSwitchService.plist
 		build\macos\KeyboardSwitchSettings.plist = build\macos\KeyboardSwitchSettings.plist
 		build\macos\license.txt = build\macos\license.txt
-		build\macos\postinstall = build\macos\postinstall
+		build\macos\postinstall-pkg = build\macos\postinstall-pkg
+		build\macos\postinstall-uninstaller-pkg = build\macos\postinstall-uninstaller-pkg
 		build\macos\readme.txt = build\macos\readme.txt
+		build\macos\welcome.txt = build\macos\welcome.txt
 	EndProjectSection
 EndProject
 Global

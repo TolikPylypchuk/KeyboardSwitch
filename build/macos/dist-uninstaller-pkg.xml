@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<installer-gui-script minSpecVersion="1">
+    <pkg-ref id="io.tolik.keyboardswitch.uninstaller" />
+    <title>Keyboard Switch Uninstaller</title>
+    <options customize="never" require-scripts="false" hostArchitectures="x86_64,arm64" />
+    <volume-check>
+        <allowed-os-versions>
+            <os-version min="10.11" />
+        </allowed-os-versions>
+    </volume-check>
+    <welcome file="welcome.txt" mime-type="text/plain" />
+    <choices-outline>
+        <line choice="default">
+            <line choice="io.tolik.keyboardswitch.uninstaller" />
+        </line>
+    </choices-outline>
+    <choice id="default"/>
+    <choice id="io.tolik.keyboardswitch.uninstaller" visible="false">
+        <pkg-ref id="io.tolik.keyboardswitch.uninstaller" />
+    </choice>
+    <pkg-ref id="io.tolik.keyboardswitch.uninstaller" version="4.1.0" onConclusion="none">KeyboardSwitchUninstaller.pkg</pkg-ref>
+</installer-gui-script>

@@ -47,10 +47,11 @@ rm ./keyboard-switch/icon.png
 mv ./keyboard-switch/appsettings.macos.json ./keyboard-switch/appsettings.json
 mv ./keyboard-switch/icon.icns ./keyboard-switch/KeyboardSwitch.icns
 cp ../build/macos/entitlements.plist .
-cp ../build/macos/dist.xml .
+cp ../build/macos/dist-pkg.xml .
 
 mkdir scripts
-cp ../build/macos/postinstall scripts/
+cp ../build/macos/postinstall-pkg scripts/
+mv scripts/postinstall-pkg scripts/postinstall
 
 mkdir resources
 cp ../build/macos/license.txt resources/
@@ -127,7 +128,7 @@ codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entit
 codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitlements entitlements.plist \
 --options=runtime "Keyboard Switch Settings.app/Contents/MacOS/KeyboardSwitchSettings"
 
-sed -i '' "s/%ARCH%/$ARCH/g" dist.xml
+sed -i '' "s/%ARCH%/$ARCH/g" dist-pkg.xml
 
 pkgbuild --component "Keyboard Switch Service.app" --identifier io.tolik.keyboardswitch.service --version 4.1.0 \
 --install-location /opt --scripts scripts KeyboardSwitchService.pkg
@@ -135,7 +136,7 @@ pkgbuild --component "Keyboard Switch Service.app" --identifier io.tolik.keyboar
 pkgbuild --component "Keyboard Switch Settings.app" --identifier io.tolik.keyboardswitch.settings --version 4.1.0 \
 --install-location /Applications KeyboardSwitchSettings.pkg
 
-productbuild --sign "$APPLE_INSTALLER_CERTIFICATE" --distribution dist.xml --resources resources \
+productbuild --sign "$APPLE_INSTALLER_CERTIFICATE" --distribution dist-pkg.xml --resources resources \
 "KeyboardSwitch-4.1-$ARCH.pkg"
 
 rm KeyboardSwitchService.pkg
