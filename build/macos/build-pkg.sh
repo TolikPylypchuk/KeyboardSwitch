@@ -32,14 +32,12 @@ esac
 
 dotnet publish ../KeyboardSwitch --configuration Release --runtime "$RUNTIME" --framework net6.0 \
 --self-contained true --output ./keyboard-switch --nologo -p:Platform="$MSBUILD_PLATFORM" \
--p:ContinuousIntegrationBuild=true
+-p:PublishSingleFile=true -p:ContinuousIntegrationBuild=true
 
 dotnet publish ../KeyboardSwitch.Settings --configuration Release --runtime "$RUNTIME" --framework net6.0 \
 --self-contained true --output ./keyboard-switch --nologo -p:Platform="$MSBUILD_PLATFORM" \
--p:ContinuousIntegrationBuild=true
+-p:PublishSingleFile=true -p:ContinuousIntegrationBuild=true
 
-find ./keyboard-switch -name "*.pdb" -type f -delete
-find ./keyboard-switch -name "*.xml" -type f -delete
 rm ./keyboard-switch/appsettings.windows.json
 rm ./keyboard-switch/appsettings.linux.json
 rm ./keyboard-switch/libuiohook.1.dylib
