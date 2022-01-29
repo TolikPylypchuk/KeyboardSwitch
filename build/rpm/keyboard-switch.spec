@@ -64,6 +64,10 @@ $INSTALL_DIR/KeyboardSwitch --stop
 
 awk -F: '($3 >= 1000) && ($3 < 60000) && ($1 != "nobody") { print $1 }' /etc/passwd | while read -r CURRENT_USER
 do
+    if [ -f "$(eval echo ~$CURRENT_USER)/.keyboard-switch/.setup-configured" ] ; then
+        rm "$(eval echo ~$CURRENT_USER)/.keyboard-switch/.setup-configured"
+    fi
+
     if [ -f "$(eval echo ~$CURRENT_USER)/$SERVICE_DESKTOP_FILE" ] ; then
         rm "$(eval echo ~$CURRENT_USER)/$SERVICE_DESKTOP_FILE"
     fi

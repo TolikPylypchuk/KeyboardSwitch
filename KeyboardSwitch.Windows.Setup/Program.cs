@@ -6,12 +6,14 @@ using System.Linq;
 using System.Reflection;
 
 using Microsoft.Deployment.WindowsInstaller;
+using Microsoft.Win32;
 
 using WixSharp;
 
 using Assembly = System.Reflection.Assembly;
 
-using File = WixSharp.File;
+using File = System.IO.File;
+using WixFile = WixSharp.File;
 
 namespace KeyboardSwitch.Windows.Setup
 {
@@ -44,16 +46,18 @@ namespace KeyboardSwitch.Windows.Setup
 
         private const string DeleteConfigKey = "9000";
 
-        private static readonly string DefaultDataDirectory = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            nameof(KeyboardSwitch));
+        private const string LocalAppDataRegistryValue = "Local AppData";
+        private const string ShellFoldersRegistryKeyFormat =
+            @"HKEY_USERS\{0}\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders";
+
+        private const string SetupConfiguredFile = ".setup-configured";
 
         private static void Main()
         {
             var files = new Dir(
                 TargetDirectory,
                 new Files(@$"{BuildDirectory}\*.*", file => !ExcludedFileExtensions.Any(file.EndsWith)),
-                new File(Path.Combine(BuildDirectory, "appsettings.windows.json"))
+                new WixFile(Path.Combine(BuildDirectory, "appsettings.windows.json"))
                 {
                     AttributesDefinition = "Name=appsettings.json"
                 });
@@ -100,34 +104,9 @@ namespace KeyboardSwitch.Windows.Setup
 
             project.MajorUpgradeStrategy.RemoveExistingProductAfter = Step.InstallInitialize;
 
-            project.BeforeInstall += BeforeInstall;
             project.AfterInstall += AfterInstall;
 
             project.BuildMsi();
-        }
-
-        private static void BeforeInstall(SetupEventArgs e)
-        {
-            if (e.IsUninstalling)
-            {
-                try
-                {
-                    using var record = new Record(1);
-                    record[1] = DeleteConfigKey;
-
-                    var messageType = InstallMessage.User |
-                        (InstallMessage)MessageButtons.YesNo |
-                        (InstallMessage)MessageIcon.Question;
-
-                    if (e.Session.Message(messageType, record) == MessageResult.Yes)
-                    {
-                        Directory.Delete(DefaultDataDirectory, recursive: true);
-                    }
-                } catch (Exception exp)
-                {
-                    e.Session.Log($"An exception occured when trying to ask about deleting the configuration: {exp}");
-                }
-            }
         }
 
         private static void AfterInstall(SetupEventArgs e)
@@ -147,6 +126,49 @@ namespace KeyboardSwitch.Windows.Setup
                     e.Session.Log($"An exception occured when trying to start the Keyboard Switch Settings app: {exp}");
                 }
             }
+
+            if (e.IsUninstalling && !e.IsUpgradingInstalledVersion)
+            {
+                try
+                {
+                    using var record = new Record(1);
+                    record[1] = DeleteConfigKey;
+
+                    var messageType = InstallMessage.User |
+                        (InstallMessage)MessageButtons.YesNo |
+                        (InstallMessage)MessageIcon.Question;
+
+                    var directories = GetConfigDirectories();
+
+                    if (e.Session.Message(messageType, record) == MessageResult.Yes)
+                    {
+                        foreach (var directory in directories.Where(Directory.Exists))
+                        {
+                            Directory.Delete(directory, recursive: true);
+                        }
+                    } else
+                    {
+                        foreach (var file in directories
+                            .Select(directory => Path.Combine(directory, SetupConfiguredFile))
+                            .Where(File.Exists))
+                        {
+                            File.Delete(file);
+                        }
+                    }
+                } catch (Exception exp)
+                {
+                    e.Session.Log($"An exception occured when trying to delete the configuration: {exp}");
+                }
+            }
         }
+
+        private static List<string> GetConfigDirectories() =>
+            Registry.Users.GetSubKeyNames()
+                .Select(sid => String.Format(ShellFoldersRegistryKeyFormat, sid))
+                .Select(key => Registry.GetValue(key, LocalAppDataRegistryValue, null))
+                .OfType<string>()
+                .Where(value => !String.IsNullOrEmpty(value))
+                .Select(value => Path.Combine(value, nameof(KeyboardSwitch)))
+                .ToList();
     }
 }

@@ -7,6 +7,10 @@ SETTINGS_DESKTOP_FILE=$HOME/.local/share/applications/keyboard-switch-settings.d
 
 $INSTALL_DIR/KeyboardSwitch --stop
 
+if [ -f "$HOME/.keyboard-switch/.setup-configured" ] ; then
+    rm "$HOME/.keyboard-switch/.setup-configured"
+fi
+
 if [ -f "$SERVICE_DESKTOP_FILE" ] ; then
     rm "$SERVICE_DESKTOP_FILE"
 fi
