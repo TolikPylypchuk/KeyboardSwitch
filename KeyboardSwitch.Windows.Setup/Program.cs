@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -42,6 +41,7 @@ namespace KeyboardSwitch.Windows.Setup
         private readonly static string ExplorerPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.Windows), "explorer.exe");
 
+        private const string SettingsAppId = "KeyboardSwitchSettings_exe";
         private const string SettingsAppName = "KeyboardSwitchSettings.exe";
 
         private const string DeleteConfigKey = "9000";
@@ -56,7 +56,10 @@ namespace KeyboardSwitch.Windows.Setup
         {
             var files = new Dir(
                 TargetDirectory,
-                new Files(@$"{BuildDirectory}\*.*", file => !ExcludedFileExtensions.Any(file.EndsWith)),
+                new Files(
+                    @$"{BuildDirectory}\*.*",
+                    file => !file.EndsWith(SettingsAppName) && !ExcludedFileExtensions.Any(file.EndsWith)),
+                new WixFile(new Id(SettingsAppId), @$"{BuildDirectory}\{SettingsAppName}"),
                 new WixFile(Path.Combine(BuildDirectory, "appsettings.windows.json"))
                 {
                     AttributesDefinition = "Name=appsettings.json"
@@ -72,9 +75,11 @@ namespace KeyboardSwitch.Windows.Setup
 
             var deleteConfigMessage = new Error(DeleteConfigKey, "Do you want to delete the app's configuration?");
 
+            var launch = new LaunchApplicationFromExitDialog(SettingsAppId, "Launch Keyboard Switch Settings");
+
             var currentAssembly = Assembly.GetExecutingAssembly();
 
-            var project = new ManagedProject(ProductName, files, startMenuShortcut, deleteConfigMessage)
+            var project = new ManagedProject(ProductName, files, startMenuShortcut, launch, deleteConfigMessage)
             {
                 GUID = new Guid("6fe30b47-2577-43ad-9095-1861ba25889b"),
                 InstallScope = InstallScope.perMachine,
@@ -111,22 +116,6 @@ namespace KeyboardSwitch.Windows.Setup
 
         private static void AfterInstall(SetupEventArgs e)
         {
-            if (!e.IsUninstalling)
-            {
-                try
-                {
-                    Process.Start(new ProcessStartInfo
-                    {
-                        FileName = ExplorerPath,
-                        Arguments = $"\"{Path.Combine(e.InstallDir, SettingsAppName)}\"",
-                        WorkingDirectory = e.InstallDir
-                    });
-                } catch (Exception exp)
-                {
-                    e.Session.Log($"An exception occured when trying to start the Keyboard Switch Settings app: {exp}");
-                }
-            }
-
             if (e.IsUninstalling && !e.IsUpgradingInstalledVersion)
             {
                 try
