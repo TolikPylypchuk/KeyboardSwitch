@@ -14,6 +14,7 @@ public static class ServiceExtensions
             .AddSingleton<ILayoutLoaderSrevice, NotSupportedLayoutLoaderService>()
             .AddSingleton<IStartupService, LaunchdStartupService>()
             .AddSingleton<IServiceCommunicator, LaunchdServiceCommunicator>()
-            .AddSingleton<IAutoConfigurationService, MacAutoConfigurationService>();
+            .AddSingleton<IAutoConfigurationService, MacAutoConfigurationService>()
+            .AddSingleton<IInitialSetupService, LaunchdSetupService>();
 
 }
