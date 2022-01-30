@@ -70,7 +70,7 @@ The app uses the clipboard to get the text to transform, and then puts the trans
 
 ## Supported Platforms
 
-keyboard Switch currently works on Windows 10/11 and on Linux via X11. It can probably work on older versions of Windows as well, but I'm not going to support them. As for Linux, it needs several prerequisites to run (more on that on [the installation page](usage-guides/installation.md#linux)).
+Keyboard Switch currently works on Windows 10/11 and on Linux via X11. It can probably work on older versions of Windows as well, but I'm not going to support them. As for Linux, it needs several prerequisites to run (more on that on [the installation page](usage-guides/installation.md#linux)).
 
 Only the x64 architecture is supported. It would be ideal to also support Arm64, but it's unlikely in the nearest future.
 
