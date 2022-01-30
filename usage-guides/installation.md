@@ -4,6 +4,12 @@
 Version 4.1 is almost ready, but not yet released. If you want to take it for a spin, then you should download a nightly build from GitHub Actions instead of getting it from the releases page.
 {% endhint %}
 
+{% hint style="warning" %}
+Version 4.1 is almost ready, but not yet released. If you want to take it for a spin, then you should download a nightly build from GitHub Actions instead of getting it from the releases page.
+{% endhint %}
+
+## Windows
+
 ## Windows
 
 ### Using a Windows Installer
@@ -12,13 +18,9 @@ You can get the latest version of the app from the [releases page on GitHub](htt
 
 After installing the app, the installer will run the settings app. Currently it's not really optimized, so the startup time is not perfect; it can take a couple seconds for the app to get started. On the first start-up the settings app will configure the service to run when you log into the system.
 
-If multiple users use the PC, then bear in mind that the app configures itself to run on log-in only for the user that installed the app. Other users have to configure it manually.
-
 When the settings app starts up you should configure the character mappings (you can read more about it in the next article). After you have configured the character mappings and possibly some other preferences, start the app using the _Start_ button at the bottom of the window. That's it! Now you're ready to use the Keyboard Switch service.
 
-{% hint style="info" %}
-**Note:** This app might mildly infuriate your anti-virus. This is because the app sets up a global keyboard hook, which means that it can react to all keyboard events in the entire system, and the anti-virus might think that it's a key logger. I can assure you, it's not - the app only reacts to the magic key combinations, and completely ignores all other keyboard events. If you don't trust me on this one, you can look through the app's code and build it yourself :)
-{% endhint %}
+Current only the x64 version can be installed with an installer. If you want the Arm64 version then you should use a portable version or [build the installer yourself](../other/technical.md#building-the-windows-installer).
 
 ### Uninstalling the App
 
@@ -30,13 +32,39 @@ You can uninstall the app using the Settings app just like you would uninstall a
 
 Upon uninstallation the installer will ask whether you want to delete the app's configuration as well. If you choose not to delete the configuration, you can delete it later manually at any other time. It's stored under the user's local app data folder.
 
-{% hint style="warning" %}
-**Note:** The installer will only delete the current user's configuration! If there are other users on the PC, they will have to delete the configuration manually.
-{% endhint %}
-
 ### Using the Portable Version
 
-If you don't want to install the app (or can't), you can use the portable version of the app. It's literally the same as the installable version; there are no differences. Again, go to the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases) and download _KeyboardSwitch-Portable.zip_. Extract the archive to anywhere you want and start _KeyboardSwitchSettings.exe_. You can configure the app to run when you log in just like the installed version. The configuration for the portable version is also stored under the user's local app data folder.
+If you don't want to install the app (or can't), you can use the portable version of the app. It's literally the same as the installable version; there are no differences. Again, go to the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases) and download _KeyboardSwitch-4.1-x64-win.zip_ or _KeyboardSwitch-4.1-arm64-win.zip_. If you're not sure which one you should download, then it's most probably x64. Extract the archive to anywhere you want and start _KeyboardSwitchSettings.exe_. You can configure the app to run when you log in just like the installed version. The configuration for the portable version is also stored under the user's local app data folder.
+
+## macOS
+
+### Installing the App
+
+You can get the latest version of the app from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download the _.pkg_ file and run it to install the app. If your computer is running on an Intel CPU then you should get the _x86\_64_ package. If your computer is running on an Apple CPU (e.g. M1) then you should get the _arm64_ package.
+
+The installer will install multiple things:
+
+* The Keyboard Switch Service app will be put into the _/opt_ folder - you shouldn't run or interact with this app directly
+* The Keyboard Switch Settings app will be put into the _/Applications_ folder
+* The descriptor file for running the service app when you log in will be put into the _/Library/LaunchAgents_ folder
+
+After installing the app, open Keyboard Switch Settings - it should appear in the list of your apps.
+
+Immediately upon opening the app a dialog window should appear which says that Keyboard Switch Service would like to control this computer using accessibility features. The service app needs this to listen to the magic key combination while running in the background, and without these permissions the app won't work.
+
+Click the _Open System Preferences_ button on the dialog window. Unlock the settings and check the _Keyboard Switch Service.app_ checkbox. Lock the settings, close System Preferences, and go back to the Keyboard Switch Settings app.
+
+If the dialog window didn't appear for some reason, then press the _Start_ button at the bottom of the window. The service app will start and immediately crash, because it doesn't have the accessibility permissions, and the dialog window will appear again.
+
+You should configure the character mappings (you can read more about it in the next article). After you have configured the character mappings and possibly some other preferences, start the app using the _Start_ button. That's it! Now you're ready to use the Keyboard Switch service.
+
+### Uninstalling the App
+
+Many apps on macOS can be uninstalled just by deleting the app bundle from the _/Applications_ folder. This is not the case with Keyboard Switch. Multiple things should be done to remove it from the system. You shouldn't concern yourself with those things though - you should just run an uninstaller package and it will remove Keyboard Switch.
+
+As with the installer package, you can also get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download and run the _KeyboardSwitchUninstaller-4.1.pkg_ file, and Keyboard Switch will be removed.
+
+If you want to delete the app's configuration as well, then delete the hidden _.keyboard-switch_ folder in your home folder.
 
 ## Linux
 

@@ -9,6 +9,10 @@ If you ever write some text and then realize that you have written it using a wr
 I hope this app will make your life at least 1% easier :)
 
 {% hint style="warning" %}
+Version 4.1 is almost ready, but not yet released. If you want to take it for a spin, then you should download a nightly build from GitHub Actions instead of getting it from the releases page.
+{% endhint %}
+
+{% hint style="warning" %}
 Version 4.1 is almost ready, but not yet released. If you want to take it for a spin, then you should download a nightly build from GitHub Actions.
 {% endhint %}
 
@@ -29,6 +33,28 @@ Press _Start_.
 That's it! You're ready to use Keyboard Switch in it's basic configuration. There's a big chance you won't need to configure it further. But if you do, then all the info you'll ever need is provided in these docs.
 
 To switch text forward, select the text, and press _Ctrl+Shift_ twice. To switch it backward, press _Ctrl+Alt+Shift_ twice instead.
+
+### macOS
+
+You can get the latest version of the app from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download the _.pkg_ file and run it to install the app. If your computer is running on an Intel CPU then you should get the _x86\_64_ package. If your computer is running on an Apple CPU (e.g. M1) then you should get the _arm64_ package.
+
+After installing the app, open Keyboard Switch Settings - it should appear in the list of your apps.
+
+Immediately upon opening the app a dialog window should appear which says that Keyboard Switch Service would like to control this computer using accessibility features. The service app needs this to listen to the magic key combination while running in the background, and without these permissions the app won't work.
+
+Click the _Open System Preferences_ button on the dialog window. Unlock the settings and check the _Keyboard Switch Service.app_ checkbox. Lock the settings, close System Preferences, and go back to the Keyboard Switch Settings app.
+
+In the settings app press the _Auto-configure_ button.
+
+Press _Save_.
+
+Press _Start_.
+
+That's it! You're ready to use Keyboard Switch in it's basic configuration. There's a big chance you won't need to configure it further. But if you do, then all the info you'll ever need is provided in these docs.
+
+To switch text forward, select the text, and press _Ctrl+Shift_ twice. To switch it backward, press _Ctrl+Option+Shift_ twice instead.
+
+To uninstall Keyboard Switch you should run an uninstaller package. You can also get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases).
 
 ### Linux
 
@@ -62,21 +88,21 @@ Here are the basic steps you should take to switch the text:
 
 * Type some text using an incorrect layout
 * Realize your mistake
-* Select the text (you can press _Ctrl+A_ to select all text)
+* Select the text (you can press _Ctrl+A_ to select all text, or _Command+A_ on macOS)
 * Press the magic key combination (the default is pressing _Ctrl+Shift_ twice)
 * Profit
 
 The app uses the clipboard to get the text to transform, and then puts the transformed text back into the clipboard. The app will try to preserve the text that was in the clipboard before switching, and restoring it afterwards. It doesn't guarantee that the text will be restored though. Also, any non-text data (e.g. a file or a picture) will not be restored.
 
 {% hint style="info" %}
-**Note:** The app simulates pressing _Ctrl+C_ to copy and _Ctrl+V_ to paste text. This is the default behavior for most (if not all) applications. But if you are working in an app which behaves differently on those key presses, this app will not be able to instantly switch text. You can disable this behavior, and copy/paste the text manually.
+**Note:** The app simulates pressing _Ctrl+C_ (or _Command+C_ on macOS) to copy and _Ctrl+V_ (or _Command+V_ on macOS) to paste text. This is the default behavior for most (if not all) applications. But if you are working in an app which behaves differently on those key presses, this app will not be able to instantly switch text. You can disable this behavior, and copy/paste the text manually.
 {% endhint %}
 
 ## Supported Platforms
 
-keyboard Switch currently works on Windows 10/11 and on Linux via X11. It can probably work on older versions of Windows as well, but I'm not going to support them. As for Linux, it needs several prerequisites to run (more on that on [the installation page](usage-guides/installation.md#linux)).
+Keyboard Switch currently works on Windows 10/11, macOS 10.11+, and Linux via X11. It can probably work on older versions of Windows as well, but I'm not going to support them. As for Linux, it needs several prerequisites to run (more on that on [the installation page](usage-guides/installation.md#linux)).
 
-Only the x64 architecture is supported. It would be ideal to also support Arm64, but it's unlikely in the nearest future.
+The x64 and Arm64 architectures are both supported, but for Windows and Linux the latter is experimental since I don't have any devices on which I can test the app.
 
 ## Layouts
 
