@@ -1,12 +1,23 @@
 # About
 
-Keyboard Switch. Version 4.0. Created by [Tolik Pylypchuk](https://github.com/TolikPylypchuk).
+Keyboard Switch. Version 4.1. Created by [Tolik Pylypchuk](https://github.com/TolikPylypchuk).
 
 ## Acknowledgements
 
-The UI for the settings app was created using [Avalonia](https://avaloniaui.net) with [ReactiveUI](https://www.reactiveui.net) and [FluentAvalonia](https://github.com/amwx/FluentAvalonia). The global keyboard hook is implemented using [libuiohook](https://github.com/kwhat/libuiohook). Docs are built using [GitBook](https://www.gitbook.com). Icon made by [Smashicons](https://smashicons.com) from [www.flaticon.com](https://www.flaticon.com).
+The UI for the settings app was created using [Avalonia](https://avaloniaui.net) with [ReactiveUI](https://www.reactiveui.net) and [FluentAvalonia](https://github.com/amwx/FluentAvalonia). The global keyboard hook is implemented using [libuiohook](https://github.com/kwhat/libuiohook). Windows installer created with [WixSharp](https://github.com/oleg-shilo/wixsharp). Docs are built using [GitBook](https://www.gitbook.com). Icon made by [Smashicons](https://smashicons.com) from [www.flaticon.com](https://www.flaticon.com).
 
 ## Changelog
+
+### v4.1 (TBD)
+
+* The app now works on macOS
+* The app now supports Arm64 in addition to x64 (but the support is experimental for Windows and Linux)
+* The app now switches layouts using native methods on Linux, hence layout settings are not needed anymore
+* On Windows switching backward works correctly when there are more than two layouts
+* The settings app will configure the service app to run at login when opened for the first time, instead of installers doing that - this means that the service app will be configured correctly for all users
+* Windows Installer can delete all users' configurations when uninstalling the app
+
+This is the first minor release which contains new features instead of just bug fixes, and it's a big one at that.
 
 ### [v4.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.0) (28 November 2021)
 

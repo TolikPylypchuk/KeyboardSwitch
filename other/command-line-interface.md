@@ -2,7 +2,7 @@
 
 The KeyboardSwitch service app has a CLI which you can use to control it. On Windows it's not really convenient as GUI apps cannot output anything to the console, but can be used as well.
 
-The name of the executable is `KeyboardSwitch`. This article will assume it's installed on Linux in the `/opt/keyboard-switch` directory.
+The name of the executable is `KeyboardSwitch`. This article will assume it's installed on Linux in the `/opt/keyboard-switch` directory. On macOS it's located in the `/opt/Keyboard Switch Service.app/Contents/MacOS` directory.
 
 ## Commands
 
@@ -17,6 +17,8 @@ To start KeyboardSwitch, simply run it in the terminal:
 The `&` makes the service app run in the background. On Windows the `&` is not needed as GUI apps always run separately from the terminal.
 
 KeyboardSwitch is a single-instance app. If one instance is already running, and you start another one, it will immediately silently exit.
+
+The app will exit immediately if it cannot find the settings file. This file is created when you run the settings app for the first time. This is done so that there's a lower chance that this app will run in an unconfigured state.
 
 ### Stopping the App
 
@@ -70,3 +72,4 @@ The following exit codes are available:
 * 2 - The app cannot run, because it's settings have an incompatible version. The app is backward-compatible with respect to settings versions - it will read the settings created by an older version and modify them to fit the current version. But it's not forward-compatible - version 4 will not work if the settings were created by a newer version.
 * 3 - `stop`, `reload-settings`, or `check` was specified as the command, but no instances of KeyboardSwitch are running.
 * 4 - An invalid command was specified.
+* 5 - The settings file was not found.
