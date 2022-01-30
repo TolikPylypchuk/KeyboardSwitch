@@ -9,7 +9,7 @@ If you ever write some text and then realize that you have written it using a wr
 I hope this app will make your life at least 1% easier :)
 
 {% hint style="info" %}
-If you're using version 3, then you should upgrade to version 4 as soon as possible as it contains major improvements.
+If you're using version 3, then you should upgrade to version 4 as soon as possible since it contains major improvements.
 {% endhint %}
 
 ## How The App Works
