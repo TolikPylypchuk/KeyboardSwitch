@@ -2,7 +2,7 @@
 
 Keyboard Switch Settings is a simple app which controls the behavior of the Keyboard Switch service. You can find the app in the list of your installed apps (e.g. the Start menu on Windows). Here's how it looks:
 
-![](../.gitbook/assets/v4.0-screen-char-mappings.png)
+![](../.gitbook/assets/v4.1-screen-char-mappings.png)
 
 The app is composed of six tabs:
 

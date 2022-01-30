@@ -10,7 +10,7 @@ Working with text and working with keyboard are two wildly different things. You
 
 Ideally you wouldn't have to configure the app at all - it would just know how to transform the text you mistyped into another layout. After all, the OS somehow knows which characters to produce when you press various keys! But going that way would be extremely difficult, if not impossible.
 
-Firstly, pressing keys and entering characters are absolutely not the same thing. Many keys don't have corresponding characters at all, like _Ctrl_ or _Page Up_. The same key press can produce different characters based on the state of other keys. For example, the _A_ key usually produces **a**, but when _Shift_ is down, the key produces **A**. And then there are dead keys - key combinations that produce one character by pressing two (or even three) keys. For example, in the US International layout, pressing_'_ and then _A_ will produce **á**.
+Firstly, pressing keys and entering characters are absolutely not the same thing. Many keys don't have corresponding characters at all, like _Ctrl_ or _Page Up_. The same key press can produce different characters based on the state of other keys. For example, the _A_ key usually produces **a**, but when _Shift_ is down, the key produces **A**. And then there are dead keys - key combinations that produce one character by pressing two (or even three) keys. For example, in the US International layout, pressing\_'\_ and then _A_ will produce **á**.
 
 Secondly, it's impossible to know which keys have been pressed just by looking at text. This is because the same character can be produced using different keys or key combinations (or it can be pasted, so the keyboard wouldn't be used at all).
 
@@ -22,7 +22,7 @@ And that's why the app uses a much simpler solution - it lets you, the user, fig
 
 Here's how the tab looks when the app is opened for the first time:
 
-![](../.gitbook/assets/v4.0-screen-char-mappings-empty.png)
+![](../.gitbook/assets/v4.1-screen-char-mappings-empty.png)
 
 You have to enter every character you can think of (which can be entered using your keyboard) into the text fields which correspond to layouts. For example, press the _Q_ key, then press the _W_ key, and so on. Then press _Shift+Q_, then _Shift+W_ etc. to add uppercase letters.
 
@@ -36,24 +36,24 @@ Even though you have to do it only once, configuring character mappings is still
 
 Here's how the tab looks after running auto-configuration:
 
-![](../.gitbook/assets/v4.0-screen-auto-configuration.png)
+![](../.gitbook/assets/v4.1-screen-auto-configuration.png)
 
-### Windows
+### Windows and macOS
 
-What auto-configuration does on Windows is basically ask the OS what would happen if certain keys were pressed using various layouts. There is no easy way to get the information about _all_ keys on your keyboard, so it asks only about the most common ones. Here's the list of those keys for the US layout:
+What auto-configuration does on Windows and macOS is basically ask the OS what would happen if certain keys were pressed using various layouts. There is no easy way to get the information about _all_ keys on your keyboard, so it asks only about the most common ones. Here's the list of those keys for the US layout:
 
 * All letter keys (_Q_, _W_, _E_ etc.)
 * Number keys
 * Other common keys: _\[_ _]_ _;_ _'_ _,_ _._ _/_ _\\_ _-_ _=_ _\`_
 * All those keys with the _Shift_ key
-* All those keys with the _AltGr_ key
-* All those keys with the _Shift+AltGr_ keys
+* All those keys with the _AltGr_/_Option_ key
+* All those keys with the _Shift+AltGr_/_Option_ keys
 
-Not all of those key combinations actually produce characters for all layouts. So after asking the OS about all of these keys, the app keeps only those character combinations which are defined for all layouts. For example, if you press _AltGr+U_ in the Ukrainian layout, you will get **ґ**, but if you press those keys in the US layout, you won't get anything at all, so the app will just throw **ґ** out as it won't know how to map it to the US layout.
+Not all of those key combinations actually produce characters for all layouts. So after asking the OS about all of these keys, the app keeps only those character combinations which are defined for all layouts. For example, on Windows if you press _AltGr+U_ in the Ukrainian layout, you will get **ґ**, but if you press those keys in the US layout, you won't get anything at all, so the app will just throw **ґ** out as it won't know how to map it to the US layout.
 
 ### Linux
 
-Unlike Windows, there's actually a way to ask the OS (though X11) which characters are produced by all possible key presses. What the app will do is ask about characters produced by all key codes on all shift levels (there are 64 of them!). As with Windows, it will keep only those combinations which are defined for all layouts.
+Unlike Windows and macOS, there's actually a way to ask the OS (though X11) which characters are produced by all possible key presses. What the app will do is ask about characters produced by all key codes on all shift levels (there are 64 of them!). As with Windows, it will keep only those combinations which are defined for all layouts.
 
 ## Limitations
 
