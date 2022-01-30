@@ -89,6 +89,8 @@ The package takes care of xsel and the X Test extension, so you don't need to in
 
 After installation, the settings app will be available in the list of installed apps, and the service app will be configured to run at login (it will be configured for all users though).
 
+Both the _amd64_ and _arm64_ versions are available, but the latter is experimental.
+
 #### Using an RPM Package
 
 If you're running a RHEL-based distribution (e.g. CentOS or Fedora), or SUSE, then you can install KeyboardSwitch using an RPM package. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases).
@@ -105,9 +107,13 @@ SUSE may complain that it cannot find libXtst when installing the app using the 
 
 After installation, the settings app will be available in the list of installed apps, and the service app will be configured to run at login (it will be configured for all users though).
 
+Both the _x86\_64_ and _aarch64_ versions are available, but the latter is experimental.
+
 #### Using a Tar Archive
 
 KeyboardSwitch is also available as a _tar.gz_ fie. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). You can then extract it to anywhere you like (e.g. into the _/opt_ directory). The deployed app includes two scripts - _install.sh_ and _uninstall.sh_. _install.sh_ configures Freedesktop to start the KeyboardSwitch service when you log in, and to add the settings app to the list of installed apps. _uninstall.sh_ deletes this configuration.
+
+Both the _x64_ and _arm64_ versions are available, but the latter is experimental.
 
 Here are the steps required for installing the app on Debian, Ubuntu, Linux Mint, etc.:
 

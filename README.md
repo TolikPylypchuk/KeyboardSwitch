@@ -102,7 +102,7 @@ The x64 and Arm64 architectures are both supported, but for Windows and Linux th
 
 ## Layouts
 
-The app uses the list of your layouts in the same order as defined by the system. You can switch both forward and backward through this list. The app also automatically changes your layouts, so you don't have to do it yourself. You can disable this as well if you so wish. You cannot add a layout that's not present as one of the system's layouts. If you add/remove a layout while the app is running, you'll have configure it in the settings and restart the service.
+The app uses the list of your layouts in the same order as defined by the system. You can switch both forward and backward through this list. The app also automatically changes your layouts, so you don't have to do it yourself. You can disable this as well if you so wish. You cannot add a layout that's not present as one of the system's layouts. If you add/remove a layout while the app is running, you'll have configure it in the settings.
 
 {% hint style="info" %}
 **Note:** This app is "Western-oriented". I developed it specifically to handle switching between Cyrillic and Latin scripts. I don't know how it will work (if at all) with Eastern languages/scripts.
