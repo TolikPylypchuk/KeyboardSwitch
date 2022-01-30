@@ -10,7 +10,7 @@ Working with text and working with keyboard are two wildly different things. You
 
 Ideally you wouldn't have to configure the app at all - it would just know how to transform the text you mistyped into another layout. After all, the OS somehow knows which characters to produce when you press various keys! But going that way would be extremely difficult, if not impossible.
 
-Firstly, pressing keys and entering characters are absolutely not the same thing. Many keys don't have corresponding characters at all, like _Ctrl_ or _Page Up_. The same key press can produce different characters based on the state of other keys. For example, the _A_ key usually produces **a**, but when _Shift_ is down, the key produces **A**. And then there are dead keys - key combinations that produce one character by pressing two (or even three) keys. For example, in the US International layout, pressing_'_ and then _A_ will produce **á**.
+Firstly, pressing keys and entering characters are absolutely not the same thing. Many keys don't have corresponding characters at all, like _Ctrl_ or _Page Up_. The same key press can produce different characters based on the state of other keys. For example, the _A_ key usually produces **a**, but when _Shift_ is down, the key produces **A**. And then there are dead keys - key combinations that produce one character by pressing two (or even three) keys. For example, in the US International layout, pressing _'_ and then _A_ will produce **á**.
 
 Secondly, it's impossible to know which keys have been pressed just by looking at text. This is because the same character can be produced using different keys or key combinations (or it can be pasted, so the keyboard wouldn't be used at all).
 
