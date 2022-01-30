@@ -12,10 +12,6 @@ If multiple users use the PC, then bear in mind that the app configures itself t
 
 When the settings app starts up you should configure the character mappings (you can read more about it in the next article). After you have configured the character mappings and possibly some other preferences, start the app using the _Start_ button at the bottom of the window. That's it! Now you're ready to use the Keyboard Switch service.
 
-{% hint style="info" %}
-**Note:** This app might mildly infuriate your anti-virus. This is because the app sets up a global keyboard hook, which means that it can react to all keyboard events in the entire system, and the anti-virus might think that it's a key logger. I can assure you, it's not - the app only reacts to the magic key combinations, and completely ignores all other keyboard events. If you don't trust me on this one, you can look through the app's code and build it yourself :)
-{% endhint %}
-
 ### Uninstalling the App
 
 You can uninstall the app using the Settings app just like you would uninstall any other app.
@@ -32,7 +28,7 @@ Upon uninstallation the installer will ask whether you want to delete the app's 
 
 ### Using the Portable Version
 
-If you don't want to install the app (or can't), you can use the portable version of the app. It's literally the same as the installable version; there are no differences. Again, go to the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases) and download _KeyboardSwitch-Portable.zip_. Extract the archive to anywhere you want and start _KeyboardSwitchSettings.exe_. You can configure the app to run when you log in just like the installed version. The configuration for the portable version is also stored under the user's local app data folder.
+If you don't want to install the app (or can't), you can use the portable version of the app. It's literally the same as the installable version; there are no differences. Again, go to the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases) and download _KeyboardSwitch-4.1-x64-win.zip_. Extract the archive to anywhere you want and start _KeyboardSwitchSettings.exe_. You can configure the app to run when you log in just like the installed version. The configuration for the portable version is also stored under the user's local app data folder.
 
 ## Linux
 
