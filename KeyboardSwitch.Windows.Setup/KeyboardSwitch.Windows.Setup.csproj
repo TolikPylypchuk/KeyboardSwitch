@@ -50,6 +50,12 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <Arch>x64</Arch>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Arch) == 'arm64'">
+    <DefineConstants>$(DefineConstants);ARM64</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="BootstrapperCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL">
       <HintPath>..\packages\WixSharp.bin.1.19.0\lib\BootstrapperCore.dll</HintPath>
@@ -109,9 +115,17 @@
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>call dotnet publish $(MSBuildProjectDirectory)\..\KeyboardSwitch\ --configuration Release --runtime win10-x64 --framework net6.0-windows --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=x64 -p:ContinuousIntegrationBuild=true
-call dotnet publish $(MSBuildProjectDirectory)\..\KeyboardSwitch.Settings\ --configuration Release --runtime win10-x64 --framework net6.0-windows --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=x64 -p:ContinuousIntegrationBuild=true</PreBuildEvent>
+  <PropertyGroup Condition="'$(Arch)' != 'arm64'">
+    <PreBuildEvent>
+      call dotnet publish $(MSBuildProjectDirectory)\..\KeyboardSwitch\ --configuration Release --runtime win10-x64 --framework net6.0-windows --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=x64 -p:ContinuousIntegrationBuild=true
+      call dotnet publish $(MSBuildProjectDirectory)\..\KeyboardSwitch.Settings\ --configuration Release --runtime win10-x64 --framework net6.0-windows --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=x64 -p:ContinuousIntegrationBuild=true
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Arch)' == 'arm64'">
+    <PreBuildEvent>
+      call dotnet publish $(MSBuildProjectDirectory)\..\KeyboardSwitch\ --configuration Release --runtime win10-arm64 --framework net6.0-windows --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=ARM64 -p:ContinuousIntegrationBuild=true
+      call dotnet publish $(MSBuildProjectDirectory)\..\KeyboardSwitch.Settings\ --configuration Release --runtime win10-arm64 --framework net6.0-windows --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=ARM64 -p:ContinuousIntegrationBuild=true
+    </PreBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\WixSharp.bin.1.19.0\build\WixSharp.bin.targets" Condition="Exists('..\packages\WixSharp.bin.1.19.0\build\WixSharp.bin.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

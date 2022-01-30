@@ -85,7 +85,11 @@ namespace KeyboardSwitch.Windows.Setup
                 InstallScope = InstallScope.perMachine,
                 InstallerVersion = 500,
                 InstallPrivileges = InstallPrivileges.elevated,
+#if ARM64
+                Platform = Platform.arm64,
+#else
                 Platform = Platform.x64,
+#endif
                 OutDir = Path.GetDirectoryName(currentAssembly.GetLocation()),
                 LicenceFile = "License.rtf",
                 BannerImage = "Banner.bmp",
