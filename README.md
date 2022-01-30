@@ -12,10 +12,6 @@ I hope this app will make your life at least 1% easier :)
 Version 4.1 is almost ready, but not yet released. If you want to take it for a spin, then you should download a nightly build from GitHub Actions instead of getting it from the releases page.
 {% endhint %}
 
-{% hint style="warning" %}
-Version 4.1 is almost ready, but not yet released. If you want to take it for a spin, then you should download a nightly build from GitHub Actions.
-{% endhint %}
-
 ## Quick Start
 
 ### Windows
