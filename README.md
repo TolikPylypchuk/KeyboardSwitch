@@ -4,9 +4,13 @@ Welcome to the Keyboard Switch docs!
 
 Keyboard Switch is an application which switches typed text as if it were typed with another keyboard layout.
 
-If you ever write some text and then realise that you have written it using a wrong layout, you don't have to delete it and start over anymore. Just select the text, press a magic key combination, and that's it!
+If you ever write some text and then realize that you have written it using a wrong layout, you don't have to delete it and start over anymore. Just select the text, press a magic key combination, and that's it!
 
 I hope this app will make your life at least 1% easier :)
+
+{% hint style="info" %}
+If you're using version 3, then you should upgrade to version 4 as soon as possible as it contains major improvements.
+{% endhint %}
 
 ## How The App Works
 
