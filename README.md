@@ -8,6 +8,10 @@ If you ever write some text and then realize that you have written it using a wr
 
 I hope this app will make your life at least 1% easier :)
 
+{% hint style="warning" %}
+Version 4.1 is almost ready, but not yet released. If you want to take it for a spin, then you should download a nightly build from GitHub Actions.
+{% endhint %}
+
 ## Quick Start
 
 ### Windows
