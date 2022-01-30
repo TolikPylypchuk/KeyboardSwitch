@@ -35,7 +35,7 @@ You can switch text just by pressing modifier keys. This is similar to switching
 * Press count
 * Wait time (in milliseconds)
 
-You can select _Ctrl_, _Alt_, _Shift, _and _Win_ (also known as _Super_, _Meta_, or _Command_), or their combination as modifier keys for switching. The default is _Ctrl+Shift_ to switch forward, and _Ctrl+Alt+Shift_ to switch backward.
+You can select _Ctrl_, _Alt_, _Shift,_ and _Win_ (also known as _Super_, _Meta_, or _Command_), or their combination as modifier keys for switching. The default is _Ctrl+Shift_ to switch forward, and _Ctrl+Alt+Shift_ to switch backward.
 
 You can also control how many times you should press those modifier keys to switch the text. The default is 2. Max value for this field is 10, but even that is way too much. Min value is 1, but be careful if you set it to 1, because then it would be easy to press it by accident.
 
