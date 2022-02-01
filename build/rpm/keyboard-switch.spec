@@ -38,6 +38,8 @@ INSTALL_DIR=/opt/keyboard-switch
 SETTINGS_APP=$INSTALL_DIR/KeyboardSwitchSettings
 SETTINGS_DESKTOP_FILE=/tmp/keyboard-switch-settings.desktop
 
+GNOME_EXTENSION_DIR=/usr/share/gnome-shell/extensions/switch-layout@tolik.io
+
 echo "[Desktop Entry]
 Version=1.0
 Name=Keyboard Switch Settings
@@ -53,6 +55,14 @@ Categories=Utility
 desktop-file-install --dir=/usr/share/applications $SETTINGS_DESKTOP_FILE
 rm $SETTINGS_DESKTOP_FILE
 
+CURRENT_DE=$(echo "$XDG_CURRENT_DESKTOP" | tr '[:upper:]' '[:lower:]')
+
+if [ $CURRENT_DE = 'gnome' ] || [ $CURRENT_DE = 'unity' ]
+then
+    mkdir -p $GNOME_EXTENSION_DIR
+    cp $INSTALL_DIR/{extension.js,metadata.json} $GNOME_EXTENSION_DIR
+fi
+
 %preun
 
 INSTALL_DIR=/opt/keyboard-switch
@@ -60,22 +70,32 @@ INSTALL_DIR=/opt/keyboard-switch
 SERVICE_DESKTOP_FILE=.config/autostart/keyboard-switch.desktop
 SETTINGS_DESKTOP_FILE=/usr/share/applications/keyboard-switch-settings.desktop
 
+GNOME_EXTENSION_DIR=/usr/share/gnome-shell/extensions/switch-layout@tolik.io
+
 $INSTALL_DIR/KeyboardSwitch --stop
 
 awk -F: '($3 >= 1000) && ($3 < 60000) && ($1 != "nobody") { print $1 }' /etc/passwd | while read -r CURRENT_USER
 do
-    if [ -f "$(eval echo ~$CURRENT_USER)/.keyboard-switch/.setup-configured" ] ; then
+    if [ -f "$(eval echo ~$CURRENT_USER)/.keyboard-switch/.setup-configured" ]
+    then
         rm "$(eval echo ~$CURRENT_USER)/.keyboard-switch/.setup-configured"
     fi
 
-    if [ -f "$(eval echo ~$CURRENT_USER)/$SERVICE_DESKTOP_FILE" ] ; then
+    if [ -f "$(eval echo ~$CURRENT_USER)/$SERVICE_DESKTOP_FILE" ]
+    then
         rm "$(eval echo ~$CURRENT_USER)/$SERVICE_DESKTOP_FILE"
     fi
 done
 
-if [ -f "$SETTINGS_DESKTOP_FILE" ] ; then
+if [ -f "$SETTINGS_DESKTOP_FILE" ]
+then
     rm "$SETTINGS_DESKTOP_FILE"
     update-desktop-database
+fi
+
+if [ -d $GNOME_EXTENSION_DIR ]
+then
+    rm -rf $GNOME_EXTENSION_DIR
 fi
 
 %postun

@@ -4,6 +4,8 @@ INSTALL_DIR=/opt/keyboard-switch
 SETTINGS_APP=$INSTALL_DIR/KeyboardSwitchSettings
 SETTINGS_DESKTOP_FILE=/tmp/keyboard-switch-settings.desktop
 
+GNOME_EXTENSION_DIR=/usr/share/gnome-shell/extensions/switch-layout@tolik.io
+
 echo "[Desktop Entry]
 Version=1.0
 Name=Keyboard Switch Settings
@@ -18,3 +20,11 @@ Categories=Utility
 
 desktop-file-install --dir=/usr/share/applications $SETTINGS_DESKTOP_FILE
 rm $SETTINGS_DESKTOP_FILE
+
+CURRENT_DE=$(echo "$XDG_CURRENT_DESKTOP" | tr '[:upper:]' '[:lower:]')
+
+if [ $CURRENT_DE = 'gnome' ] || [ $CURRENT_DE = 'unity' ]
+then
+    mkdir -p $GNOME_EXTENSION_DIR
+    cp $INSTALL_DIR/{extension.js,metadata.json} $GNOME_EXTENSION_DIR
+fi
