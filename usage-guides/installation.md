@@ -115,6 +115,8 @@ KeyboardSwitch is also available as a _tar.gz_ fie. You can get it from the [rel
 
 Both the _x64_ and _arm64_ versions are available, but the latter is experimental.
 
+The following scripts assume that the `/opt` directory is writable.
+
 Here are the steps required for installing the app on Debian, Ubuntu, Linux Mint, etc.:
 
 ```
@@ -122,7 +124,6 @@ sudo apt update
 sudo apt install xsel libxtst6  # Install xsel and the X Test Extension
 tar -xzf keyboard-switch-4.0-x64.tar.gz -C /opt
 cd /opt/keyboard-switch
-sudo chmod 755 install.sh uninstall.sh  # Let every user use the app
 ./install.sh
 ```
 
@@ -134,7 +135,6 @@ sudo dnf install xsel          # Install xsel
 sudo dnf install libXtst       # Install the X Test Extension
 tar -xzf keyboard-switch-4.0-x64.tar.gz -C /opt
 cd /opt/keyboard-switch
-sudo chmod 755 install.sh uninstall.sh  # Let every user use the app
 ./install.sh
 ```
 
@@ -145,7 +145,6 @@ sudo zypper install xsel      # Install xsel
 sudo zypper install libXtst6  # Install the X Test Extension
 tar -xzf keyboard-switch-4.0-x64.tar.gz -C /opt
 cd /opt/keyboard-switch
-sudo chmod 755 install.sh uninstall.sh  # Let every user use the app
 ./install.sh
 ```
 
@@ -156,7 +155,6 @@ sudo pacman -S xsel     # Install xsel
 sudo pacman -S libxtst  # Install the X Test Extension
 tar -xzf keyboard-switch-4.0-x64.tar.gz -C /opt
 cd /opt/keyboard-switch
-sudo chmod 755 install.sh uninstall.sh  # Let every user use the app
 ./install.sh
 ```
 
