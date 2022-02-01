@@ -9,15 +9,14 @@ public static class ServiceExtensions
         IConfiguration config) =>
         services
             .Configure<StartupSettings>(config.GetSection("Startup"))
-            .AddLayoutService()
+            .AddGnomeDependentServices()
             .AddSingleton<ILayoutLoaderSrevice, NotSupportedLayoutLoaderService>()
             .AddSingleton<IStartupService, FreedesktopStartupService>()
             .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
             .AddSingleton<IUserActivitySimulator, SharpUserActivitySimulator>()
-            .AddSingleton<IAutoConfigurationService, XAutoConfigurationService>()
-            .AddSingleton<IInitialSetupService, StartupSetupService>();
+            .AddSingleton<IAutoConfigurationService, XAutoConfigurationService>();
 
-    private static IServiceCollection AddLayoutService(this IServiceCollection services)
+    private static IServiceCollection AddGnomeDependentServices(this IServiceCollection services)
     {
         var currentDesktopEnvironment = Environment.GetEnvironmentVariable("XDG_CURRENT_DESKTOP");
         bool isGnome = currentDesktopEnvironment != null &&
@@ -25,7 +24,11 @@ public static class ServiceExtensions
             currentDesktopEnvironment.ToLower().Contains("unity"));
 
         return isGnome
-            ? services.AddSingleton<ILayoutService, GnomeLayoutService>()
-            : services.AddSingleton<ILayoutService, XLayoutService>();
+            ? services
+                .AddSingleton<ILayoutService, GnomeLayoutService>()
+                .AddSingleton<IInitialSetupService, GnomeSetupService>()
+            : services
+                .AddSingleton<ILayoutService, XLayoutService>()
+                .AddSingleton<IInitialSetupService, StartupSetupService>();
     }
 }

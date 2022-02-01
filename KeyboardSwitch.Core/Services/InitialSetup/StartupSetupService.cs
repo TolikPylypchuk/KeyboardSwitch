@@ -2,7 +2,7 @@ namespace KeyboardSwitch.Core.Services.InitialSetup;
 
 using KeyboardSwitch.Core.Services.Startup;
 
-public sealed class StartupSetupService : OneTimeInitialSetupService
+public class StartupSetupService : OneTimeInitialSetupService
 {
     private readonly IStartupService startupService;
     private readonly ILogger<StartupSetupService> logger;
