@@ -55,9 +55,9 @@ Categories=Utility
 desktop-file-install --dir=/usr/share/applications $SETTINGS_DESKTOP_FILE
 rm $SETTINGS_DESKTOP_FILE
 
-CURRENT_DE=$(echo "$XDG_CURRENT_DESKTOP" | tr '[:upper:]' '[:lower:]')
+command -v gnome-shell &> /dev/null
 
-if [ $CURRENT_DE = 'gnome' ] || [ $CURRENT_DE = 'unity' ]
+if [ "$?" = 0 ]
 then
     mkdir -p $GNOME_EXTENSION_DIR
     cp $INSTALL_DIR/{extension.js,metadata.json} $GNOME_EXTENSION_DIR
