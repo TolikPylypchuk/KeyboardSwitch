@@ -3,6 +3,7 @@ namespace KeyboardSwitch.Linux.Services;
 internal sealed class GnomeLayoutService : XLayoutService
 {
     private const string SwitchLayout = "switch-layout@tolik.io";
+    private const string Bash = "bash";
     private const string GnomeExtensions = "gnome-extensions";
     private const string GnomeShellExtensionTool = "gnome-shell-extension-tool";
 
@@ -27,15 +28,15 @@ internal sealed class GnomeLayoutService : XLayoutService
 
     private void EnableSwitchLayoutExtension()
     {
-        var command = Process.Start("command", $"-v {GnomeExtensions}");
+        var command = Process.Start(Bash, $"-c \"command -v {GnomeExtensions}\"");
         command.WaitForExit();
 
         if (command.ExitCode == 0)
         {
-            Process.Start(GnomeExtensions, $"enable {SwitchLayout}");
+            Process.Start(Bash, $"-c \"{GnomeExtensions} enable {SwitchLayout}\"");
         } else
         {
-            Process.Start(GnomeShellExtensionTool, $"-e {SwitchLayout}");
+            Process.Start(Bash, $"-c \"{GnomeShellExtensionTool} -e {SwitchLayout}\"");
         }
 
         this.isSwitchLayoutExtensionEnabled = true;
