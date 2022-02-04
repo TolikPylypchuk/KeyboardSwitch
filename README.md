@@ -36,9 +36,9 @@ You can get the latest version of the app from the [releases page on GitHub](htt
 
 After installing the app, open Keyboard Switch Settings - it should appear in the list of your apps.
 
-Immediately upon opening the app a dialog window should appear which says that Keyboard Switch Service would like to control this computer using accessibility features. The service app needs this to listen to the magic key combination while running in the background, and without these permissions the app won't work.
+Immediately upon opening the app a dialog window should appear which says that Keyboard Switch would like to control this computer using accessibility features. The service app needs this to listen to the magic key combination while running in the background, and without these permissions the app won't work.
 
-Click the _Open System Preferences_ button on the dialog window. Unlock the settings and check the _Keyboard Switch Service.app_ checkbox. Lock the settings, close System Preferences, and go back to the Keyboard Switch Settings app.
+Click the _Open System Preferences_ button on the dialog window. Unlock the settings and check the _Keyboard Switch.app_ checkbox. Lock the settings, close System Preferences, and go back to the Keyboard Switch Settings app.
 
 In the settings app press the _Auto-configure_ button.
 
@@ -63,6 +63,10 @@ If you're using an RPM package there are a couple things to note before installi
 Bear in mind that KeyboardSwitch only works on X11 - it won't work on Wayland (even with XWayland apparently).
 
 If you use the deb or RPM package, then simply install it either by double-clicking on it, or through the terminal. If you use the _tar.gz_ file, then the set-up is not quite as quick, so you can read about it in the [installation page](usage-guides/installation.md#installing-the-app).
+
+{% hint style="warning" %}
+If your desktop environment is GNOME then you should restart it right after installation. If you're not sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu, Debian, CentOS, Fedora and others (but not Linux Mint). Press _Alt+F2_, then type _r_ and press _Enter_. This will restart GNOME.
+{% endhint %}
 
 After installing the app, open Keyboard Switch Settings - it should appear in the list of your apps.
 

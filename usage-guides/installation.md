@@ -44,9 +44,9 @@ The installer will install multiple things:
 
 After installing the app, open Keyboard Switch Settings - it should appear in the list of your apps.
 
-Immediately upon opening the app a dialog window should appear which says that Keyboard Switch Service would like to control this computer using accessibility features. The service app needs this to listen to the magic key combination while running in the background, and without these permissions the app won't work.
+Immediately upon opening the app a dialog window should appear which says that Keyboard Switch would like to control this computer using accessibility features. The service app needs this to listen to the magic key combination while running in the background, and without these permissions the app won't work.
 
-Click the _Open System Preferences_ button on the dialog window. Unlock the settings and check the _Keyboard Switch Service.app_ checkbox. Lock the settings, close System Preferences, and go back to the Keyboard Switch Settings app.
+Click the _Open System Preferences_ button on the dialog window. Unlock the settings and check the _Keyboard Switch.app_ checkbox. Lock the settings, close System Preferences, and go back to the Keyboard Switch Settings app.
 
 If the dialog window didn't appear for some reason, then press the _Start_ button at the bottom of the window. The service app will start and immediately crash, because it doesn't have the accessibility permissions, and the dialog window will appear again.
 
@@ -81,13 +81,17 @@ The most popular desktop systems (at least GNOME, KDE Plasma, Xfce, and LXQt) al
 
 [Click here](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/59) to see the list of Linux distributions on which the app was tested.
 
+{% hint style="warning" %}
+If your desktop environment is GNOME then you should restart it right after installation. If you're not sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu, Debian, CentOS, Fedora and others (but not Linux Mint). Press _Alt+F2_, then type _r_ and press _Enter_. This will restart GNOME.
+{% endhint %}
+
 #### Using a Deb Package
 
 If you're running a Debian-based distribution (e.g. Ubuntu or Mint), then you can install KeyboardSwitch using a deb package. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases).
 
 The package takes care of xsel and the X Test extension, so you don't need to install them yourself.
 
-After installation, the settings app will be available in the list of installed apps, and the service app will be configured to run at login (it will be configured for all users though).
+After installation, the settings app will be available in the list of installed apps, and the service app will be configured to run at login.
 
 Both the _amd64_ and _arm64_ versions are available, but the latter is experimental.
 
@@ -105,7 +109,7 @@ If you're using RHEL, CentOS, or Rocky Linux, then make sure that the EPEL repos
 SUSE may complain that it cannot find libXtst when installing the app using the RPM package. This is because the package is targeted for RHEL and derivatives. You can ignore this warning and proceed with installation, but make sure that libXtst6 is installed before starting the app.
 {% endhint %}
 
-After installation, the settings app will be available in the list of installed apps, and the service app will be configured to run at login (it will be configured for all users though).
+After installation, the settings app will be available in the list of installed apps, and the service app will be configured to run at login.
 
 Both the _x86\_64_ and _aarch64_ versions are available, but the latter is experimental.
 

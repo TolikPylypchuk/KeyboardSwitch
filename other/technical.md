@@ -42,6 +42,8 @@ The service app uses X11, especially the X Keyboard Extension, and the X Test Ex
 
 The app also uses Bash and [xsel](https://github.com/kfish/xsel), but those are not used directly - rather they are used by [TextCopy](https://github.com/CopyText/TextCopy).
 
+If the Linux desktop environment is GNOME then the app switches layouts a little differently than in other DEs. GNOME doesn't let apps switch layouts using X11 directly - it will immediately switch it back. Instead, the app installers also add a small GNOME Shell extension (which is simply called Switch Layout) and the app switches layouts through it. GNOME should be made aware of this extension after installation, hence you should restart it after installing the app. If you don't then the app will still work, but won't be able to switch layouts until you log out or reboot.
+
 ### The Settings App
 
 The core logic of the settings app is implemented using [ReactiveUI](https://www.reactiveui.net) as the MVVM framework. I must say that it’s a real pleasure to use this framework. Also, [Splat](https://github.com/reactiveui/splat) is used for service location.
