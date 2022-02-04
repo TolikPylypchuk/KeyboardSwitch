@@ -22,7 +22,7 @@
     <choice id="io.tolik.keyboardswitch.service" visible="false">
         <pkg-ref id="io.tolik.keyboardswitch.service" />
     </choice>
-    <pkg-ref id="io.tolik.keyboardswitch.service" version="4.1.0" onConclusion="none">KeyboardSwitchService.pkg</pkg-ref>
+    <pkg-ref id="io.tolik.keyboardswitch.service" version="4.1.0" onConclusion="none">KeyboardSwitch.pkg</pkg-ref>
     <choice id="io.tolik.keyboardswitch.settings" visible="false">
         <pkg-ref id="io.tolik.keyboardswitch.settings" />
     </choice>

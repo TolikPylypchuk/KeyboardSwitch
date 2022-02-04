@@ -10,7 +10,7 @@ done
 
 rm /Library/LaunchAgents/io.tolik.keyboardswitch.plist
 
-rm -rf "/opt/Keyboard Switch Service.app"
+rm -rf "/opt/Keyboard Switch.app"
 rm -rf "/Applications/Keyboard Switch Settings.app"
 
 pkgutil --forget io.tolik.keyboardswitch.service

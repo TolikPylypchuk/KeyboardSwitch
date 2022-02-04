@@ -6,7 +6,7 @@
     <string>io.tolik.keyboardswitch</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/opt/Keyboard Switch Service.app/Contents/MacOS/KeyboardSwitch</string>
+        <string>/opt/Keyboard Switch.app/Contents/MacOS/KeyboardSwitch</string>
     </array>
     <key>KeepAlive</key>
     <false />

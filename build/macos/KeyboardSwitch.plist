@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleGetInfoString</key>
-	<string>Keyboard Switch Service</string>
+	<string>Keyboard Switch</string>
 	<key>CFBundleExecutable</key>
 	<string>KeyboardSwitch</string>
 	<key>LSExecutableArchitectures</key>
@@ -13,9 +13,9 @@
 	<key>CFBundleIdentifier</key>
 	<string>io.tolik.keyboardswitch.service</string>
 	<key>CFBundleName</key>
-	<string>Keyboard Switch Service</string>
+	<string>Keyboard Switch</string>
 	<key>CFBundleDisplayName</key>
-	<string>Keyboard Switch Service</string>
+	<string>Keyboard Switch</string>
 	<key>CFBundleIconFile</key>
 	<string>KeyboardSwitch.icns</string>
 	<key>CFBundleVersion</key>

@@ -1,5 +1,5 @@
 #!/bin/bash
 
-cp "$2/Keyboard Switch Service.app/Contents/Resources/io.tolik.keyboardswitch.plist" /Library/LaunchAgents/
+cp "$2/Keyboard Switch.app/Contents/Resources/io.tolik.keyboardswitch.plist" /Library/LaunchAgents/
 
 exit 0

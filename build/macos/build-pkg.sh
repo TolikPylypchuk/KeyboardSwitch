@@ -57,25 +57,25 @@ mkdir resources
 cp ../build/macos/license.txt resources/
 cp ../build/macos/readme.txt resources/
 
-mkdir "Keyboard Switch Service.app"
-mkdir "Keyboard Switch Service.app/Contents"
-mkdir "Keyboard Switch Service.app/Contents/MacOS"
-mkdir "Keyboard Switch Service.app/Contents/Resources"
+mkdir "Keyboard Switch.app"
+mkdir "Keyboard Switch.app/Contents"
+mkdir "Keyboard Switch.app/Contents/MacOS"
+mkdir "Keyboard Switch.app/Contents/Resources"
 
-cp ./keyboard-switch/KeyboardSwitch "Keyboard Switch Service.app/Contents/MacOS/"
-cp ./keyboard-switch/libe_sqlite3.dylib "Keyboard Switch Service.app/Contents/MacOS/"
-cp ./keyboard-switch/libuiohook.dylib "Keyboard Switch Service.app/Contents/MacOS/"
+cp ./keyboard-switch/KeyboardSwitch "Keyboard Switch.app/Contents/MacOS/"
+cp ./keyboard-switch/libe_sqlite3.dylib "Keyboard Switch.app/Contents/MacOS/"
+cp ./keyboard-switch/libuiohook.dylib "Keyboard Switch.app/Contents/MacOS/"
 
-cp ./keyboard-switch/appsettings.json "Keyboard Switch Service.app/Contents/Resources/"
-cp ./keyboard-switch/KeyboardSwitch.icns "Keyboard Switch Service.app/Contents/Resources/"
+cp ./keyboard-switch/appsettings.json "Keyboard Switch.app/Contents/Resources/"
+cp ./keyboard-switch/KeyboardSwitch.icns "Keyboard Switch.app/Contents/Resources/"
 
-cp ../build/macos/KeyboardSwitchService.plist "Keyboard Switch Service.app/Contents/"
-mv "Keyboard Switch Service.app/Contents/KeyboardSwitchService.plist" \
-"Keyboard Switch Service.app/Contents/Info.plist"
+cp ../build/macos/KeyboardSwitch.plist "Keyboard Switch.app/Contents/"
+mv "Keyboard Switch.app/Contents/KeyboardSwitch.plist" \
+"Keyboard Switch.app/Contents/Info.plist"
 
-cp ../build/macos/io.tolik.keyboardswitch.plist "Keyboard Switch Service.app/Contents/Resources/"
+cp ../build/macos/io.tolik.keyboardswitch.plist "Keyboard Switch.app/Contents/Resources/"
 
-sed -i '' "s/%ARCH%/$ARCH/g" "Keyboard Switch Service.app/Contents/Info.plist"
+sed -i '' "s/%ARCH%/$ARCH/g" "Keyboard Switch.app/Contents/Info.plist"
 
 mkdir "Keyboard Switch Settings.app"
 mkdir "Keyboard Switch Settings.app/Contents"
@@ -97,16 +97,16 @@ mv "Keyboard Switch Settings.app/Contents/KeyboardSwitchSettings.plist" \
 
 sed -i '' "s/%ARCH%/$ARCH/g" "Keyboard Switch Settings.app/Contents/Info.plist"
 
-codesign --remove-signature "Keyboard Switch Service.app/Contents/MacOS/KeyboardSwitch"
+codesign --remove-signature "Keyboard Switch.app/Contents/MacOS/KeyboardSwitch"
 
 codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitlements entitlements.plist \
-"Keyboard Switch Service.app/Contents/MacOS/libe_sqlite3.dylib"
+"Keyboard Switch.app/Contents/MacOS/libe_sqlite3.dylib"
 
 codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitlements entitlements.plist \
-"Keyboard Switch Service.app/Contents/MacOS/libuiohook.dylib"
+"Keyboard Switch.app/Contents/MacOS/libuiohook.dylib"
 
 codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entitlements entitlements.plist \
---options=runtime "Keyboard Switch Service.app/Contents/MacOS/KeyboardSwitch"
+--options=runtime "Keyboard Switch.app/Contents/MacOS/KeyboardSwitch"
 
 codesign --remove-signature "Keyboard Switch Settings.app/Contents/MacOS/KeyboardSwitchSettings"
 codesign --remove-signature "Keyboard Switch Settings.app/Contents/MacOS/libAvaloniaNative.dylib"
@@ -130,8 +130,8 @@ codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entit
 
 sed -i '' "s/%ARCH%/$ARCH/g" dist-pkg.xml
 
-pkgbuild --component "Keyboard Switch Service.app" --identifier io.tolik.keyboardswitch.service --version 4.1.0 \
---install-location /opt --scripts scripts KeyboardSwitchService.pkg
+pkgbuild --component "Keyboard Switch.app" --identifier io.tolik.keyboardswitch.service --version 4.1.0 \
+--install-location /opt --scripts scripts KeyboardSwitch.pkg
 
 pkgbuild --component "Keyboard Switch Settings.app" --identifier io.tolik.keyboardswitch.settings --version 4.1.0 \
 --install-location /Applications KeyboardSwitchSettings.pkg
@@ -139,7 +139,7 @@ pkgbuild --component "Keyboard Switch Settings.app" --identifier io.tolik.keyboa
 productbuild --sign "$APPLE_INSTALLER_CERTIFICATE" --distribution dist-pkg.xml --resources resources \
 "KeyboardSwitch-4.1-$ARCH.pkg"
 
-rm KeyboardSwitchService.pkg
+rm KeyboardSwitch.pkg
 rm KeyboardSwitchSettings.pkg
 
 xcrun notarytool submit "KeyboardSwitch-4.1-$ARCH.pkg" --wait \
