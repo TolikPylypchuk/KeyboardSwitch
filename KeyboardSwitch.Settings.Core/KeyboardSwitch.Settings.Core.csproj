@@ -26,7 +26,7 @@
 
   <ItemGroup>
     <PackageReference Include="akavache" Version="8.1.1" />
-    <PackageReference Include="DynamicData" Version="7.4.9" />
+    <PackageReference Include="DynamicData" Version="7.4.11" />
     <PackageReference Include="Fody" Version="6.6.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -35,8 +35,8 @@
     <PackageReference Include="ReactiveUI.Fody" Version="17.1.17" />
     <PackageReference Include="ReactiveUI.Validation" Version="2.2.1" />
     <PackageReference Include="Splat" Version="14.1.17" />
-    <PackageReference Include="System.Interactive" Version="5.1.0" />
-    <PackageReference Include="System.Interactive.Async" Version="5.1.0" />
+    <PackageReference Include="System.Interactive" Version="6.0.1" />
+    <PackageReference Include="System.Interactive.Async" Version="6.0.1" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
   </ItemGroup>
 

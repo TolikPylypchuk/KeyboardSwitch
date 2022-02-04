@@ -108,7 +108,7 @@ internal sealed class SharpHookService : Disposable, IKeyboardHookService
     {
         this.logger.LogInformation("Creating a global hook");
         token.Register(this.hook.Dispose);
-        await this.hook.Start();
+        await this.hook.RunAsync();
     }
 
     protected override void Dispose(bool disposing)
