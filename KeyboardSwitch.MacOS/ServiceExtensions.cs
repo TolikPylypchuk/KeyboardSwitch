@@ -15,6 +15,7 @@ public static class ServiceExtensions
             .AddSingleton<IStartupService, LaunchdStartupService>()
             .AddSingleton<IServiceCommunicator, LaunchdServiceCommunicator>()
             .AddSingleton<IAutoConfigurationService, MacAutoConfigurationService>()
-            .AddSingleton<IInitialSetupService, LaunchdSetupService>();
+            .AddSingleton<IInitialSetupService, LaunchdSetupService>()
+            .AddSingleton<IMainLoopRunner, MacOSMainLoopRunner>();
 
 }

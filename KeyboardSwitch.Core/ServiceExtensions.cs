@@ -7,7 +7,7 @@ public static class ServiceExtensions
     public static IServiceCollection AddCoreKeyboardSwitchServices(this IServiceCollection services) =>
         services
             .AddClipboard()
-            .AddSingleton<IReactiveGlobalHook, BlockingReactiveGlobalHook>()
+            .AddSingleton<IReactiveGlobalHook, SimpleReactiveGlobalHook>()
             .AddSingleton<IEventSimulator, EventSimulator>()
             .AddSingleton<IKeyboardHookService, SharpHookService>()
             .AddSingleton<ITextService, ClipboardTextService>()

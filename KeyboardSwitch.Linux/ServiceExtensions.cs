@@ -15,7 +15,8 @@ public static class ServiceExtensions
             .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
             .AddSingleton<IUserActivitySimulator, SharpUserActivitySimulator>()
             .AddSingleton<IAutoConfigurationService, XAutoConfigurationService>()
-            .AddSingleton<IInitialSetupService, StartupSetupService>();
+            .AddSingleton<IInitialSetupService, StartupSetupService>()
+            .AddSingleton<IMainLoopRunner, NoOpMainLoopRunner>();
 
     private static IServiceCollection AddLayoutService(this IServiceCollection services)
     {

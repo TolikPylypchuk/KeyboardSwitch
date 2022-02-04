@@ -8,6 +8,15 @@ internal static class CoreFoundation
     public static extern void CFRelease(IntPtr @ref);
 
     [DllImport(CoreFoundationLib)]
+    public static extern CFRunLoopRef CFRunLoopGetCurrent();
+
+    [DllImport(CoreFoundationLib)]
+    public static extern void CFRunLoopRun();
+
+    [DllImport(CoreFoundationLib)]
+    public static extern void CFRunLoopStop(CFRunLoopRef rl);
+
+    [DllImport(CoreFoundationLib)]
     public static extern long CFStringGetLength(CFStringRef @ref);
 
     [DllImport(CoreFoundationLib)]

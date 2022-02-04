@@ -22,5 +22,6 @@ public static class SerivceExtensions
             .AddSingleton<IUserActivitySimulator, SharpUserActivitySimulator>()
             .AddSingleton<IStartupService, RegistryStartupService>()
             .AddSingleton<IAutoConfigurationService, WinAutoConfigurationService>()
-            .AddSingleton<IInitialSetupService, StartupSetupService>();
+            .AddSingleton<IInitialSetupService, StartupSetupService>()
+            .AddSingleton<IMainLoopRunner, NoOpMainLoopRunner>();
 }

@@ -7,6 +7,7 @@ public class Worker : BackgroundService
     private readonly IKeyboardHookService keyboardHookService;
     private readonly ISwitchService switchService;
     private readonly IAppSettingsService settingsService;
+    private readonly IMainLoopRunner mainLoopRunner;
     private readonly IExitCodeSetter exitCodeSetter;
     private readonly IHost host;
     private readonly GlobalSettings globalSettings;
@@ -18,6 +19,7 @@ public class Worker : BackgroundService
         IKeyboardHookService keyboardHookService,
         ISwitchService switchService,
         IAppSettingsService settingsService,
+        IMainLoopRunner mainLoopRunner,
         IExitCodeSetter exitCodeSetter,
         IHost host,
         IOptions<GlobalSettings> globalSettings,
@@ -26,6 +28,7 @@ public class Worker : BackgroundService
         this.keyboardHookService = keyboardHookService;
         this.switchService = switchService;
         this.settingsService = settingsService;
+        this.mainLoopRunner = mainLoopRunner;
         this.exitCodeSetter = exitCodeSetter;
         this.host = host;
         this.globalSettings = globalSettings.Value;
@@ -75,7 +78,11 @@ public class Worker : BackgroundService
 
         this.logger.LogDebug("Starting the service execution");
 
-        await this.keyboardHookService.StartHook(token);
+        var hook = this.keyboardHookService.StartHook(token);
+
+        this.mainLoopRunner.RunMainLoopIfNeeded(token);
+
+        await hook;
     }
 
     private async Task RegisterHotKeysAsync()
