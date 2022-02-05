@@ -40,5 +40,7 @@ internal sealed class GnomeLayoutService : XLayoutService
         }
 
         this.isSwitchLayoutExtensionEnabled = true;
+
+        Thread.Sleep(50);
     }
 }
