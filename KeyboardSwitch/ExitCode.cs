@@ -7,5 +7,6 @@ public enum ExitCode
     IncompatibleSettingsVersion = 2,
     KeyboardSwitchNotRunning = 3,
     UnknownCommand = 4,
-    SettingsDoNotExist = 5
+    SettingsDoNotExist = 5,
+    MacOSAccessibilityDisabled = 6
 }

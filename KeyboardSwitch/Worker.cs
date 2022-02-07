@@ -1,5 +1,8 @@
 namespace KeyboardSwitch;
 
+using SharpHook;
+using SharpHook.Native;
+
 public class Worker : BackgroundService
 {
     private readonly IKeyboardHookService keyboardHookService;
@@ -42,20 +45,6 @@ public class Worker : BackgroundService
             this.mainLoopRunner.RunMainLoopIfNeeded(token);
 
             await task;
-        } catch (IncompatibleAppVersionException e)
-        {
-            var settingsPath = Environment.ExpandEnvironmentVariables(this.globalSettings.SettingsFilePath);
-
-            this.logger.LogCritical(
-                e,
-                "Incompatible app version found in settings: {Version}. " +
-                "Delete the settings at '{SettingsPath}' and let the app recreate a compatible version",
-                e.Version,
-                settingsPath);
-
-            this.exitCodeSetter.AppExitCode = ExitCode.IncompatibleSettingsVersion;
-
-            await this.host.StopAsync(token);
         } catch (Exception e)
         {
             this.logger.LogCritical(e, "The KeyboardSwitch service has crashed");
@@ -72,15 +61,43 @@ public class Worker : BackgroundService
 
     private async Task StartServiceAsync(CancellationToken token)
     {
-        this.logger.LogDebug("Configuring the KeyboardSwitch service");
+        try
+        {
+            this.logger.LogDebug("Configuring the KeyboardSwitch service");
 
-        await this.RegisterHotKeysAsync();
+            await this.RegisterHotKeysAsync();
 
-        this.settingsService.SettingsInvalidated.SubscribeAsync(this.RefreshHotKeysAsync);
+            this.settingsService.SettingsInvalidated.SubscribeAsync(this.RefreshHotKeysAsync);
 
-        this.logger.LogDebug("Starting the service execution");
+            this.logger.LogDebug("Starting the service execution");
 
-        await this.keyboardHookService.StartHook(token);
+            await this.keyboardHookService.StartHook(token);
+        } catch (IncompatibleAppVersionException e)
+        {
+            var settingsPath = Environment.ExpandEnvironmentVariables(this.globalSettings.SettingsFilePath);
+
+            this.logger.LogCritical(
+                e,
+                "Incompatible app version found in settings: {Version}. " +
+                "Delete the settings at '{SettingsPath}' and let the app recreate a compatible version",
+                e.Version,
+                settingsPath);
+
+            this.exitCodeSetter.AppExitCode = ExitCode.IncompatibleSettingsVersion;
+            await this.host.StopAsync(token);
+        } catch (HookException e) when (e.Result == UioHookResult.ErrorAxApiDisabled)
+        {
+            this.logger.LogCritical(
+                e, "The KeyboardSwitch service cannot start as it doesn't have access to the macOS accessibility API");
+
+            this.exitCodeSetter.AppExitCode = ExitCode.MacOSAccessibilityDisabled;
+            await this.host.StopAsync(token);
+        } catch (Exception e)
+        {
+            this.logger.LogCritical(e, "The KeyboardSwitch service has crashed");
+            this.exitCodeSetter.AppExitCode = ExitCode.Error;
+            await this.host.StopAsync(token);
+        }
     }
 
     private async Task RegisterHotKeysAsync()
