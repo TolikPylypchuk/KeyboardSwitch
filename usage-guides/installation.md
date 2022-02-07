@@ -44,9 +44,9 @@ The installer will install multiple things:
 
 After installing the app, open Keyboard Switch Settings - it should appear in the list of your apps.
 
-Immediately upon opening the app a dialog window should appear which says that Keyboard Switch would like to control this computer using accessibility features. The service app needs this to listen to the magic key combination while running in the background, and without these permissions the app won't work.
+Immediately upon opening the app a dialog window should appear which says that Keyboard Switch would like to control this computer using accessibility features. The app needs this to listen to the magic key combination while running in the background, and without these permissions it won't work.
 
-Click the _Open System Preferences_ button on the dialog window. Unlock the settings and check the _Keyboard Switch.app_ checkbox. Lock the settings, close System Preferences, and go back to the Keyboard Switch Settings app.
+Click the _Open System Preferences_ button on the dialog window. Unlock the settings and check the _Keyboard Switch_ checkbox. Lock the settings, close System Preferences, and go back to the Keyboard Switch Settings app.
 
 If the dialog window didn't appear for some reason, then press the _Start_ button at the bottom of the window. The service app will start and immediately crash, because it doesn't have the accessibility permissions, and the dialog window will appear again.
 
