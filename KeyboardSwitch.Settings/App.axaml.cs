@@ -62,6 +62,8 @@ public class App : Application, IEnableLogger
             this.desktop.MainWindow = await this.CreateMainWindow(mainViewModel);
             this.desktop.MainWindow.Show();
 
+            GetDefaultService<IInitialSetupService>().InitializeKeyboardSwitchSetup();
+
             this.desktop.Exit += this.OnExit;
         }
 
@@ -86,8 +88,6 @@ public class App : Application, IEnableLogger
 
         try
         {
-            GetDefaultService<IInitialSetupService>().InitializeKeyboardSwitchSetup();
-
             var appSettings = await GetDefaultService<IAppSettingsService>().GetAppSettingsAsync();
 
             var converterSettings = await GetDefaultService<IConverterSettingsService>()
