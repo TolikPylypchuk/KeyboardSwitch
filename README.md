@@ -8,6 +8,10 @@ If you ever write some text and then realize that you have written it using a wr
 
 I hope this app will make your life at least 1% easier :)
 
+{% hint style="info" %}
+If you're using version 4.0, then you should upgrade to version 4.1 as soon as possible since it contains several improvements and bug fixes.
+{% endhint %}
+
 ## Quick Start
 
 ### Windows
