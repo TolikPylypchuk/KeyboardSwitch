@@ -99,6 +99,30 @@ configure it further. But if you do, the you can read more [in the docs](https:/
 To switch text forward, select the text, and press _Ctrl+Shift_ twice. To switch it backward, press _Ctrl+Alt+Shift_
 twice instead.
 
+## How the App Works
+
+The app is composed of two parts: the Keyboard Switch service and the Keyboard Switch Settings app. The service always
+runs in the background (and starts when you log into the system) and listens to key presses. When you press the magic
+key combination, it reacts by copying the selected text, transforming it, and pasting it for you. The settings app is
+used for configuring the service and for starting/stopping it manually.
+
+Here are the basic steps you should take to switch the text:
+
+- Type some text using an incorrect layout
+- Realize your mistake
+- Select the text (you can press _Ctrl+A_ to select all text, or _Command+A_ on macOS)
+- Press the magic key combination (the default is pressing _Ctrl+Shift_ twice)
+- Profit
+
+The app uses the list of your layouts in the same order as defined by the system. You can switch both forward and
+backward through this list. It will look at the current layout to determine how to switch text, so you shouldn't change
+the layout before switching. The app also automatically changes the layout, so you don't have to do it yourself.
+
+The app uses the clipboard to get the text to transform, and then puts the transformed text back into the clipboard.
+The app will try to preserve the text that was in the clipboard before switching, and to restore it afterwards. It
+doesn't guarantee that the text will be restored though. Also, any non-text data (e.g. a file or a picture) will not
+be restored.
+
 ## Supported Platforms
 
 Version 4.1 works on Windows 10/11, macOS 10.11+, and Linux via X11. Wayland support may come in a future version, but
