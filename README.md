@@ -88,9 +88,9 @@ Here are the basic steps you should take to switch the text:
 * Press the magic key combination (the default is pressing _Ctrl+Shift_ twice)
 * Profit
 
-The app uses the list of your layouts in the same order as defined by the system. You can switch both forward and backward through this list. The app also automatically changes your layouts, so you don't have to do it yourself. You cannot add a layout that's not present as one of the system's layouts. If you add/remove a layout while the app is running, you'll have configure it in the settings.
+The app uses the list of your layouts in the same order as defined by the system. You can switch both forward and backward through this list. It will look at the current layout to determine how to switch text, so you shouldn't change the layout before switching. The app also automatically changes the layout, so you don't have to do it yourself.
 
-The app uses the clipboard to get the text to transform, and then puts the transformed text back into the clipboard. The app will try to preserve the text that was in the clipboard before switching, and restoring it afterwards. It doesn't guarantee that the text will be restored though. Also, any non-text data (e.g. a file or a picture) will not be restored.
+The app uses the clipboard to get the text to transform, and then puts the transformed text back into the clipboard. The app will try to preserve the text that was in the clipboard before switching, and to restore it afterwards. It doesn't guarantee that the text will be restored though. Also, any non-text data (e.g. a file or a picture) will not be restored.
 
 {% hint style="info" %}
 **Note:** The app simulates pressing _Ctrl+C_ (or _Command+C_ on macOS) to copy and _Ctrl+V_ (or _Command+V_ on macOS) to paste text. This is the default behavior for most applications. But if you are working in an app which behaves differently on those key presses (e.g. a terminal), this app will not be able to instantly switch text. You can disable this behavior, and copy/paste the text manually.
