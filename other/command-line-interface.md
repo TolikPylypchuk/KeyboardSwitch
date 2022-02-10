@@ -2,7 +2,7 @@
 
 The KeyboardSwitch service app has a CLI which you can use to control it. On Windows it's not really convenient as GUI apps cannot output anything to the console, but can be used as well.
 
-The name of the executable is `KeyboardSwitch`. This article will assume it's installed on Linux in the `/opt/keyboard-switch` directory. On macOS it's located in the `/opt/Keyboard Switch Service.app/Contents/MacOS` directory.
+The name of the executable is `KeyboardSwitch`. This article will assume it's installed on Linux in the `/opt/keyboard-switch` directory. On macOS it's located in the `/opt/Keyboard Switch.app/Contents/MacOS` directory.
 
 ## Commands
 

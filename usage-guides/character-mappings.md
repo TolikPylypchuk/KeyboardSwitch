@@ -30,6 +30,10 @@ You should press the keys _in the same order_ for all layouts. Order matters her
 
 If you don't want to map a certain character, you can put a space in its position in the other layout. The space character acts as a _don't map this character_ command, though it should generally be avoided.
 
+{% hint style="info" %}
+**Note:** This app is "Western-oriented". I developed it specifically to handle switching between Cyrillic and Latin scripts. I don't know how it will work (if at all) with Eastern languages/scripts.
+{% endhint %}
+
 ## Auto-Configuration
 
 Even though you have to do it only once, configuring character mappings is still cumbersome and error-prone. That's why the app includes the auto-configuration feature. It's available only when all text fields are empty. The auto-configuration is quite simple (naïve even), and it shouldn't be 100% trusted, so you still have to check its output and fix mistakes, or add other characters manually. But usually auto-configuration should be good enough.

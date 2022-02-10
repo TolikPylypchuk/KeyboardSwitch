@@ -8,7 +8,7 @@ The UI for the settings app was created using [Avalonia](https://avaloniaui.net)
 
 ## Changelog
 
-### v4.1 (TBD)
+### [v4.1](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.1) (10 February 2022)
 
 * The app now works on macOS
 * The app now supports Arm64 in addition to x64 (but the support is experimental for Windows and Linux)

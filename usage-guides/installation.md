@@ -1,9 +1,5 @@
 # Installation
 
-{% hint style="warning" %}
-Version 4.1 is almost ready, but not yet released. If you want to take it for a spin, then you should download a nightly build from GitHub Actions instead of getting it from the releases page.
-{% endhint %}
-
 ## Windows
 
 ### Using a Windows Installer
@@ -28,7 +24,7 @@ Upon uninstallation the installer will ask whether you want to delete the app's 
 
 ### Using the Portable Version
 
-If you don't want to install the app (or can't), you can use the portable version of the app. It's literally the same as the installable version; there are no differences. Again, go to the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases) and download _KeyboardSwitch-4.1-x64-win.zip_ or _KeyboardSwitch-4.1-arm64-win.zip_. If you're not sure which one you should download, then it's most probably x64. Extract the archive to anywhere you want and start _KeyboardSwitchSettings.exe_. You can configure the app to run when you log in just like the installed version. The configuration for the portable version is also stored under the user's local app data folder.
+If you don't want to install the app (or can't), you can use the portable version of the app. It's literally the same as the installable version; there are no differences. Again, go to the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases) and download _KeyboardSwitch-4.1-x64-win.zip_ or _KeyboardSwitch-4.1-arm64-win.zip_. If you're not sure which one you should download, then it's most probably x64. Extract the archive to anywhere you want and start _KeyboardSwitchSettings.exe_. It will configure the app to run when you log in just like the installed version. The configuration for the portable version is also stored under the user's local app data folder.
 
 ## macOS
 
@@ -44,11 +40,11 @@ The installer will install multiple things:
 
 After installing the app, open Keyboard Switch Settings - it should appear in the list of your apps.
 
-Immediately upon opening the app a dialog window should appear which says that Keyboard Switch would like to control this computer using accessibility features. The app needs this to listen to the magic key combination while running in the background, and without these permissions it won't work.
+Immediately upon opening the app a dialog window should appear which says that Keyboard Switch would like to control this computer using accessibility features. The app needs this to listen to the magic key combination while running in the background, and without these permissions it won't work. This dialog will appear only when you're installing the app for the first time. If you have installed it previously, then macOS will most probably remember that you gave the app appropriate permissions.
 
 Click the _Open System Preferences_ button on the dialog window. Unlock the settings and check the _Keyboard Switch_ checkbox. Lock the settings, close System Preferences, and go back to the Keyboard Switch Settings app.
 
-If the dialog window didn't appear for some reason, then press the _Start_ button at the bottom of the window. The service app will start and immediately crash, because it doesn't have the accessibility permissions, and the dialog window will appear again.
+If the dialog window didn't appear for some reason, then press the _Start_ button at the bottom of the window. The service app will start and immediately stop, because it doesn't have the accessibility permissions, and the dialog window will appear again.
 
 You should configure the character mappings (you can read more about it in the next article). After you have configured the character mappings and possibly some other preferences, start the app using the _Start_ button. That's it! Now you're ready to use the Keyboard Switch service.
 
@@ -75,11 +71,11 @@ There are several prerequisites for running the app on Linux:
 * Bash - used to call xsel, but you don't need to have it as your default shell
 * Freedesktop conventions - used to make the service app start when you log in, and to make the settings app appear in the list of your installed apps (not required for the app itself though)
 
-Keyboard Switch doesn't support Wayland (even with XWayland apparently).
+Keyboard Switch doesn't support Wayland (even with XWayland).
 
-The most popular desktop systems (at least GNOME, KDE Plasma, Xfce, and LXQt) all adhere to the Freedesktop protocols, so the last prerequisite is automatically available, unless you're running a very unusual setup.
+The most popular desktop systems (at least GNOME, KDE Plasma, Cinnamon, and LXQt) all adhere to the Freedesktop protocols, so the last prerequisite is automatically available, unless you're running a very unusual setup.
 
-[Click here](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/59) to see the list of Linux distributions on which the app was tested.
+[Click here](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/76) to see the list of Linux distributions on which the app was tested.
 
 {% hint style="warning" %}
 If your desktop environment is GNOME then you should restart it right after installation. If you're not sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu, Debian, CentOS, Fedora and others (but not Linux Mint). Press _Alt+F2_, then type _r_ and press _Enter_. This will restart GNOME.
@@ -115,11 +111,11 @@ Both the _x86\_64_ and _aarch64_ versions are available, but the latter is exper
 
 #### Using a Tar Archive
 
-KeyboardSwitch is also available as a _tar.gz_ fie. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). You can then extract it to anywhere you like (e.g. into the _/opt_ directory). The deployed app includes two scripts - _install.sh_ and _uninstall.sh_. _install.sh_ configures Freedesktop to start the KeyboardSwitch service when you log in, and to add the settings app to the list of installed apps. _uninstall.sh_ deletes this configuration.
+KeyboardSwitch is also available as a _tar.gz_ fie. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). You can then extract it to anywhere you like (e.g. into the _/opt_ directory). The deployed app includes two scripts - _install.sh_ and _uninstall.sh_. _install.sh_ adds the settings app to the list of installed apps. _uninstall.sh_ deletes this configuration.
 
 Both the _x64_ and _arm64_ versions are available, but the latter is experimental.
 
-The following scripts assume that the `/opt` directory is writable.
+The following scripts assume that the _/opt_ directory is writable.
 
 Here are the steps required for installing the app on Debian, Ubuntu, Linux Mint, etc.:
 
