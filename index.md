@@ -80,14 +80,14 @@ If you use the deb or RPM package, then simply install it either by double-click
 you use the _tar.gz_ file, then the set-up is not quite as quick, so you can read about it in
 [the installation page](https://docs.keyboardswitch.tolik.io/usage-guides/installation#linux).
 
-Bear in mind that an RPM package may need
+Bear in mind that the RPM package may need
 [additional setup](https://docs.keyboardswitch.tolik.io/usage-guides/installation#linux).
 
 If your desktop environment is GNOME then you should restart it right after installation. If you're not sure which
 desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu, Debian, CentOS,
 Fedora and others (but not Linux Mint). Press _Alt+F2_, then type _r_ and press _Enter_. This will restart GNOME.
 
-After installing the app, open Keyboard Switch Settings - it should appear in the list of your apps (if you desktop
+After installing the app, open Keyboard Switch Settings - it should appear in the list of your apps (if your desktop
 environment groups your apps, then it will most probably appear under the _Utilities_ or _Accessories_ group).
 
 In the opened app press the _Auto-configure_ button.
