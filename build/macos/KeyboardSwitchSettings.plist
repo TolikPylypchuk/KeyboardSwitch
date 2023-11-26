@@ -19,9 +19,9 @@
 	<key>CFBundleIconFile</key>
 	<string>KeyboardSwitch.icns</string>
 	<key>CFBundleVersion</key>
-	<string>4.1.0</string>
+	<string>4.2.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.1.0</string>
+	<string>4.2.0</string>
 	<key>IFMajorVersion</key>
 	<integer>4</integer>
 	<key>IFMinorVersion</key>

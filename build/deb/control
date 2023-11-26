@@ -1,5 +1,5 @@
 Package: keyboard-switch
-Version: 4.1
+Version: 4.2
 Architecture: %ARCH%
 Maintainer: Tolik Pylypchuk <pylypchuk.tolik@gmail.com>
 Description: Switches typed text as if it were typed with another keyboard layout

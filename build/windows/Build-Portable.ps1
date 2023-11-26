@@ -29,12 +29,12 @@ Remove-Item -Path .\bin\KeyboardSwitch\icon.png
 
 Rename-Item -Path .\bin\KeyboardSwitch\appsettings.windows.json -NewName appsettings.json
 
-if (Test-Path .\bin\KeyboardSwitch-4.1-$arch-win.zip)
+if (Test-Path .\bin\KeyboardSwitch-4.2-$arch-win.zip)
 {
-    Remove-Item -Path .\bin\KeyboardSwitch-4.1-$arch-win.zip
+    Remove-Item -Path .\bin\KeyboardSwitch-4.2-$arch-win.zip
 }
 
-Compress-Archive -Path .\bin\KeyboardSwitch -DestinationPath .\bin\KeyboardSwitch-4.1-$arch-win.zip
+Compress-Archive -Path .\bin\KeyboardSwitch -DestinationPath .\bin\KeyboardSwitch-4.2-$arch-win.zip
 
 Get-ChildItem -Path .\bin\KeyboardSwitch\* -File -Recurse | ForEach-Object { $_.Delete() }
 Start-Sleep -Seconds 0.2

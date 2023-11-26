@@ -1,30 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
     <TargetFrameworks>net6.0;net6.0-windows</TargetFrameworks>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Platforms>x64;ARM64</Platforms>
+    <OutputType>WinExe</OutputType>
     <ApplicationIcon>icon.ico</ApplicationIcon>
-    <AssemblyVersion>4.1.0.0</AssemblyVersion>
-    <FileVersion>4.1.0.0</FileVersion>
     <AssemblyName>KeyboardSwitchSettings</AssemblyName>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <OutputPath>$(MSBuildProjectDirectory)\..\bin\$(Platform)\$(Configuration)</OutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <PublishTrimmed>true</PublishTrimmed>
-    <TrimMode>copyused</TrimMode>
-    <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
-    <DebuggerSupport>false</DebuggerSupport>
-    <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
-    <EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
-    <HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
-    <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(TargetFramework) == 'net6.0-windows'">

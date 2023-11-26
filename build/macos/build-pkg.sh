@@ -130,19 +130,19 @@ codesign --sign "$APPLE_APPLICATION_CERTIFICATE" --timestamp --no-strict --entit
 
 sed -i '' "s/%ARCH%/$ARCH/g" dist-pkg.xml
 
-pkgbuild --component "Keyboard Switch.app" --identifier io.tolik.keyboardswitch.service --version 4.1.0 \
+pkgbuild --component "Keyboard Switch.app" --identifier io.tolik.keyboardswitch.service --version 4.2.0 \
 --install-location /opt --scripts scripts KeyboardSwitch.pkg
 
-pkgbuild --component "Keyboard Switch Settings.app" --identifier io.tolik.keyboardswitch.settings --version 4.1.0 \
+pkgbuild --component "Keyboard Switch Settings.app" --identifier io.tolik.keyboardswitch.settings --version 4.2.0 \
 --install-location /Applications KeyboardSwitchSettings.pkg
 
 productbuild --sign "$APPLE_INSTALLER_CERTIFICATE" --distribution dist-pkg.xml --resources resources \
-"KeyboardSwitch-4.1-$ARCH.pkg"
+"KeyboardSwitch-4.2-$ARCH.pkg"
 
 rm KeyboardSwitch.pkg
 rm KeyboardSwitchSettings.pkg
 
-xcrun notarytool submit "KeyboardSwitch-4.1-$ARCH.pkg" --wait \
+xcrun notarytool submit "KeyboardSwitch-4.2-$ARCH.pkg" --wait \
 --apple-id "$APPLE_ID" --team-id "$APPLE_TEAM_ID" --password "$NOTARIZATION_PASSWORD"
 
-xcrun stapler staple "KeyboardSwitch-4.1-$ARCH.pkg"
+xcrun stapler staple "KeyboardSwitch-4.2-$ARCH.pkg"

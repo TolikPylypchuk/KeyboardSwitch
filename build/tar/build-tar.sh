@@ -51,8 +51,8 @@ mv ./keyboard-switch/appsettings.linux.json ./keyboard-switch/appsettings.json
 cp ../build/tar/install.sh ./keyboard-switch
 cp ../build/tar/uninstall.sh ./keyboard-switch
 
-rm ./keyboard-switch-4.1-"$ARCH".tar.gz 2> /dev/null
+rm ./keyboard-switch-4.2-"$ARCH".tar.gz 2> /dev/null
 
-tar -czf ./keyboard-switch-4.1-"$ARCH".tar.gz ./keyboard-switch
+tar -czf ./keyboard-switch-4.2-"$ARCH".tar.gz ./keyboard-switch
 
 rm -rf ./keyboard-switch 2> /dev/null

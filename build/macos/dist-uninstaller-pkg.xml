@@ -18,5 +18,5 @@
     <choice id="io.tolik.keyboardswitch.uninstaller" visible="false">
         <pkg-ref id="io.tolik.keyboardswitch.uninstaller" />
     </choice>
-    <pkg-ref id="io.tolik.keyboardswitch.uninstaller" version="4.1.0" onConclusion="none">KeyboardSwitchUninstaller.pkg</pkg-ref>
+    <pkg-ref id="io.tolik.keyboardswitch.uninstaller" version="4.2.0" onConclusion="none">KeyboardSwitchUninstaller.pkg</pkg-ref>
 </installer-gui-script>

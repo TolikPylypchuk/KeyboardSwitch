@@ -48,11 +48,11 @@ rm ./keyboard-switch/icon.icns
 
 mv ./keyboard-switch/appsettings.linux.json ./keyboard-switch/appsettings.json
 
-rm ./keyboard-switch_4.1-1_"$ARCH".deb 2> /dev/null
-rm -rf ./keyboard-switch_4.1-1_"$ARCH" 2> /dev/null
+rm ./keyboard-switch_4.2-1_"$ARCH".deb 2> /dev/null
+rm -rf ./keyboard-switch_4.2-1_"$ARCH" 2> /dev/null
 
-mkdir keyboard-switch_4.1-1_"$ARCH"
-cd keyboard-switch_4.1-1_"$ARCH"
+mkdir keyboard-switch_4.2-1_"$ARCH"
+cd keyboard-switch_4.2-1_"$ARCH"
 
 mkdir DEBIAN
 cd DEBIAN
@@ -79,5 +79,5 @@ mv ./usr/share/icons/hicolor/512x512/app/icon.png ./usr/share/icons/hicolor/512x
 sudo chmod 644 ./usr/share/icons/hicolor/512x512/app/keyboard-switch.png
 
 cd ..
-dpkg-deb --build --root-owner-group keyboard-switch_4.1-1_"$ARCH"
-rm -rf keyboard-switch_4.1-1_"$ARCH"
+dpkg-deb --build --root-owner-group keyboard-switch_4.2-1_"$ARCH"
+rm -rf keyboard-switch_4.2-1_"$ARCH"

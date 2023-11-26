@@ -1,5 +1,5 @@
 Name: keyboard-switch
-Version: 4.1
+Version: 4.2
 Release: 1
 Summary: Switches typed text as if it were typed with another keyboard layout
 

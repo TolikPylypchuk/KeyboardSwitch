@@ -2,7 +2,7 @@
 <installer-gui-script minSpecVersion="1">
     <pkg-ref id="io.tolik.keyboardswitch.service"/>
     <pkg-ref id="io.tolik.keyboardswitch.settings"/>
-    <product id="io.tolik.keyboardswitch" version="4.1.0"/>
+    <product id="io.tolik.keyboardswitch" version="4.2.0"/>
     <title>Keyboard Switch</title>
     <options customize="never" require-scripts="false" hostArchitectures="%ARCH%" />
     <volume-check>
@@ -22,9 +22,9 @@
     <choice id="io.tolik.keyboardswitch.service" visible="false">
         <pkg-ref id="io.tolik.keyboardswitch.service" />
     </choice>
-    <pkg-ref id="io.tolik.keyboardswitch.service" version="4.1.0" onConclusion="none">KeyboardSwitch.pkg</pkg-ref>
+    <pkg-ref id="io.tolik.keyboardswitch.service" version="4.2.0" onConclusion="none">KeyboardSwitch.pkg</pkg-ref>
     <choice id="io.tolik.keyboardswitch.settings" visible="false">
         <pkg-ref id="io.tolik.keyboardswitch.settings" />
     </choice>
-    <pkg-ref id="io.tolik.keyboardswitch.settings" version="4.1.0" onConclusion="none">KeyboardSwitchSettings.pkg</pkg-ref>
+    <pkg-ref id="io.tolik.keyboardswitch.settings" version="4.2.0" onConclusion="none">KeyboardSwitchSettings.pkg</pkg-ref>
 </installer-gui-script>
