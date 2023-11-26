@@ -6,25 +6,28 @@ on:
       - master
   workflow_dispatch:
 
+env:
+  DOTNET_VERSION: 8.0.x
+
 jobs:
   build-installer:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1.1
+        uses: microsoft/setup-msbuild@v1
         with:
           msbuild-architecture: x64
 
       - name: Setup NuGet
-        uses: NuGet/setup-nuget@v1.0.5
+        uses: NuGet/setup-nuget@v1
 
       - name: Restore the NuGet Packages
         shell: pwsh
@@ -36,13 +39,13 @@ jobs:
 
       - name: Rename the Installer
         shell: pwsh
-        run: Rename-Item -Path ".\KeyboardSwitch.Windows.Setup\bin\x64\Release\Keyboard Switch.msi" -NewName KeyboardSwitch-4.1-x64-win.msi
+        run: Rename-Item -Path ".\KeyboardSwitch.Windows.Setup\bin\x64\Release\Keyboard Switch.msi" -NewName KeyboardSwitch-4.2-x64-win.msi
 
       - name: Upload the Installer
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: nightly-build
-          path: .\KeyboardSwitch.Windows.Setup\bin\x64\Release\KeyboardSwitch-4.1-x64-win.msi
+          path: .\KeyboardSwitch.Windows.Setup\bin\x64\Release\KeyboardSwitch-4.2-x64-win.msi
 
   build-zip:
     runs-on: windows-latest
@@ -52,19 +55,19 @@ jobs:
         arch: [ x64, arm64 ]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Build the Zip Archive
         shell: pwsh
         run: .\build\windows\Build-Portable.ps1 -Platform ${{ matrix.arch }}
 
       - name: Upload the Zip Archive
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: nightly-build
           path: .\bin\*.zip
@@ -77,12 +80,12 @@ jobs:
         arch: [ x64, arm64 ]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Install Apple Certificates
         env:
@@ -119,7 +122,7 @@ jobs:
         run: ./build/macos/build-pkg.sh -p ${{ matrix.arch }}
 
       - name: Upload the Package File
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: nightly-build
           path: ./bin/*.pkg
@@ -128,7 +131,7 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Install Apple Certificates
         env:
@@ -159,7 +162,7 @@ jobs:
         run: ./build/macos/build-uninstaller-pkg.sh
 
       - name: Upload the Package File
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: nightly-build
           path: ./bin/*.pkg
@@ -172,19 +175,19 @@ jobs:
         arch: [ x64, arm64 ]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Build the Tar Archive
         shell: bash
         run: ./build/tar/build-tar.sh -p ${{ matrix.arch }}
 
       - name: Upload the Tar Archive
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: nightly-build
           path: ./bin/*.tar.gz
@@ -197,19 +200,19 @@ jobs:
         arch: [ x64, arm64 ]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Build the Deb Package
         shell: bash
         run: ./build/deb/build-deb.sh -p ${{ matrix.arch }}
 
       - name: Upload the Deb Package
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: nightly-build
           path: ./bin/*.deb
@@ -222,12 +225,12 @@ jobs:
         arch: [ x64, arm64 ]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Setup RPM Build Tools
         shell: bash
@@ -238,7 +241,7 @@ jobs:
         run: ./build/rpm/build-rpm.sh -p ${{ matrix.arch }}
 
       - name: Upload the RPM Package
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: nightly-build
           path: ./bin/*.rpm

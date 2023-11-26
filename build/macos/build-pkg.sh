@@ -30,11 +30,11 @@ case $PLATFORM in
         ;;
 esac
 
-dotnet publish ../KeyboardSwitch --configuration Release --runtime "$RUNTIME" --framework net6.0 \
+dotnet publish ../KeyboardSwitch --configuration Release --runtime "$RUNTIME" --framework net8.0 \
 --self-contained true --output ./keyboard-switch --nologo -p:Platform="$MSBUILD_PLATFORM" \
 -p:PublishSingleFile=true -p:ContinuousIntegrationBuild=true
 
-dotnet publish ../KeyboardSwitch.Settings --configuration Release --runtime "$RUNTIME" --framework net6.0 \
+dotnet publish ../KeyboardSwitch.Settings --configuration Release --runtime "$RUNTIME" --framework net8.0 \
 --self-contained true --output ./keyboard-switch --nologo -p:Platform="$MSBUILD_PLATFORM" \
 -p:PublishSingleFile=true -p:ContinuousIntegrationBuild=true
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -136,4 +136,10 @@
     <Error Condition="!Exists('..\packages\WixSharp.1.19.0\build\WixSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WixSharp.1.19.0\build\WixSharp.targets'))" />
   </Target>
   <Import Project="..\packages\WixSharp.1.19.0\build\WixSharp.targets" Condition="Exists('..\packages\WixSharp.1.19.0\build\WixSharp.targets')" />
+  <PropertyGroup>
+    <PreBuildEvent>
+      call dotnet publish $(MSBuildProjectDirectory)\..\KeyboardSwitch\ --configuration Release --runtime win-x64 --framework net8.0-windows --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=x64 -p:ContinuousIntegrationBuild=true
+      call dotnet publish $(MSBuildProjectDirectory)\..\KeyboardSwitch.Settings\ --configuration Release --runtime win-x64 --framework net8.0-windows --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=x64 -p:ContinuousIntegrationBuild=true
+</PreBuildEvent>
+  </PropertyGroup>
 </Project>

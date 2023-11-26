@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net6.0-windows</TargetFrameworks>
+    <TargetFrameworks>net8.0;net8.0-windows</TargetFrameworks>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <OutputType>WinExe</OutputType>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(TargetFramework) == 'net6.0-windows'">
+  <PropertyGroup Condition="$(TargetFramework) == 'net8.0-windows'">
     <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
   </PropertyGroup>
 
@@ -23,10 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0" />
     <PackageReference Include="Serilog" Version="2.10.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
@@ -41,7 +41,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\KeyboardSwitch.Core\KeyboardSwitch.Core.csproj" />
-    <ProjectReference Include="..\KeyboardSwitch.Windows\KeyboardSwitch.Windows.csproj" Condition="$(TargetFramework) == 'net6.0-windows'" />
+    <ProjectReference Include="..\KeyboardSwitch.Windows\KeyboardSwitch.Windows.csproj" Condition="$(TargetFramework) == 'net8.0-windows'" />
     <ProjectReference Include="..\KeyboardSwitch.MacOS\KeyboardSwitch.MacOS.csproj" Condition="$([MSBuild]::IsOSPlatform('OSX'))" />
     <ProjectReference Include="..\KeyboardSwitch.Linux\KeyboardSwitch.Linux.csproj" Condition="$([MSBuild]::IsOSPlatform('Linux'))" />
   </ItemGroup>

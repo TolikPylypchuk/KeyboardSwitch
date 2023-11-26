@@ -1,6 +1,5 @@
 namespace KeyboardSwitch.Core;
 
-[Serializable]
 public sealed class IncompatibleAppVersionException : Exception
 {
     public IncompatibleAppVersionException()
@@ -25,15 +24,5 @@ public sealed class IncompatibleAppVersionException : Exception
         : base(message, innerException)
         => this.Version = version;
 
-    private IncompatibleAppVersionException(SerializationInfo info, StreamingContext context)
-        : base(info, context)
-        => this.Version = info.GetValue(nameof(this.Version), typeof(Version)) as Version;
-
     public Version? Version { get; }
-
-    public override void GetObjectData(SerializationInfo info, StreamingContext context)
-    {
-        base.GetObjectData(info, context);
-        info.AddValue(nameof(this.Version), this.Version);
-    }
 }
