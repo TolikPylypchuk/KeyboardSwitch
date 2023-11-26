@@ -8,10 +8,10 @@ public partial class LoadableLayoutsSettingsView : ReactiveUserControl<LoadableL
 
         this.WhenActivated(disposables =>
         {
-            this.OneWayBind(this.ViewModel, vm => vm.AddedLayouts, v => v.Layouts.Items)
+            this.OneWayBind(this.ViewModel, vm => vm.AddedLayouts, v => v.Layouts.ItemsSource)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(this.ViewModel, vm => vm.AddableLayouts, v => v.NewLayoutComboBox.Items)
+            this.OneWayBind(this.ViewModel, vm => vm.AddableLayouts, v => v.NewLayoutComboBox.ItemsSource)
                 .DisposeWith(disposables);
 
             this.NewLayoutComboBox.GetObservable(SelectingItemsControl.SelectionChangedEvent)

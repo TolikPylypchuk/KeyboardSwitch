@@ -8,7 +8,7 @@ public partial class CharMappingView : ReactiveUserControl<CharMappingViewModel>
 
         this.WhenActivated(disposables =>
         {
-            this.OneWayBind(this.ViewModel, vm => vm.Layouts, v => v.Layouts.Items)
+            this.OneWayBind(this.ViewModel, vm => vm.Layouts, v => v.Layouts.ItemsSource)
                 .DisposeWith(disposables);
 
             this.BindCommands(disposables);

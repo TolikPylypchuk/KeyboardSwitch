@@ -6,7 +6,6 @@ using System.Reflection;
 using Akavache;
 
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Threading;
 
 #if WINDOWS
 using KeyboardSwitch.Windows;
@@ -28,8 +27,6 @@ using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
 using Splat.Microsoft.Extensions.Logging;
 using Splat.Serilog;
-
-using FluentAvalonia.Styling;
 
 public class App : Application, IEnableLogger
 {

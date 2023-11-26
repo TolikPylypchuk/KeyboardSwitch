@@ -1,12 +1,9 @@
 namespace KeyboardSwitch.Settings.Localization;
 
-public sealed class TranslateExtension : MarkupExtension
+public sealed class TranslateExtension(string key) : MarkupExtension
 {
-    public TranslateExtension(string key) =>
-        this.Key = key;
-
     [ConstructorArgument("key")]
-    public string Key { get; set; }
+    public string Key { get; set; } = key;
 
     public bool ToUpper { get; set; }
 

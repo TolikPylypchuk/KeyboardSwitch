@@ -8,7 +8,7 @@ public partial class ConverterSettingsView : ReactiveUserControl<ConverterSettin
 
         this.WhenActivated(disposables =>
         {
-            this.OneWayBind(this.ViewModel, vm => vm.CustomLayouts, v => v.Layouts.Items)
+            this.OneWayBind(this.ViewModel, vm => vm.CustomLayouts, v => v.Layouts.ItemsSource)
                 .DisposeWith(disposables);
 
             this.BindValidation(

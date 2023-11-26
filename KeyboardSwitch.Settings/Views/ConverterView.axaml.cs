@@ -38,10 +38,10 @@ public partial class ConverterView : ReactiveUserControl<ConverterViewModel>
         this.OneWayBind(this.ViewModel, vm => vm.TargetText, v => v.TargetTextBox.Text)
             .DisposeWith(disposables);
 
-        this.OneWayBind(this.ViewModel, vm => vm.Layouts, v => v.SourceLayoutComboBox.Items)
+        this.OneWayBind(this.ViewModel, vm => vm.Layouts, v => v.SourceLayoutComboBox.ItemsSource)
             .DisposeWith(disposables);
 
-        this.OneWayBind(this.ViewModel, vm => vm.Layouts, v => v.TargetLayoutComboBox.Items)
+        this.OneWayBind(this.ViewModel, vm => vm.Layouts, v => v.TargetLayoutComboBox.ItemsSource)
             .DisposeWith(disposables);
 
         this.Bind(this.ViewModel, vm => vm.SourceLayout, v => v.SourceLayoutComboBox.SelectedItem)
