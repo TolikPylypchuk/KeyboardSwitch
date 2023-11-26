@@ -8,15 +8,20 @@ public sealed class ViewLocator : IDataTemplate
 {
     public bool SupportsRecycling => false;
 
-    public IControl Build(object data)
+    public Control? Build(object? data)
     {
+        if (data is null)
+        {
+            return null;
+        }
+
         var view = Locator.Current.GetService(typeof(IViewFor<>).MakeGenericType(data.GetType()));
 
-        return view is IControl control
+        return view is Control control
             ? control
             : new TextBlock { Text = "Not Found: " + view?.GetType().FullName };
     }
 
-    public bool Match(object data) =>
+    public bool Match(object? data) =>
         data is ReactiveObject;
 }

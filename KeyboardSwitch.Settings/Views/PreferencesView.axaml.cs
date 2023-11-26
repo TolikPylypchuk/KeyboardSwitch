@@ -15,13 +15,13 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
 
         var allModifiers = modifiers.Insert(0, Convert.ModifierToString(ModifierMask.None));
 
-        this.ForwardFirstComboBox.Items = modifiers;
-        this.ForwardSecondComboBox.Items = modifiers;
-        this.ForwardThirdComboBox.Items = allModifiers;
+        this.ForwardFirstComboBox.ItemsSource = modifiers;
+        this.ForwardSecondComboBox.ItemsSource = modifiers;
+        this.ForwardThirdComboBox.ItemsSource = allModifiers;
 
-        this.BackwardFirstComboBox.Items = modifiers;
-        this.BackwardSecondComboBox.Items = modifiers;
-        this.BackwardThirdComboBox.Items = allModifiers;
+        this.BackwardFirstComboBox.ItemsSource = modifiers;
+        this.BackwardSecondComboBox.ItemsSource = modifiers;
+        this.BackwardThirdComboBox.ItemsSource = allModifiers;
 
         this.WhenActivated(disposables =>
         {

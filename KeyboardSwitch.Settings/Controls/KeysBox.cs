@@ -1,19 +1,16 @@
 namespace KeyboardSwitch.Settings.Controls;
 
-public sealed class PressedKeyEventArgs : RoutedEventArgs
+public sealed class PressedKeyEventArgs(Key key) : RoutedEventArgs
 {
-    public PressedKeyEventArgs(Key key) =>
-        this.Key = key;
-
-    public Key Key { get; }
+    public Key Key { get; } = key;
 }
 
-public sealed class KeysBox : TextBox, IStyleable
+public sealed class KeysBox : TextBox
 {
     public static readonly RoutedEvent<PressedKeyEventArgs> KeyPressedEvent =
         RoutedEvent.Register<KeysBox, PressedKeyEventArgs>(nameof(KeyPressed), RoutingStrategies.Direct);
 
-    Type IStyleable.StyleKey => typeof(TextBox);
+    protected override Type StyleKeyOverride => typeof(TextBox);
 
     protected override void OnKeyDown(KeyEventArgs e) =>
         this.OnKeyPress(e.Key);

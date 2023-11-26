@@ -2,20 +2,21 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0-windows</TargetFramework>
+    <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="akavache" Version="8.1.1" />
+    <PackageReference Include="akavache" Version="9.1.20" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="System.Interactive" Version="6.0.1" />
     <PackageReference Include="System.Interactive.Async" Version="6.0.1" />
-    <PackageReference Include="System.Reactive" Version="5.0.0" />
-    <PackageReference Include="Vanara.Core" Version="3.3.15" />
-    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="3.3.15" />
-    <PackageReference Include="Vanara.PInvoke.Shared" Version="3.3.15" />
-    <PackageReference Include="Vanara.PInvoke.User32" Version="3.3.15" />
+    <PackageReference Include="System.Reactive" Version="6.0.0" />
+    <PackageReference Include="Vanara.Core" Version="3.4.17" />
+    <PackageReference Include="Vanara.PInvoke.Kernel32" Version="3.4.17" />
+    <PackageReference Include="Vanara.PInvoke.Shared" Version="3.4.17" />
+    <PackageReference Include="Vanara.PInvoke.User32" Version="3.4.17" />
   </ItemGroup>
 
   <ItemGroup>

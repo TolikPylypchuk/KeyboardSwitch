@@ -11,8 +11,8 @@ public abstract class ReactiveForm<TModel, TForm> : ReactiveValidationObject, IR
     private readonly BehaviorSubject<bool> canSaveSubject = new(false);
     private readonly BehaviorSubject<bool> canDeleteSubject = new(false);
 
-    private readonly List<IObservable<bool>> changesToTrack = new();
-    private readonly List<IObservable<bool>> validationsToTrack = new();
+    private readonly List<IObservable<bool>> changesToTrack = [];
+    private readonly List<IObservable<bool>> validationsToTrack = [];
 
     protected ReactiveForm(ResourceManager? resourceManager = null, IScheduler? scheduler = null)
     {

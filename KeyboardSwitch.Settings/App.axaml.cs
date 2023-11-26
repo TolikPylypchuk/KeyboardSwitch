@@ -52,13 +52,6 @@ public class App : Application, IEnableLogger
 
             var mainViewModel = await this.InitializeApp();
 
-            var fluentAvaloniaTheme = AvaloniaLocator.Current.GetService<FluentAvaloniaTheme>();
-
-            if (fluentAvaloniaTheme != null)
-            {
-                fluentAvaloniaTheme.RequestedTheme = "Light";
-            }
-
             this.desktop.MainWindow = await this.CreateMainWindow(mainViewModel);
             this.desktop.MainWindow.Show();
 
@@ -164,8 +157,8 @@ public class App : Application, IEnableLogger
         autoSuspendHelper.OnFrameworkInitializationCompleted();
     }
 
-    private IConfigurationProvider JsonProvider(string directory, string fileName) =>
-        new JsonConfigurationProvider(new JsonConfigurationSource
+    private JsonConfigurationProvider JsonProvider(string directory, string fileName) =>
+        new(new JsonConfigurationSource
         {
             Path = fileName,
             FileProvider = new PhysicalFileProvider(directory),

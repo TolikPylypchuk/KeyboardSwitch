@@ -9,14 +9,14 @@ internal sealed class SharpHookService : Disposable, IKeyboardHookService
     private readonly IScheduler scheduler;
     private readonly ILogger<SharpHookService> logger;
 
-    private readonly HashSet<ModifierMask> hotKeys = new();
+    private readonly HashSet<ModifierMask> hotKeys = [];
 
     private readonly Subject<ModifierMask> rawHotKeyPressedSubject = new();
     private readonly Subject<ModifierMask> hotKeyPressedSubject = new();
-    private readonly Dictionary<ModifierMask, IDisposable> hotKeyPressedSubscriptions = new();
+    private readonly Dictionary<ModifierMask, IDisposable> hotKeyPressedSubscriptions = [];
 
-    private readonly HashSet<KeyCode> pressedKeys = new();
-    private readonly HashSet<KeyCode> releasedKeys = new();
+    private readonly HashSet<KeyCode> pressedKeys = [];
+    private readonly HashSet<KeyCode> releasedKeys = [];
 
     public SharpHookService(
         IReactiveGlobalHook hook,
@@ -30,7 +30,6 @@ internal sealed class SharpHookService : Disposable, IKeyboardHookService
         this.hook.KeyPressed
             .Merge(this.hook.KeyReleased)
             .Delay(TimeSpan.FromMilliseconds(16))
-            .Select(hookEvent => hookEvent.Args)
             .Subscribe(args =>
             {
                 if (args.RawEvent.Type == EventType.KeyPressed)

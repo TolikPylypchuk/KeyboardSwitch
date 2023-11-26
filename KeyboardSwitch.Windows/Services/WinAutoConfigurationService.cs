@@ -14,8 +14,8 @@ internal class WinAutoConfigurationService : AutoConfigurationServiceBase
     private const int ResultSuccess = 1;
     private const int ResultDeadKey = -1;
 
-    private static readonly ImmutableList<KeyCode> KeyCodesToMap = new List<KeyCode>
-    {
+    private static readonly ImmutableList<KeyCode> KeyCodesToMap =
+    [
         KeyCode.VcQ,
         KeyCode.VcW,
         KeyCode.VcE,
@@ -49,8 +49,8 @@ internal class WinAutoConfigurationService : AutoConfigurationServiceBase
         KeyCode.VcComma,
         KeyCode.VcPeriod,
         KeyCode.VcSlash,
-        KeyCode.VcBackSlash,
-        KeyCode.VcBackquote,
+        KeyCode.VcBackslash,
+        KeyCode.VcBackQuote,
         KeyCode.Vc1,
         KeyCode.Vc2,
         KeyCode.Vc3,
@@ -63,7 +63,7 @@ internal class WinAutoConfigurationService : AutoConfigurationServiceBase
         KeyCode.Vc0,
         KeyCode.VcMinus,
         KeyCode.VcEquals
-    }.ToImmutableList();
+    ];
 
     protected override IEnumerable<List<KeyToCharResult>> GetChars(List<string> layoutIds) =>
         KeyCodesToMap

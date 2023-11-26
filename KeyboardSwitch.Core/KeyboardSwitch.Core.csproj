@@ -2,17 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
+    <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="akavache" Version="8.1.1" />
+    <PackageReference Include="akavache" Version="9.1.20" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
-    <PackageReference Include="SharpHook" Version="2.0.0" />
-    <PackageReference Include="SharpHook.Reactive" Version="2.0.0" />
+    <PackageReference Include="SharpHook" Version="5.1.2" />
+    <PackageReference Include="SharpHook.Reactive" Version="5.1.2" />
     <PackageReference Include="System.Interactive" Version="6.0.1" />
     <PackageReference Include="System.Interactive.Async" Version="6.0.1" />
-    <PackageReference Include="System.Reactive" Version="5.0.0" />
-    <PackageReference Include="TextCopy" Version="6.1.0" />
+    <PackageReference Include="System.Reactive" Version="6.0.0" />
+    <PackageReference Include="TextCopy" Version="6.2.1" />
   </ItemGroup>
 </Project>

@@ -2,22 +2,23 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
+    <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="akavache" Version="8.1.1" />
-    <PackageReference Include="DynamicData" Version="7.4.11" />
-    <PackageReference Include="Fody" Version="6.6.0">
+    <PackageReference Include="akavache" Version="9.1.20" />
+    <PackageReference Include="DynamicData" Version="8.1.1" />
+    <PackageReference Include="Fody" Version="6.8.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ReactiveUI" Version="17.1.17" />
-    <PackageReference Include="ReactiveUI.Fody" Version="17.1.17" />
-    <PackageReference Include="ReactiveUI.Validation" Version="2.2.1" />
-    <PackageReference Include="Splat" Version="14.1.17" />
+    <PackageReference Include="ReactiveUI" Version="19.5.1" />
+    <PackageReference Include="ReactiveUI.Fody" Version="19.5.1" />
+    <PackageReference Include="ReactiveUI.Validation" Version="3.1.7" />
+    <PackageReference Include="Splat" Version="14.8.6" />
     <PackageReference Include="System.Interactive" Version="6.0.1" />
     <PackageReference Include="System.Interactive.Async" Version="6.0.1" />
-    <PackageReference Include="System.Reactive" Version="5.0.0" />
+    <PackageReference Include="System.Reactive" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
