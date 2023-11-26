@@ -4,8 +4,8 @@ internal sealed class MacAutoConfigurationService : AutoConfigurationServiceBase
 {
     private const int MaxStringLength = 255;
 
-    private readonly ImmutableList<CGKeyCode> KeyCodesToMap = new List<CGKeyCode>
-    {
+    private readonly ImmutableList<CGKeyCode> KeyCodesToMap =
+    [
         CGKeyCode.AnsiQ,
         CGKeyCode.AnsiW,
         CGKeyCode.AnsiE,
@@ -53,7 +53,7 @@ internal sealed class MacAutoConfigurationService : AutoConfigurationServiceBase
         CGKeyCode.Ansi0,
         CGKeyCode.AnsiMinus,
         CGKeyCode.AnsiEqual
-    }.ToImmutableList();
+    ];
 
     protected override IEnumerable<List<KeyToCharResult>> GetChars(List<string> layoutIds)
     {

@@ -2,32 +2,24 @@ namespace KeyboardSwitch.Core.Services.Text;
 
 using TextCopy;
 
-public sealed class ClipboardTextService : ITextService
+public sealed class ClipboardTextService(
+    IClipboard clipboard,
+    IUserActivitySimulator simulator,
+    IAppSettingsService settingsService,
+    IScheduler scheduler,
+    ILogger<ClipboardTextService> logger)
+    : ITextService
 {
     private static readonly TimeSpan MaxTextRestoreDuration = TimeSpan.FromSeconds(3);
 
-    private readonly IClipboard clipboard;
-    private readonly IUserActivitySimulator simulator;
-    private readonly IAppSettingsService settingsService;
-    private readonly IScheduler scheduler;
-    private readonly ILogger<ClipboardTextService> logger;
+    private readonly IClipboard clipboard = clipboard;
+    private readonly IUserActivitySimulator simulator = simulator;
+    private readonly IAppSettingsService settingsService = settingsService;
+    private readonly IScheduler scheduler = scheduler;
+    private readonly ILogger<ClipboardTextService> logger = logger;
 
     private string? savedClipboardText;
     private DateTimeOffset? saveTime;
-
-    public ClipboardTextService(
-        IClipboard clipboard,
-        IUserActivitySimulator simulator,
-        IAppSettingsService settingsService,
-        IScheduler scheduler,
-        ILogger<ClipboardTextService> logger)
-    {
-        this.clipboard = clipboard;
-        this.simulator = simulator;
-        this.settingsService = settingsService;
-        this.scheduler = scheduler;
-        this.logger = logger;
-    }
 
     public async Task<string?> GetTextAsync()
     {

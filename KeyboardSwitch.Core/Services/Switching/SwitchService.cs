@@ -1,23 +1,16 @@
 namespace KeyboardSwitch.Core.Services.Switching;
 
-public class SwitchService : ISwitchService
+public class SwitchService(
+    ITextService textService,
+    ILayoutService layoutService,
+    IAppSettingsService settingsService,
+    ILogger<SwitchService> logger)
+    : ISwitchService
 {
-    private readonly ITextService textService;
-    private readonly ILayoutService layoutService;
-    private readonly IAppSettingsService settingsService;
-    private readonly ILogger<SwitchService> logger;
-
-    public SwitchService(
-        ITextService textService,
-        ILayoutService layoutService,
-        IAppSettingsService settingsService,
-        ILogger<SwitchService> logger)
-    {
-        this.textService = textService;
-        this.layoutService = layoutService;
-        this.settingsService = settingsService;
-        this.logger = logger;
-    }
+    private readonly ITextService textService = textService;
+    private readonly ILayoutService layoutService = layoutService;
+    private readonly IAppSettingsService settingsService = settingsService;
+    private readonly ILogger<SwitchService> logger = logger;
 
     public async Task SwitchTextAsync(SwitchDirection direction)
     {

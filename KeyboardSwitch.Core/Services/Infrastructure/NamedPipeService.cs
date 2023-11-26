@@ -2,18 +2,12 @@ namespace KeyboardSwitch.Core.Services.Infrastructure;
 
 using System.IO.Pipes;
 
-internal sealed class NamedPipeService : Disposable, INamedPipeService
+internal sealed class NamedPipeService(ILogger<NamedPipeService> logger, string name) : Disposable, INamedPipeService
 {
     private readonly Subject<string> receivedString = new();
-    private readonly ILogger<NamedPipeService> logger;
+    private readonly ILogger<NamedPipeService> logger = logger;
 
-    public NamedPipeService(ILogger<NamedPipeService> logger, string name)
-    {
-        this.logger = logger;
-        this.NamedPipeName = name;
-    }
-
-    public string NamedPipeName { get; }
+    public string NamedPipeName { get; } = name;
 
     public IObservable<string> ReceivedString =>
         this.receivedString.AsObservable();

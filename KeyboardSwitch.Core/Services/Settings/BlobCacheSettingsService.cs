@@ -152,8 +152,8 @@ internal sealed class BlobCacheSettingsService : AsyncDisposable, IAppSettingsSe
         {
             SwitchSettings = new SwitchSettings
             {
-                ForwardModifiers = new() { ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.None },
-                BackwardModifiers = new() { ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.Alt },
+                ForwardModifiers = [ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.None],
+                BackwardModifiers = [ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.Alt],
                 PressCount = 2,
                 WaitMilliseconds = 400
             },

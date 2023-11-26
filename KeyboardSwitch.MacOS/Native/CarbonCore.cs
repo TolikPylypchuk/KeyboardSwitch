@@ -1,12 +1,12 @@
 namespace KeyboardSwitch.MacOS.Native;
 
-internal static class CarbonCore
+internal static partial class CarbonCore
 {
     private const string CarbonCoreLib =
         "/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/CarbonCore";
 
-    [DllImport(CarbonCoreLib)]
-    public static extern OSStatus UCKeyTranslate(
+    [LibraryImport(CarbonCoreLib)]
+    public static partial OSStatus UCKeyTranslate(
         IntPtr keyLayoutPtr,
         CGKeyCode virtualKeyCode,
         UCKeyAction keyAction,

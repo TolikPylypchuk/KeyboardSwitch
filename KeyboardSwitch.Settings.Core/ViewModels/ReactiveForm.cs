@@ -95,6 +95,7 @@ public abstract class ReactiveForm<TModel, TForm> : ReactiveValidationObject, IR
     protected IObservable<bool> IsCollectionChangedSimple<TItem>(
         Expression<Func<TForm, ReadOnlyObservableCollection<TItem>>> property,
         Func<TForm, ICollection<TItem>> itemCollection)
+        where TItem : notnull
     {
         string propertyName = property.GetMemberName();
 

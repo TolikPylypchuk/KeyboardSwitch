@@ -14,6 +14,8 @@ internal class WinAutoConfigurationService : AutoConfigurationServiceBase
     private const int ResultSuccess = 1;
     private const int ResultDeadKey = -1;
 
+    private const uint NoKeyboardStateModification = 1 << 2;
+
     private static readonly ImmutableList<KeyCode> KeyCodesToMap =
     [
         KeyCode.VcQ,
@@ -105,8 +107,9 @@ internal class WinAutoConfigurationService : AutoConfigurationServiceBase
             return KeyToCharResult.Failure();
         }
 
-        var hkl = (HKL)(IntPtr)Int32.Parse(layoutId);
-        int result = ToUnicodeEx(virtualKeyCode, (uint)keyCode, keyboardState, buffer, bufferSize, 0, hkl);
+        var hkl = (HKL)Int32.Parse(layoutId);
+        int result = ToUnicodeEx(
+            virtualKeyCode, (uint)keyCode, keyboardState, buffer, bufferSize, NoKeyboardStateModification, hkl);
 
         if (result == ResultDeadKey)
         {
@@ -116,7 +119,7 @@ internal class WinAutoConfigurationService : AutoConfigurationServiceBase
                 keyboardState,
                 buffer,
                 bufferSize,
-                0,
+                NoKeyboardStateModification,
                 hkl);
         }
 

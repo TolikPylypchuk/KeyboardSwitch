@@ -13,7 +13,7 @@ public sealed class XAutoConfigurationService : AutoConfigurationServiceBase
             .ToList();
     }
 
-    private IEnumerable<List<KeyToCharResult>> GetCharsForKey(
+    private List<List<KeyToCharResult>> GetCharsForKey(
         XDisplayHandle display,
         int level,
         byte minKeyCode,

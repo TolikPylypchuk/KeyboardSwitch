@@ -2,18 +2,13 @@ namespace KeyboardSwitch.Core.Services.Infrastructure;
 
 using System.Diagnostics;
 
-public class DirectServiceCommunicator : IServiceCommunicator
+public class DirectServiceCommunicator(
+    IOptions<GlobalSettings> globalSettings,
+    ServiceProvider<INamedPipeService> namedPipeServiceProvider)
+    : IServiceCommunicator
 {
-    private readonly GlobalSettings globalSettings;
-    private readonly INamedPipeService namedPipeService;
-
-    public DirectServiceCommunicator(
-        IOptions<GlobalSettings> globalSettings,
-        ServiceProvider<INamedPipeService> namedPipeServiceProvider)
-    {
-        this.globalSettings = globalSettings.Value;
-        this.namedPipeService = namedPipeServiceProvider(nameof(KeyboardSwitch));
-    }
+    private readonly GlobalSettings globalSettings = globalSettings.Value;
+    private readonly INamedPipeService namedPipeService = namedPipeServiceProvider(nameof(KeyboardSwitch));
 
     public virtual bool IsServiceRunning() =>
         Process.GetProcessesByName(nameof(KeyboardSwitch)).Length > 0;

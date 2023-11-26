@@ -3,7 +3,7 @@ namespace KeyboardSwitch.Linux.X11;
 [StructLayout(LayoutKind.Sequential)]
 internal struct XkbDesc
 {
-    public IntPtr Dpy;
+    public IntPtr Display;
 
     public ushort Flags;
     public ushort DeviceSpec;

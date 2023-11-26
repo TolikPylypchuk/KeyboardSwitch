@@ -2,14 +2,18 @@ namespace KeyboardSwitch.Settings;
 
 public static class Program
 {
-    public static int Main(string[] args)
+    [STAThread]
+    public static void Main(string[] args)
     {
         Directory.SetCurrentDirectory(
             Path.GetDirectoryName(AppContext.BaseDirectory) ?? String.Empty);
 
-        return AppBuilder.Configure<App>()
+        BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+    }
+
+    public static AppBuilder BuildAvaloniaApp() =>
+        AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .LogToTrace()
-            .StartWithClassicDesktopLifetime(args);
-    }
+            .UseReactiveUI();
 }

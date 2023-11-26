@@ -3,14 +3,11 @@ namespace KeyboardSwitch.Linux.Services;
 using System.Runtime.InteropServices;
 using System.Text;
 
-public class XLayoutService : CachingLayoutService
+public class XLayoutService(ILogger<XLayoutService> logger) : CachingLayoutService
 {
-    private static readonly ImmutableList<string> NonSymbols = ImmutableList.Create("group", "inet", "pc");
+    private static readonly ImmutableList<string> NonSymbols = ["group", "inet", "pc"];
 
-    private readonly ILogger<XLayoutService> logger;
-
-    public XLayoutService(ILogger<XLayoutService> logger) =>
-        this.logger = logger;
+    private readonly ILogger<XLayoutService> logger = logger;
 
     public override KeyboardLayout GetCurrentKeyboardLayout()
     {
@@ -81,7 +78,7 @@ public class XLayoutService : CachingLayoutService
             throw new XException("Failed to get keyboard description");
         }
 
-        keyboardDesc->Dpy = display.DangerousGetHandle();
+        keyboardDesc->Display = display.DangerousGetHandle();
 
         var names = Marshal.PtrToStructure<XkbNames>(keyboardDesc->Names);
 
@@ -169,7 +166,6 @@ public class XLayoutService : CachingLayoutService
                 groupNames[i] = name;
             }
         }
-
     }
 
     private unsafe int GetGroupCount(XkbDesc* keyboardDesc, Atom[] groupSource)

@@ -1,20 +1,14 @@
 namespace KeyboardSwitch.Core.Services.Infrastructure;
 
-internal sealed class SingleInstanceService : ISingleInstanceService
+internal sealed class SingleInstanceService(
+    ServiceProvider<INamedPipeService> namedPipeResolver,
+    ILogger<SingleInstanceService> logger,
+    string name)
+    : ISingleInstanceService
 {
-    private readonly INamedPipeService namedPipeService;
-    private readonly ILogger<SingleInstanceService> logger;
-    private readonly string name;
-
-    public SingleInstanceService(
-        ServiceProvider<INamedPipeService> namedPipeResolver,
-        ILogger<SingleInstanceService> logger,
-        string name)
-    {
-        this.namedPipeService = namedPipeResolver(name);
-        this.logger = logger;
-        this.name = name;
-    }
+    private readonly INamedPipeService namedPipeService = namedPipeResolver(name);
+    private readonly ILogger<SingleInstanceService> logger = logger;
+    private readonly string name = name;
 
     public Mutex TryAcquireMutex()
     {

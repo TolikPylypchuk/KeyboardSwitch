@@ -2,5 +2,5 @@ namespace KeyboardSwitch.Settings.Core.Models;
 
 public sealed class ConverterModel
 {
-    public ObservableCollection<CustomLayoutModel> Layouts { get; set; } = new();
+    public ObservableCollection<CustomLayoutModel> Layouts { get; set; } = [];
 }

@@ -1,6 +1,7 @@
 namespace KeyboardSwitch;
 
 using System.Diagnostics;
+using System.Globalization;
 using System.Reactive.Concurrency;
 
 using Akavache;
@@ -36,7 +37,7 @@ public static class Program
                 ShowIfRunning();
                 break;
             case Command.ShowHelp:
-                Help.Show(Console.Out);
+                Help.Show(Console.Error);
                 break;
             case Command.None:
                 Help.Show(Console.Error);
@@ -161,7 +162,7 @@ public static class Program
     private static void ShowIfRunning()
     {
         var processes = Process.GetProcessesByName(nameof(KeyboardSwitch));
-        bool isRunning = processes != null && processes.Length > 1;
+        bool isRunning = processes is not null && processes.Length > 1;
 
         Console.WriteLine(isRunning ? "KeyboardSwitch is running" : "KeyboardSwitch is not running");
 
@@ -181,13 +182,12 @@ public static class Program
             return Command.None;
         }
 
-        return StripCommandLineArgument(args[0]) switch
+        return StripCommandLineArgument(args[0]).ToLower(CultureInfo.InvariantCulture) switch
         {
             "stop" => Command.Stop,
             "reload-settings" => Command.ReloadSettings,
             "check" => Command.CheckIfRunning,
-            "help" => Command.ShowHelp,
-            "?" => Command.ShowHelp,
+            "help" or "?" => Command.ShowHelp,
             _ => Command.None
         };
     }

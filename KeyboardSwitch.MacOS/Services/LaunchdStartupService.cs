@@ -1,15 +1,12 @@
 namespace KeyboardSwitch.MacOS.Services;
 
-internal sealed class LaunchdStartupService : IStartupService
+internal sealed class LaunchdStartupService(
+    IOptions<LaunchdSettings> launchdSettings,
+    ILogger<LaunchdStartupService> logger)
+    : IStartupService
 {
-    private readonly string serivceName;
-    private readonly ILogger<LaunchdStartupService> logger;
-
-    public LaunchdStartupService(IOptions<LaunchdSettings> launchdSettings, ILogger<LaunchdStartupService> logger)
-    {
-        this.serivceName = launchdSettings.Value.ServiceName;
-        this.logger = logger;
-    }
+    private readonly string serivceName = launchdSettings.Value.ServiceName;
+    private readonly ILogger<LaunchdStartupService> logger = logger;
 
     public bool IsStartupConfigured()
     {

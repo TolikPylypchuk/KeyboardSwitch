@@ -1,21 +1,21 @@
 namespace KeyboardSwitch.MacOS.Native;
 
-internal static class CoreGraphics
+internal static partial class CoreGraphics
 {
     private const string CoreGraphicsLib = "/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics";
 
-    [DllImport(CoreGraphicsLib)]
-    public static extern CGEventSourceRef CGEventSourceCreate(CGEventSourceStateID stateID);
+    [LibraryImport(CoreGraphicsLib)]
+    public static partial CGEventSourceRef CGEventSourceCreate(CGEventSourceStateID stateID);
 
-    [DllImport(CoreGraphicsLib)]
-    public static extern CGEventRef CGEventCreateKeyboardEvent(
+    [LibraryImport(CoreGraphicsLib)]
+    public static partial CGEventRef CGEventCreateKeyboardEvent(
         CGEventSourceRef source,
         CGKeyCode virtualKey,
-        bool keyDown);
+        [MarshalAs(UnmanagedType.I1)] bool keyDown);
 
-    [DllImport(CoreGraphicsLib)]
-    public static extern void CGEventSetFlags(CGEventRef @event, CGEventFlags flags);
+    [LibraryImport(CoreGraphicsLib)]
+    public static partial void CGEventSetFlags(CGEventRef @event, CGEventFlags flags);
 
-    [DllImport(CoreGraphicsLib)]
-    public static extern void CGEventPost(CGEventTapLocation tap, CGEventRef @event);
+    [LibraryImport(CoreGraphicsLib)]
+    public static partial void CGEventPost(CGEventTapLocation tap, CGEventRef @event);
 }

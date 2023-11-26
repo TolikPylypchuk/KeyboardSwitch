@@ -2,11 +2,11 @@ namespace KeyboardSwitch.MacOS.Native;
 
 internal class CGEventRef : CFTypeRef
 {
-    private protected CGEventRef()
+    public CGEventRef()
         : base(IntPtr.Zero)
     { }
 
-    private protected CGEventRef(IntPtr ptr)
+    public CGEventRef(IntPtr ptr)
         : base(ptr)
     { }
 }

@@ -1,6 +1,6 @@
-using Akavache;
-
 namespace KeyboardSwitch.Core;
+
+using Akavache;
 
 public static class ObservableExtensions
 {

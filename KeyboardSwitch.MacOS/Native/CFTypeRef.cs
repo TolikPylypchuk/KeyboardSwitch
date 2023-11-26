@@ -2,19 +2,19 @@ namespace KeyboardSwitch.MacOS.Native;
 
 internal abstract class CFTypeRef : SafeHandle
 {
-    private protected CFTypeRef()
+    public CFTypeRef()
         : base(IntPtr.Zero, true)
     { }
 
-    private protected CFTypeRef(bool ownsHandle)
+    public CFTypeRef(bool ownsHandle)
         : base(IntPtr.Zero, ownsHandle)
     { }
 
-    private protected CFTypeRef(IntPtr ptr)
+    public CFTypeRef(IntPtr ptr)
         : base(ptr, true)
     { }
 
-    private protected CFTypeRef(IntPtr ptr, bool ownsHandle)
+    public CFTypeRef(IntPtr ptr, bool ownsHandle)
         : base(ptr, ownsHandle)
     { }
 

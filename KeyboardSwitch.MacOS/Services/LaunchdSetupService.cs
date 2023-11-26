@@ -1,19 +1,13 @@
 namespace KeyboardSwitch.MacOS.Services;
 
-internal sealed class LaunchdSetupService : OneTimeInitialSetupService
+internal sealed class LaunchdSetupService(
+    IOptions<GlobalSettings> globalSettings,
+    IOptions<LaunchdSettings> launchdSettings,
+    ILogger<LaunchdSetupService> logger)
+    : OneTimeInitialSetupService(globalSettings)
 {
-    private readonly string serviceDescriptorPath;
-    private readonly ILogger<LaunchdSetupService> logger;
-
-    public LaunchdSetupService(
-        IOptions<GlobalSettings> globalSettings,
-        IOptions<LaunchdSettings> launchdSettings,
-        ILogger<LaunchdSetupService> logger)
-        : base(globalSettings)
-    {
-        this.serviceDescriptorPath = launchdSettings.Value.ServiceDescriptorPath;
-        this.logger = logger;
-    }
+    private readonly string serviceDescriptorPath = launchdSettings.Value.ServiceDescriptorPath;
+    private readonly ILogger<LaunchdSetupService> logger = logger;
 
     public override void DoInitialSetup()
     {
@@ -27,8 +21,7 @@ internal sealed class LaunchdSetupService : OneTimeInitialSetupService
         } else
         {
             this.logger.LogError(
-                "Could not bootstrap the Keyboard Switch service - " +
-                "couldn't find the current user's ID");
+                "Could not bootstrap the Keyboard Switch service - couldn't find the current user's ID");
         }
     }
 }

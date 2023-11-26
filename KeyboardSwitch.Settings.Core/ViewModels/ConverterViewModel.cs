@@ -2,7 +2,7 @@ namespace KeyboardSwitch.Settings.Core.ViewModels;
 
 public sealed class ConverterViewModel : ReactiveValidationObject, ITextService
 {
-    private readonly ISwitchService switchService;
+    private readonly SwitchService switchService;
 
     private readonly ReadOnlyObservableCollection<CustomLayoutModel> layouts;
 
@@ -71,7 +71,7 @@ public sealed class ConverterViewModel : ReactiveValidationObject, ITextService
     private void OnClear() =>
         this.SourceText = this.TargetText = String.Empty;
 
-    private ISwitchService CreateSwitchService(
+    private SwitchService CreateSwitchService(
         ILayoutService? layoutService = null,
         IAppSettingsService? settingsService = null)
     {

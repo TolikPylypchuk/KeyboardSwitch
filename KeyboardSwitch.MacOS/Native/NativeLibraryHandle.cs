@@ -1,11 +1,7 @@
 namespace KeyboardSwitch.MacOS.Native;
 
-internal class NativeLibraryHandle : SafeHandle
+internal class NativeLibraryHandle(IntPtr handle) : SafeHandle(handle, true)
 {
-    public NativeLibraryHandle(IntPtr handle)
-        : base(handle, true)
-    { }
-
     public override bool IsInvalid =>
         this.handle == IntPtr.Zero;
 

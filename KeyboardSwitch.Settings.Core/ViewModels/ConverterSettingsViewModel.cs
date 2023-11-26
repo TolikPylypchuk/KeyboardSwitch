@@ -7,10 +7,10 @@ public sealed class ConverterSettingsViewModel : ReactiveForm<ConverterModel, Co
 
     private readonly SourceList<CustomLayoutModel> customLayoutsSource = new();
     private readonly ReadOnlyObservableCollection<CustomLayoutViewModel> customLayouts;
-    private readonly Dictionary<CustomLayoutViewModel, IDisposable> customLayoutSubscriptions = new();
+    private readonly Dictionary<CustomLayoutViewModel, IDisposable> customLayoutSubscriptions = [];
 
     private readonly BehaviorSubject<bool> isAutoConfiguringLayoutsSubject = new(false);
-    private readonly CompositeDisposable loadableLayoutsSettingsSubscriptions = new();
+    private readonly CompositeDisposable loadableLayoutsSettingsSubscriptions = [];
 
     public ConverterSettingsViewModel(
         ConverterModel converterModel,

@@ -40,8 +40,6 @@ dotnet publish ../KeyboardSwitch.Settings --configuration Release --runtime "$RU
 
 rm ./keyboard-switch/appsettings.windows.json
 rm ./keyboard-switch/appsettings.linux.json
-rm ./keyboard-switch/libuiohook.1.dylib
-rm ./keyboard-switch/libuiohook.1.2.0.dylib
 rm ./keyboard-switch/icon.png
 
 mv ./keyboard-switch/appsettings.macos.json ./keyboard-switch/appsettings.json

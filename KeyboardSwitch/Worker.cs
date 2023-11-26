@@ -3,38 +3,27 @@ namespace KeyboardSwitch;
 using SharpHook;
 using SharpHook.Native;
 
-public class Worker : BackgroundService
+public class Worker(
+    IKeyboardHookService keyboardHookService,
+    ISwitchService switchService,
+    IAppSettingsService settingsService,
+    IMainLoopRunner mainLoopRunner,
+    IExitCodeSetter exitCodeSetter,
+    IHost host,
+    IOptions<GlobalSettings> globalSettings,
+    ILogger<Worker> logger)
+    : BackgroundService
 {
-    private readonly IKeyboardHookService keyboardHookService;
-    private readonly ISwitchService switchService;
-    private readonly IAppSettingsService settingsService;
-    private readonly IMainLoopRunner mainLoopRunner;
-    private readonly IExitCodeSetter exitCodeSetter;
-    private readonly IHost host;
-    private readonly GlobalSettings globalSettings;
-    private readonly ILogger<Worker> logger;
+    private readonly IKeyboardHookService keyboardHookService = keyboardHookService;
+    private readonly ISwitchService switchService = switchService;
+    private readonly IAppSettingsService settingsService = settingsService;
+    private readonly IMainLoopRunner mainLoopRunner = mainLoopRunner;
+    private readonly IExitCodeSetter exitCodeSetter = exitCodeSetter;
+    private readonly IHost host = host;
+    private readonly GlobalSettings globalSettings = globalSettings.Value;
+    private readonly ILogger<Worker> logger = logger;
 
     private IDisposable? hookSubscription;
-
-    public Worker(
-        IKeyboardHookService keyboardHookService,
-        ISwitchService switchService,
-        IAppSettingsService settingsService,
-        IMainLoopRunner mainLoopRunner,
-        IExitCodeSetter exitCodeSetter,
-        IHost host,
-        IOptions<GlobalSettings> globalSettings,
-        ILogger<Worker> logger)
-    {
-        this.keyboardHookService = keyboardHookService;
-        this.switchService = switchService;
-        this.settingsService = settingsService;
-        this.mainLoopRunner = mainLoopRunner;
-        this.exitCodeSetter = exitCodeSetter;
-        this.host = host;
-        this.globalSettings = globalSettings.Value;
-        this.logger = logger;
-    }
 
     protected override async Task ExecuteAsync(CancellationToken token)
     {
@@ -65,9 +54,9 @@ public class Worker : BackgroundService
         {
             this.logger.LogDebug("Configuring the KeyboardSwitch service");
 
-            await this.RegisterHotKeysAsync();
+            await this.RegisterHotKeys();
 
-            this.settingsService.SettingsInvalidated.SubscribeAsync(this.RefreshHotKeysAsync);
+            this.settingsService.SettingsInvalidated.SubscribeAsync(this.RefreshHotKeys);
 
             this.logger.LogDebug("Starting the service execution");
 
@@ -100,19 +89,11 @@ public class Worker : BackgroundService
         }
     }
 
-    private async Task RegisterHotKeysAsync()
+    private async Task RegisterHotKeys()
     {
         this.logger.LogDebug("Registering hot keys to switch forward and backward");
         var settings = await this.settingsService.GetAppSettingsAsync();
         this.RegisterHotKeys(settings.SwitchSettings);
-    }
-
-    private async Task RefreshHotKeysAsync()
-    {
-        this.logger.LogDebug("Refreshing the hot key registration to switch forward and backward");
-        this.keyboardHookService.UnregisterAll();
-        this.hookSubscription?.Dispose();
-        await this.RegisterHotKeysAsync();
     }
 
     private void RegisterHotKeys(SwitchSettings settings)
@@ -126,10 +107,18 @@ public class Worker : BackgroundService
             .Select(key => key.IsSubsetKeyOf(settings.ForwardModifiers.Flatten())
                 ? SwitchDirection.Forward
                 : SwitchDirection.Backward)
-            .SubscribeAsync(this.SwitchTextSafeAsync);
+            .SubscribeAsync(this.SwitchText);
     }
 
-    private async Task SwitchTextSafeAsync(SwitchDirection direction)
+    private async Task RefreshHotKeys()
+    {
+        this.logger.LogDebug("Refreshing the hot key registration to switch forward and backward");
+        this.keyboardHookService.UnregisterAll();
+        this.hookSubscription?.Dispose();
+        await this.RegisterHotKeys();
+    }
+
+    private async Task SwitchText(SwitchDirection direction)
     {
         try
         {

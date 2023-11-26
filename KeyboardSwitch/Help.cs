@@ -2,94 +2,60 @@ namespace KeyboardSwitch;
 
 public static class Help
 {
-    public static void Show(TextWriter writer)
-    {
-        ShowMainInfo(writer);
-        ShowArguments(writer);
-        ShowExitCodes(writer);
-        ShowLinks(writer);
-    }
+    private static readonly string HelpText = $@"
+Keyboard Switch
 
-    private static void ShowMainInfo(TextWriter writer)
-    {
-        writer.WriteLine();
-        writer.WriteLine("Keyboard Switch");
-        writer.WriteLine();
-        writer.WriteLine("An application which switches typed text");
-        writer.WriteLine("as if it were typed with another keyboard layout");
-        writer.WriteLine();
+An application which switches typed text
+as if it were typed with another keyboard layout
 
-        writer.WriteLine("If started without arguments, Keyboard Switch will create a global keyboard hook");
-        writer.WriteLine("and switch text when a configured key combination is pressed.");
-        writer.WriteLine();
+If started without arguments, Keyboard Switch will create a global keyboard hook
+and switch text when a configured key combination is pressed.
 
-        writer.WriteLine("This is a single-instance application. Starting it without arguments");
-        writer.WriteLine("when another instance is already running will make it exit immediately.");
-        writer.WriteLine();
-    }
+This is a single-instance application. Starting it without arguments
+when another instance is already running will make it exit immediately.
 
-    private static void ShowArguments(TextWriter writer)
-    {
-        writer.WriteLine("Other functionality is available through the following options:");
-        writer.WriteLine();
+Other functionality is available through the following options:
 
-        writer.WriteLine("\tstop");
-        writer.WriteLine();
+    stop
 
-        writer.WriteLine("\tStops the execution of the main Keyboard Switch instance,");
-        writer.WriteLine("\tif it is running.");
-        writer.WriteLine();
+    Stops the execution of the main Keyboard Switch instance, if it is running.
 
-        writer.WriteLine("\treload-settings");
-        writer.WriteLine();
+    reload-settings
 
-        writer.WriteLine("\tTells the main Keyboard Switch instance that the settings");
-        writer.WriteLine("\tshould be reloaded, if it is running.");
-        writer.WriteLine();
+    Tells the main Keyboard Switch instance that the settings
+    should be reloaded, if it is running.
 
-        writer.WriteLine("\tcheck");
-        writer.WriteLine();
+    check
 
-        writer.WriteLine("\tChecks whether the main Keyboard Switch instance is running.");
-        writer.WriteLine();
+    Checks whether the main Keyboard Switch instance is running.
 
-        writer.WriteLine("\thelp (or ?)");
-        writer.WriteLine();
+    help (or ?)
 
-        writer.WriteLine("\tShows this message.");
-        writer.WriteLine();
+    Shows this message.
 
-        writer.WriteLine("The options can be prefixed with '--', '-', or '/'.");
-        writer.WriteLine();
-    }
+The options can be prefixed with '--', '-', or '/'.
 
-    private static void ShowExitCodes(TextWriter writer)
-    {
-        writer.WriteLine("The following exit codes are possible:");
-        writer.WriteLine();
+The following exit codes are possible:
 
-        writer.WriteLine($"\t{(int)ExitCode.Success} - the application has exited successfully");
-        writer.WriteLine();
+    {(int)ExitCode.Success} - the application has exited successfully.
 
-        writer.WriteLine($"\t{(int)ExitCode.Error} - an unspecified error has occured");
-        writer.WriteLine();
+    {(int)ExitCode.Error} - an unspecified error has occured.
 
-        writer.WriteLine($"\t{(int)ExitCode.IncompatibleSettingsVersion} - cannot start as the settings version");
-        writer.WriteLine("\tis incompatiple with the app version");
-        writer.WriteLine();
+    {(int)ExitCode.IncompatibleSettingsVersion} - cannot start as the settings version
+    is incompatiple with the app version.
 
-        writer.WriteLine($"\t{(int)ExitCode.KeyboardSwitchNotRunning} - 'stop', 'reload-settings', or 'check'");
-        writer.WriteLine("\twas specified, but the main instance was not running");
-        writer.WriteLine();
+    {(int)ExitCode.KeyboardSwitchNotRunning} - 'stop', 'reload-settings', or 'check'
+    was specified, but the main instance was not running.
 
-        writer.WriteLine($"\t{(int)ExitCode.UnknownCommand} - invalid arguments were supplied");
-        writer.WriteLine();
-    }
+    {(int)ExitCode.UnknownCommand} - invalid arguments were supplied.
 
-    private static void ShowLinks(TextWriter writer)
-    {
-        writer.WriteLine("Home page: https://keyboardswitch.tolik.io");
-        writer.WriteLine("Docs: https://docs.keyboardswitch.tolik.io");
-        writer.WriteLine();
-    }
+    {(int)ExitCode.MacOSAccessibilityDisabled} - the application cannot start on macOS because
+    it doesn't have access to the accessibility APIs.
+
+Home page: https://keyboardswitch.tolik.io
+Docs: https://docs.keyboardswitch.tolik.io
+";
+
+    public static void Show(TextWriter writer) =>
+        writer.WriteLine(HelpText);
 }

@@ -2,11 +2,11 @@ namespace KeyboardSwitch.MacOS.Native;
 
 internal class CFArrayRef : CFTypeRef
 {
-    private protected CFArrayRef()
+    public CFArrayRef()
         : base(IntPtr.Zero)
     { }
 
-    private protected CFArrayRef(IntPtr ptr)
+    public CFArrayRef(IntPtr ptr)
         : base(ptr)
     { }
 }

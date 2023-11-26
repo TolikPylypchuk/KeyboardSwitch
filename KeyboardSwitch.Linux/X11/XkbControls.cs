@@ -16,7 +16,7 @@ internal struct XkbControls
     public ushort MkDelay;
     public ushort MkInternal;
     public ushort MkTimeToMax;
-    public ushort mk_max_speed;
+    public ushort MkMaxSpeed;
     public short MkCurve;
     public ushort AxOptions;
     public ushort AxTimeout;

@@ -1,6 +1,10 @@
 namespace KeyboardSwitch.Linux.Services;
 
-internal sealed class FreedesktopStartupService : IStartupService
+internal sealed class FreedesktopStartupService(
+    IOptions<GlobalSettings> globalSettings,
+    IOptions<StartupSettings> startupSettings,
+    ILogger<FreedesktopStartupService> logger)
+    : IStartupService
 {
     private const string StartFileContent = @"[Desktop Entry]
 Version=1.0
@@ -18,19 +22,12 @@ Categories=Utility
     private const string AppNamePlaceholder = "$SERVICE_APP";
     private const string AppDirectoryPlaceholder = "$DIRECTORY";
 
-    private readonly GlobalSettings globalSettings;
-    private readonly string startupFilePath;
-    private readonly ILogger<FreedesktopStartupService> logger;
+    private readonly GlobalSettings globalSettings = globalSettings.Value;
 
-    public FreedesktopStartupService(
-        IOptions<GlobalSettings> globalSettings,
-        IOptions<StartupSettings> startupSettings,
-        ILogger<FreedesktopStartupService> logger)
-    {
-        this.globalSettings = globalSettings.Value;
-        this.startupFilePath = Environment.ExpandEnvironmentVariables(startupSettings.Value.StartupFilePath);
-        this.logger = logger;
-    }
+    private readonly string startupFilePath =
+        Environment.ExpandEnvironmentVariables(startupSettings.Value.StartupFilePath);
+
+    private readonly ILogger<FreedesktopStartupService> logger = logger;
 
     public bool IsStartupConfigured()
     {
@@ -57,10 +54,12 @@ Categories=Utility
 
             string servicePath = Path.GetFullPath(globalSettings.ServicePath);
 
-            using var writer = new StreamWriter(File.Create(this.startupFilePath));
-            writer.Write(StartFileContent.ReplaceLineEndings()
+            string fileContent = StartFileContent.ReplaceLineEndings()
                 .Replace(AppNamePlaceholder, servicePath)
-                .Replace(AppDirectoryPlaceholder, Path.GetDirectoryName(servicePath)));
+                .Replace(AppDirectoryPlaceholder, Path.GetDirectoryName(servicePath));
+
+            using var writer = new StreamWriter(File.Create(this.startupFilePath));
+            writer.Write(fileContent);
         } else
         {
             File.Delete(this.startupFilePath);

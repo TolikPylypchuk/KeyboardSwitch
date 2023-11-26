@@ -1,11 +1,9 @@
 namespace KeyboardSwitch.Core.Services.InitialSetup;
 
-public abstract class OneTimeInitialSetupService : IInitialSetupService
+public abstract class OneTimeInitialSetupService(IOptions<GlobalSettings> globalSettings) : IInitialSetupService
 {
-    private readonly string initialSetupFilePath;
-
-    public OneTimeInitialSetupService(IOptions<GlobalSettings> globalSettings) =>
-        this.initialSetupFilePath = Environment.ExpandEnvironmentVariables(globalSettings.Value.InitialSetupFilePath);
+    private readonly string initialSetupFilePath =
+        Environment.ExpandEnvironmentVariables(globalSettings.Value.InitialSetupFilePath);
 
     public void InitializeKeyboardSwitchSetup()
     {

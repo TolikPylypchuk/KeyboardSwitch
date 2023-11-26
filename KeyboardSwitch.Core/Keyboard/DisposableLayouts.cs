@@ -1,16 +1,10 @@
 namespace KeyboardSwitch.Core.Keyboard;
 
-public sealed class DisposableLayouts : Disposable
+public sealed class DisposableLayouts(IEnumerable<KeyboardLayout> layouts, IDisposable layoutDisposable) : Disposable
 {
-    private readonly IDisposable layoutDisposable;
+    private readonly IDisposable layoutDisposable = layoutDisposable;
 
-    public DisposableLayouts(IEnumerable<KeyboardLayout> layouts, IDisposable layoutDisposable)
-    {
-        this.Layouts = new List<KeyboardLayout>(layouts).AsReadOnly();
-        this.layoutDisposable = layoutDisposable;
-    }
-
-    public IReadOnlyList<KeyboardLayout> Layouts { get; }
+    public IReadOnlyList<KeyboardLayout> Layouts { get; } = new List<KeyboardLayout>(layouts).AsReadOnly();
 
     protected override void Dispose(bool disposing)
     {

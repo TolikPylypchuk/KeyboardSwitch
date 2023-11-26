@@ -1,6 +1,6 @@
 namespace KeyboardSwitch.MacOS.Native;
 
-internal static class HIToolbox
+internal static partial class HIToolbox
 {
     private const string HIToolboxLib =
         "/System/Library/Frameworks/Carbon.framework/Frameworks/HIToolbox.framework/HIToolbox";
@@ -18,18 +18,20 @@ internal static class HIToolbox
 
     public static CFStringRef TISPropertyUnicodeKeyLayoutData { get; }
 
-    [DllImport(HIToolboxLib)]
-    public static extern byte LMGetKbdType();
+    [LibraryImport(HIToolboxLib)]
+    public static partial byte LMGetKbdType();
 
-    [DllImport(HIToolboxLib)]
-    public static extern TISInputSourceRef TISCopyCurrentKeyboardInputSource();
+    [LibraryImport(HIToolboxLib)]
+    public static partial TISInputSourceRef TISCopyCurrentKeyboardInputSource();
 
-    [DllImport(HIToolboxLib)]
-    public static extern IntPtr TISGetInputSourceProperty(TISInputSourceRef inputSource, CFStringRef propertyKey);
+    [LibraryImport(HIToolboxLib)]
+    public static partial IntPtr TISGetInputSourceProperty(TISInputSourceRef inputSource, CFStringRef propertyKey);
 
-    [DllImport(HIToolboxLib)]
-    public static extern CFArrayRef TISCreateInputSourceList(CFDictionaryRef properties, bool includeAllInstalled);
+    [LibraryImport(HIToolboxLib)]
+    public static partial CFArrayRef TISCreateInputSourceList(
+        CFDictionaryRef properties,
+        [MarshalAs(UnmanagedType.I1)] bool includeAllInstalled);
 
-    [DllImport(HIToolboxLib)]
-    public static extern OSStatus TISSelectInputSource(TISInputSourceRef inputSource);
+    [LibraryImport(HIToolboxLib)]
+    public static partial OSStatus TISSelectInputSource(TISInputSourceRef inputSource);
 }

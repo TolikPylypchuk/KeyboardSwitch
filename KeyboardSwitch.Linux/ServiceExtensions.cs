@@ -22,8 +22,8 @@ public static class ServiceExtensions
     {
         var currentDesktopEnvironment = Environment.GetEnvironmentVariable("XDG_CURRENT_DESKTOP");
         bool isGnome = currentDesktopEnvironment != null &&
-            (currentDesktopEnvironment.ToLower().Contains("gnome") ||
-            currentDesktopEnvironment.ToLower().Contains("unity"));
+            (currentDesktopEnvironment.Contains("gnome", StringComparison.CurrentCultureIgnoreCase) ||
+            currentDesktopEnvironment.Contains("unity", StringComparison.CurrentCultureIgnoreCase));
 
         return isGnome
             ? services.AddSingleton<ILayoutService, GnomeLayoutService>()

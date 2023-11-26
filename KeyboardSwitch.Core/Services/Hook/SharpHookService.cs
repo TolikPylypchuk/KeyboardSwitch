@@ -18,6 +18,8 @@ internal sealed class SharpHookService : Disposable, IKeyboardHookService
     private readonly HashSet<KeyCode> pressedKeys = [];
     private readonly HashSet<KeyCode> releasedKeys = [];
 
+    private readonly IDisposable hookSubscription;
+
     public SharpHookService(
         IReactiveGlobalHook hook,
         IScheduler scheduler,
@@ -27,7 +29,7 @@ internal sealed class SharpHookService : Disposable, IKeyboardHookService
         this.scheduler = scheduler;
         this.logger = logger;
 
-        this.hook.KeyPressed
+        this.hookSubscription = this.hook.KeyPressed
             .Merge(this.hook.KeyReleased)
             .Delay(TimeSpan.FromMilliseconds(16))
             .Subscribe(args =>
@@ -116,7 +118,7 @@ internal sealed class SharpHookService : Disposable, IKeyboardHookService
         {
             this.logger.LogDebug("Destroying a global hook");
 
-            this.hook.Dispose();
+            this.hookSubscription.Dispose();
             this.rawHotKeyPressedSubject.Dispose();
             this.hotKeyPressedSubject.Dispose();
 

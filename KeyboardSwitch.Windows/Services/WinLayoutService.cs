@@ -3,20 +3,17 @@ namespace KeyboardSwitch.Windows.Services;
 using System.ComponentModel;
 using System.Globalization;
 
-internal sealed class WinLayoutService : CachingLayoutService, ILayoutLoaderSrevice
+internal sealed class WinLayoutService(ILogger<WinLayoutService> logger) : CachingLayoutService, ILayoutLoaderSrevice
 {
     private const string KeyboardLayoutsRegistryKey = @"SYSTEM\CurrentControlSet\Control\Keyboard Layouts";
     private const string KeyboardLayoutNameRegistryKeyFormat = KeyboardLayoutsRegistryKey + @"\{0}";
     private const string LayoutText = "Layout Text";
 
-    private static readonly IntPtr HklNext = (IntPtr)1;
-    private static readonly IntPtr HklPrev = (IntPtr)0;
+    private static readonly IntPtr HklNext = 1;
+    private static readonly IntPtr HklPrev = 0;
     public const int KlNameLength = 9;
 
-    private readonly ILogger<WinLayoutService> logger;
-
-    public WinLayoutService(ILogger<WinLayoutService> logger) =>
-        this.logger = logger;
+    private readonly ILogger<WinLayoutService> logger = logger;
 
     public bool IsLoadingLayoutsSupported => true;
 
@@ -71,7 +68,7 @@ internal sealed class WinLayoutService : CachingLayoutService, ILayoutLoaderSrev
         }
 
         return keyboardLayoutIds
-            .Select(keyboardLayoutId => this.CreateKeyboardLayout(keyboardLayoutId))
+            .Select(this.CreateKeyboardLayout)
             .ToList();
     }
 
@@ -86,12 +83,10 @@ internal sealed class WinLayoutService : CachingLayoutService, ILayoutLoaderSrev
             .Select(layoutKey =>
             {
                 using var subKey = layouts.OpenSubKey(layoutKey);
-                return new LoadableKeyboardLayout(
-                    layoutKey,
-                    subKey?.GetValue(LayoutText)?.ToString() ?? String.Empty);
+                return new LoadableKeyboardLayout(layoutKey, subKey?.GetValue(LayoutText)?.ToString() ?? String.Empty);
             })
             .ToList()
-            ?? new();
+            ?? [];
 
         return result.AsReadOnly();
     }

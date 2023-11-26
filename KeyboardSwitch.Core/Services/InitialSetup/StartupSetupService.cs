@@ -2,20 +2,14 @@ namespace KeyboardSwitch.Core.Services.InitialSetup;
 
 using KeyboardSwitch.Core.Services.Startup;
 
-public class StartupSetupService : OneTimeInitialSetupService
+public class StartupSetupService(
+    IStartupService startupService,
+    IOptions<GlobalSettings> globalSettings,
+    ILogger<StartupSetupService> logger)
+    : OneTimeInitialSetupService(globalSettings)
 {
-    private readonly IStartupService startupService;
-    private readonly ILogger<StartupSetupService> logger;
-
-    public StartupSetupService(
-        IStartupService startupService,
-        IOptions<GlobalSettings> globalSettings,
-        ILogger<StartupSetupService> logger)
-        : base(globalSettings)
-    {
-        this.startupService = startupService;
-        this.logger = logger;
-    }
+    private readonly IStartupService startupService = startupService;
+    private readonly ILogger<StartupSetupService> logger = logger;
 
     public override void DoInitialSetup()
     {

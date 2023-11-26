@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 public abstract class AutoConfigurationServiceBase : IAutoConfigurationService
 {
-    protected struct KeyToCharResult
+    protected readonly struct KeyToCharResult
     {
         private KeyToCharResult(bool isSuccess, char ch, string layoutId)
         {
@@ -24,23 +24,15 @@ public abstract class AutoConfigurationServiceBase : IAutoConfigurationService
             new(false, '\0', String.Empty);
     }
 
-    private struct DistinctCharsState
+    private readonly struct DistinctCharsState(
+        ImmutableList<List<KeyToCharResult>> results,
+        ImmutableDictionary<string, ImmutableList<char>> processedChars)
     {
-        public DistinctCharsState(
-            ImmutableList<List<KeyToCharResult>> results,
-            ImmutableDictionary<string, ImmutableList<char>> processedChars)
-        {
-            this.Results = results;
-            this.DistinctChars = processedChars;
-        }
+        public ImmutableList<List<KeyToCharResult>> Results { get; } = results;
+        public ImmutableDictionary<string, ImmutableList<char>> DistinctChars { get; } = processedChars;
 
         public static DistinctCharsState Initial(List<string> layoutIds) =>
-            new(
-                ImmutableList<List<KeyToCharResult>>.Empty,
-                layoutIds.ToImmutableDictionary(layoutId => layoutId, _ => ImmutableList<char>.Empty));
-
-        public ImmutableList<List<KeyToCharResult>> Results { get; }
-        public ImmutableDictionary<string, ImmutableList<char>> DistinctChars { get; }
+            new([], layoutIds.ToImmutableDictionary(layoutId => layoutId, _ => ImmutableList<char>.Empty));
     }
 
     public IReadOnlyDictionary<string, string> CreateCharMappings(IEnumerable<KeyboardLayout> layouts)

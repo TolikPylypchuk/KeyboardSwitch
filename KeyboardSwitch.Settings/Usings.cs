@@ -11,7 +11,6 @@ global using Avalonia.Input;
 global using Avalonia.Interactivity;
 global using Avalonia.Markup.Xaml;
 global using Avalonia.ReactiveUI;
-global using Avalonia.Styling;
 
 global using DynamicData;
 global using DynamicData.Aggregation;
@@ -22,9 +21,7 @@ global using KeyboardSwitch.Core.Services;
 global using KeyboardSwitch.Core.Services.Infrastructure;
 global using KeyboardSwitch.Core.Services.InitialSetup;
 global using KeyboardSwitch.Core.Services.Settings;
-global using KeyboardSwitch.Core.Services.Startup;
 global using KeyboardSwitch.Core.Settings;
-global using KeyboardSwitch.Settings.Controls;
 global using KeyboardSwitch.Settings.Converters;
 global using KeyboardSwitch.Settings.Core.ViewModels;
 global using KeyboardSwitch.Settings.Properties;

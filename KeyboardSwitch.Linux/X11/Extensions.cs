@@ -32,8 +32,6 @@ internal static class Extensions
             return (char)(keysymValue - 0x01000000);
         }
 
-        return XKeySymToChar.Mappings.ContainsKey(keysymShortValue)
-            ? (char)XKeySymToChar.Mappings[keysymShortValue]
-            : '\0';
+        return XKeySymToChar.Mappings.TryGetValue(keysymShortValue, out ushort value) ? (char)value : '\0';
     }
 }
