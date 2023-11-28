@@ -5,6 +5,9 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using SharpHook.Native;
+using SharpHook;
+
 public static class SerivceExtensions
 {
     [SuppressMessage(
@@ -19,7 +22,8 @@ public static class SerivceExtensions
             .AddSingleton<ILayoutService>(provider => provider.GetRequiredService<WinLayoutService>())
             .AddSingleton<ILayoutLoaderSrevice>(provider => provider.GetRequiredService<WinLayoutService>())
             .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
-            .AddSingleton<IUserActivitySimulator, SharpUserActivitySimulator>()
+            .AddSingleton<IUserActivitySimulator>(
+                sp => new SharpUserActivitySimulator(sp.GetRequiredService<IEventSimulator>(), KeyCode.VcLeftControl))
             .AddSingleton<IStartupService, RegistryStartupService>()
             .AddSingleton<IAutoConfigurationService, WinAutoConfigurationService>()
             .AddSingleton<IInitialSetupService, StartupSetupService>()

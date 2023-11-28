@@ -1,17 +1,15 @@
 namespace KeyboardSwitch.Core.Services.Simulation;
 
-public class SharpUserActivitySimulator : IUserActivitySimulator
+public class SharpUserActivitySimulator(IEventSimulator eventSimulator, KeyCode modifierKey) : IUserActivitySimulator
 {
     private const int Delay = 16;
 
-    private readonly IEventSimulator eventSimulator;
+    private readonly IEventSimulator eventSimulator = eventSimulator;
+    private readonly KeyCode modifierKey = modifierKey;
 
-    public SharpUserActivitySimulator(IEventSimulator eventSimulator) =>
-        this.eventSimulator = eventSimulator;
-
-    public async Task SimulateCopyAsync()
+    public async Task SimulateCopy()
     {
-        this.eventSimulator.SimulateKeyPress(KeyCode.VcLeftControl);
+        this.eventSimulator.SimulateKeyPress(this.modifierKey);
         await Task.Delay(Delay);
 
         this.eventSimulator.SimulateKeyPress(KeyCode.VcC);
@@ -20,13 +18,13 @@ public class SharpUserActivitySimulator : IUserActivitySimulator
         this.eventSimulator.SimulateKeyRelease(KeyCode.VcC);
         await Task.Delay(Delay);
 
-        this.eventSimulator.SimulateKeyRelease(KeyCode.VcLeftControl);
+        this.eventSimulator.SimulateKeyRelease(this.modifierKey);
         await Task.Delay(Delay);
     }
 
-    public async Task SimulatePasteAsync()
+    public async Task SimulatePaste()
     {
-        this.eventSimulator.SimulateKeyPress(KeyCode.VcLeftControl);
+        this.eventSimulator.SimulateKeyPress(this.modifierKey);
         await Task.Delay(Delay);
 
         this.eventSimulator.SimulateKeyPress(KeyCode.VcV);
@@ -35,7 +33,7 @@ public class SharpUserActivitySimulator : IUserActivitySimulator
         this.eventSimulator.SimulateKeyRelease(KeyCode.VcV);
         await Task.Delay(Delay);
 
-        this.eventSimulator.SimulateKeyRelease(KeyCode.VcLeftControl);
+        this.eventSimulator.SimulateKeyRelease(this.modifierKey);
         await Task.Delay(Delay);
     }
 }
