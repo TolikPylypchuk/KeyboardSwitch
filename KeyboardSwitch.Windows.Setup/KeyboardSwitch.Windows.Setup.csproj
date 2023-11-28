@@ -59,10 +59,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BootstrapperCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL">
-      <HintPath>..\packages\WixSharp.bin.1.22.1.1\lib\BootstrapperCore.dll</HintPath>
+      <HintPath>..\packages\WixSharp.bin.1.23.1\lib\net462\BootstrapperCore.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Deployment.WindowsInstaller, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL">
-      <HintPath>..\packages\WixSharp.bin.1.22.1.1\lib\Microsoft.Deployment.WindowsInstaller.dll</HintPath>
+      <HintPath>..\packages\WixSharp.bin.1.23.1\lib\net462\Microsoft.Deployment.WindowsInstaller.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -70,14 +70,14 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WixSharp, Version=1.22.1.0, Culture=neutral, PublicKeyToken=3775edd25acc43c2, processorArchitecture=MSIL">
-      <HintPath>..\packages\WixSharp.bin.1.22.1.1\lib\WixSharp.dll</HintPath>
+    <Reference Include="WixSharp, Version=1.23.1.0, Culture=neutral, PublicKeyToken=3775edd25acc43c2, processorArchitecture=MSIL">
+      <HintPath>..\packages\WixSharp.bin.1.23.1\lib\net462\WixSharp.dll</HintPath>
     </Reference>
-    <Reference Include="WixSharp.Msi, Version=1.22.1.0, Culture=neutral, PublicKeyToken=3775edd25acc43c2, processorArchitecture=MSIL">
-      <HintPath>..\packages\WixSharp.bin.1.22.1.1\lib\WixSharp.Msi.dll</HintPath>
+    <Reference Include="WixSharp.Msi, Version=1.23.1.0, Culture=neutral, PublicKeyToken=3775edd25acc43c2, processorArchitecture=MSIL">
+      <HintPath>..\packages\WixSharp.bin.1.23.1\lib\net462\WixSharp.Msi.dll</HintPath>
     </Reference>
-    <Reference Include="WixSharp.UI, Version=1.22.1.0, Culture=neutral, PublicKeyToken=3775edd25acc43c2, processorArchitecture=MSIL">
-      <HintPath>..\packages\WixSharp.bin.1.22.1.1\lib\WixSharp.UI.dll</HintPath>
+    <Reference Include="WixSharp.UI, Version=1.23.1.0, Culture=neutral, PublicKeyToken=3775edd25acc43c2, processorArchitecture=MSIL">
+      <HintPath>..\packages\WixSharp.bin.1.23.1\lib\net462\WixSharp.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -134,13 +134,13 @@
       call dotnet publish $(MSBuildProjectDirectory)\..\KeyboardSwitch.Settings\ --configuration Release --runtime win-x64 --framework net8.0-windows --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=x64 -p:ContinuousIntegrationBuild=true
 </PreBuildEvent>
   </PropertyGroup>
-  <Import Project="..\packages\WixSharp.bin.1.22.1.1\build\WixSharp.bin.targets" Condition="Exists('..\packages\WixSharp.bin.1.22.1.1\build\WixSharp.bin.targets')" />
+  <Import Project="..\packages\WixSharp.bin.1.23.1\build\WixSharp.bin.targets" Condition="Exists('..\packages\WixSharp.bin.1.23.1\build\WixSharp.bin.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\WixSharp.bin.1.22.1.1\build\WixSharp.bin.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WixSharp.bin.1.22.1.1\build\WixSharp.bin.targets'))" />
-    <Error Condition="!Exists('..\packages\WixSharp.1.22.1\build\WixSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WixSharp.1.22.1\build\WixSharp.targets'))" />
+    <Error Condition="!Exists('..\packages\WixSharp.bin.1.23.1\build\WixSharp.bin.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WixSharp.bin.1.23.1\build\WixSharp.bin.targets'))" />
+    <Error Condition="!Exists('..\packages\WixSharp.1.23.1\build\WixSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WixSharp.1.23.1\build\WixSharp.targets'))" />
   </Target>
-  <Import Project="..\packages\WixSharp.1.22.1\build\WixSharp.targets" Condition="Exists('..\packages\WixSharp.1.22.1\build\WixSharp.targets')" />
+  <Import Project="..\packages\WixSharp.1.23.1\build\WixSharp.targets" Condition="Exists('..\packages\WixSharp.1.23.1\build\WixSharp.targets')" />
 </Project>

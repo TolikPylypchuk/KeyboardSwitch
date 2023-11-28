@@ -2,69 +2,63 @@ namespace KeyboardSwitch.Windows.Services;
 
 using System.Collections.Immutable;
 
-using SharpHook.Native;
-
 internal class WinAutoConfigurationService : AutoConfigurationServiceBase
 {
-    private const int VkShift = 0x10;
-    private const int VkCtrl = 0x11;
-    private const int VkAlt = 0x12;
-    private const int Pressed = 0x80;
+    private const uint NoKeyboardStateModification = 1 << 2;
+    private const int KeyStatePressed = 1 << 7;
 
     private const int ResultSuccess = 1;
     private const int ResultDeadKey = -1;
 
-    private const uint NoKeyboardStateModification = 1 << 2;
-
-    private static readonly ImmutableList<KeyCode> KeyCodesToMap =
+    private static readonly ImmutableList<VK> KeyCodesToMap =
     [
-        KeyCode.VcQ,
-        KeyCode.VcW,
-        KeyCode.VcE,
-        KeyCode.VcR,
-        KeyCode.VcT,
-        KeyCode.VcY,
-        KeyCode.VcU,
-        KeyCode.VcI,
-        KeyCode.VcO,
-        KeyCode.VcP,
-        KeyCode.VcOpenBracket,
-        KeyCode.VcCloseBracket,
-        KeyCode.VcA,
-        KeyCode.VcS,
-        KeyCode.VcD,
-        KeyCode.VcF,
-        KeyCode.VcG,
-        KeyCode.VcH,
-        KeyCode.VcJ,
-        KeyCode.VcK,
-        KeyCode.VcL,
-        KeyCode.VcSemicolon,
-        KeyCode.VcQuote,
-        KeyCode.VcZ,
-        KeyCode.VcX,
-        KeyCode.VcC,
-        KeyCode.VcV,
-        KeyCode.VcB,
-        KeyCode.VcN,
-        KeyCode.VcM,
-        KeyCode.VcComma,
-        KeyCode.VcPeriod,
-        KeyCode.VcSlash,
-        KeyCode.VcBackslash,
-        KeyCode.VcBackQuote,
-        KeyCode.Vc1,
-        KeyCode.Vc2,
-        KeyCode.Vc3,
-        KeyCode.Vc4,
-        KeyCode.Vc5,
-        KeyCode.Vc6,
-        KeyCode.Vc7,
-        KeyCode.Vc8,
-        KeyCode.Vc9,
-        KeyCode.Vc0,
-        KeyCode.VcMinus,
-        KeyCode.VcEquals
+        VK.VK_Q,
+        VK.VK_W,
+        VK.VK_E,
+        VK.VK_R,
+        VK.VK_T,
+        VK.VK_Y,
+        VK.VK_U,
+        VK.VK_I,
+        VK.VK_O,
+        VK.VK_P,
+        VK.VK_OEM_4,
+        VK.VK_OEM_6,
+        VK.VK_A,
+        VK.VK_S,
+        VK.VK_D,
+        VK.VK_F,
+        VK.VK_G,
+        VK.VK_H,
+        VK.VK_J,
+        VK.VK_K,
+        VK.VK_L,
+        VK.VK_OEM_1,
+        VK.VK_OEM_7,
+        VK.VK_Z,
+        VK.VK_X,
+        VK.VK_C,
+        VK.VK_V,
+        VK.VK_B,
+        VK.VK_N,
+        VK.VK_M,
+        VK.VK_OEM_COMMA,
+        VK.VK_OEM_PERIOD,
+        VK.VK_OEM_2,
+        VK.VK_OEM_5,
+        VK.VK_OEM_3,
+        VK.VK_1,
+        VK.VK_2,
+        VK.VK_3,
+        VK.VK_4,
+        VK.VK_5,
+        VK.VK_6,
+        VK.VK_7,
+        VK.VK_8,
+        VK.VK_9,
+        VK.VK_0,
+        VK.VK_OEM_MINUS,
+        VK.VK_OEM_PLUS
     ];
 
     protected override IEnumerable<List<KeyToCharResult>> GetChars(List<string> layoutIds) =>
@@ -77,12 +71,12 @@ internal class WinAutoConfigurationService : AutoConfigurationServiceBase
             .Concat(KeyCodesToMap.Select(keyCode =>
                 this.GetCharsFromKey(keyCode, shift: true, altGr: true, layoutIds)));
 
-    private List<KeyToCharResult> GetCharsFromKey(KeyCode keyCode, bool shift, bool altGr, List<string> layoutIds) =>
+    private List<KeyToCharResult> GetCharsFromKey(VK keyCode, bool shift, bool altGr, List<string> layoutIds) =>
         layoutIds
             .Select(layoutId => this.GetCharFromKey(keyCode, shift, altGr, layoutId))
             .ToList();
 
-    private KeyToCharResult GetCharFromKey(KeyCode keyCode, bool shift, bool altGr, string layoutId)
+    private KeyToCharResult GetCharFromKey(VK keyCode, bool shift, bool altGr, string layoutId)
     {
         const int bufferSize = 256;
 
@@ -91,31 +85,25 @@ internal class WinAutoConfigurationService : AutoConfigurationServiceBase
 
         if (shift)
         {
-            keyboardState[VkShift] = Pressed;
+            keyboardState[(int)VK.VK_SHIFT] = KeyStatePressed;
         }
 
         if (altGr)
         {
-            keyboardState[VkCtrl] = Pressed;
-            keyboardState[VkAlt] = Pressed;
+            keyboardState[(int)VK.VK_CONTROL] = KeyStatePressed;
+            keyboardState[(int)VK.VK_MENU] = KeyStatePressed;
         }
 
-        uint virtualKeyCode = MapToVirtualKey(keyCode);
-
-        if (virtualKeyCode == 0)
-        {
-            return KeyToCharResult.Failure();
-        }
-
+        uint scanCode = MapToScanCode(keyCode);
         var hkl = (HKL)Int32.Parse(layoutId);
         int result = ToUnicodeEx(
-            virtualKeyCode, (uint)keyCode, keyboardState, buffer, bufferSize, NoKeyboardStateModification, hkl);
+            (uint)keyCode, scanCode, keyboardState, buffer, bufferSize, NoKeyboardStateModification, hkl);
 
         if (result == ResultDeadKey)
         {
             result = ToUnicodeEx(
-                MapToVirtualKey(KeyCode.VcSpace),
-                (uint)KeyCode.VcSpace,
+                (uint)VK.VK_SPACE,
+                MapToScanCode(VK.VK_SPACE),
                 keyboardState,
                 buffer,
                 bufferSize,
@@ -130,6 +118,6 @@ internal class WinAutoConfigurationService : AutoConfigurationServiceBase
         };
     }
 
-    private uint MapToVirtualKey(KeyCode keyCode) =>
-        MapVirtualKey((uint)keyCode, MAPVK.MAPVK_VSC_TO_VK_EX);
+    private uint MapToScanCode(VK keyCode) =>
+        MapVirtualKey((uint)keyCode, MAPVK.MAPVK_VK_TO_VSC_EX);
 }
