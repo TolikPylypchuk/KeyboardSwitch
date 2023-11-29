@@ -120,17 +120,11 @@
   <data name="About" xml:space="preserve">
     <value>About</value>
   </data>
-  <data name="AddCustomLayout" xml:space="preserve">
-    <value>Add custom layout</value>
-  </data>
   <data name="AddKeyFormat" xml:space="preserve">
     <value>Add {0}</value>
   </data>
   <data name="AutoConfigure" xml:space="preserve">
     <value>Auto-configure</value>
-  </data>
-  <data name="AutoConfigureCustomLayouts" xml:space="preserve">
-    <value>Auto-configure custom layouts</value>
   </data>
   <data name="Backward" xml:space="preserve">
     <value>Backward</value>
@@ -156,38 +150,11 @@
   <data name="CheckForUpdates" xml:space="preserve">
     <value>Check for updates</value>
   </data>
-  <data name="Clear" xml:space="preserve">
-    <value>Clear</value>
-  </data>
-  <data name="Convert" xml:space="preserve">
-    <value>Convert</value>
-  </data>
-  <data name="Converter" xml:space="preserve">
-    <value>Converter</value>
-  </data>
-  <data name="ConverterClearHint" xml:space="preserve">
-    <value>Or press Ctrl+Delete</value>
-  </data>
-  <data name="ConverterInfo" xml:space="preserve">
-    <value>Converter lets you map characters between custom layouts that are independent from those defined in your system</value>
-  </data>
-  <data name="ConverterSettings" xml:space="preserve">
-    <value>Converter Settings</value>
-  </data>
-  <data name="ConverterTooFewCustomLayouts" xml:space="preserve">
-    <value>The converter requires at least 2 cusom layouts</value>
-  </data>
-  <data name="ConvertHint" xml:space="preserve">
-    <value>Or press Ctrl+Enter</value>
-  </data>
   <data name="CreatedBy" xml:space="preserve">
     <value>Created by Tolik Pylypchuk</value>
   </data>
   <data name="CurrentPositionFormat" xml:space="preserve">
     <value>Current position: {0}</value>
-  </data>
-  <data name="CustomLayoutNamesAreSame" xml:space="preserve">
-    <value>Layout names must be unique</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
@@ -318,15 +285,6 @@
   <data name="Modifiers" xml:space="preserve">
     <value>Modifiers</value>
   </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="NameEmpty" xml:space="preserve">
-    <value>Name is required</value>
-  </data>
-  <data name="NewLayoutHint" xml:space="preserve">
-    <value>Add a layout to auto-configure:</value>
-  </data>
   <data name="NewLayoutsHint" xml:space="preserve">
     <value>Looks like you have installed one or more new layouts. You should configure and save them</value>
   </data>
@@ -360,14 +318,8 @@
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
-  <data name="ShowConverter" xml:space="preserve">
-    <value>Show the converter</value>
-  </data>
   <data name="ShowUninstalledLayoutsMessage" xml:space="preserve">
     <value>Show a message about uninstalled layouts</value>
-  </data>
-  <data name="SourceText" xml:space="preserve">
-    <value>Source text</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>Start</value>
@@ -378,9 +330,6 @@
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
   </data>
-  <data name="Swap" xml:space="preserve">
-    <value>Swap</value>
-  </data>
   <data name="SwitchLayouts" xml:space="preserve">
     <value>Switch layouts</value>
   </data>
@@ -389,9 +338,6 @@
   </data>
   <data name="SwitchSettings" xml:space="preserve">
     <value>Switch settings:</value>
-  </data>
-  <data name="TargetText" xml:space="preserve">
-    <value>Target text</value>
   </data>
   <data name="ValidationNameEmpty" xml:space="preserve">
     <value>Name is required</value>

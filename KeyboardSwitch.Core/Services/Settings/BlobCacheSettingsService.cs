@@ -4,7 +4,7 @@ using System.Reflection;
 
 using Akavache;
 
-internal sealed class BlobCacheSettingsService : AsyncDisposable, IAppSettingsService, IConverterSettingsService
+internal sealed class BlobCacheSettingsService : AsyncDisposable, IAppSettingsService
 {
     private readonly IBlobCache cache;
     private readonly ILayoutService layoutService;
@@ -12,7 +12,6 @@ internal sealed class BlobCacheSettingsService : AsyncDisposable, IAppSettingsSe
     private readonly Subject<Unit> settingsInvalidated = new();
 
     private AppSettings? appSettings;
-    private ConverterSettings? converterSettings;
 
     public BlobCacheSettingsService(
         IBlobCache cache,
@@ -29,7 +28,7 @@ internal sealed class BlobCacheSettingsService : AsyncDisposable, IAppSettingsSe
     public IObservable<Unit> SettingsInvalidated =>
         this.settingsInvalidated.AsObservable();
 
-    public async Task<AppSettings> GetAppSettingsAsync()
+    public async Task<AppSettings> GetAppSettings()
     {
         this.ThrowIfDisposed();
 
@@ -82,12 +81,11 @@ internal sealed class BlobCacheSettingsService : AsyncDisposable, IAppSettingsSe
 
         this.appSettings.AppVersion = defaultSettings.AppVersion;
         this.appSettings.SwitchSettings = defaultSettings.SwitchSettings;
-        this.appSettings.ShowConverter = defaultSettings.ShowConverter;
 
         await this.cache.InsertObject(AppSettings.CacheKey, this.appSettings);
     }
 
-    public async Task SaveAppSettingsAsync(AppSettings appSettings)
+    public async Task SaveAppSettings(AppSettings appSettings)
     {
         this.ThrowIfDisposed();
 
@@ -102,39 +100,6 @@ internal sealed class BlobCacheSettingsService : AsyncDisposable, IAppSettingsSe
         this.ThrowIfDisposed();
         this.appSettings = null;
         this.settingsInvalidated.OnNext(Unit.Default);
-    }
-
-    public async ValueTask<ConverterSettings> GetConverterSettingsAsync()
-    {
-        this.ThrowIfDisposed();
-
-        if (this.converterSettings == null)
-        {
-            this.logger.LogDebug("Getting the converter settings");
-
-            if (await this.cache.ContainsKey(ConverterSettings.CacheKey))
-            {
-                this.converterSettings = await this.cache.GetObject<ConverterSettings>(ConverterSettings.CacheKey);
-            } else
-            {
-                this.logger.LogInformation("Converter settings not found - creating default settings");
-
-                this.converterSettings = new ConverterSettings();
-                await this.cache.InsertObject(ConverterSettings.CacheKey, this.converterSettings);
-            }
-        }
-
-        return this.converterSettings;
-    }
-
-    public async Task SaveConverterSettingsAsync(ConverterSettings converterSettings)
-    {
-        this.ThrowIfDisposed();
-
-        this.logger.LogDebug("Saving the converter settings");
-        await this.cache.InsertObject(ConverterSettings.CacheKey, converterSettings);
-
-        this.converterSettings = converterSettings;
     }
 
     protected override async ValueTask DisposeAsyncCore()
@@ -162,7 +127,6 @@ internal sealed class BlobCacheSettingsService : AsyncDisposable, IAppSettingsSe
             InstantSwitching = true,
             SwitchLayout = true,
             ShowUninstalledLayoutsMessage = true,
-            ShowConverter = false,
             AppVersion = this.GetAppVersion()
         };
 

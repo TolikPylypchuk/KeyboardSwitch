@@ -21,8 +21,5 @@ public sealed class AppSettings
     public bool ShowUninstalledLayoutsMessage { get; set; }
 
     [DataMember]
-    public bool ShowConverter { get; set; }
-
-    [DataMember]
     public Version AppVersion { get; set; } = null!;
 }

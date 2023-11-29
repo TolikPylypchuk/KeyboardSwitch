@@ -18,7 +18,7 @@ public class SwitchService(
 
         string? textToSwitch = await this.textService.GetTextAsync();
 
-        var settings = await this.settingsService.GetAppSettingsAsync();
+        var settings = await this.settingsService.GetAppSettings();
 
         if (!String.IsNullOrEmpty(textToSwitch))
         {

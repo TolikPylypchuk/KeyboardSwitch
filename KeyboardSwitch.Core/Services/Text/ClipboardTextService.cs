@@ -23,7 +23,7 @@ public sealed class ClipboardTextService(
 
     public async Task<string?> GetTextAsync()
     {
-        var settings = await this.settingsService.GetAppSettingsAsync();
+        var settings = await this.settingsService.GetAppSettings();
 
         if (settings.InstantSwitching)
         {
@@ -46,7 +46,7 @@ public sealed class ClipboardTextService(
 
         await this.clipboard.SetTextAsync(text);
 
-        var settings = await this.settingsService.GetAppSettingsAsync();
+        var settings = await this.settingsService.GetAppSettings();
 
         if (settings.InstantSwitching)
         {

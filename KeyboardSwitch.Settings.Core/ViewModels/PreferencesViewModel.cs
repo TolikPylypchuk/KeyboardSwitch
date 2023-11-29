@@ -93,8 +93,6 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
         this.TrackChanges(
             vm => vm.ShowUninstalledLayoutsMessage, vm => vm.PreferencesModel.ShowUninstalledLayoutsMessage);
 
-        this.TrackChanges(vm => vm.ShowConverter, vm => vm.PreferencesModel.ShowConverter);
-
         this.TrackChanges(this.IsCollectionChangedSimple(
             vm => vm.forwardModifierKeys, vm => vm.PreferencesModel.SwitchSettings.ForwardModifiers));
 
@@ -113,7 +111,6 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
         this.PreferencesModel.SwitchLayout = this.SwitchLayout;
         this.PreferencesModel.Startup = this.Startup;
         this.PreferencesModel.ShowUninstalledLayoutsMessage = this.ShowUninstalledLayoutsMessage;
-        this.PreferencesModel.ShowConverter = this.ShowConverter;
 
         var switchSettings = this.PreferencesModel.SwitchSettings;
 
@@ -131,7 +128,6 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
         this.SwitchLayout = this.PreferencesModel.SwitchLayout;
         this.Startup = this.PreferencesModel.Startup;
         this.ShowUninstalledLayoutsMessage = this.PreferencesModel.ShowUninstalledLayoutsMessage;
-        this.ShowConverter = this.PreferencesModel.ShowConverter;
 
         var switchSettings = this.PreferencesModel.SwitchSettings;
 

@@ -70,15 +70,6 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add custom layout.
-        /// </summary>
-        internal static string AddCustomLayout {
-            get {
-                return ResourceManager.GetString("AddCustomLayout", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Add {0}.
         /// </summary>
         internal static string AddKeyFormat {
@@ -93,15 +84,6 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string AutoConfigure {
             get {
                 return ResourceManager.GetString("AutoConfigure", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Auto-configure custom layouts.
-        /// </summary>
-        internal static string AutoConfigureCustomLayouts {
-            get {
-                return ResourceManager.GetString("AutoConfigureCustomLayouts", resourceCulture);
             }
         }
         
@@ -178,78 +160,6 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Clear.
-        /// </summary>
-        internal static string Clear {
-            get {
-                return ResourceManager.GetString("Clear", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Convert.
-        /// </summary>
-        internal static string Convert {
-            get {
-                return ResourceManager.GetString("Convert", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Converter.
-        /// </summary>
-        internal static string Converter {
-            get {
-                return ResourceManager.GetString("Converter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Or press Ctrl+Delete.
-        /// </summary>
-        internal static string ConverterClearHint {
-            get {
-                return ResourceManager.GetString("ConverterClearHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Converter lets you map characters between custom layouts that are independent from those defined in your system.
-        /// </summary>
-        internal static string ConverterInfo {
-            get {
-                return ResourceManager.GetString("ConverterInfo", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Converter Settings.
-        /// </summary>
-        internal static string ConverterSettings {
-            get {
-                return ResourceManager.GetString("ConverterSettings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The converter requires at least 2 cusom layouts.
-        /// </summary>
-        internal static string ConverterTooFewCustomLayouts {
-            get {
-                return ResourceManager.GetString("ConverterTooFewCustomLayouts", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Or press Ctrl+Enter.
-        /// </summary>
-        internal static string ConvertHint {
-            get {
-                return ResourceManager.GetString("ConvertHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Created by Tolik Pylypchuk.
         /// </summary>
         internal static string CreatedBy {
@@ -264,15 +174,6 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string CurrentPositionFormat {
             get {
                 return ResourceManager.GetString("CurrentPositionFormat", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Layout names must be unique.
-        /// </summary>
-        internal static string CustomLayoutNamesAreSame {
-            get {
-                return ResourceManager.GetString("CustomLayoutNamesAreSame", resourceCulture);
             }
         }
         
@@ -664,33 +565,6 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
-        /// </summary>
-        internal static string Name {
-            get {
-                return ResourceManager.GetString("Name", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Name is required.
-        /// </summary>
-        internal static string NameEmpty {
-            get {
-                return ResourceManager.GetString("NameEmpty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Add a layout to auto-configure:.
-        /// </summary>
-        internal static string NewLayoutHint {
-            get {
-                return ResourceManager.GetString("NewLayoutHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Looks like you have installed one or more new layouts. You should configure and save them.
         /// </summary>
         internal static string NewLayoutsHint {
@@ -790,29 +664,11 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show the converter.
-        /// </summary>
-        internal static string ShowConverter {
-            get {
-                return ResourceManager.GetString("ShowConverter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Show a message about uninstalled layouts.
         /// </summary>
         internal static string ShowUninstalledLayoutsMessage {
             get {
                 return ResourceManager.GetString("ShowUninstalledLayoutsMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Source text.
-        /// </summary>
-        internal static string SourceText {
-            get {
-                return ResourceManager.GetString("SourceText", resourceCulture);
             }
         }
         
@@ -844,15 +700,6 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Swap.
-        /// </summary>
-        internal static string Swap {
-            get {
-                return ResourceManager.GetString("Swap", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Switch layouts.
         /// </summary>
         internal static string SwitchLayouts {
@@ -876,15 +723,6 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string SwitchSettings {
             get {
                 return ResourceManager.GetString("SwitchSettings", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Target text.
-        /// </summary>
-        internal static string TargetText {
-            get {
-                return ResourceManager.GetString("TargetText", resourceCulture);
             }
         }
         

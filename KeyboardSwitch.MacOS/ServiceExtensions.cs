@@ -2,8 +2,8 @@ namespace KeyboardSwitch.MacOS;
 
 using Microsoft.Extensions.Configuration;
 
-using SharpHook.Native;
 using SharpHook;
+using SharpHook.Native;
 
 public static class ServiceExtensions
 {
@@ -13,7 +13,6 @@ public static class ServiceExtensions
         services
             .Configure<LaunchdSettings>(config.GetSection("Launchd"))
             .AddSingleton<ILayoutService, MacLayoutService>()
-            .AddSingleton<ILayoutLoaderSrevice, NotSupportedLayoutLoaderService>()
             .AddSingleton<IStartupService, LaunchdStartupService>()
             .AddSingleton<IServiceCommunicator, LaunchdServiceCommunicator>()
             .AddSingleton<IUserActivitySimulator>(

@@ -7,7 +7,6 @@ public class MainViewModel : ReactiveObject
 
     public MainViewModel(
         AppSettings appSettings,
-        ConverterSettings converterSettings,
         ILayoutService? layoutService = null,
         IStartupService? startupService = null)
     {
@@ -17,8 +16,7 @@ public class MainViewModel : ReactiveObject
 
         this.MainContentViewModel = new MainContentViewModel(
             this.CreateCharMappingModel(),
-            new PreferencesModel(appSettings, startupService.IsStartupConfigured()),
-            this.CreateConverterModel(converterSettings));
+            new PreferencesModel(appSettings, startupService.IsStartupConfigured()));
 
         this.ServiceViewModel = new ServiceViewModel();
 
@@ -62,19 +60,5 @@ public class MainViewModel : ReactiveObject
             .ToList();
 
         return new() { Layouts = layoutModels, RemovableLayoutIds = missingLayoutIds };
-    }
-
-    private ConverterModel CreateConverterModel(ConverterSettings settings)
-    {
-        var model = new ConverterModel();
-        model.Layouts.AddRange(settings.Layouts.Select(layout =>
-            new CustomLayoutModel
-            {
-                Id = layout.Id,
-                Name = layout.Name,
-                Chars = layout.Chars
-            }));
-
-        return model;
     }
 }

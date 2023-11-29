@@ -5,8 +5,8 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using SharpHook.Native;
 using SharpHook;
+using SharpHook.Native;
 
 public static class SerivceExtensions
 {
@@ -20,7 +20,6 @@ public static class SerivceExtensions
         services
             .AddSingleton<WinLayoutService>()
             .AddSingleton<ILayoutService>(provider => provider.GetRequiredService<WinLayoutService>())
-            .AddSingleton<ILayoutLoaderSrevice>(provider => provider.GetRequiredService<WinLayoutService>())
             .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
             .AddSingleton<IUserActivitySimulator>(
                 sp => new SharpUserActivitySimulator(sp.GetRequiredService<IEventSimulator>(), KeyCode.VcLeftControl))

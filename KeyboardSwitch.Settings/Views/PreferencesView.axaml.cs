@@ -48,9 +48,6 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
             vm => vm.ShowUninstalledLayoutsMessage,
             v => v.ShowRemovedLayoutsMessageCheckBox.IsChecked)
             .DisposeWith(disposables);
-
-        this.Bind(this.ViewModel, vm => vm.ShowConverter, v => v.ShowConverterCheckBox.IsChecked)
-            .DisposeWith(disposables);
     }
 
     private void BindControls(CompositeDisposable disposables)

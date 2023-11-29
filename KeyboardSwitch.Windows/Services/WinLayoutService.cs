@@ -3,7 +3,7 @@ namespace KeyboardSwitch.Windows.Services;
 using System.ComponentModel;
 using System.Globalization;
 
-internal sealed class WinLayoutService(ILogger<WinLayoutService> logger) : CachingLayoutService, ILayoutLoaderSrevice
+internal sealed class WinLayoutService(ILogger<WinLayoutService> logger) : CachingLayoutService
 {
     private const string KeyboardLayoutsRegistryKey = @"SYSTEM\CurrentControlSet\Control\Keyboard Layouts";
     private const string KeyboardLayoutNameRegistryKeyFormat = KeyboardLayoutsRegistryKey + @"\{0}";
@@ -70,56 +70,6 @@ internal sealed class WinLayoutService(ILogger<WinLayoutService> logger) : Cachi
         return keyboardLayoutIds
             .Select(this.CreateKeyboardLayout)
             .ToList();
-    }
-
-    public IReadOnlyList<LoadableKeyboardLayout> GetAllSystemLayouts()
-    {
-        this.logger.LogDebug("Getting the list of all keyboard layouts in the system");
-
-        using var layouts = Registry.LocalMachine.OpenSubKey(KeyboardLayoutsRegistryKey);
-
-        var result = layouts
-            ?.GetSubKeyNames()
-            .Select(layoutKey =>
-            {
-                using var subKey = layouts.OpenSubKey(layoutKey);
-                return new LoadableKeyboardLayout(layoutKey, subKey?.GetValue(LayoutText)?.ToString() ?? String.Empty);
-            })
-            .ToList()
-            ?? [];
-
-        return result.AsReadOnly();
-    }
-
-    public DisposableLayouts LoadLayouts(IEnumerable<LoadableKeyboardLayout> loadableLayouts)
-    {
-        this.logger.LogDebug("Loading additional keyboard layouts");
-
-        var loadedLayouts = this.GetKeyboardLayouts();
-        var unloadDisposable = new CompositeDisposable();
-        var allLayouts = new List<KeyboardLayout>();
-
-        foreach (var loadableLayout in loadableLayouts)
-        {
-            var loadedLayout = loadedLayouts.FirstOrDefault(layout => layout.Tag == loadableLayout.Tag);
-            if (loadedLayout != null)
-            {
-                allLayouts.Add(loadedLayout);
-                continue;
-            }
-
-            var layout = LoadKeyboardLayout(loadableLayout.Tag, KLF.KLF_NOTELLSHELL);
-            unloadDisposable.Add(layout);
-
-            this.logger.LogDebug("Loaded layout: {Layout}", loadableLayout.Name);
-
-            int id = (int)layout.DangerousGetHandle();
-            var culture = this.GetCultureInfo(id, loadableLayout.Name);
-
-            allLayouts.Add(new(id.ToString(), culture.EnglishName, loadableLayout.Name, loadableLayout.Tag));
-        }
-
-        return new(allLayouts, unloadDisposable);
     }
 
     private KeyboardLayout GetThreadKeyboardLayout(uint threadId) =>

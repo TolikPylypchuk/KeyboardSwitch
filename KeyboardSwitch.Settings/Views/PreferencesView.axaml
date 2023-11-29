@@ -25,8 +25,6 @@
                 <StackPanel Orientation="Horizontal" Margin="10">
                     <CheckBox x:Name="ShowRemovedLayoutsMessageCheckBox" Classes="FormControl"
                               Content="{l:Translate ShowUninstalledLayoutsMessage}" />
-                    <CheckBox x:Name="ShowConverterCheckBox" Classes="FormControl"
-                              Content="{l:Translate ShowConverter}" />
                 </StackPanel>
 
                 <TextBlock Text="{l:Translate KeysToSwitchText}" Margin="10 5" />

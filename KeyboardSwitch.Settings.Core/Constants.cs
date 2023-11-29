@@ -4,9 +4,6 @@ public static class Constants
 {
     public const string TaskPoolKey = "Taskpool";
 
-    public const string SourceLayoutId = "0";
-    public const string TargetLayoutId = "1";
-
     public const int NoIndex = -1;
 
     public const string VersionInfoLocation =

@@ -13,10 +13,7 @@ public static class ServiceExtensions
             .AddSingleton<ITextService, ClipboardTextService>()
             .AddSingleton(BlobCacheFactory.CreateBlobCache)
             .AddSingleton<BlobCacheSettingsService>()
-            .AddSingleton<IAppSettingsService>(provider =>
-                provider.GetRequiredService<BlobCacheSettingsService>())
-            .AddSingleton<IConverterSettingsService>(provider =>
-                provider.GetRequiredService<BlobCacheSettingsService>())
+            .AddSingleton<IAppSettingsService, BlobCacheSettingsService>()
             .AddSingleton<ISwitchService, SwitchService>()
             .AddSingleton<ServiceProvider<INamedPipeService>>(s => name =>
                 new NamedPipeService(s.GetRequiredService<ILogger<NamedPipeService>>(), name))

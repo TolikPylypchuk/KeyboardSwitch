@@ -92,7 +92,7 @@ public class Worker(
     private async Task RegisterHotKeys()
     {
         this.logger.LogDebug("Registering hot keys to switch forward and backward");
-        var settings = await this.settingsService.GetAppSettingsAsync();
+        var settings = await this.settingsService.GetAppSettings();
         this.RegisterHotKeys(settings.SwitchSettings);
     }
 

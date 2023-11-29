@@ -78,13 +78,9 @@ public class App : Application, IEnableLogger
 
         try
         {
-            var appSettings = await GetDefaultService<IAppSettingsService>().GetAppSettingsAsync();
+            var appSettings = await GetDefaultService<IAppSettingsService>().GetAppSettings();
 
-            var converterSettings = await GetDefaultService<IConverterSettingsService>()
-                .GetConverterSettingsAsync();
-
-            var mainViewModel = new MainViewModel(appSettings, converterSettings);
-
+            var mainViewModel = new MainViewModel(appSettings);
             this.openExternally.InvokeCommand(mainViewModel.OpenExternally);
 
             return mainViewModel;
