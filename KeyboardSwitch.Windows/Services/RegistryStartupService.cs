@@ -2,20 +2,15 @@ using Microsoft.Extensions.Options;
 
 namespace KeyboardSwitch.Windows.Services;
 
-internal class RegistryStartupService : IStartupService
+internal class RegistryStartupService(IOptions<GlobalSettings> globalSettings, ILogger<RegistryStartupService> logger)
+    : IStartupService
 {
     private const string StartupRegistryKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
     private const string StartupRegistryName = "Keyboard Switch";
     private const string ExecutableExtension = ".exe";
 
-    private readonly GlobalSettings globalSettings;
-    private readonly ILogger<RegistryStartupService> logger;
-
-    public RegistryStartupService(IOptions<GlobalSettings> globalSettings, ILogger<RegistryStartupService> logger)
-    {
-        this.globalSettings = globalSettings.Value;
-        this.logger = logger;
-    }
+    private readonly GlobalSettings globalSettings = globalSettings.Value;
+    private readonly ILogger<RegistryStartupService> logger = logger;
 
     public bool IsStartupConfigured()
     {

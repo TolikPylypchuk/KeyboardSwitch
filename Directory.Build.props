@@ -13,7 +13,7 @@
 
   <PropertyGroup>
     <PublishTrimmed>true</PublishTrimmed>
-    <TrimMode>copyused</TrimMode>
+    <TrimMode>partial</TrimMode>
     <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
     <DebuggerSupport>false</DebuggerSupport>
     <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>

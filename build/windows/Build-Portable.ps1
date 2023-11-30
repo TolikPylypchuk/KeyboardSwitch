@@ -13,11 +13,11 @@ $runtime = $Platform -eq "arm64" ? "win-arm64" : "win-x64"
 $msbuildPlatform = $Platform -eq "arm64" ? "ARM64" : "x64"
 $arch = $Platform -eq "arm64" ? "arm64" : "x64"
 
-dotnet publish .\KeyboardSwitch --configuration Release --runtime $runtime --framework net8.0-windows `
+dotnet publish .\KeyboardSwitch --configuration Release --runtime $runtime --framework net8.0 `
 --self-contained true --output .\bin\KeyboardSwitch --nologo -p:Platform=$msbuildPlatform `
 -p:ContinuousIntegrationBuild=true
 
-dotnet publish .\KeyboardSwitch.Settings --configuration Release --runtime $runtime --framework net8.0-windows `
+dotnet publish .\KeyboardSwitch.Settings --configuration Release --runtime $runtime --framework net8.0 `
 --self-contained true --output .\bin\KeyboardSwitch --nologo -p:Platform=$msbuildPlatform `
 -p:ContinuousIntegrationBuild=true
 
