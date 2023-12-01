@@ -15,6 +15,7 @@ using KeyboardSwitch.Linux;
 #endif
 
 using Serilog;
+using Serilog.Settings.Configuration;
 
 using ILogger = ILogger; // From Microsoft.Extensions.Logging
 
@@ -104,20 +105,28 @@ public static class Program
             .Configure<GlobalSettings>(context.Configuration.GetSection("Settings"))
             .AddSingleton<IScheduler>(Scheduler.Default)
             .AddCoreKeyboardSwitchServices()
-#if WINDOWS || MACOS || LINUX
             .AddNativeKeyboardSwitchServices(context.Configuration)
-#endif
             .AddSingleton<IExitCodeSetter>(exitCodeAccessor);
 
-    private static void ConfigureLogging(HostBuilderContext context, ILoggingBuilder logging) =>
+    private static void ConfigureLogging(HostBuilderContext context, ILoggingBuilder logging)
+    {
+        var configAssemblies = new[]
+        {
+            typeof(LoggerConfigurationAsyncExtensions).Assembly,
+            typeof(ConsoleLoggerConfigurationExtensions).Assembly,
+            typeof(FileLoggerConfigurationExtensions).Assembly,
+            typeof(LoggerSinkConfigurationDebugExtensions).Assembly
+        };
+
         logging
             .ClearProviders()
             .AddSerilog(
                 new LoggerConfiguration()
                     .Enrich.FromLogContext()
-                    .ReadFrom.Configuration(context.Configuration)
+                    .ReadFrom.Configuration(context.Configuration, new ConfigurationReaderOptions(configAssemblies))
                     .CreateLogger(),
                 dispose: true);
+    }
 
     private static Mutex ConfigureSingleInstance(IServiceProvider services)
     {
