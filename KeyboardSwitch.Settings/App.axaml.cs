@@ -176,11 +176,21 @@ public class App : Application, IEnableLogger
             window.WindowState = state.IsWindowMaximized ? WindowState.Maximized : WindowState.Normal;
         }
 
-        window.GetObservable(Window.WindowStateProperty)
+        var windowStateChanged = window
+            .GetObservable(Window.WindowStateProperty)
             .DistinctUntilChanged()
-            .Discard()
-            .Merge(window.GetObservable(TopLevel.ClientSizeProperty).DistinctUntilChanged().Discard())
-            .Merge(Observable.FromEventPattern<EventArgs>(window, nameof(window.PositionChanged)).Discard())
+            .Discard();
+
+        var windowResized = window
+            .GetObservable(TopLevel.ClientSizeProperty)
+            .DistinctUntilChanged()
+            .Discard();
+
+        var windowPositionChanged = Observable
+            .FromEventPattern<PixelPointEventArgs>(h => window.PositionChanged += h, h => window.PositionChanged -= h)
+            .Discard();
+
+        Observable.Merge(windowStateChanged, windowResized, windowPositionChanged)
             .Throttle(TimeSpan.FromMilliseconds(500))
             .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(this.SaveAppState);
