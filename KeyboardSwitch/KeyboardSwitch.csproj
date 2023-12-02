@@ -1,22 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0</TargetFrameworks>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
     <OutputType>WinExe</OutputType>
-    <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
-    <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
-    <DefineConstants>$(DefineConstants);MACOS</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">
-    <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -38,8 +24,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\KeyboardSwitch.Core\KeyboardSwitch.Core.csproj" />
-    <ProjectReference Include="..\KeyboardSwitch.Windows\KeyboardSwitch.Windows.csproj" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />
-    <ProjectReference Include="..\KeyboardSwitch.MacOS\KeyboardSwitch.MacOS.csproj" Condition="$([MSBuild]::IsOSPlatform('OSX'))" />
-    <ProjectReference Include="..\KeyboardSwitch.Linux\KeyboardSwitch.Linux.csproj" Condition="$([MSBuild]::IsOSPlatform('Linux'))" />
+    <ProjectReference Include="..\KeyboardSwitch.Windows\KeyboardSwitch.Windows.csproj" Condition="$(TargetOS) == 'Windows'" />
+    <ProjectReference Include="..\KeyboardSwitch.MacOS\KeyboardSwitch.MacOS.csproj" Condition="$(TargetOS) == 'macOS'" />
+    <ProjectReference Include="..\KeyboardSwitch.Linux\KeyboardSwitch.Linux.csproj" Condition="$(TargetOS) == 'Linux'" />
   </ItemGroup>
 </Project>
