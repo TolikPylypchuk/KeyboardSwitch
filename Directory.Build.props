@@ -4,14 +4,11 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UseArtifactsOutput>true</UseArtifactsOutput>
     <Platforms>x64;ARM64</Platforms>
     <AssemblyVersion>4.2.0.0</AssemblyVersion>
     <FileVersion>4.2.0.0</FileVersion>
     <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <OutputPath>$(MSBuildThisFileDirectory)bin\$(Platform)\$(Configuration)</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(TargetOS) == '' And $([MSBuild]::IsOSPlatform('Windows'))">

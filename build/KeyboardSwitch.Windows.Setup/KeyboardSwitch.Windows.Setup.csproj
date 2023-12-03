@@ -130,8 +130,8 @@
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>
-      call dotnet publish $(MSBuildProjectDirectory)\..\KeyboardSwitch\ --configuration Release --runtime win-x64 --framework net8.0 --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=x64 -p:ContinuousIntegrationBuild=true
-      call dotnet publish $(MSBuildProjectDirectory)\..\KeyboardSwitch.Settings\ --configuration Release --runtime win-x64 --framework net8.0 --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=x64 -p:ContinuousIntegrationBuild=true
+      call dotnet publish $(MSBuildProjectDirectory)\..\..\src\KeyboardSwitch\ --configuration Release --runtime win-x64 --framework net8.0 --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=x64 -p:ContinuousIntegrationBuild=true
+      call dotnet publish $(MSBuildProjectDirectory)\..\..\src\KeyboardSwitch.Settings\ --configuration Release --runtime win-x64 --framework net8.0 --self-contained true --output $(MSBuildProjectDirectory)\..\bin\publish --nologo -p:Platform=x64 -p:ContinuousIntegrationBuild=true
 </PreBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\WixSharp.bin.1.23.1\build\WixSharp.bin.targets" Condition="Exists('..\packages\WixSharp.bin.1.23.1\build\WixSharp.bin.targets')" />

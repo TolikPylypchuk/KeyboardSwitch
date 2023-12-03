@@ -17,66 +17,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		version = version
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch", "KeyboardSwitch\KeyboardSwitch.csproj", "{3B77F28C-A7AF-49F6-B041-28C5D31FBE67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch", "src\KeyboardSwitch\KeyboardSwitch.csproj", "{3B77F28C-A7AF-49F6-B041-28C5D31FBE67}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Core", "KeyboardSwitch.Core\KeyboardSwitch.Core.csproj", "{57008AC4-B4B3-4858-A068-559AEB22BC74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Core", "src\KeyboardSwitch.Core\KeyboardSwitch.Core.csproj", "{57008AC4-B4B3-4858-A068-559AEB22BC74}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Windows", "KeyboardSwitch.Windows\KeyboardSwitch.Windows.csproj", "{ED51CEDE-B35C-4CCA-A950-F740799C150E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Windows", "src\KeyboardSwitch.Windows\KeyboardSwitch.Windows.csproj", "{ED51CEDE-B35C-4CCA-A950-F740799C150E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.MacOS", "KeyboardSwitch.MacOS\KeyboardSwitch.MacOS.csproj", "{A72E553A-353F-49B4-96DA-C0722780A94B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.MacOS", "src\KeyboardSwitch.MacOS\KeyboardSwitch.MacOS.csproj", "{A72E553A-353F-49B4-96DA-C0722780A94B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Linux", "KeyboardSwitch.Linux\KeyboardSwitch.Linux.csproj", "{8F1EB1FC-CF92-4000-81C9-7C40260858C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Linux", "src\KeyboardSwitch.Linux\KeyboardSwitch.Linux.csproj", "{8F1EB1FC-CF92-4000-81C9-7C40260858C0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Settings", "KeyboardSwitch.Settings\KeyboardSwitch.Settings.csproj", "{CE74E7BE-00D2-450A-ADAC-5A32A6D3C874}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Settings", "src\KeyboardSwitch.Settings\KeyboardSwitch.Settings.csproj", "{CE74E7BE-00D2-450A-ADAC-5A32A6D3C874}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Settings.Core", "KeyboardSwitch.Settings.Core\KeyboardSwitch.Settings.Core.csproj", "{1BC312D4-F82A-4F5A-BB26-1DC93C008714}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Settings.Core", "src\KeyboardSwitch.Settings.Core\KeyboardSwitch.Settings.Core.csproj", "{1BC312D4-F82A-4F5A-BB26-1DC93C008714}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardSwitch.Windows.Setup", "KeyboardSwitch.Windows.Setup\KeyboardSwitch.Windows.Setup.csproj", "{C9A243E5-6443-4A00-ACAC-C20A61286264}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Windows", "Build Windows", "{8E0EEA7C-28C5-4592-89B1-51A6990B9008}"
-	ProjectSection(SolutionItems) = preProject
-		build\windows\Build-Portable.ps1 = build\windows\Build-Portable.ps1
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Tar", "Build Tar", "{2D2AAF6E-39D7-432C-B30D-EDAB26EC8F9D}"
-	ProjectSection(SolutionItems) = preProject
-		build\tar\build-tar.sh = build\tar\build-tar.sh
-		build\tar\install.sh = build\tar\install.sh
-		build\tar\uninstall.sh = build\tar\uninstall.sh
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Deb", "Build Deb", "{BEF22692-75CB-4B7C-9177-1186925839EB}"
-	ProjectSection(SolutionItems) = preProject
-		build\deb\build-deb.sh = build\deb\build-deb.sh
-		build\deb\control = build\deb\control
-		build\deb\copyright = build\deb\copyright
-		build\deb\postinst = build\deb\postinst
-		build\deb\postrm = build\deb\postrm
-		build\deb\prerm = build\deb\prerm
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Rpm", "Build Rpm", "{B2C16AEE-1495-4D0B-96A0-35CA247B5A80}"
-	ProjectSection(SolutionItems) = preProject
-		build\rpm\build-rpm.sh = build\rpm\build-rpm.sh
-		build\rpm\keyboard-switch.spec = build\rpm\keyboard-switch.spec
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build macOS", "Build macOS", "{42A4B33E-9B04-4D46-B7FD-97707DEC96E5}"
-	ProjectSection(SolutionItems) = preProject
-		build\macos\build-pkg.sh = build\macos\build-pkg.sh
-		build\macos\build-uninstaller-pkg.sh = build\macos\build-uninstaller-pkg.sh
-		build\macos\dist-pkg.xml = build\macos\dist-pkg.xml
-		build\macos\dist-uninstaller-pkg.xml = build\macos\dist-uninstaller-pkg.xml
-		build\macos\entitlements.plist = build\macos\entitlements.plist
-		build\macos\io.tolik.keyboardswitch.plist = build\macos\io.tolik.keyboardswitch.plist
-		build\macos\KeyboardSwitch.plist = build\macos\KeyboardSwitch.plist
-		build\macos\KeyboardSwitchSettings.plist = build\macos\KeyboardSwitchSettings.plist
-		build\macos\license.txt = build\macos\license.txt
-		build\macos\postinstall-pkg = build\macos\postinstall-pkg
-		build\macos\postinstall-uninstaller-pkg = build\macos\postinstall-uninstaller-pkg
-		build\macos\readme.txt = build\macos\readme.txt
-		build\macos\welcome.txt = build\macos\welcome.txt
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardSwitch.Windows.Setup", "build\KeyboardSwitch.Windows.Setup\KeyboardSwitch.Windows.Setup.csproj", "{C9A243E5-6443-4A00-ACAC-C20A61286264}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
