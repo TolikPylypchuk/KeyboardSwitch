@@ -32,6 +32,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeyboardSwitch.Settings.Cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardSwitch.Windows.Setup", "build\KeyboardSwitch.Windows.Setup\KeyboardSwitch.Windows.Setup.csproj", "{C9A243E5-6443-4A00-ACAC-C20A61286264}"
 EndProject
+Project("{B7DD6F7E-DEF8-4E67-B5B7-07EF123DB6F0}") = "KeyboardSwitch.Windows.Installer", "build\KeyboardSwitch.Windows.Installer\KeyboardSwitch.Windows.Installer.wixproj", "{238C66B5-56E2-4FA7-A8E4-54A5DC5E4AA6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -122,6 +124,17 @@ Global
 		{C9A243E5-6443-4A00-ACAC-C20A61286264}.Release|ARM64.ActiveCfg = Release|Any CPU
 		{C9A243E5-6443-4A00-ACAC-C20A61286264}.Release|ARM64.Build.0 = Release|Any CPU
 		{C9A243E5-6443-4A00-ACAC-C20A61286264}.Release|x64.ActiveCfg = Release|x64
+		{238C66B5-56E2-4FA7-A8E4-54A5DC5E4AA6}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{238C66B5-56E2-4FA7-A8E4-54A5DC5E4AA6}.Debug|Any CPU.Build.0 = Debug|x64
+		{238C66B5-56E2-4FA7-A8E4-54A5DC5E4AA6}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{238C66B5-56E2-4FA7-A8E4-54A5DC5E4AA6}.Debug|ARM64.Build.0 = Debug|ARM64
+		{238C66B5-56E2-4FA7-A8E4-54A5DC5E4AA6}.Debug|x64.ActiveCfg = Debug|x64
+		{238C66B5-56E2-4FA7-A8E4-54A5DC5E4AA6}.Release|Any CPU.ActiveCfg = Release|x64
+		{238C66B5-56E2-4FA7-A8E4-54A5DC5E4AA6}.Release|Any CPU.Build.0 = Release|x64
+		{238C66B5-56E2-4FA7-A8E4-54A5DC5E4AA6}.Release|ARM64.ActiveCfg = Release|ARM64
+		{238C66B5-56E2-4FA7-A8E4-54A5DC5E4AA6}.Release|ARM64.Build.0 = Release|ARM64
+		{238C66B5-56E2-4FA7-A8E4-54A5DC5E4AA6}.Release|x64.ActiveCfg = Release|x64
+		{238C66B5-56E2-4FA7-A8E4-54A5DC5E4AA6}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

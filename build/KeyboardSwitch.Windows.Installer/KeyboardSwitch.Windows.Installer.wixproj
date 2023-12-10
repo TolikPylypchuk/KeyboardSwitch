@@ -1,0 +1,8 @@
+<Project Sdk="WixToolset.Sdk/4.0.3">
+  <PropertyGroup>
+    <TargetOS>Windows</TargetOS>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\KeyboardSwitch.Settings\KeyboardSwitch.Settings.csproj" />
+  </ItemGroup>
+</Project>

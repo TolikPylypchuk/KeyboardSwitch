@@ -1,0 +1,9 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <ComponentGroup Id="AppComponents" Directory="InstallFolder">
+      <Component>
+        <File Source="KeyboardSwitch.exe" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>
