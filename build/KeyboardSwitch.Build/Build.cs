@@ -25,22 +25,29 @@ public partial class Build : NukeBuild
         .Before(Restore)
         .Executes(() =>
         {
-            foreach (var project in this.Solution.Projects
-                .Where(project => project != this.Solution.KeyboardSwitch_Build))
+            this.ForEachProject(project =>
             {
-                Log.Information("Cleaning project {Name}", project.Name, project.ProjectId);
+                Log.Information("Cleaning project {Name}", project.Name);
                 DotNetClean(s => s
                     .SetProject(project)
                     .SetConfiguration(this.Configuration)
                     .SetPlatform(this.Platform)
                     .SetProperty(nameof(TargetOS), this.TargetOS));
-            }
+            });
         });
 
     public Target Restore => t => t
         .DependsOn(Clean)
         .Executes(() =>
         {
+            this.ForEachProject(project =>
+            {
+                Log.Information("Restoring project {Name}", project.Name);
+                DotNetRestore(s => s
+                    .SetProjectFile(project)
+                    .SetPlatform(this.Platform)
+                    .SetProperty(nameof(TargetOS), this.TargetOS));
+            });
         });
 
     public Target Compile => t => t
@@ -51,4 +58,13 @@ public partial class Build : NukeBuild
 
     public static int Main() =>
         Execute<Build>(x => x.Compile);
+
+    private void ForEachProject(Action<Project> action)
+    {
+        foreach (var project in this.Solution.Projects
+                .Where(project => project != this.Solution.KeyboardSwitch_Build))
+        {
+            action(project);
+        }
+    }
 }
