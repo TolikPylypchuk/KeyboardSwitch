@@ -2,7 +2,7 @@
   <Package
       Name="Keyboard Switch"
       Manufacturer="Tolik Pylypchuk"
-      Version="4.2.0.0"
+      Version="4.2.0"
       UpgradeCode="6fe30b47-2577-43ad-9095-1861ba25889b"
   >
     <MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)" />
