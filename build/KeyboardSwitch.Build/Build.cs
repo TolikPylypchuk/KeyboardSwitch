@@ -22,7 +22,6 @@ public partial class Build : NukeBuild
     private readonly Solution Solution = new();
 
     public Target Clean => t => t
-        .Before(Restore)
         .Executes(() =>
         {
             this.ForEachProject(project =>
@@ -36,35 +35,44 @@ public partial class Build : NukeBuild
             });
         });
 
-    public Target Restore => t => t
+    public Target Publish => t => t
         .DependsOn(Clean)
         .Executes(() =>
         {
-            this.ForEachProject(project =>
-            {
-                Log.Information("Restoring project {Name}", project.Name);
-                DotNetRestore(s => s
-                    .SetProjectFile(project)
-                    .SetPlatform(this.Platform)
-                    .SetProperty(nameof(TargetOS), this.TargetOS));
-            });
-        });
+            var os = (this.TargetOS ?? this.GetCurrentOS()).RuntimeIdentifierPart;
+            var arch = this.Platform.RuntimeIdentifierPart;
+            var runtime = $"{os}-{arch}";
 
-    public Target Compile => t => t
-        .DependsOn(Restore)
-        .Executes(() =>
-        {
+            this.PublishProject(this.Solution.KeyboardSwitch, runtime);
+            this.PublishProject(this.Solution.KeyboardSwitch_Settings, runtime);
         });
 
     public static int Main() =>
-        Execute<Build>(x => x.Compile);
+        Execute<Build>(x => x.Publish);
 
     private void ForEachProject(Action<Project> action)
     {
         foreach (var project in this.Solution.Projects
-                .Where(project => project != this.Solution.KeyboardSwitch_Build))
+                .Where(project => project != this.Solution.KeyboardSwitch_Build &&
+                    project != this.Solution.KeyboardSwitch_Windows_Setup))
         {
             action(project);
         }
     }
+
+    private void PublishProject(Project project, string runtime) =>
+        DotNetPublish(s => s
+            .SetProject(project)
+            .SetRuntime(runtime)
+            .SetConfiguration(this.Configuration)
+            .SetPlatform(this.Platform)
+            .SetProperty(nameof(TargetOS), this.TargetOS)
+            .SetSelfContained(true));
+
+    private TargetOS GetCurrentOS() =>
+        RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+            ? TargetOS.MacOS
+            : RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
+                ? TargetOS.Linux
+                : TargetOS.Windows;
 }

@@ -4,5 +4,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\KeyboardSwitch.Settings\KeyboardSwitch.Settings.csproj" />
+    <ProjectReference Include="..\..\src\KeyboardSwitch\KeyboardSwitch.csproj" />
   </ItemGroup>
 </Project>
