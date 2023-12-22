@@ -1,6 +1,6 @@
 namespace KeyboardSwitch.Core.Services.Infrastructure;
 
-public interface IMainLoopRunner
+public interface IMainLoopRunner : IDisposable
 {
-    public void RunMainLoopIfNeeded(CancellationToken token);
+    public void RunMainLoopIfNeeded();
 }

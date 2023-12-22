@@ -1,11 +1,26 @@
 namespace KeyboardSwitch.MacOS.Services;
 
-internal sealed class MacOSMainLoopRunner : IMainLoopRunner
+internal sealed class MacOSMainLoopRunner : Disposable, IMainLoopRunner
 {
-    public void RunMainLoopIfNeeded(CancellationToken token)
+    private CFRunLoopRef? loop;
+
+    ~MacOSMainLoopRunner() =>
+        this.Dispose(false);
+
+    public void RunMainLoopIfNeeded()
     {
-        var loop = CoreFoundation.CFRunLoopGetCurrent();
-        token.Register(() => CoreFoundation.CFRunLoopStop(loop));
+        this.ThrowIfDisposed();
+
+        this.loop = CoreFoundation.CFRunLoopGetCurrent();
         CoreFoundation.CFRunLoopRun();
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (this.loop is not null)
+        {
+            CoreFoundation.CFRunLoopStop(this.loop);
+            this.loop = null;
+        }
     }
 }

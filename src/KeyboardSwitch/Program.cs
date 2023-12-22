@@ -61,6 +61,7 @@ public static class Program
         }
 
         var exitService = host.Services.GetRequiredService<IExitService>();
+        var mainLoopRuner = host.Services.GetRequiredService<IMainLoopRunner>();
 
         try
         {
@@ -68,7 +69,9 @@ public static class Program
 
             logger.LogInformation("KeyboardSwitch service execution started");
 
-            host.Run();
+            host.Start();
+            mainLoopRuner.RunMainLoopIfNeeded();
+            host.WaitForShutdown();
 
             logger.LogInformation("KeyboardSwitch service execution stopped");
         } catch (Exception e) when (e is OperationCanceledException || e is TaskCanceledException)

@@ -7,7 +7,6 @@ public class Worker(
     IKeyboardHookService keyboardHookService,
     ISwitchService switchService,
     IAppSettingsService settingsService,
-    IMainLoopRunner mainLoopRunner,
     IExitService exitService,
     IOptions<GlobalSettings> globalSettings,
     ILogger<Worker> logger)
@@ -16,7 +15,6 @@ public class Worker(
     private readonly IKeyboardHookService keyboardHookService = keyboardHookService;
     private readonly ISwitchService switchService = switchService;
     private readonly IAppSettingsService settingsService = settingsService;
-    private readonly IMainLoopRunner mainLoopRunner = mainLoopRunner;
     private readonly IExitService exitService = exitService;
     private readonly GlobalSettings globalSettings = globalSettings.Value;
     private readonly ILogger<Worker> logger = logger;
@@ -24,28 +22,6 @@ public class Worker(
     private IDisposable? hookSubscription;
 
     protected override async Task ExecuteAsync(CancellationToken token)
-    {
-        try
-        {
-            var task = Task.Run(() => this.StartServiceAsync(token), token);
-
-            this.mainLoopRunner.RunMainLoopIfNeeded(token);
-
-            await task;
-        } catch (Exception e)
-        {
-            this.logger.LogCritical(e, "The KeyboardSwitch service has crashed");
-            await this.exitService.Exit(ExitCode.Error, token);
-        }
-    }
-
-    public override void Dispose()
-    {
-        this.hookSubscription?.Dispose();
-        base.Dispose();
-    }
-
-    private async Task StartServiceAsync(CancellationToken token)
     {
         try
         {
@@ -81,6 +57,12 @@ public class Worker(
             this.logger.LogCritical(e, "The KeyboardSwitch service has crashed");
             await this.exitService.Exit(ExitCode.Error, token);
         }
+    }
+
+    public override void Dispose()
+    {
+        this.hookSubscription?.Dispose();
+        base.Dispose();
     }
 
     private async Task RegisterHotKeysFromSettings()
