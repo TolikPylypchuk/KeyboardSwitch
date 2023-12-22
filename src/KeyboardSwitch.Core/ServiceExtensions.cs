@@ -15,13 +15,8 @@ public static class ServiceExtensions
             .AddSingleton<BlobCacheSettingsService>()
             .AddSingleton<IAppSettingsService, BlobCacheSettingsService>()
             .AddSingleton<ISwitchService, SwitchService>()
-            .AddSingleton<ServiceProvider<INamedPipeService>>(s => name =>
-                new NamedPipeService(s.GetRequiredService<ILogger<NamedPipeService>>(), name))
-            .AddSingleton<ServiceProvider<ISingleInstanceService>>(s => name =>
-                new SingleInstanceService(
-                    s.GetRequiredService<ServiceProvider<INamedPipeService>>(),
-                    s.GetRequiredService<ILogger<SingleInstanceService>>(),
-                    name));
+            .AddSingleton<INamedPipeService, NamedPipeService>()
+            .AddSingleton<ISingleInstanceService, SingleInstanceService>();
 
     public static IServiceCollection AddClipboard(this IServiceCollection services)
     {

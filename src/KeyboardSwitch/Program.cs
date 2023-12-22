@@ -130,10 +130,9 @@ public static class Program
 
     private static Mutex ConfigureSingleInstance(IServiceProvider services)
     {
-        var singleInstanceProvider = services.GetRequiredService<ServiceProvider<ISingleInstanceService>>();
-        var singleInstanceService = singleInstanceProvider(nameof(KeyboardSwitch));
-
-        return singleInstanceService.TryAcquireMutex();
+        return services
+            .GetRequiredService<ISingleInstanceService>()
+            .TryAcquireMutex(nameof(KeyboardSwitch));
     }
 
     private static bool SettingsExist(IHost host)
@@ -146,12 +145,10 @@ public static class Program
 
     private static void SubscribeToExternalCommands(IHost host, ILogger logger)
     {
-        var namedPipeProvider = host.Services.GetRequiredService<ServiceProvider<INamedPipeService>>();
-        var namedPipeService = namedPipeProvider(nameof(KeyboardSwitch));
-
+        var namedPipeService = host.Services.GetRequiredService<INamedPipeService>();
         var settingsService = host.Services.GetRequiredService<IAppSettingsService>();
 
-        namedPipeService.StartServer();
+        namedPipeService.StartServer(nameof(KeyboardSwitch));
 
         namedPipeService.ReceivedString
             .Where(command => command.IsCommand(ExternalCommand.Stop))

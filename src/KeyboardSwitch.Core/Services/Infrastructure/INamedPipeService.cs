@@ -2,9 +2,9 @@ namespace KeyboardSwitch.Core.Services.Infrastructure;
 
 public interface INamedPipeService
 {
-    string NamedPipeName { get; }
     IObservable<string> ReceivedString { get; }
 
-    void StartServer();
-    bool Write(string text, int connectTimeout = 300);
+    void StartServer(string pipeName);
+
+    bool Write(string pipeName, string text, int connectTimeout = 300);
 }

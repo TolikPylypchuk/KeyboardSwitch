@@ -2,22 +2,20 @@ namespace KeyboardSwitch.Core.Services.Infrastructure;
 
 using System.IO.Pipes;
 
-internal sealed class NamedPipeService(ILogger<NamedPipeService> logger, string name) : Disposable, INamedPipeService
+internal sealed class NamedPipeService(ILogger<NamedPipeService> logger) : Disposable, INamedPipeService
 {
     private readonly Subject<string> receivedString = new();
     private readonly ILogger<NamedPipeService> logger = logger;
 
-    public string NamedPipeName { get; } = name;
-
     public IObservable<string> ReceivedString =>
         this.receivedString.AsObservable();
 
-    public void StartServer() =>
-        Task.Run(this.WaitForMessages);
+    public void StartServer(string pipeName) =>
+        Task.Run(() => this.WaitForMessages(pipeName));
 
-    public bool Write(string text, int connectTimeout = 300)
+    public bool Write(string pipeName, string text, int connectTimeout = 300)
     {
-        using var client = new NamedPipeClientStream(this.NamedPipeName);
+        using var client = new NamedPipeClientStream(pipeName);
 
         try
         {
@@ -44,12 +42,12 @@ internal sealed class NamedPipeService(ILogger<NamedPipeService> logger, string 
     protected override void Dispose(bool disposing) =>
         this.receivedString.Dispose();
 
-    private void WaitForMessages()
+    private void WaitForMessages(string pipeName)
     {
         while (!this.Disposed)
         {
             string text;
-            using (var server = new NamedPipeServerStream(this.NamedPipeName, PipeDirection.InOut, 10))
+            using (var server = new NamedPipeServerStream(pipeName, PipeDirection.InOut, 10))
             {
                 server.WaitForConnection();
 

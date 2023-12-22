@@ -4,14 +4,16 @@ using System.Diagnostics;
 
 public class DirectServiceCommunicator(
     IOptions<GlobalSettings> globalSettings,
-    ServiceProvider<INamedPipeService> namedPipeServiceProvider)
+    INamedPipeService namedPipeService)
     : IServiceCommunicator
 {
+    private const string KeyboardSwitch = nameof(KeyboardSwitch);
+
     private readonly GlobalSettings globalSettings = globalSettings.Value;
-    private readonly INamedPipeService namedPipeService = namedPipeServiceProvider(nameof(KeyboardSwitch));
+    private readonly INamedPipeService namedPipeService = namedPipeService;
 
     public virtual bool IsServiceRunning() =>
-        Process.GetProcessesByName(nameof(KeyboardSwitch)).Length > 0;
+        Process.GetProcessesByName(KeyboardSwitch).Length > 0;
 
     public virtual void StartService() =>
         Process.Start(this.globalSettings.ServicePath);
@@ -20,13 +22,13 @@ public class DirectServiceCommunicator(
     {
         if (kill)
         {
-            Process.GetProcessesByName(nameof(KeyboardSwitch)).ForEach(process => process.Kill());
+            Process.GetProcessesByName(KeyboardSwitch).ForEach(process => process.Kill());
         } else
         {
-            this.namedPipeService.Write(ExternalCommand.Stop);
+            this.namedPipeService.Write(KeyboardSwitch, ExternalCommand.Stop);
         }
     }
 
     public void ReloadService() =>
-        this.namedPipeService.Write(ExternalCommand.ReloadSettings);
+        this.namedPipeService.Write(KeyboardSwitch, ExternalCommand.ReloadSettings);
 }

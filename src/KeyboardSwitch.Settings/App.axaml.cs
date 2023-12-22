@@ -224,7 +224,7 @@ public class App : Application, IEnableLogger
     {
         this.Log().Info("Shutting down the settings app");
 
-        this.serviceProvider?.DisposeAsync().AsTask().Wait();
+        this.serviceProvider?.Dispose();
         this.mutex?.ReleaseMutex();
         this.mutex?.Dispose();
     }
@@ -233,15 +233,13 @@ public class App : Application, IEnableLogger
     {
         string assemblyName = Assembly.GetExecutingAssembly().GetName()?.Name ?? String.Empty;
 
-        var singleInstanceProvider = services.GetRequiredService<ServiceProvider<ISingleInstanceService>>();
-        var singleInstanceService = singleInstanceProvider(assemblyName);
+        this.mutex = services
+            .GetRequiredService<ISingleInstanceService>()
+            .TryAcquireMutex(assemblyName);
 
-        this.mutex = singleInstanceService.TryAcquireMutex();
+        var namedPipeService = services.GetRequiredService<INamedPipeService>();
 
-        var namedPipeProvider = services.GetRequiredService<ServiceProvider<INamedPipeService>>();
-        var namedPipeService = namedPipeProvider(assemblyName);
-
-        namedPipeService.StartServer();
+        namedPipeService.StartServer(assemblyName);
 
         namedPipeService.ReceivedString
             .Discard()
