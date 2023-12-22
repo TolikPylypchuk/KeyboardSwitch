@@ -61,7 +61,7 @@ public static class Program
         }
 
         var exitService = host.Services.GetRequiredService<IExitService>();
-        var mainLoopRuner = host.Services.GetRequiredService<IMainLoopRunner>();
+        var mainLoopRunner = host.Services.GetRequiredService<IMainLoopRunner>();
 
         try
         {
@@ -70,8 +70,15 @@ public static class Program
             logger.LogInformation("KeyboardSwitch service execution started");
 
             host.Start();
-            mainLoopRuner.RunMainLoopIfNeeded();
-            host.WaitForShutdown();
+
+            if (mainLoopRunner.ShouldRunMainLoop)
+            {
+                new Thread(host.WaitForShutdown).Start();
+                mainLoopRunner.RunMainLoop();
+            } else
+            {
+                host.WaitForShutdown();
+            }
 
             logger.LogInformation("KeyboardSwitch service execution stopped");
         } catch (Exception e) when (e is OperationCanceledException || e is TaskCanceledException)
@@ -154,7 +161,7 @@ public static class Program
     private static ExitCode ShowIfRunning()
     {
         var processes = Process.GetProcessesByName(nameof(KeyboardSwitch));
-        bool isRunning = processes is not null && processes.Length > 1;
+        bool isRunning = processes.Length > 1;
 
         Console.WriteLine(isRunning ? "KeyboardSwitch is running" : "KeyboardSwitch is not running");
 

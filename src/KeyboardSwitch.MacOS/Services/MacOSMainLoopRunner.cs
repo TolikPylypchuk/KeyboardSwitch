@@ -4,10 +4,12 @@ internal sealed class MacOSMainLoopRunner : Disposable, IMainLoopRunner
 {
     private CFRunLoopRef? loop;
 
+    public bool ShouldRunMainLoop => true;
+
     ~MacOSMainLoopRunner() =>
         this.Dispose(false);
 
-    public void RunMainLoopIfNeeded()
+    public void RunMainLoop()
     {
         this.ThrowIfDisposed();
 

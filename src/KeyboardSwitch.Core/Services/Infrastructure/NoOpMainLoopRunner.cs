@@ -2,7 +2,9 @@ namespace KeyboardSwitch.Core.Services.Infrastructure;
 
 public class NoOpMainLoopRunner : IMainLoopRunner
 {
-    public void RunMainLoopIfNeeded()
+    public bool ShouldRunMainLoop => false;
+
+    public void RunMainLoop()
     { }
 
     public void Dispose()
