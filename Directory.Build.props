@@ -18,8 +18,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <AssemblyVersion>4.2.0.0</AssemblyVersion>
-    <FileVersion>4.2.0.0</FileVersion>
+    <Version>4.2.0</Version>
+    <AssemblyVersion>$(Version)</AssemblyVersion>
+    <FileVersion>$(Version)</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup>

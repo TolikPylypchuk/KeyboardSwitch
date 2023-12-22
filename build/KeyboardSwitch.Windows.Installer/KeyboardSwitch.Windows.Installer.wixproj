@@ -1,9 +1,16 @@
 <Project Sdk="WixToolset.Sdk/4.0.3">
+
   <PropertyGroup>
     <TargetOS>Windows</TargetOS>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <DefineConstants>Version=$(Version)</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\..\src\KeyboardSwitch.Settings\KeyboardSwitch.Settings.csproj" />
     <ProjectReference Include="..\..\src\KeyboardSwitch\KeyboardSwitch.csproj" />
   </ItemGroup>
+
 </Project>
