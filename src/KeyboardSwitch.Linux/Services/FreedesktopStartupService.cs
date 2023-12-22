@@ -22,27 +22,23 @@ Categories=Utility
     private const string AppNamePlaceholder = "$SERVICE_APP";
     private const string AppDirectoryPlaceholder = "$DIRECTORY";
 
-    private readonly GlobalSettings globalSettings = globalSettings.Value;
-
     private readonly string startupFilePath =
         Environment.ExpandEnvironmentVariables(startupSettings.Value.StartupFilePath);
 
-    private readonly ILogger<FreedesktopStartupService> logger = logger;
-
     public bool IsStartupConfigured()
     {
-        this.logger.LogDebug("Checking if the KeyboardSwitch service is configured to run on startup");
+        logger.LogDebug("Checking if the KeyboardSwitch service is configured to run on startup");
 
         bool isConfigured = File.Exists(this.startupFilePath);
 
-        this.logger.LogDebug("KeyboardSwitch is configured to run on startup: {IsConfigured}", isConfigured);
+        logger.LogDebug("KeyboardSwitch is configured to run on startup: {IsConfigured}", isConfigured);
 
         return isConfigured;
     }
 
     public void ConfigureStartup(bool startup)
     {
-        this.logger.LogDebug(
+        logger.LogDebug(
             "Configuring to {Action} running the KeyboardSwitch service on startup", startup ? "start" : "stop");
 
         if (startup)
@@ -52,7 +48,7 @@ Categories=Utility
                 Directory.CreateDirectory(directory);
             }
 
-            string servicePath = Path.GetFullPath(globalSettings.ServicePath);
+            string servicePath = Path.GetFullPath(globalSettings.Value.ServicePath);
 
             string fileContent = StartFileContent.ReplaceLineEndings()
                 .Replace(AppNamePlaceholder, servicePath)
@@ -65,7 +61,7 @@ Categories=Utility
             File.Delete(this.startupFilePath);
         }
 
-        this.logger.LogDebug(
+        logger.LogDebug(
             "Configured to {Action} running the KeyboardSwitch service on startup", startup ? "start" : "stop");
     }
 }

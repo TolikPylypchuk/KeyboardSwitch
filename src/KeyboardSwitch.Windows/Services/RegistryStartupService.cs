@@ -9,24 +9,21 @@ internal class RegistryStartupService(IOptions<GlobalSettings> globalSettings, I
     private const string StartupRegistryName = "Keyboard Switch";
     private const string ExecutableExtension = ".exe";
 
-    private readonly GlobalSettings globalSettings = globalSettings.Value;
-    private readonly ILogger<RegistryStartupService> logger = logger;
-
     public bool IsStartupConfigured()
     {
-        this.logger.LogDebug("Checking if the KeyboardSwitch service is configured to run on startup");
+        logger.LogDebug("Checking if the KeyboardSwitch service is configured to run on startup");
 
         using var key = Registry.CurrentUser.OpenSubKey(StartupRegistryKey);
         bool isConfigured = key?.GetValue(StartupRegistryName) != null;
 
-        this.logger.LogDebug("KeyboardSwitch is configured to run on startup: {IsConfigured}", isConfigured);
+        logger.LogDebug("KeyboardSwitch is configured to run on startup: {IsConfigured}", isConfigured);
 
         return isConfigured;
     }
 
     public void ConfigureStartup(bool startup)
     {
-        this.logger.LogDebug(
+        logger.LogDebug(
             "Configuring to {Action} running the KeyboardSwitch service on startup", startup ? "start" : "stop");
 
         using var startupKey = Registry.CurrentUser.OpenSubKey(StartupRegistryKey, true);
@@ -39,16 +36,16 @@ internal class RegistryStartupService(IOptions<GlobalSettings> globalSettings, I
             startupKey?.DeleteValue(StartupRegistryName);
         }
 
-        this.logger.LogDebug(
+        logger.LogDebug(
             "Configured to {Action} running the KeyboardSwitch service on startup", startup ? "start" : "stop");
     }
 
     private string GetServicePath()
     {
-        var path = this.globalSettings.ServicePath.EndsWith(
+        var path = globalSettings.Value.ServicePath.EndsWith(
             ExecutableExtension, StringComparison.InvariantCultureIgnoreCase)
-            ? this.globalSettings.ServicePath
-            : this.globalSettings.ServicePath + ExecutableExtension;
+            ? globalSettings.Value.ServicePath
+            : globalSettings.Value.ServicePath + ExecutableExtension;
 
         return $"\"{Path.GetFullPath(path)}\"";
     }

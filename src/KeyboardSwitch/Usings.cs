@@ -2,7 +2,6 @@ global using System.Reactive.Linq;
 
 global using KeyboardSwitch.Core;
 global using KeyboardSwitch.Core.Keyboard;
-global using KeyboardSwitch.Core.Services;
 global using KeyboardSwitch.Core.Services.Hook;
 global using KeyboardSwitch.Core.Services.Infrastructure;
 global using KeyboardSwitch.Core.Services.Settings;

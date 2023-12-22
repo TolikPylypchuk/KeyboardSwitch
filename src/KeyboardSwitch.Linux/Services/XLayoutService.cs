@@ -7,11 +7,9 @@ public class XLayoutService(ILogger<XLayoutService> logger) : CachingLayoutServi
 {
     private static readonly ImmutableList<string> NonSymbols = ["group", "inet", "pc"];
 
-    private readonly ILogger<XLayoutService> logger = logger;
-
     public override KeyboardLayout GetCurrentKeyboardLayout()
     {
-        this.logger.LogDebug("Getting current keyboard layout");
+        logger.LogDebug("Getting current keyboard layout");
 
         var allLayouts = this.GetKeyboardLayouts();
 
@@ -34,7 +32,7 @@ public class XLayoutService(ILogger<XLayoutService> logger) : CachingLayoutServi
 
     public override void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
     {
-        this.logger.LogDebug("Switching the current layout {Direction}", direction.AsString());
+        logger.LogDebug("Switching the current layout {Direction}", direction.AsString());
 
         var allLayouts = this.GetKeyboardLayouts();
 
@@ -58,7 +56,7 @@ public class XLayoutService(ILogger<XLayoutService> logger) : CachingLayoutServi
 
     protected override unsafe List<KeyboardLayout> GetKeyboardLayoutsInternal()
     {
-        this.logger.LogDebug("Getting all keyboard layouts");
+        logger.LogDebug("Getting all keyboard layouts");
 
         using var display = OpenXDisplay();
 
@@ -124,7 +122,7 @@ public class XLayoutService(ILogger<XLayoutService> logger) : CachingLayoutServi
 
     private string GetGroupName(XDisplayHandle display, Atom group)
     {
-        this.logger.LogDebug("Getting a group name for atom: {Group}", group);
+        logger.LogDebug("Getting a group name for atom: {Group}", group);
 
         using var atomNameHandle = XGetAtomName(display, group);
         var atomNameRawHandle = atomNameHandle.DangerousGetHandle();
@@ -136,7 +134,7 @@ public class XLayoutService(ILogger<XLayoutService> logger) : CachingLayoutServi
 
     private string? GetAllSymbols(XDisplayHandle display, Atom symbols)
     {
-        this.logger.LogDebug("Getting all symbol names");
+        logger.LogDebug("Getting all symbol names");
 
         using var symbolsHandle = XGetAtomName(display, symbols);
         var symbolsRawHandle = symbolsHandle.DangerousGetHandle();
@@ -188,7 +186,7 @@ public class XLayoutService(ILogger<XLayoutService> logger) : CachingLayoutServi
 
     private (List<string> SymbolNames, List<string> VariantNames) ParseSymbols(string symbols)
     {
-        this.logger.LogDebug("Parsing keyboard layout symbols");
+        logger.LogDebug("Parsing keyboard layout symbols");
 
         bool inSymbol = false;
         var currentSymbol = new StringBuilder();
@@ -256,7 +254,7 @@ public class XLayoutService(ILogger<XLayoutService> logger) : CachingLayoutServi
 
     private int FindGroup(List<string> groupNames, List<string> symbolNames, int groupNum)
     {
-        this.logger.LogDebug("Finding group #{GroupNumber}", groupNum);
+        logger.LogDebug("Finding group #{GroupNumber}", groupNum);
 
         string sourceText = groupNames[groupNum];
         int result = groupNum;
@@ -276,7 +274,7 @@ public class XLayoutService(ILogger<XLayoutService> logger) : CachingLayoutServi
 
     private void InitKeyboard(XDisplayHandle display, XHandle keyboardHandle)
     {
-        this.logger.LogDebug("Initializing the keyboard");
+        logger.LogDebug("Initializing the keyboard");
 
         XkbGetControls(display, XControlsDetailMask.XkbAllControlsMask, keyboardHandle);
         XkbGetNames(display, XNamesComponentMask.XkbSymbolsNameMask, keyboardHandle);
@@ -285,7 +283,7 @@ public class XLayoutService(ILogger<XLayoutService> logger) : CachingLayoutServi
 
     private void FreeKeyboard(XHandle keyboardHandle)
     {
-        this.logger.LogDebug("Freeing the keyboard");
+        logger.LogDebug("Freeing the keyboard");
 
         XkbFreeControls(keyboardHandle, XControlsDetailMask.XkbAllControlsMask, true);
         XkbFreeNames(keyboardHandle, XNamesComponentMask.XkbSymbolsNameMask, true);

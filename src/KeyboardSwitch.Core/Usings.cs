@@ -6,7 +6,6 @@ global using System.Reactive.Subjects;
 global using System.Runtime.Serialization;
 
 global using KeyboardSwitch.Core.Keyboard;
-global using KeyboardSwitch.Core.Services;
 global using KeyboardSwitch.Core.Services.Hook;
 global using KeyboardSwitch.Core.Services.Infrastructure;
 global using KeyboardSwitch.Core.Services.Layout;

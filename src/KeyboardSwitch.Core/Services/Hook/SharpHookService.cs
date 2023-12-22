@@ -85,7 +85,7 @@ internal sealed class SharpHookService : Core.Disposable, IKeyboardHookService
 
     public async Task StartHook(CancellationToken token)
     {
-        this.logger.LogInformation("Creating a global hook");
+        this.hook.HookEnabled.Subscribe(e => this.logger.LogInformation("Created a global keyboard hook"));
         token.Register(this.hook.Dispose);
         await this.hook.RunAsync();
     }

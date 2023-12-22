@@ -3,32 +3,27 @@ namespace KeyboardSwitch.Core.Services.Infrastructure;
 using System.Diagnostics;
 
 public class DirectServiceCommunicator(
-    IOptions<GlobalSettings> globalSettings,
-    INamedPipeService namedPipeService)
+    INamedPipeService namedPipeService,
+    IOptions<GlobalSettings> globalSettings)
     : IServiceCommunicator
 {
-    private const string KeyboardSwitch = nameof(KeyboardSwitch);
-
-    private readonly GlobalSettings globalSettings = globalSettings.Value;
-    private readonly INamedPipeService namedPipeService = namedPipeService;
-
     public virtual bool IsServiceRunning() =>
-        Process.GetProcessesByName(KeyboardSwitch).Length > 0;
+        Process.GetProcessesByName(nameof(KeyboardSwitch)).Length > 0;
 
     public virtual void StartService() =>
-        Process.Start(this.globalSettings.ServicePath);
+        Process.Start(globalSettings.Value.ServicePath);
 
     public virtual void StopService(bool kill)
     {
         if (kill)
         {
-            Process.GetProcessesByName(KeyboardSwitch).ForEach(process => process.Kill());
+            Process.GetProcessesByName(nameof(KeyboardSwitch)).ForEach(process => process.Kill());
         } else
         {
-            this.namedPipeService.Write(KeyboardSwitch, ExternalCommand.Stop);
+            namedPipeService.Write(nameof(KeyboardSwitch), ExternalCommand.Stop);
         }
     }
 
     public void ReloadService() =>
-        this.namedPipeService.Write(KeyboardSwitch, ExternalCommand.ReloadSettings);
+        namedPipeService.Write(nameof(KeyboardSwitch), ExternalCommand.ReloadSettings);
 }

@@ -7,29 +7,24 @@ public class SwitchService(
     ILogger<SwitchService> logger)
     : ISwitchService
 {
-    private readonly ITextService textService = textService;
-    private readonly ILayoutService layoutService = layoutService;
-    private readonly IAppSettingsService settingsService = settingsService;
-    private readonly ILogger<SwitchService> logger = logger;
-
     public async Task SwitchTextAsync(SwitchDirection direction)
     {
-        this.logger.LogDebug("Switching the text {Direction}", direction.AsString());
+        logger.LogDebug("Switching the text {Direction}", direction.AsString());
 
-        string? textToSwitch = await this.textService.GetTextAsync();
+        string? textToSwitch = await textService.GetTextAsync();
 
-        var settings = await this.settingsService.GetAppSettings();
+        var settings = await settingsService.GetAppSettings();
 
         if (!String.IsNullOrEmpty(textToSwitch))
         {
-            var allLayouts = this.layoutService.GetKeyboardLayouts();
+            var allLayouts = layoutService.GetKeyboardLayouts();
 
             if (direction == SwitchDirection.Backward)
             {
                 allLayouts = Enumerable.Reverse(allLayouts).ToList();
             }
 
-            var currentLayout = this.layoutService.GetCurrentKeyboardLayout();
+            var currentLayout = layoutService.GetCurrentKeyboardLayout();
 
             var newLayout = allLayouts
                 .SkipWhile(layout => layout.Id != currentLayout.Id)
@@ -42,14 +37,14 @@ public class SwitchService(
 
             var mapping = currentChars.Zip(newChars).ToDictionary(chars => chars.First, chars => chars.Second);
 
-            await this.textService.SetTextAsync(new String(textToSwitch
+            await textService.SetTextAsync(new String(textToSwitch
                 .Select(ch => mapping.TryGetValue(ch, out char newCh) && newCh != MissingCharacter ? newCh : ch)
                 .ToArray()));
         }
 
         if (settings.SwitchLayout)
         {
-            this.layoutService.SwitchCurrentLayout(direction, settings.SwitchSettings);
+            layoutService.SwitchCurrentLayout(direction, settings.SwitchSettings);
         }
     }
 }

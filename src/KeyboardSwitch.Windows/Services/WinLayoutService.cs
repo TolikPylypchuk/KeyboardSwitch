@@ -13,20 +13,18 @@ internal sealed class WinLayoutService(ILogger<WinLayoutService> logger) : Cachi
     private static readonly IntPtr HklPrev = 0;
     public const int KlNameLength = 9;
 
-    private readonly ILogger<WinLayoutService> logger = logger;
-
     public bool IsLoadingLayoutsSupported => true;
 
     public override KeyboardLayout GetCurrentKeyboardLayout()
     {
-        this.logger.LogDebug("Getting the keyboard layout of the foreground process");
+        logger.LogDebug("Getting the keyboard layout of the foreground process");
         uint foregroundWindowThreadId = GetWindowThreadProcessId(GetForegroundWindow(), out _);
         return this.GetThreadKeyboardLayout(foregroundWindowThreadId);
     }
 
     public override void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
     {
-        this.logger.LogDebug(
+        logger.LogDebug(
             "Switching the keyboard layout of the foregound process {Direction}", direction.AsString());
 
         var foregroundWindowHandle = GetForegroundWindow();
@@ -45,16 +43,16 @@ internal sealed class WinLayoutService(ILogger<WinLayoutService> logger) : Cachi
 
         if (success)
         {
-            this.logger.LogDebug("Posted the input lang change message to the foreground window");
+            logger.LogDebug("Posted the input lang change message to the foreground window");
         } else
         {
-            this.logger.LogError("Failed to post the input lang change message to the foreground window");
+            logger.LogError("Failed to post the input lang change message to the foreground window");
         }
     }
 
     protected override List<KeyboardLayout> GetKeyboardLayoutsInternal()
     {
-        this.logger.LogDebug("Getting the list of installed keyboard layouts");
+        logger.LogDebug("Getting the list of installed keyboard layouts");
 
         int count = GetKeyboardLayoutList(0, null);
         var keyboardLayoutIds = new HKL[count];
@@ -63,7 +61,7 @@ internal sealed class WinLayoutService(ILogger<WinLayoutService> logger) : Cachi
 
         if (result == 0)
         {
-            this.logger.LogCritical("Could not get the list of installed keyboard layouts");
+            logger.LogCritical("Could not get the list of installed keyboard layouts");
             throw new Win32Exception(result);
         }
 
@@ -117,7 +115,7 @@ internal sealed class WinLayoutService(ILogger<WinLayoutService> logger) : Cachi
             return CultureInfo.GetCultureInfo(lcid);
         } catch (CultureNotFoundException e)
         {
-            this.logger.LogError(e, "Did not find culture for layout: {Layout} (LCID {Lcid})", layoutName, lcid);
+            logger.LogError(e, "Did not find culture for layout: {Layout} (LCID {Lcid})", layoutName, lcid);
             return CultureInfo.InvariantCulture;
         }
     }

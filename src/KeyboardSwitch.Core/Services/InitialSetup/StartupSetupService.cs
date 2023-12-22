@@ -8,12 +8,9 @@ public class StartupSetupService(
     ILogger<StartupSetupService> logger)
     : OneTimeInitialSetupService(globalSettings)
 {
-    private readonly IStartupService startupService = startupService;
-    private readonly ILogger<StartupSetupService> logger = logger;
-
     public override void DoInitialSetup()
     {
-        this.logger.LogInformation("Setting the Keyboard Switch service to start at login");
-        this.startupService.ConfigureStartup(startup: true);
+        logger.LogInformation("Setting the Keyboard Switch service to start at login");
+        startupService.ConfigureStartup(startup: true);
     }
 }

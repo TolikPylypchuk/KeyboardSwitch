@@ -6,11 +6,10 @@ internal sealed class LaunchdStartupService(
     : IStartupService
 {
     private readonly string serivceName = launchdSettings.Value.ServiceName;
-    private readonly ILogger<LaunchdStartupService> logger = logger;
 
     public bool IsStartupConfigured()
     {
-        this.logger.LogDebug("Checking if the KeyboardSwitch service is configured to run on startup");
+        logger.LogDebug("Checking if the KeyboardSwitch service is configured to run on startup");
 
         int? id = GetCurrentUserId();
 
@@ -28,7 +27,7 @@ internal sealed class LaunchdStartupService(
             }
         } else
         {
-            this.logger.LogError(
+            logger.LogError(
                 "Could not check whether the KeyboardSwitch service is configured to run on startup - " +
                 "couldn't find the current user's ID");
         }
@@ -38,7 +37,7 @@ internal sealed class LaunchdStartupService(
 
     public void ConfigureStartup(bool startup)
     {
-        this.logger.LogDebug(
+        logger.LogDebug(
             "Configuring to {Action} running the KeyboardSwitch service on startup", startup ? "start" : "stop");
 
         int? id = GetCurrentUserId();
@@ -47,11 +46,11 @@ internal sealed class LaunchdStartupService(
         {
             Process.Start(LaunchCtl, $"{(startup ? "enable" : "disable")} gui/{id}/{this.serivceName}");
 
-            this.logger.LogDebug(
+            logger.LogDebug(
                 "Configured to {Action} running the KeyboardSwitch service on startup", startup ? "start" : "stop");
         } else
         {
-            this.logger.LogError(
+            logger.LogError(
                 "Could not configure to {Action} running the KeyboardSwitch service on startup - " +
                 "couldn't find the current user's ID",
                 startup ? "start" : "stop");

@@ -5,7 +5,6 @@ using System.IO.Pipes;
 internal sealed class NamedPipeService(ILogger<NamedPipeService> logger) : Disposable, INamedPipeService
 {
     private readonly Subject<string> receivedString = new();
-    private readonly ILogger<NamedPipeService> logger = logger;
 
     public IObservable<string> ReceivedString =>
         this.receivedString.AsObservable();
@@ -22,13 +21,13 @@ internal sealed class NamedPipeService(ILogger<NamedPipeService> logger) : Dispo
             client.Connect(connectTimeout);
         } catch (Exception e)
         {
-            this.logger.LogError(e, "Named pipe error");
+            logger.LogError(e, "Named pipe error");
             return false;
         }
 
         if (!client.IsConnected)
         {
-            this.logger.LogError("The client is not connected");
+            logger.LogError("The client is not connected");
             return false;
         }
 

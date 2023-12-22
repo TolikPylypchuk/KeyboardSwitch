@@ -6,18 +6,15 @@ global using System.Reactive.Linq;
 
 global using Avalonia;
 global using Avalonia.Controls;
-global using Avalonia.Controls.Primitives;
 global using Avalonia.Input;
 global using Avalonia.Interactivity;
 global using Avalonia.Markup.Xaml;
 global using Avalonia.ReactiveUI;
 
 global using DynamicData;
-global using DynamicData.Aggregation;
 global using DynamicData.Binding;
 
 global using KeyboardSwitch.Core;
-global using KeyboardSwitch.Core.Services;
 global using KeyboardSwitch.Core.Services.Infrastructure;
 global using KeyboardSwitch.Core.Services.InitialSetup;
 global using KeyboardSwitch.Core.Services.Settings;

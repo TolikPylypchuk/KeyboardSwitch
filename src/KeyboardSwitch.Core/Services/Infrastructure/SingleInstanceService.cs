@@ -5,9 +5,6 @@ internal sealed class SingleInstanceService(
     ILogger<SingleInstanceService> logger)
     : ISingleInstanceService
 {
-    private readonly INamedPipeService namedPipeService = namedPipeService;
-    private readonly ILogger<SingleInstanceService> logger = logger;
-
     public Mutex TryAcquireMutex(string name)
     {
         var mutex = new Mutex(false, $"Global\\{name}", out bool createdNew);
@@ -21,11 +18,11 @@ internal sealed class SingleInstanceService(
         if (!hasHandle)
         {
             const string message = "Timeout waiting for exclusive access on the mutex";
-            this.logger.LogError(message);
+            logger.LogError(message);
             throw new TimeoutException(message);
         }
 
-        this.logger.LogDebug("Acquired the global mutex");
+        logger.LogDebug("Acquired the global mutex");
 
         return mutex;
     }
@@ -35,12 +32,12 @@ internal sealed class SingleInstanceService(
         try
         {
             string? command = GetCommand();
-            this.namedPipeService.Write(pipeName, command ?? String.Empty);
+            namedPipeService.Write(pipeName, command ?? String.Empty);
 
-            this.logger.LogDebug("Sent the command to the original instance: {Command}", command);
+            logger.LogDebug("Sent the command to the original instance: {Command}", command);
         } catch (Exception e)
         {
-            this.logger.LogError(e, "Unknown error during sending a command to the original instance");
+            logger.LogError(e, "Unknown error during sending a command to the original instance");
         } finally
         {
             Environment.Exit(0);
