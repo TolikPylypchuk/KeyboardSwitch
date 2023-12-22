@@ -45,43 +45,37 @@ public static class Program
             .UseEnvironment(PlatformDependent(windows: () => "windows", macos: () => "macos", linux: () => "linux"))
             .Build();
 
-        using var mutex = ConfigureSingleInstance(host.Services);
-
-        if (args.Length != 0)
-        {
-            return ExitCode.KeyboardSwitchNotRunning;
-        }
-
+        var exitService = host.Services.GetRequiredService<IExitService>();
         var logger = host.Services.GetRequiredService<ILoggerFactory>().CreateLogger(typeof(Program));
 
-        if (!SettingsExist(host))
-        {
-            logger.LogError("The settings file does not exist - open Keyboard Switch Settings to create them");
-            return ExitCode.SettingsDoNotExist;
-        }
-
-        var exitService = host.Services.GetRequiredService<IExitService>();
-        var mainLoopRunner = host.Services.GetRequiredService<IMainLoopRunner>();
+        using var mutex = ConfigureSingleInstance(host.Services);
 
         try
         {
+            if (args.Length != 0)
+            {
+                return ExitCode.KeyboardSwitchNotRunning;
+            }
+
+            if (!SettingsExist(host))
+            {
+                logger.LogError("The settings file does not exist - open Keyboard Switch Settings to create them");
+                return ExitCode.SettingsDoNotExist;
+            }
+
+            var mainLoopRunner = host.Services.GetRequiredService<IMainLoopRunner>();
+            var applicationLifetime = host.Services.GetRequiredService<IHostApplicationLifetime>();
+
             SubscribeToExternalCommands(host, logger);
 
             logger.LogInformation("KeyboardSwitch service execution started");
 
             host.Start();
-
-            if (mainLoopRunner.ShouldRunMainLoop)
-            {
-                new Thread(host.WaitForShutdown).Start();
-                mainLoopRunner.RunMainLoop();
-            } else
-            {
-                host.WaitForShutdown();
-            }
+            mainLoopRunner.RunMainLoopIfNeeded(applicationLifetime.ApplicationStopping);
+            host.WaitForShutdown();
 
             logger.LogInformation("KeyboardSwitch service execution stopped");
-        } catch (Exception e) when (e is OperationCanceledException || e is TaskCanceledException)
+        } catch (Exception e) when (e is OperationCanceledException or TaskCanceledException)
         {
             logger.LogInformation("KeyboardSwitch service execution cancelled");
         } finally
