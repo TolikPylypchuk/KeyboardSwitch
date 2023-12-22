@@ -56,6 +56,9 @@ Home page: https://keyboardswitch.tolik.io
 Docs: https://docs.keyboardswitch.tolik.io
 ";
 
-    public static void Show(TextWriter writer) =>
+    public static ExitCode Show(TextWriter writer, ExitCode exitCode)
+    {
         writer.WriteLine(HelpText);
+        return exitCode;
+    }
 }

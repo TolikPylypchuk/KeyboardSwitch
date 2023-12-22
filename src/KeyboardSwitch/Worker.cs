@@ -8,8 +8,7 @@ public class Worker(
     ISwitchService switchService,
     IAppSettingsService settingsService,
     IMainLoopRunner mainLoopRunner,
-    IExitCodeSetter exitCodeSetter,
-    IHost host,
+    IExitService exitService,
     IOptions<GlobalSettings> globalSettings,
     ILogger<Worker> logger)
     : BackgroundService
@@ -18,8 +17,7 @@ public class Worker(
     private readonly ISwitchService switchService = switchService;
     private readonly IAppSettingsService settingsService = settingsService;
     private readonly IMainLoopRunner mainLoopRunner = mainLoopRunner;
-    private readonly IExitCodeSetter exitCodeSetter = exitCodeSetter;
-    private readonly IHost host = host;
+    private readonly IExitService exitService = exitService;
     private readonly GlobalSettings globalSettings = globalSettings.Value;
     private readonly ILogger<Worker> logger = logger;
 
@@ -37,8 +35,7 @@ public class Worker(
         } catch (Exception e)
         {
             this.logger.LogCritical(e, "The KeyboardSwitch service has crashed");
-            this.exitCodeSetter.AppExitCode = ExitCode.Error;
-            await this.host.StopAsync(token);
+            await this.exitService.Exit(ExitCode.Error, token);
         }
     }
 
@@ -54,7 +51,7 @@ public class Worker(
         {
             this.logger.LogDebug("Configuring the KeyboardSwitch service");
 
-            await this.RegisterHotKeys();
+            await this.RegisterHotKeysFromSettings();
 
             this.settingsService.SettingsInvalidated.SubscribeAsync(this.RefreshHotKeys);
 
@@ -72,24 +69,21 @@ public class Worker(
                 e.Version,
                 settingsPath);
 
-            this.exitCodeSetter.AppExitCode = ExitCode.IncompatibleSettingsVersion;
-            await this.host.StopAsync(token);
+            await this.exitService.Exit(ExitCode.IncompatibleSettingsVersion, token);
         } catch (HookException e) when (e.Result == UioHookResult.ErrorAxApiDisabled)
         {
             this.logger.LogCritical(
                 e, "The KeyboardSwitch service cannot start as it doesn't have access to the macOS accessibility API");
 
-            this.exitCodeSetter.AppExitCode = ExitCode.MacOSAccessibilityDisabled;
-            await this.host.StopAsync(token);
+            await this.exitService.Exit(ExitCode.MacOSAccessibilityDisabled, token);
         } catch (Exception e)
         {
             this.logger.LogCritical(e, "The KeyboardSwitch service has crashed");
-            this.exitCodeSetter.AppExitCode = ExitCode.Error;
-            await this.host.StopAsync(token);
+            await this.exitService.Exit(ExitCode.Error, token);
         }
     }
 
-    private async Task RegisterHotKeys()
+    private async Task RegisterHotKeysFromSettings()
     {
         this.logger.LogDebug("Registering hot keys to switch forward and backward");
         var settings = await this.settingsService.GetAppSettings();
@@ -115,7 +109,7 @@ public class Worker(
         this.logger.LogDebug("Refreshing the hot key registration to switch forward and backward");
         this.keyboardHookService.UnregisterAll();
         this.hookSubscription?.Dispose();
-        await this.RegisterHotKeys();
+        await this.RegisterHotKeysFromSettings();
     }
 
     private async Task SwitchText(SwitchDirection direction)
