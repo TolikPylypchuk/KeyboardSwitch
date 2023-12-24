@@ -66,6 +66,7 @@
     <ProjectReference Include="..\KeyboardSwitch.Windows\KeyboardSwitch.Windows.csproj" Condition="$(TargetOS) == 'Windows'" />
     <ProjectReference Include="..\KeyboardSwitch.MacOS\KeyboardSwitch.MacOS.csproj" Condition="$(TargetOS) == 'macOS'" />
     <ProjectReference Include="..\KeyboardSwitch.Linux\KeyboardSwitch.Linux.csproj" Condition="$(TargetOS) == 'Linux'" />
+    <ProjectReference Include="..\KeyboardSwitch\KeyboardSwitch.csproj" Condition="$(Configuration) == 'Debug'" />
   </ItemGroup>
 
   <ItemGroup>
