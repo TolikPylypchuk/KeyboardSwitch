@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices;
 
+using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 
 using Serilog;
@@ -21,10 +22,26 @@ public partial class Build : NukeBuild
     [Solution(GenerateProjects = true)]
     private readonly Solution Solution = new();
 
+    private readonly AbsolutePath PublishOutputPath = RootDirectory / "artifacts" / "publish";
+
+    private string RuntimeIdentifer =>
+        $"{(this.TargetOS ?? this.GetCurrentOS()).RuntimeIdentifierPart}-{this.Platform.RuntimeIdentifierPart}";
+
+    private List<Project> ProjectsInBuildOrder =>
+    [
+        this.Solution.KeyboardSwitch_Core,
+        this.Solution.KeyboardSwitch_Windows,
+        this.Solution.KeyboardSwitch_MacOS,
+        this.Solution.KeyboardSwitch_Linux,
+        this.Solution.KeyboardSwitch,
+        this.Solution.KeyboardSwitch_Settings_Core,
+        this.Solution.KeyboardSwitch_Settings
+    ];
+
     public Target Clean => t => t
         .Executes(() =>
         {
-            this.ForEachProject(project =>
+            foreach (var project in this.ProjectsInBuildOrder.Append(this.Solution.KeyboardSwitch_Windows_Installer))
             {
                 Log.Information("Cleaning project {Name}", project.Name);
                 DotNetClean(s => s
@@ -32,42 +49,54 @@ public partial class Build : NukeBuild
                     .SetConfiguration(this.Configuration)
                     .SetPlatform(this.Platform)
                     .SetProperty(nameof(TargetOS), this.TargetOS));
-            });
+            }
+        });
+
+    public Target Compile => t => t
+        .DependsOn(this.Clean)
+        .Executes(() =>
+        {
+            foreach (var project in this.ProjectsInBuildOrder)
+            {
+                Log.Information("Building project {Name}", project.Name);
+                DotNetBuild(s => s
+                    .SetProjectFile(project)
+                    .SetConfiguration(this.Configuration)
+                    .SetPlatform(this.Platform)
+                    .SetProperty(nameof(TargetOS), this.TargetOS)
+                    .SetSelfContained(true)
+                    .EnablePublishSingleFile());
+            }
         });
 
     public Target Publish => t => t
-        .DependsOn(Clean)
+        .DependsOn(this.Compile)
+        .Requires(() => this.Configuration == Configuration.Release)
         .Executes(() =>
         {
-            var os = (this.TargetOS ?? this.GetCurrentOS()).RuntimeIdentifierPart;
-            var arch = this.Platform.RuntimeIdentifierPart;
-            var runtime = $"{os}-{arch}";
+            PublishOutputPath.CreateOrCleanDirectory();
 
-            this.PublishProject(this.Solution.KeyboardSwitch, runtime);
-            this.PublishProject(this.Solution.KeyboardSwitch_Settings, runtime);
+            this.PublishProject(this.Solution.KeyboardSwitch);
+            this.PublishProject(this.Solution.KeyboardSwitch_Settings);
         });
 
     public static int Main() =>
-        Execute<Build>(x => x.Publish);
+        Execute<Build>(x => x.Compile);
 
-    private void ForEachProject(Action<Project> action)
+    private void PublishProject(Project project)
     {
-        foreach (var project in this.Solution.Projects
-                .Where(project => project != this.Solution.KeyboardSwitch_Build &&
-                    project != this.Solution.KeyboardSwitch_Windows_Setup))
-        {
-            action(project);
-        }
-    }
-
-    private void PublishProject(Project project, string runtime) =>
+        Log.Information("Publishing project {Name}", project.Name);
         DotNetPublish(s => s
             .SetProject(project)
-            .SetRuntime(runtime)
+            .SetRuntime(this.RuntimeIdentifer)
             .SetConfiguration(this.Configuration)
             .SetPlatform(this.Platform)
             .SetProperty(nameof(TargetOS), this.TargetOS)
-            .SetSelfContained(true));
+            .SetNoBuild(true)
+            .SetOutput(this.PublishOutputPath)
+            .SetSelfContained(true)
+            .EnablePublishSingleFile());
+    }
 
     private TargetOS GetCurrentOS() =>
         RuntimeInformation.IsOSPlatform(OSPlatform.OSX)

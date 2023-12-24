@@ -22,6 +22,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 
 using Serilog;
+using Serilog.Settings.Configuration;
 
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
@@ -125,10 +126,18 @@ public class App : Application, IEnableLogger
 
         BlobCache.ApplicationName = nameof(KeyboardSwitch);
 
+        var configAssemblies = new[]
+        {
+            typeof(LoggerConfigurationAsyncExtensions).Assembly,
+            typeof(ConsoleLoggerConfigurationExtensions).Assembly,
+            typeof(FileLoggerConfigurationExtensions).Assembly,
+            typeof(LoggerSinkConfigurationDebugExtensions).Assembly
+        };
+
         Locator.CurrentMutable.InitializeSplat();
         Locator.CurrentMutable.UseSerilogFullLogger(
             new LoggerConfiguration()
-                .ReadFrom.Configuration(config)
+                .ReadFrom.Configuration(config, new ConfigurationReaderOptions(configAssemblies))
                 .Enrich.FromLogContext()
                 .CreateLogger());
 
