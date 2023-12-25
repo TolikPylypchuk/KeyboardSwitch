@@ -63,9 +63,7 @@ public partial class Build : NukeBuild
                     .SetProjectFile(project)
                     .SetConfiguration(this.Configuration)
                     .SetPlatform(this.Platform)
-                    .SetProperty(nameof(TargetOS), this.TargetOS)
-                    .SetSelfContained(true)
-                    .EnablePublishSingleFile());
+                    .SetProperty(nameof(TargetOS), this.TargetOS));
             }
         });
 
@@ -94,8 +92,7 @@ public partial class Build : NukeBuild
             .SetProperty(nameof(TargetOS), this.TargetOS)
             .SetNoBuild(true)
             .SetOutput(this.PublishOutputPath)
-            .SetSelfContained(true)
-            .EnablePublishSingleFile());
+            .SetSelfContained(true));
     }
 
     private TargetOS GetCurrentOS() =>
