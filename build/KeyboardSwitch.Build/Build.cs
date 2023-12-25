@@ -9,6 +9,17 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 public partial class Build : NukeBuild
 {
+    private static readonly AbsolutePath PublishOutputPath = RootDirectory / "artifacts" / "publish";
+
+    private static readonly AbsolutePath PngIcon = PublishOutputPath / "icon.png";
+    private static readonly AbsolutePath AppleIcon = PublishOutputPath / "KeyboardSwitch.icns";
+
+    private static readonly AbsolutePath AppSettingsWindows = PublishOutputPath / "appsettings.windows.json";
+    private static readonly AbsolutePath AppSettingsMacOS = PublishOutputPath / "appsettings.macos.json";
+    private static readonly AbsolutePath AppSettingsLinux = PublishOutputPath / "appsettings.linux.json";
+
+    private static readonly string AppSettings = "appsettings.json";
+
     [Parameter("Configuration to build - 'Debug' (local) or 'Release' (server) by default")]
     private readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
@@ -29,8 +40,6 @@ public partial class Build : NukeBuild
 
     [Solution(GenerateProjects = true)]
     private readonly Solution Solution = new();
-
-    private readonly AbsolutePath PublishOutputPath = RootDirectory / "artifacts" / "publish";
 
     private string RuntimeIdentifer =>
         $"{this.TargetOS.RuntimeIdentifierPart}-{this.Platform.RuntimeIdentifierPart}";
@@ -69,14 +78,54 @@ public partial class Build : NukeBuild
             }
         });
 
+    public Target PrePublish => t => t
+        .DependentFor(this.Publish)
+        .After(this.Compile)
+        .Unlisted()
+        .Executes(() =>
+        {
+            Log.Information("Cleaning the publish directory");
+            PublishOutputPath.CreateOrCleanDirectory();
+        });
+
     public Target Publish => t => t
         .DependsOn(this.Compile)
         .Requires(() => this.Configuration == Configuration.Release)
         .Executes(() =>
         {
-            this.PublishOutputPath.CreateOrCleanDirectory();
             this.PublishProject(this.Solution.KeyboardSwitch);
             this.PublishProject(this.Solution.KeyboardSwitch_Settings);
+        });
+
+    public Target PostPublish => t => t
+        .TriggeredBy(this.Publish)
+        .Unlisted()
+        .Executes(() =>
+        {
+            Log.Information("Deleting unneeded files after publish");
+
+            switch (this.TargetOS)
+            {
+                case var os when os == TargetOS.Windows:
+                    PngIcon.DeleteFile();
+                    AppleIcon.DeleteFile();
+                    AppSettingsWindows.Rename(AppSettings);
+                    AppSettingsMacOS.DeleteFile();
+                    AppSettingsLinux.DeleteFile();
+                    break;
+                case var os when os == TargetOS.MacOS:
+                    PngIcon.DeleteFile();
+                    AppSettingsWindows.DeleteFile();
+                    AppSettingsMacOS.Rename(AppSettings);
+                    AppSettingsLinux.DeleteFile();
+                    break;
+                case var os when os == TargetOS.Linux:
+                    AppleIcon.DeleteFile();
+                    AppSettingsWindows.DeleteFile();
+                    AppSettingsMacOS.DeleteFile();
+                    AppSettingsLinux.Rename(AppSettings);
+                    break;
+            }
         });
 
     public static int Main() =>
@@ -86,16 +135,12 @@ public partial class Build : NukeBuild
     {
         yield return this.Solution.KeyboardSwitch_Core;
 
-        if (this.TargetOS == TargetOS.Windows)
+        yield return this.TargetOS switch
         {
-            yield return this.Solution.KeyboardSwitch_Windows;
-        } else if (this.TargetOS == TargetOS.MacOS)
-        {
-            yield return this.Solution.KeyboardSwitch_MacOS;
-        } else if (this.TargetOS == TargetOS.Linux)
-        {
-            yield return this.Solution.KeyboardSwitch_Linux;
-        }
+            var os when os == TargetOS.MacOS => this.Solution.KeyboardSwitch_MacOS,
+            var os when os == TargetOS.Linux => this.Solution.KeyboardSwitch_Linux,
+            _ => this.Solution.KeyboardSwitch_Windows
+        };
 
         yield return this.Solution.KeyboardSwitch;
 
@@ -119,7 +164,7 @@ public partial class Build : NukeBuild
             .SetPlatform(this.Platform)
             .SetProperty(nameof(TargetOS), this.TargetOS)
             .SetNoBuild(true)
-            .SetOutput(this.PublishOutputPath)
+            .SetOutput(PublishOutputPath)
             .SetSelfContained(true)
             .SetPublishSingleFile(this.PublishSingleFile));
 
