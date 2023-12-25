@@ -15,6 +15,7 @@
 
   <PropertyGroup>
     <UseArtifactsOutput>true</UseArtifactsOutput>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
 
   <PropertyGroup>
