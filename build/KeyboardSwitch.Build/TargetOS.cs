@@ -1,3 +1,4 @@
+[Serializable]
 [TypeConverter(typeof(TypeConverter<Configuration>))]
 public class TargetOS : Enumeration
 {
