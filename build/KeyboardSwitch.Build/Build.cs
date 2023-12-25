@@ -24,6 +24,9 @@ public partial class Build : NukeBuild
     private readonly Platform Platform =
         RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? Platform.Arm64 : Platform.X64;
 
+    [Parameter("Publish single file - false by default")]
+    private readonly bool PublishSingleFile = false;
+
     [Solution(GenerateProjects = true)]
     private readonly Solution Solution = new();
 
@@ -60,7 +63,8 @@ public partial class Build : NukeBuild
                     .SetConfiguration(this.Configuration)
                     .SetPlatform(this.Platform)
                     .SetProperty(nameof(TargetOS), this.TargetOS)
-                    .SetSelfContained(this.Configuration == Configuration.Release)
+                    .SetSelfContained(this.PublishSingleFile || this.Configuration == Configuration.Release)
+                    .SetPublishSingleFile(this.PublishSingleFile)
                     .SetContinuousIntegrationBuild(true));
             }
         });
@@ -116,7 +120,8 @@ public partial class Build : NukeBuild
             .SetProperty(nameof(TargetOS), this.TargetOS)
             .SetNoBuild(true)
             .SetOutput(this.PublishOutputPath)
-            .SetSelfContained(true));
+            .SetSelfContained(true)
+            .SetPublishSingleFile(this.PublishSingleFile));
 
     }
 }
