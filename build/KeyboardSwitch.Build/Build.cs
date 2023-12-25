@@ -9,10 +9,10 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 public partial class Build : NukeBuild
 {
-    [Parameter("Configuration to build - by default 'Debug' (local) or 'Release' (server)")]
+    [Parameter("Configuration to build - 'Debug' (local) or 'Release' (server) by default")]
     private readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
 
-    [Parameter("Target OS (current OS by default)")]
+    [Parameter("Target OS - current OS by default")]
     private readonly TargetOS TargetOS =
         RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
             ? TargetOS.MacOS
@@ -20,7 +20,7 @@ public partial class Build : NukeBuild
                 ? TargetOS.Linux
                 : TargetOS.Windows;
 
-    [Parameter("Platform (current architecture by default)")]
+    [Parameter("Platform - current architecture by default")]
     private readonly Platform Platform =
         RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? Platform.Arm64 : Platform.X64;
 
@@ -60,7 +60,8 @@ public partial class Build : NukeBuild
                     .SetConfiguration(this.Configuration)
                     .SetPlatform(this.Platform)
                     .SetProperty(nameof(TargetOS), this.TargetOS)
-                    .SetSelfContained(this.Configuration == Configuration.Release));
+                    .SetSelfContained(this.Configuration == Configuration.Release)
+                    .SetContinuousIntegrationBuild(true));
             }
         });
 

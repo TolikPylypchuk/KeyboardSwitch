@@ -52,7 +52,7 @@
     <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup>
+  <PropertyGroup Condition="$(Configuration) == 'Release'">
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>partial</TrimMode>
     <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
