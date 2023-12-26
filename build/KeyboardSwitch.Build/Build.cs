@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 using Nuke.Common.IO;
@@ -9,7 +10,11 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 public partial class Build : NukeBuild
 {
-    private static readonly AbsolutePath PublishOutputPath = RootDirectory / "artifacts" / "publish";
+    private static readonly string KeyboardSwitch = nameof(KeyboardSwitch);
+    private static readonly string? Version = Assembly.GetExecutingAssembly()?.GetName().Version?.ToString(3);
+
+    private static readonly AbsolutePath ArtifactsPath = RootDirectory / "artifacts";
+    private static readonly AbsolutePath PublishOutputPath = ArtifactsPath / "publish";
 
     private static readonly AbsolutePath PngIcon = PublishOutputPath / "icon.png";
     private static readonly AbsolutePath AppleIcon = PublishOutputPath / "KeyboardSwitch.icns";
@@ -128,6 +133,30 @@ public partial class Build : NukeBuild
             }
         });
 
+    public Target CreateZip => t => t
+        .DependsOn(this.Publish)
+        .After(this.PostPublish)
+        .Executes(() =>
+        {
+            Log.Information("Zipping the publish output into {ZipFile}", this.ZipFile);
+            this.ZipFile.DeleteFile();
+            PublishOutputPath.ZipTo(this.ZipFile);
+        })
+        .Produces(this.ZipFile);
+
+    public Target PostCreateZip => t => t
+        .TriggeredBy(this.CreateZip)
+        .OnlyWhenStatic(() => IsLocalBuild)
+        .Unlisted()
+        .Executes(() =>
+        {
+            Log.Information("Deleting the publish directory");
+            PublishOutputPath.DeleteDirectory();
+        });
+
+    private AbsolutePath ZipFile =>
+        ArtifactsPath / $"{KeyboardSwitch}-{Version}-{this.Platform.ZipPart}.zip";
+
     public static int Main() =>
         Execute<Build>(x => x.Compile);
 
@@ -167,6 +196,5 @@ public partial class Build : NukeBuild
             .SetOutput(PublishOutputPath)
             .SetSelfContained(true)
             .SetPublishSingleFile(this.PublishSingleFile));
-
     }
 }
