@@ -1,10 +1,9 @@
 using Nuke.Common.IO;
-using Nuke.Common.ProjectModel;
 
 using Serilog;
 
-using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.Common.IO.FileSystemTasks;
+using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 public partial class Build
 {
@@ -65,61 +64,32 @@ public partial class Build
             this.PublishProject(this.Solution.KeyboardSwitch_Settings);
         });
 
-    public Target PostPublishWindows => t => t
-        .Description("Deletes unneeded files in the publish directory for Windows")
+    public Target PostPublish => t => t
+        .Description("Deletes unneeded files in the publish directory")
         .TriggeredBy(this.Publish)
-        .OnlyWhenStatic(() => this.TargetOS == TargetOS.Windows)
         .Unlisted()
         .Executes(() =>
         {
             Log.Information("Deleting unneeded files after publish for Windows");
 
-            PngIcon.DeleteFile();
-            AppleIcon.DeleteFile();
+            var appSettingsFile = this.PlatformDependent(
+                windows: AppSettingsWindows,
+                macos: AppSettingsMacOS,
+                linux: AppSettingsLinux);
 
-            AppSettingsWindows.Rename(AppSettings);
-            AppSettingsMacOS.DeleteFile();
-            AppSettingsLinux.DeleteFile();
-        });
+            appSettingsFile.Rename(AppSettings);
 
-    public Target PostPublishMacOS => t => t
-        .Description("Deletes unneeded files in the publish directory for macOS")
-        .TriggeredBy(this.Publish)
-        .OnlyWhenStatic(() => this.TargetOS == TargetOS.MacOS)
-        .Unlisted()
-        .Executes(() =>
-        {
-            Log.Information("Deleting unneeded files after publish for macOS");
-
-            PngIcon.DeleteFile();
-
-            AppSettingsWindows.DeleteFile();
-            AppSettingsMacOS.Rename(AppSettings);
-            AppSettingsLinux.DeleteFile();
-        });
-
-    public Target PostPublishLinux => t => t
-        .Description("Deletes unneeded files in the publish directory for Linux")
-        .TriggeredBy(this.Publish)
-        .OnlyWhenStatic(() => this.TargetOS == TargetOS.Linux)
-        .Unlisted()
-        .Executes(() =>
-        {
-            Log.Information("Deleting unneeded files after publish for Linux");
-
-            AppleIcon.DeleteFile();
-
-            AppSettingsWindows.DeleteFile();
-            AppSettingsMacOS.DeleteFile();
-            AppSettingsLinux.Rename(AppSettings);
+            foreach (var file in new[] { AppSettingsWindows, AppSettingsMacOS, AppSettingsLinux }
+                .Where(f => f != appSettingsFile))
+            {
+                file.DeleteFile();
+            }
         });
 
     public Target PreCreateArchive => t => t
         .Description("Copies additional files to the publish directory")
         .DependentFor(this.CreateArchive)
-        .After(this.PostPublishWindows)
-        .After(this.PostPublishMacOS)
-        .After(this.PostPublishLinux)
+        .After(this.PostPublish)
         .OnlyWhenStatic(() => this.TargetOS == TargetOS.Linux)
         .Unlisted()
         .Executes(() =>
@@ -133,9 +103,7 @@ public partial class Build
     public Target CreateArchive => t => t
         .Description("Creates an archive file containing the published project")
         .DependsOn(this.Publish)
-        .After(this.PostPublishWindows)
-        .After(this.PostPublishMacOS)
-        .After(this.PostPublishLinux)
+        .After(this.PostPublish)
         .Executes(() =>
         {
             var archiveFile = this.ArchiveFormat == ArchiveFormat.Tar ? this.TarFile : this.ZipFile;
@@ -157,41 +125,13 @@ public partial class Build
             PublishOutputDirectory.DeleteDirectory();
         });
 
-    private IEnumerable<Project> GetProjects(bool includeInstaller = false)
-    {
-        yield return this.Solution.KeyboardSwitch_Core;
-
-        yield return this.TargetOS switch
+    public Target CreateDebianPackage => t => t
+        .Description("Creates a Debian package containing the published project")
+        .DependsOn(this.Publish)
+        .After(this.PostPublish)
+        .Requires(() => OperatingSystem.IsLinux(), () => this.TargetOS == TargetOS.Linux)
+        .Executes(() =>
         {
-            var os when os == TargetOS.MacOS => this.Solution.KeyboardSwitch_MacOS,
-            var os when os == TargetOS.Linux => this.Solution.KeyboardSwitch_Linux,
-            _ => this.Solution.KeyboardSwitch_Windows
-        };
-
-        yield return this.Solution.KeyboardSwitch;
-
-        yield return this.Solution.KeyboardSwitch_Settings_Core;
-        yield return this.Solution.KeyboardSwitch_Settings;
-
-        if (includeInstaller)
-        {
-            yield return this.Solution.KeyboardSwitch_Windows_Installer;
-        }
-    }
-
-    private void PublishProject(Project project)
-    {
-        Log.Information("Publishing project {Name}", project.Name);
-
-        DotNetPublish(s => s
-            .SetProject(project)
-            .SetRuntime(this.RuntimeIdentifer)
-            .SetConfiguration(this.Configuration)
-            .SetPlatform(this.Platform)
-            .SetProperty(nameof(TargetOS), this.TargetOS)
-            .SetNoBuild(true)
-            .SetOutput(PublishOutputDirectory)
-            .SetSelfContained(this.IsSelfContained)
-            .SetPublishSingleFile(this.PublishSingleFile));
-    }
+        })
+        .Produces(this.DebFile);
 }

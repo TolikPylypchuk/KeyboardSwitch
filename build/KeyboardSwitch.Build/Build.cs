@@ -4,7 +4,6 @@ using Nuke.Common.ProjectModel;
 
 public partial class Build : NukeBuild
 {
-    private static readonly string KeyboardSwitch = nameof(KeyboardSwitch);
     private static readonly string? Version = Assembly.GetExecutingAssembly()?.GetName().Version?.ToString(3);
 
     [Solution(GenerateProjects = true)]
