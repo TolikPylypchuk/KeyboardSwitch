@@ -1,5 +1,3 @@
-using Nuke.Common.ProjectModel;
-
 using Serilog;
 
 using static Nuke.Common.Tools.DotNet.DotNetTasks;

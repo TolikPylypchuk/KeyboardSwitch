@@ -1,5 +1,3 @@
-using Nuke.Common.IO;
-
 using Serilog;
 
 using static Nuke.Common.IO.FileSystemTasks;
@@ -43,34 +41,19 @@ public partial class Build
             }
         });
 
-    public Target PrePublish => t => t
-        .Description("Cleans the publish directory")
-        .DependentFor(this.Publish)
-        .After(this.Compile)
-        .Unlisted()
-        .Executes(() =>
-        {
-            Log.Information("Cleaning the publish directory");
-            PublishOutputDirectory.CreateOrCleanDirectory();
-        });
-
     public Target Publish => t => t
         .Description("Publishes the project")
         .DependsOn(this.Compile)
         .Requires(() => this.Configuration == Configuration.Release)
         .Executes(() =>
         {
+            Log.Information("Cleaning the publish directory");
+            PublishOutputDirectory.CreateOrCleanDirectory();
+
             this.PublishProject(this.Solution.KeyboardSwitch);
             this.PublishProject(this.Solution.KeyboardSwitch_Settings);
-        });
 
-    public Target PostPublish => t => t
-        .Description("Deletes unneeded files in the publish directory")
-        .TriggeredBy(this.Publish)
-        .Unlisted()
-        .Executes(() =>
-        {
-            Log.Information("Deleting unneeded files after publish for Windows");
+            Log.Information("Deleting unneeded files after publish");
 
             var appSettingsFile = this.PlatformDependent(
                 windows: AppSettingsWindows,
@@ -89,21 +72,19 @@ public partial class Build
     public Target PreCreateArchive => t => t
         .Description("Copies additional files to the publish directory")
         .DependentFor(this.CreateArchive)
-        .After(this.PostPublish)
         .OnlyWhenStatic(() => this.TargetOS == TargetOS.Linux)
         .Unlisted()
         .Executes(() =>
         {
             Log.Information("Copying additional files to the publish directory");
 
-            CopyFile(this.SourceLinuxInstallFile, this.TargetLinuxInstallFile);
-            CopyFile(this.SourceLinuxUninstallFile, this.TargetLinuxUninstallFile);
+            CopyFileToDirectory(this.SourceLinuxInstallFile, PublishOutputDirectory);
+            CopyFileToDirectory(this.SourceLinuxUninstallFile, PublishOutputDirectory);
         });
 
     public Target CreateArchive => t => t
         .Description("Creates an archive file containing the published project")
         .DependsOn(this.Publish)
-        .After(this.PostPublish)
         .Executes(() =>
         {
             var archiveFile = this.ArchiveFormat == ArchiveFormat.Tar ? this.TarFile : this.ZipFile;
@@ -114,9 +95,49 @@ public partial class Build
         })
         .Produces(this.ArchiveFormat == ArchiveFormat.Tar ? this.TarFile : this.ZipFile);
 
-    public Target PostCreateArchive => t => t
+    public Target CreateDebianPackage => t => t
+        .Description("Creates a Debian package containing the published project")
+        .DependsOn(this.Publish)
+        .Requires(() => OperatingSystem.IsLinux(), () => this.TargetOS == TargetOS.Linux)
+        .Executes(() =>
+        {
+            Log.Information("Creating a Debian package containing the published project");
+
+            this.DebDirectory.CreateOrCleanDirectory();
+
+            this.DebConfigDirectory.CreateDirectory();
+
+            CopyFile(this.SourceDebControlFile, this.TargetDebControlFile);
+            CopyFile(this.SourceDebPostInstallFile, this.TargetDebPostInstallFile);
+            CopyFile(this.SourceDebPreRemoveFile, this.TargetDebPreRemoveFile);
+            CopyFile(this.SourceDebPostRemoveFile, this.TargetDebPostRemoveFile);
+
+            this.TargetDebControlFile.UpdateText(text => text
+                .Replace(VersionPlaceholder, Version)
+                .Replace(ArchitecturePlaceholder, this.Platform.Deb));
+
+            const string readAndExecute = "555";
+
+            this.TargetDebPostInstallFile.SetUnixPermissions(readAndExecute);
+            this.TargetDebPreRemoveFile.SetUnixPermissions(readAndExecute);
+            this.TargetDebPostRemoveFile.SetUnixPermissions(readAndExecute);
+
+            CopyDirectoryRecursively(PublishOutputDirectory, this.DebKeyboardSwitchDirectory);
+
+            CopyFileToDirectory(this.SourceDebCopyrightFile, this.DebDocsDirectory, createDirectories: true);
+
+            CopyFile(this.SourceLinuxIconFile, this.TargetDebIconFile);
+            this.TargetDebIconFile.SetUnixPermissions("644");
+
+            DebianPackageArchiveTool($"--build --root-owner-group {this.DebDirectory}");
+
+            this.DebDirectory.DeleteDirectory();
+        })
+        .Produces(this.DebFile);
+
+    public Target LocalCleanUp => t => t
         .Description("Deletes the publish directory")
-        .TriggeredBy(this.CreateArchive)
+        .TriggeredBy(this.CreateArchive, this.CreateDebianPackage)
         .OnlyWhenStatic(() => IsLocalBuild)
         .Unlisted()
         .Executes(() =>
@@ -124,14 +145,4 @@ public partial class Build
             Log.Information("Deleting the publish directory");
             PublishOutputDirectory.DeleteDirectory();
         });
-
-    public Target CreateDebianPackage => t => t
-        .Description("Creates a Debian package containing the published project")
-        .DependsOn(this.Publish)
-        .After(this.PostPublish)
-        .Requires(() => OperatingSystem.IsLinux(), () => this.TargetOS == TargetOS.Linux)
-        .Executes(() =>
-        {
-        })
-        .Produces(this.DebFile);
 }

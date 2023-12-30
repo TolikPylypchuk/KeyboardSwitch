@@ -1,5 +1,3 @@
-using Nuke.Common.IO;
-
 public partial class Build
 {
     private static readonly string KeyboardSwitch = nameof(KeyboardSwitch);
@@ -14,9 +12,14 @@ public partial class Build
 
     private static readonly string AppSettings = "appsettings.json";
 
+    private static readonly string LinuxIconFile = $"{KeyboardSwitchLower}.png";
+
     private AbsolutePath BuildDirectory =>
         this.Solution.KeyboardSwitch_Build.Directory;
 
     private AbsolutePath LinuxFilesDirectory =>
         this.BuildDirectory / "linux";
+
+    private AbsolutePath SourceLinuxIconFile =>
+        this.LinuxFilesDirectory / LinuxIconFile;
 }
