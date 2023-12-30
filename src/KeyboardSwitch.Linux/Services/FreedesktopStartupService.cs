@@ -6,18 +6,19 @@ internal sealed class FreedesktopStartupService(
     ILogger<FreedesktopStartupService> logger)
     : IStartupService
 {
-    private const string StartFileContent = @"[Desktop Entry]
-Version=1.0
-Name=Keyboard Switch
-Comment=Switches typed text as if it were typed with another keyboard layout
-Exec=$SERVICE_APP
-TryExec=$SERVICE_APP
-Path=$DIRECTORY
-Icon=$DIRECTORY/icon.png
-Terminal=false
-Type=Application
-Categories=Utility
-";
+    private const string StartFileContent = """
+        [Desktop Entry]
+        Version=1.0
+        Name=Keyboard Switch
+        Comment=Switches typed text as if it were typed with another keyboard layout
+        Exec=$SERVICE_APP
+        TryExec=$SERVICE_APP
+        Path=$DIRECTORY
+        Icon=$DIRECTORY/icon.png
+        Terminal=false
+        Type=Application
+        Categories=Utility
+        """;
 
     private const string AppNamePlaceholder = "$SERVICE_APP";
     private const string AppDirectoryPlaceholder = "$DIRECTORY";
