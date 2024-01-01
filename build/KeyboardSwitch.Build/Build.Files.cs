@@ -6,6 +6,9 @@ public partial class Build
     private static readonly AbsolutePath ArtifactsDirectory = RootDirectory / "artifacts";
     private static readonly AbsolutePath PublishOutputDirectory = ArtifactsDirectory / "publish";
 
+    private static readonly string LicenseFile = "LICENSE";
+    private static readonly AbsolutePath SourceLicenseFile = RootDirectory / LicenseFile;
+
     private static readonly AbsolutePath AppSettingsWindows = PublishOutputDirectory / "appsettings.windows.json";
     private static readonly AbsolutePath AppSettingsMacOS = PublishOutputDirectory / "appsettings.macos.json";
     private static readonly AbsolutePath AppSettingsLinux = PublishOutputDirectory / "appsettings.linux.json";

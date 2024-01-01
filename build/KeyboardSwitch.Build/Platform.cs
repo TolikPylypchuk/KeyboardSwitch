@@ -6,23 +6,23 @@ public class Platform : Enumeration
     {
         Value = "x64",
         RuntimeIdentifierPart = "x64",
-        Zip = "x64",
-        Tar = "x64",
-        Deb = "amd64"
+        Archive = "x64",
+        Deb = "amd64",
+        Rpm = "x86_64"
     };
 
     public static Platform Arm64 = new()
     {
         Value = "ARM64",
         RuntimeIdentifierPart = "arm64",
-        Zip = "arm64",
-        Tar = "arm64",
-        Deb = "arm64"
+        Archive = "arm64",
+        Deb = "arm64",
+        Rpm = "aarch64"
     };
 
     public required string RuntimeIdentifierPart { get; init; }
 
-    public required string Zip { get; init; }
-    public required string Tar { get; init; }
+    public required string Archive { get; init; }
     public required string Deb { get; init; }
+    public required string Rpm { get; init; }
 }

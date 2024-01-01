@@ -1,5 +1,3 @@
-using System.Drawing;
-
 public partial class Build
 {
     private static readonly string DebControlFile = "control";
@@ -8,53 +6,53 @@ public partial class Build
     private static readonly string DebPostRemoveFile = "postrm";
 
     private string DebFileName =>
-        $"{KeyboardSwitchLower}_{Version}-1_{this.Platform.Deb}";
+        $"{KeyboardSwitchLower}_{Version}-{ReleaseNumber}_{this.Platform.Deb}";
 
     private AbsolutePath DebDirectory =>
-        ArtifactsDirectory / DebFileName;
+        ArtifactsDirectory / this.DebFileName;
 
     private AbsolutePath DebFile =>
-        ArtifactsDirectory / $"{DebFileName}.deb";
+        ArtifactsDirectory / $"{this.DebFileName}.deb";
 
     private AbsolutePath DebConfigDirectory =>
-        DebDirectory / "DEBIAN";
+        this.DebDirectory / "DEBIAN";
 
     private AbsolutePath DebKeyboardSwitchDirectory =>
-        DebDirectory / "opt" / KeyboardSwitchLower;
+        this.DebDirectory / "opt" / KeyboardSwitchLower;
 
     private AbsolutePath DebDocsDirectory =>
-        DebDirectory / "usr" / "share" / "doc" / KeyboardSwitchLower;
+        this.DebDirectory / "usr" / "share" / "doc" / KeyboardSwitchLower;
 
     private AbsolutePath DebIconsDirectory =>
-        DebDirectory / "usr" / "share" / "icons" / "hicolor" / "512x512" / "app";
+        this.DebDirectory / "usr" / "share" / "icons" / "hicolor" / "512x512" / "app";
 
     private AbsolutePath SourceDebControlFile =>
-        LinuxFilesDirectory / DebControlFile;
+        this.LinuxFilesDirectory / DebControlFile;
 
     private AbsolutePath TargetDebControlFile =>
-        DebConfigDirectory / DebControlFile;
+        this.DebConfigDirectory / DebControlFile;
 
     private AbsolutePath SourceDebCopyrightFile =>
-        LinuxFilesDirectory / "copyright";
+        this.LinuxFilesDirectory / "copyright";
 
     private AbsolutePath SourceDebPostInstallFile =>
-        LinuxFilesDirectory / DebPostInstallFile;
+        this.LinuxFilesDirectory / DebPostInstallFile;
 
     private AbsolutePath TargetDebPostInstallFile =>
-        DebConfigDirectory / DebPostInstallFile;
+        this.DebConfigDirectory / DebPostInstallFile;
 
     private AbsolutePath SourceDebPreRemoveFile =>
-        LinuxFilesDirectory / DebPreRemoveFile;
+        this.LinuxFilesDirectory / DebPreRemoveFile;
 
     private AbsolutePath TargetDebPreRemoveFile =>
-        DebConfigDirectory / DebPreRemoveFile;
+        this.DebConfigDirectory / DebPreRemoveFile;
 
     private AbsolutePath SourceDebPostRemoveFile =>
-        LinuxFilesDirectory / DebPostRemoveFile;
+        this.LinuxFilesDirectory / DebPostRemoveFile;
 
     private AbsolutePath TargetDebPostRemoveFile =>
-        DebConfigDirectory / DebPostRemoveFile;
+        this.DebConfigDirectory / DebPostRemoveFile;
 
     private AbsolutePath TargetDebIconFile =>
-        DebIconsDirectory / LinuxIconFile;
+        this.DebIconsDirectory / LinuxIconFile;
 }

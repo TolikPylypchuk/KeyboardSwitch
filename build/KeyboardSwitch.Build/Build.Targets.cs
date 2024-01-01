@@ -87,18 +87,17 @@ public partial class Build
         .DependsOn(this.Publish)
         .Executes(() =>
         {
-            var archiveFile = this.ArchiveFormat == ArchiveFormat.Tar ? this.TarFile : this.ZipFile;
-            Log.Information("Archiving the publish output into {ArchiveFile}", archiveFile);
-
-            archiveFile.DeleteFile();
-            PublishOutputDirectory.CompressTo(archiveFile);
+            Log.Information("Archiving the publish output into {ArchiveFile}", this.ArchiveFile);
+            this.ArchiveFile.DeleteFile();
+            PublishOutputDirectory.CompressTo(this.ArchiveFile);
         })
-        .Produces(this.ArchiveFormat == ArchiveFormat.Tar ? this.TarFile : this.ZipFile);
+        .Produces(this.ArchiveFile);
 
     public Target CreateDebianPackage => t => t
         .Description("Creates a Debian package containing the published project")
         .DependsOn(this.Publish)
         .Requires(() => OperatingSystem.IsLinux(), () => this.TargetOS == TargetOS.Linux)
+        .Requires(() => this.DebianPackageArchiveTool)
         .Executes(() =>
         {
             Log.Information("Creating a Debian package containing the published project");
@@ -129,15 +128,51 @@ public partial class Build
             CopyFile(this.SourceLinuxIconFile, this.TargetDebIconFile);
             this.TargetDebIconFile.SetUnixPermissions("644");
 
-            DebianPackageArchiveTool($"--build --root-owner-group {this.DebDirectory}");
+            this.DebianPackageArchiveTool?.Invoke(
+                $"--build --root-owner-group \"{this.DebDirectory}\"",
+                logger: (type, text) => Log.Debug(text));
 
             this.DebDirectory.DeleteDirectory();
         })
         .Produces(this.DebFile);
 
+    public Target CreateRpmPackage => t => t
+        .Description("Creates an RPM package containing the published project")
+        .DependsOn(this.Publish)
+        .Requires(() => OperatingSystem.IsLinux(), () => this.TargetOS == TargetOS.Linux)
+        .Requires(() => this.BuildRpmTool)
+        .Executes(() =>
+        {
+            Log.Information("Creating an RPM package containing the published project");
+
+            RpmDirectory.CreateOrCleanDirectory();
+
+            CopyFile(this.SourceRpmSpecFile, this.TargetRpmSpecFile, FileExistsPolicy.Overwrite);
+            CopyFile(SourceLicenseFile, TargetRpmLicenseFile, FileExistsPolicy.Overwrite);
+            CopyFileToDirectory(SourceLinuxIconFile, PublishOutputDirectory, FileExistsPolicy.Overwrite);
+
+            this.TargetRpmSpecFile.UpdateText(text => text
+                .Replace(VersionPlaceholder, Version)
+                .Replace(ReleasePlaceholder, ReleaseNumber)
+                .Replace(ArchitecturePlaceholder, this.Platform.Rpm)
+                .Replace(OutputPlaceholder, PublishOutputDirectory));
+
+            this.BuildRpmTool?.Invoke(
+                $"-bb --build-in-place --define \"_topdir {RpmDirectory}\" " +
+                $"--target {this.Platform.Rpm} \"{this.TargetRpmSpecFile}\"",
+                logger: (type, text) => Log.Debug(text));
+
+            CopyFile(this.RpmOutputFile, this.RpmFile, FileExistsPolicy.Overwrite);
+
+            RpmDirectory.DeleteDirectory();
+            TargetRpmLicenseFile.DeleteFile();
+            this.TargetRpmSpecFile.DeleteFile();
+        })
+        .Produces(this.RpmFile);
+
     public Target LocalCleanUp => t => t
         .Description("Deletes the publish directory")
-        .TriggeredBy(this.CreateArchive, this.CreateDebianPackage)
+        .TriggeredBy(this.CreateArchive, this.CreateDebianPackage, this.CreateRpmPackage)
         .OnlyWhenStatic(() => IsLocalBuild)
         .Unlisted()
         .Executes(() =>
