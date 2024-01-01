@@ -72,7 +72,10 @@ ScaffoldingReadMe.txt
 # StyleCop
 StyleCopReport.xml
 
-# WixSharp output Files
+# NUKE Temporary files
+.nuke/temp/
+
+# WixSharp Output Files
 *.g.wxs
 
 # Files built by Visual Studio
