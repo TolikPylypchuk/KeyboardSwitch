@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<installer-gui-script minSpecVersion="1">
+    <pkg-ref id="io.tolik.keyboardswitch.service"/>
+    <pkg-ref id="io.tolik.keyboardswitch.settings"/>
+    <product id="io.tolik.keyboardswitch" version="$VERSION"/>
+    <title>Keyboard Switch</title>
+    <options customize="never" require-scripts="false" hostArchitectures="$ARCH" />
+    <volume-check>
+        <allowed-os-versions>
+            <os-version min="10.15" />
+        </allowed-os-versions>
+    </volume-check>
+    <readme file="readme.txt" mime-type="text/plain" />
+    <license file="license.txt" mime-type="text/plain" />
+    <choices-outline>
+        <line choice="default">
+            <line choice="io.tolik.keyboardswitch.service" />
+            <line choice="io.tolik.keyboardswitch.settings" />
+        </line>
+    </choices-outline>
+    <choice id="default"/>
+    <choice id="io.tolik.keyboardswitch.service" visible="false">
+        <pkg-ref id="io.tolik.keyboardswitch.service" />
+    </choice>
+    <pkg-ref id="io.tolik.keyboardswitch.service" version="$VERSION" onConclusion="none">
+        KeyboardSwitch.pkg
+    </pkg-ref>
+    <choice id="io.tolik.keyboardswitch.settings" visible="false">
+        <pkg-ref id="io.tolik.keyboardswitch.settings" />
+    </choice>
+    <pkg-ref id="io.tolik.keyboardswitch.settings" version="$VERSION" onConclusion="none">
+        KeyboardSwitchSettings.pkg
+    </pkg-ref>
+</installer-gui-script>

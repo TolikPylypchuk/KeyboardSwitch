@@ -7,6 +7,7 @@ public class Platform : Enumeration
         Value = "x64",
         RuntimeIdentifierPart = "x64",
         Archive = "x64",
+        Pkg = "x86_64",
         Deb = "amd64",
         Rpm = "x86_64"
     };
@@ -16,6 +17,7 @@ public class Platform : Enumeration
         Value = "ARM64",
         RuntimeIdentifierPart = "arm64",
         Archive = "arm64",
+        Pkg = "arm64",
         Deb = "arm64",
         Rpm = "aarch64"
     };
@@ -23,6 +25,7 @@ public class Platform : Enumeration
     public required string RuntimeIdentifierPart { get; init; }
 
     public required string Archive { get; init; }
+    public required string Pkg { get; init; }
     public required string Deb { get; init; }
     public required string Rpm { get; init; }
 }

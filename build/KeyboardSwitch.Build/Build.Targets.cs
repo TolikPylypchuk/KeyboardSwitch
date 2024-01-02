@@ -73,6 +73,7 @@ public partial class Build
         .Description("Copies additional files to the publish directory")
         .DependentFor(this.CreateArchive)
         .OnlyWhenStatic(() => this.TargetOS == TargetOS.Linux)
+        .After(this.Publish)
         .Unlisted()
         .Executes(() =>
         {
@@ -85,22 +86,91 @@ public partial class Build
     public Target CreateArchive => t => t
         .Description("Creates an archive file containing the published project")
         .DependsOn(this.Publish)
+        .Produces(this.ArchiveFile)
         .Executes(() =>
         {
             Log.Information("Archiving the publish output into {ArchiveFile}", this.ArchiveFile);
             this.ArchiveFile.DeleteFile();
             PublishOutputDirectory.CompressTo(this.ArchiveFile);
-        })
-        .Produces(this.ArchiveFile);
+        });
 
-    public Target CreateDebianPackage => t => t
-        .Description("Creates a Debian package containing the published project")
+    public Target PrepareMacOSPackage => t => t
+        .Description("Prepares files for creating a macOS package containing the published project")
         .DependsOn(this.Publish)
-        .Requires(() => OperatingSystem.IsLinux(), () => this.TargetOS == TargetOS.Linux)
-        .Requires(() => this.DebianPackageArchiveTool)
+        .Requires(() => this.TargetOS == TargetOS.MacOS, () => this.PublishSingleFile)
         .Executes(() =>
         {
-            Log.Information("Creating a Debian package containing the published project");
+            Log.Information("Preparing files for creating a macOS package containing the published project");
+
+            CopyFile(SourcePkgEntitlementsFile, TargetPkgEntitlementsFile, FileExistsPolicy.Overwrite);
+            CopyFile(SourcePkgDistributionFile, TargetPkgDistributionFile, FileExistsPolicy.Overwrite);
+
+            this.TargetPkgDistributionFile.UpdateText(text => text
+                .Replace(VersionPlaceholder, Version)
+                .Replace(ArchitecturePlaceholder, this.Platform.Pkg));
+
+            PkgScriptsDirectory.CreateOrCleanDirectory();
+            CopyFile(this.SourcePkgPostInstallFile, this.TargetPkgPostInstallFile);
+
+            PkgResourcesDirectory.CreateOrCleanDirectory();
+            CopyFileToDirectory(this.SourcePkgReadmeFile, PkgResourcesDirectory);
+            CopyFileToDirectory(this.SourcePkgLicenseFile, PkgResourcesDirectory);
+
+            KeyboardSwitchAppDirectory.CreateOrCleanDirectory();
+            KeyboardSwitchAppMacOSDirectory.CreateOrCleanDirectory();
+
+            CopyFileToDirectory(KeyboardSwitchExecutableFile, KeyboardSwitchAppMacOSDirectory);
+            CopyFileToDirectory(LibSqLiteFile, KeyboardSwitchAppMacOSDirectory);
+            CopyFileToDirectory(LibUioHookFile, KeyboardSwitchAppMacOSDirectory);
+
+            KeyboardSwitchAppResourcesDirectory.CreateOrCleanDirectory();
+
+            var appSettings = PublishOutputDirectory / AppSettings;
+
+            CopyFileToDirectory(appSettings, KeyboardSwitchAppResourcesDirectory);
+            CopyFileToDirectory(this.SourceAppleIconFile, KeyboardSwitchAppResourcesDirectory);
+            CopyFileToDirectory(this.SourceKeyboardSwitchServiceInfoFile, KeyboardSwitchAppResourcesDirectory);
+
+            CopyFile(this.SourceKeyboardSwitchAppInfoFile, this.TargetKeyboardSwitchAppInfoFile);
+
+            ResolvePlaceholders(this.TargetKeyboardSwitchAppInfoFile, this.Platform.Pkg);
+
+            KeyboardSwitchSettingsAppDirectory.CreateOrCleanDirectory();
+            KeyboardSwitchSettingsAppMacOSDirectory.CreateOrCleanDirectory();
+
+            CopyFileToDirectory(KeyboardSwitchSettingsExecutableFile, KeyboardSwitchSettingsAppMacOSDirectory);
+            CopyFileToDirectory(LibAvaloniaNativeFile, KeyboardSwitchSettingsAppMacOSDirectory);
+            CopyFileToDirectory(LibSqLiteFile, KeyboardSwitchSettingsAppMacOSDirectory);
+            CopyFileToDirectory(LibHarfBuzzSharpFile, KeyboardSwitchSettingsAppMacOSDirectory);
+            CopyFileToDirectory(LibSkiaSharpFile, KeyboardSwitchSettingsAppMacOSDirectory);
+
+            KeyboardSwitchSettingsAppResourcesDirectory.CreateOrCleanDirectory();
+
+            CopyFileToDirectory(appSettings, KeyboardSwitchSettingsAppResourcesDirectory);
+            CopyFileToDirectory(this.SourceAppleIconFile, KeyboardSwitchSettingsAppResourcesDirectory);
+
+            CopyFile(this.SourceKeyboardSwitchSettingsAppInfoFile, this.TargetKeyboardSwitchSettingsAppInfoFile);
+
+            ResolvePlaceholders(this.TargetKeyboardSwitchSettingsAppInfoFile, this.Platform.Pkg);
+        });
+
+    public Target CreateMacOSPackage => t => t
+        .Description("Creates a macOS package containing the published project")
+        .DependsOn(this.PrepareMacOSPackage)
+        .Requires(() => OperatingSystem.IsMacOS(), () => this.TargetOS == TargetOS.MacOS, () => this.PublishSingleFile)
+        .Requires(() => this.CodeSign, () => this.PkgBuild, () => this.ProductBuild, () => this.XCodeRun)
+        .Produces(this.PkgFile)
+        .Executes(() =>
+        {
+        });
+
+    public Target PrepareDebianPackage => t => t
+        .Description("Prepares files for creating a Debian package containing the published project")
+        .DependsOn(this.Publish)
+        .Requires(() => this.TargetOS == TargetOS.Linux)
+        .Executes(() =>
+        {
+            Log.Information("Preparing files for creating a Debian package containing the published project");
 
             this.DebDirectory.CreateOrCleanDirectory();
 
@@ -111,9 +181,7 @@ public partial class Build
             CopyFile(this.SourceDebPreRemoveFile, this.TargetDebPreRemoveFile);
             CopyFile(this.SourceDebPostRemoveFile, this.TargetDebPostRemoveFile);
 
-            this.TargetDebControlFile.UpdateText(text => text
-                .Replace(VersionPlaceholder, Version)
-                .Replace(ArchitecturePlaceholder, this.Platform.Deb));
+            ResolvePlaceholders(this.TargetDebControlFile, this.Platform.Deb);
 
             const string readAndExecute = "555";
 
@@ -127,23 +195,32 @@ public partial class Build
 
             CopyFile(this.SourceLinuxIconFile, this.TargetDebIconFile);
             this.TargetDebIconFile.SetUnixPermissions("644");
+        });
 
-            this.DebianPackageArchiveTool?.Invoke(
+    public Target CreateDebianPackage => t => t
+        .Description("Creates a Debian package containing the published project")
+        .DependsOn(this.PrepareDebianPackage)
+        .Requires(() => OperatingSystem.IsLinux(), () => this.TargetOS == TargetOS.Linux)
+        .Requires(() => this.DebianPackageTool)
+        .Produces(this.DebFile)
+        .Executes(() =>
+        {
+            Log.Information("Creating a Debian package containing the published project");
+
+            this.DebianPackageTool?.Invoke(
                 $"--build --root-owner-group \"{this.DebDirectory}\"",
                 logger: (type, text) => Log.Debug(text));
 
             this.DebDirectory.DeleteDirectory();
-        })
-        .Produces(this.DebFile);
+        });
 
-    public Target CreateRpmPackage => t => t
-        .Description("Creates an RPM package containing the published project")
+    public Target PrepareRpmPackage => t => t
+        .Description("Prepares files for creating an RPM package containing the published project")
         .DependsOn(this.Publish)
-        .Requires(() => OperatingSystem.IsLinux(), () => this.TargetOS == TargetOS.Linux)
-        .Requires(() => this.BuildRpmTool)
+        .Requires(() => this.TargetOS == TargetOS.Linux)
         .Executes(() =>
         {
-            Log.Information("Creating an RPM package containing the published project");
+            Log.Information("Preparing files for creating an RPM package containing the published project");
 
             RpmDirectory.CreateOrCleanDirectory();
 
@@ -151,13 +228,20 @@ public partial class Build
             CopyFile(SourceLicenseFile, TargetRpmLicenseFile, FileExistsPolicy.Overwrite);
             CopyFileToDirectory(SourceLinuxIconFile, PublishOutputDirectory, FileExistsPolicy.Overwrite);
 
-            this.TargetRpmSpecFile.UpdateText(text => text
-                .Replace(VersionPlaceholder, Version)
-                .Replace(ReleasePlaceholder, ReleaseNumber)
-                .Replace(ArchitecturePlaceholder, this.Platform.Rpm)
-                .Replace(OutputPlaceholder, PublishOutputDirectory));
+            ResolvePlaceholders(this.TargetRpmSpecFile, this.Platform.Rpm);
+        });
 
-            this.BuildRpmTool?.Invoke(
+    public Target CreateRpmPackage => t => t
+        .Description("Creates an RPM package containing the published project")
+        .DependsOn(this.PrepareRpmPackage)
+        .Requires(() => OperatingSystem.IsLinux(), () => this.TargetOS == TargetOS.Linux)
+        .Requires(() => this.RpmBuild)
+        .Produces(this.RpmFile)
+        .Executes(() =>
+        {
+            Log.Information("Creating an RPM package containing the published project");
+
+            this.RpmBuild?.Invoke(
                 $"-bb --build-in-place --define \"_topdir {RpmDirectory}\" " +
                 $"--target {this.Platform.Rpm} \"{this.TargetRpmSpecFile}\"",
                 logger: (type, text) => Log.Debug(text));
@@ -167,12 +251,11 @@ public partial class Build
             RpmDirectory.DeleteDirectory();
             TargetRpmLicenseFile.DeleteFile();
             this.TargetRpmSpecFile.DeleteFile();
-        })
-        .Produces(this.RpmFile);
+        });
 
     public Target LocalCleanUp => t => t
         .Description("Deletes the publish directory")
-        .TriggeredBy(this.CreateArchive, this.CreateDebianPackage, this.CreateRpmPackage)
+        .TriggeredBy(this.CreateArchive, this.CreateMacOSPackage, this.CreateDebianPackage, this.CreateRpmPackage)
         .OnlyWhenStatic(() => IsLocalBuild)
         .Unlisted()
         .Executes(() =>

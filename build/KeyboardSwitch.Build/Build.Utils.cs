@@ -4,6 +4,21 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 public partial class Build
 {
+    private static void ResolvePlaceholders(AbsolutePath file, string architecture) =>
+        file.UpdateText(text => text
+            .Replace(VersionPlaceholder, Version)
+            .Replace(MajorVersionPlaceholder, MajorVersion)
+            .Replace(MinorVersionPlaceholder, MinorVersion)
+            .Replace(ReleasePlaceholder, ReleaseNumber)
+            .Replace(ArchitecturePlaceholder, architecture)
+            .Replace(OutputPlaceholder, PublishOutputDirectory));
+
+    private static T Fail<T>(string message)
+    {
+        Assert.Fail(message);
+        return default!;
+    }
+
     private IEnumerable<Project> GetProjects(bool includeInstaller = false)
     {
         yield return this.Solution.KeyboardSwitch_Core;
@@ -48,10 +63,4 @@ public partial class Build
             var os when os == TargetOS.Linux => linux,
             _ => Fail<T>($"Unsupported target OS: {this.TargetOS}")
         };
-
-    private T Fail<T>(string message)
-    {
-        Assert.Fail(message);
-        return default!;
-    }
 }

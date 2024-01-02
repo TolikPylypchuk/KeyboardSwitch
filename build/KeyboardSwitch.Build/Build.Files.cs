@@ -2,6 +2,7 @@ public partial class Build
 {
     private static readonly string KeyboardSwitch = nameof(KeyboardSwitch);
     private static readonly string KeyboardSwitchLower = "keyboard-switch";
+    private static readonly string KeyboardSwitchSettings = nameof(KeyboardSwitchSettings);
 
     private static readonly AbsolutePath ArtifactsDirectory = RootDirectory / "artifacts";
     private static readonly AbsolutePath PublishOutputDirectory = ArtifactsDirectory / "publish";
@@ -20,8 +21,14 @@ public partial class Build
     private AbsolutePath BuildDirectory =>
         this.Solution.KeyboardSwitch_Build.Directory;
 
+    private AbsolutePath MacOSFilesDirectory =>
+        this.BuildDirectory / "macos";
+
     private AbsolutePath LinuxFilesDirectory =>
         this.BuildDirectory / "linux";
+
+    private AbsolutePath SourceAppleIconFile =>
+        this.MacOSFilesDirectory / $"{KeyboardSwitch}.icns";
 
     private AbsolutePath SourceLinuxIconFile =>
         this.LinuxFilesDirectory / LinuxIconFile;

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+dscl . -list /Users UniqueID | grep -v -e ^_ -e root -e daemon -e nobody | while read -r CURRENT_USER CURRENT_UID ; do
+    launchctl asuser $CURRENT_UID launchctl remove io.tolik.keyboardswitch
+
+    if [ -f "$(eval echo ~$CURRENT_USER)/.keyboard-switch/.setup-configured" ] ; then
+        rm "$(eval echo ~$CURRENT_USER)/.keyboard-switch/.setup-configured"
+    fi
+done
+
+rm /Library/LaunchAgents/io.tolik.keyboardswitch.plist
+
+rm -rf "/opt/Keyboard Switch.app"
+rm -rf "/Applications/Keyboard Switch Settings.app"
+
+pkgutil --forget io.tolik.keyboardswitch.service
+pkgutil --forget io.tolik.keyboardswitch.settings
+
+exit 0
