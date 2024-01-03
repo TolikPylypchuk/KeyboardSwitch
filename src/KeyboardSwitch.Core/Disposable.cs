@@ -1,7 +1,5 @@
 namespace KeyboardSwitch.Core;
 
-using System.Runtime.CompilerServices;
-
 public abstract class Disposable : IDisposable
 {
     ~Disposable() =>
@@ -22,12 +20,6 @@ public abstract class Disposable : IDisposable
 
     protected abstract void Dispose(bool disposing);
 
-    protected void ThrowIfDisposed([CallerMemberName] string? method = null)
-    {
-        if (this.Disposed)
-        {
-            throw new ObjectDisposedException(
-                this.GetType().Name, $"Cannot call {method} - the service is disposed");
-        }
-    }
+    protected void ThrowIfDisposed() =>
+        ObjectDisposedException.ThrowIf(this.Disposed, this);
 }

@@ -162,6 +162,10 @@ public partial class Build
         .Produces(this.PkgFile)
         .Executes(() =>
         {
+            Assert.NotNull(this.CodeSign, "codesign is not available");
+            Assert.NotNull(this.PkgBuild, "pkgbuild is not available");
+            Assert.NotNull(this.ProductBuild, "productbuild is not available");
+            Assert.NotNull(this.XCodeRun, "xcrun is not available");
         });
 
     public Target PrepareDebianPackage => t => t
@@ -205,6 +209,8 @@ public partial class Build
         .Produces(this.DebFile)
         .Executes(() =>
         {
+            Assert.NotNull(this.DebianPackageTool, "dpkg-deb is not available");
+
             Log.Information("Creating a Debian package containing the published project");
 
             this.DebianPackageTool?.Invoke(
@@ -239,6 +245,8 @@ public partial class Build
         .Produces(this.RpmFile)
         .Executes(() =>
         {
+            Assert.NotNull(this.RpmBuild, "rpmbuild is not available");
+
             Log.Information("Creating an RPM package containing the published project");
 
             this.RpmBuild?.Invoke(
