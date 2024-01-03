@@ -4,8 +4,8 @@
     <PackageReference Include="akavache" Version="9.1.20" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
-    <PackageReference Include="SharpHook" Version="5.2.0" />
-    <PackageReference Include="SharpHook.Reactive" Version="5.2.0" />
+    <PackageReference Include="SharpHook" Version="5.2.1" />
+    <PackageReference Include="SharpHook.Reactive" Version="5.2.1" />
     <PackageReference Include="System.Interactive" Version="6.0.1" />
     <PackageReference Include="System.Interactive.Async" Version="6.0.1" />
     <PackageReference Include="System.Reactive" Version="6.0.0" />
