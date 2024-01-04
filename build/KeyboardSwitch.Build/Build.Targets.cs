@@ -213,9 +213,7 @@ public partial class Build
 
             Log.Information("Creating a Debian package containing the published project");
 
-            dpkgDeb(
-                $"--build --root-owner-group \"{this.DebDirectory}\"",
-                logger: (type, text) => Log.Debug(text));
+            dpkgDeb($"--build --root-owner-group \"{this.DebDirectory}\"", logger: DebugOnly);
 
             this.DebDirectory.DeleteDirectory();
         });
@@ -252,7 +250,7 @@ public partial class Build
             rpmBuild(
                 $"-bb --build-in-place --define \"_topdir {RpmDirectory}\" " +
                 $"--target {this.Platform.Rpm} \"{this.TargetRpmSpecFile}\"",
-                logger: (type, text) => Log.Debug(text));
+                logger: DebugOnly);
 
             CopyFile(this.RpmOutputFile, this.RpmFile, FileExistsPolicy.Overwrite);
 

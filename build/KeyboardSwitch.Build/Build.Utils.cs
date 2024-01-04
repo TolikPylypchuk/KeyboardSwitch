@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 using Serilog;
 
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -13,6 +15,13 @@ public partial class Build
         Assert.Fail(message);
         return default!;
     }
+
+    [SuppressMessage(
+        "Style",
+        "IDE0060:Remove unused parameter",
+        Justification = "This is the signature of a logger for external tools")]
+    private static void DebugOnly(OutputType type, string text) =>
+        Log.Debug(text);
 
     private static void ResolvePlaceholders(AbsolutePath file, string architecture) =>
         file.UpdateText(text => text
