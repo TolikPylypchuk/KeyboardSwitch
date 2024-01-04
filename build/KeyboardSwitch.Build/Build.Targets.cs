@@ -162,10 +162,10 @@ public partial class Build
         .Produces(this.PkgFile)
         .Executes(() =>
         {
-            Assert.NotNull(this.CodeSign, "codesign is not available");
-            Assert.NotNull(this.PkgBuild, "pkgbuild is not available");
-            Assert.NotNull(this.ProductBuild, "productbuild is not available");
-            Assert.NotNull(this.XCodeRun, "xcrun is not available");
+            var codeSign = AssertNotNull(this.CodeSign, "codesign is not available");
+            var pkgBuild = AssertNotNull(this.PkgBuild, "pkgbuild is not available");
+            var productBuild = AssertNotNull(this.ProductBuild, "productbuild is not available");
+            var xcRun = AssertNotNull(this.XCodeRun, "xcrun is not available");
         });
 
     public Target PrepareDebianPackage => t => t
@@ -209,11 +209,11 @@ public partial class Build
         .Produces(this.DebFile)
         .Executes(() =>
         {
-            Assert.NotNull(this.DebianPackageTool, "dpkg-deb is not available");
+            var dpkgDeb = AssertNotNull(this.DebianPackageTool, "dpkg-deb is not available");
 
             Log.Information("Creating a Debian package containing the published project");
 
-            this.DebianPackageTool?.Invoke(
+            dpkgDeb(
                 $"--build --root-owner-group \"{this.DebDirectory}\"",
                 logger: (type, text) => Log.Debug(text));
 
@@ -245,11 +245,11 @@ public partial class Build
         .Produces(this.RpmFile)
         .Executes(() =>
         {
-            Assert.NotNull(this.RpmBuild, "rpmbuild is not available");
+            var rpmBuild = AssertNotNull(this.RpmBuild, "rpmbuild is not available");
 
             Log.Information("Creating an RPM package containing the published project");
 
-            this.RpmBuild?.Invoke(
+            rpmBuild(
                 $"-bb --build-in-place --define \"_topdir {RpmDirectory}\" " +
                 $"--target {this.Platform.Rpm} \"{this.TargetRpmSpecFile}\"",
                 logger: (type, text) => Log.Debug(text));
