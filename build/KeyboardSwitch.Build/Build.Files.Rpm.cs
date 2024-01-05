@@ -1,10 +1,12 @@
 public partial class Build
 {
-    private static readonly AbsolutePath RpmDirectory = ArtifactsDirectory / "rpm";
+    private const string RpmSpecFile = $"{KeyboardSwitchLower}.spec";
 
-    private static readonly string RpmSpecFile = $"{KeyboardSwitchLower}.spec";
+    private static AbsolutePath RpmDirectory =>
+        ArtifactsDirectory / "rpm";
 
-    private static readonly AbsolutePath TargetRpmLicenseFile = ArtifactsDirectory / LicenseFile;
+    private static AbsolutePath TargetRpmLicenseFile =>
+        ArtifactsDirectory / LicenseFile;
 
     private string RpmFileName =>
         $"{KeyboardSwitchLower}-{Version}-{ReleaseNumber}.{this.Platform.Rpm}.rpm";

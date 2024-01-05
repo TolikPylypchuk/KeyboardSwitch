@@ -14,7 +14,7 @@ public partial class Build
                 Log.Information("Cleaning project {Name}", project.Name);
                 DotNetClean(s => s
                     .SetProject(project)
-                    .SetRuntime(this.RuntimeIdentifer)
+                    .SetRuntime(this.RuntimeIdentifier)
                     .SetConfiguration(this.Configuration)
                     .SetPlatform(this.Platform)
                     .SetProperty(nameof(TargetOS), this.TargetOS));
@@ -31,7 +31,7 @@ public partial class Build
                 Log.Information("Building project {Name}", project.Name);
                 DotNetBuild(s => s
                     .SetProjectFile(project)
-                    .SetRuntime(this.RuntimeIdentifer)
+                    .SetRuntime(this.RuntimeIdentifier)
                     .SetConfiguration(this.Configuration)
                     .SetPlatform(this.Platform)
                     .SetProperty(nameof(TargetOS), this.TargetOS)
@@ -158,14 +158,48 @@ public partial class Build
         .Description("Creates a macOS package containing the published project")
         .DependsOn(this.PrepareMacOSPackage)
         .Requires(() => OperatingSystem.IsMacOS(), () => this.TargetOS == TargetOS.MacOS, () => this.PublishSingleFile)
-        .Requires(() => this.CodeSign, () => this.PkgBuild, () => this.ProductBuild, () => this.XCodeRun)
+        .Requires(() => this.codeSign, () => this.pkgBuild, () => this.productBuild, () => this.xCodeRun)
+        .Requires(
+            () => this.AppleId,
+            () => this.AppleTeamId,
+            () => this.AppleApplicationCertificate,
+            () => this.AppleInstallerCertificate,
+            () => this.NotarizationPassword)
         .Produces(this.PkgFile)
         .Executes(() =>
         {
-            var codeSign = AssertNotNull(this.CodeSign, "codesign is not available");
-            var pkgBuild = AssertNotNull(this.PkgBuild, "pkgbuild is not available");
-            var productBuild = AssertNotNull(this.ProductBuild, "productbuild is not available");
-            var xcRun = AssertNotNull(this.XCodeRun, "xcrun is not available");
+            this.Sign(KeyboardSwitchAppLibSqLiteFile);
+            this.Sign(KeyboardSwitchAppLibUioHookFile);
+            this.Sign(KeyboardSwitchAppExecutableFile, hardenedRuntime: true);
+
+            this.Sign(KeyboardSwitchSettingsAppLibAvaloniaNativeFile);
+            this.Sign(KeyboardSwitchSettingsAppLibSqLiteFile);
+            this.Sign(KeyboardSwitchSettingsAppLibHarfBuzzSharpFile);
+            this.Sign(KeyboardSwitchSettingsAppLibSkiaSharpFile);
+            this.Sign(KeyboardSwitchSettingsAppExecutableFile, hardenedRuntime: true);
+
+            this.PkgBuild(
+                $"--component {KeyboardSwitchAppDirectory} --identifier io.tolik.keyboardswitch.service " +
+                $"--version {Version} --install-location /opt --scripts {PkgScriptsDirectory} {KeyboardSwitchPkgFile}",
+                logger: DebugOnly);
+
+            this.PkgBuild(
+                $"--component {KeyboardSwitchSettingsAppDirectory} --identifier io.tolik.keyboardswitch.settings " +
+                $"--version {Version} --install-location /Applications {KeyboardSwitchSettingsPkgFile}",
+                logger: DebugOnly);
+
+            this.ProductBuild(
+                $"--sign {this.AppleInstallerCertificate} --distribution {this.TargetPkgDistributionFile} " +
+                $"--resources {PkgResourcesDirectory} {PkgFile}",
+                workingDirectory: ArtifactsDirectory,
+                logger: DebugOnly);
+
+            this.XCodeRun(
+                $"notarytool submit {this.PkgFile} --wait --apple-id {this.AppleId} " +
+                $"--team-id {this.AppleTeamId} --password {this.NotarizationPassword}",
+                logger: DebugOnly);
+
+            this.XCodeRun($"stapler staple {this.PkgFile}", logger: DebugOnly);
         });
 
     public Target PrepareDebianPackage => t => t
@@ -205,17 +239,12 @@ public partial class Build
         .Description("Creates a Debian package containing the published project")
         .DependsOn(this.PrepareDebianPackage)
         .Requires(() => OperatingSystem.IsLinux(), () => this.TargetOS == TargetOS.Linux)
-        .Requires(() => this.DebianPackageTool)
+        .Requires(() => this.debianPackageTool)
         .Produces(this.DebFile)
         .Executes(() =>
         {
-            var dpkgDeb = AssertNotNull(this.DebianPackageTool, "dpkg-deb is not available");
-
             Log.Information("Creating a Debian package containing the published project");
-
-            dpkgDeb($"--build --root-owner-group \"{this.DebDirectory}\"", logger: DebugOnly);
-
-            this.DebDirectory.DeleteDirectory();
+            this.DebianPackageTool($"--build --root-owner-group \"{this.DebDirectory}\"", logger: DebugOnly);
         });
 
     public Target PrepareRpmPackage => t => t
@@ -239,34 +268,44 @@ public partial class Build
         .Description("Creates an RPM package containing the published project")
         .DependsOn(this.PrepareRpmPackage)
         .Requires(() => OperatingSystem.IsLinux(), () => this.TargetOS == TargetOS.Linux)
-        .Requires(() => this.RpmBuild)
+        .Requires(() => this.rpmBuild)
         .Produces(this.RpmFile)
         .Executes(() =>
         {
-            var rpmBuild = AssertNotNull(this.RpmBuild, "rpmbuild is not available");
-
             Log.Information("Creating an RPM package containing the published project");
 
-            rpmBuild(
+            this.RpmBuild(
                 $"-bb --build-in-place --define \"_topdir {RpmDirectory}\" " +
                 $"--target {this.Platform.Rpm} \"{this.TargetRpmSpecFile}\"",
                 logger: DebugOnly);
 
             CopyFile(this.RpmOutputFile, this.RpmFile, FileExistsPolicy.Overwrite);
-
-            RpmDirectory.DeleteDirectory();
-            TargetRpmLicenseFile.DeleteFile();
-            this.TargetRpmSpecFile.DeleteFile();
         });
 
     public Target LocalCleanUp => t => t
-        .Description("Deletes the publish directory")
+        .Description("Deletes leftover files")
         .TriggeredBy(this.CreateArchive, this.CreateMacOSPackage, this.CreateDebianPackage, this.CreateRpmPackage)
         .OnlyWhenStatic(() => IsLocalBuild)
         .Unlisted()
         .Executes(() =>
         {
-            Log.Information("Deleting the publish directory");
+            Log.Information("Deleting leftover files");
+
             PublishOutputDirectory.DeleteDirectory();
+
+            KeyboardSwitchPkgFile.DeleteFile();
+            KeyboardSwitchSettingsPkgFile.DeleteFile();
+            PkgResourcesDirectory.DeleteDirectory();
+            PkgScriptsDirectory.DeleteDirectory();
+            KeyboardSwitchAppDirectory.DeleteDirectory();
+            KeyboardSwitchSettingsAppDirectory.DeleteDirectory();
+            TargetPkgDistributionFile.DeleteFile();
+            TargetPkgEntitlementsFile.DeleteFile();
+
+            this.DebDirectory.DeleteDirectory();
+
+            RpmDirectory.DeleteDirectory();
+            TargetRpmLicenseFile.DeleteFile();
+            this.TargetRpmSpecFile.DeleteFile();
         });
 }

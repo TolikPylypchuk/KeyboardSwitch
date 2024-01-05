@@ -1,22 +1,27 @@
 public partial class Build
 {
-    private static readonly string KeyboardSwitch = nameof(KeyboardSwitch);
-    private static readonly string KeyboardSwitchLower = "keyboard-switch";
-    private static readonly string KeyboardSwitchSettings = nameof(KeyboardSwitchSettings);
+    private const string KeyboardSwitch = nameof(KeyboardSwitch);
+    private const string KeyboardSwitchLower = "keyboard-switch";
+    private const string KeyboardSwitchSettings = nameof(KeyboardSwitchSettings);
+
+    private const string LicenseFile = "LICENSE";
+    private const string AppSettings = "appsettings.json";
+    private const string LinuxIconFile = $"{KeyboardSwitchLower}.png";
 
     private static readonly AbsolutePath ArtifactsDirectory = RootDirectory / "artifacts";
     private static readonly AbsolutePath PublishOutputDirectory = ArtifactsDirectory / "publish";
 
-    private static readonly string LicenseFile = "LICENSE";
-    private static readonly AbsolutePath SourceLicenseFile = RootDirectory / LicenseFile;
+    private static AbsolutePath SourceLicenseFile =>
+        RootDirectory / LicenseFile;
 
-    private static readonly AbsolutePath AppSettingsWindows = PublishOutputDirectory / "appsettings.windows.json";
-    private static readonly AbsolutePath AppSettingsMacOS = PublishOutputDirectory / "appsettings.macos.json";
-    private static readonly AbsolutePath AppSettingsLinux = PublishOutputDirectory / "appsettings.linux.json";
+    private static AbsolutePath AppSettingsWindows =>
+        PublishOutputDirectory / "appsettings.windows.json";
 
-    private static readonly string AppSettings = "appsettings.json";
+    private static AbsolutePath AppSettingsMacOS =>
+        PublishOutputDirectory / "appsettings.macos.json";
 
-    private static readonly string LinuxIconFile = $"{KeyboardSwitchLower}.png";
+    private static AbsolutePath AppSettingsLinux =>
+        PublishOutputDirectory / "appsettings.linux.json";
 
     private AbsolutePath BuildDirectory =>
         this.Solution.KeyboardSwitch_Build.Directory;

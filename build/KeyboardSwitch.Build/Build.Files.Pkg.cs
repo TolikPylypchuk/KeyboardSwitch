@@ -1,56 +1,95 @@
 public partial class Build
 {
-    private static readonly string PkgEntitlementsFile = "entitlements.plist";
-    private static readonly string PkgDistributionFile = "dist-pkg.xml";
-    private static readonly string AppInfoFile = "Info.plist";
+    private const string PkgEntitlementsFile = "entitlements.plist";
+    private const string PkgDistributionFile = "dist-pkg.xml";
+    private const string AppInfoFile = "Info.plist";
 
-    private static readonly AbsolutePath PkgScriptsDirectory = ArtifactsDirectory / "scripts";
-    private static readonly AbsolutePath PkgResourcesDirectory = ArtifactsDirectory / "resources";
+    private const string LibSqLite = "libe_sqlite3.dylib";
+    private const string LibUioHook = "libuiohook.dylib";
+    private const string LibAvaloniaNative = "libAvaloniaNative.dylib";
+    private const string LibHarfBuzzSharp = "libHarfBuzzSharp.dylib";
+    private const string LibSkiaSharp = "libSkiaSharp.dylib";
 
-    private static readonly AbsolutePath KeyboardSwitchAppDirectory =
+    private static AbsolutePath PkgScriptsDirectory =>
+        ArtifactsDirectory / "scripts";
+
+    private static AbsolutePath PkgResourcesDirectory =>
+        ArtifactsDirectory / "resources";
+
+    private static AbsolutePath KeyboardSwitchAppDirectory =>
         ArtifactsDirectory / "Keyboard Switch.app";
 
-    private static readonly AbsolutePath KeyboardSwitchAppContentsDirectory =
+    private static AbsolutePath KeyboardSwitchAppContentsDirectory =>
         KeyboardSwitchAppDirectory / "Contents";
 
-    private static readonly AbsolutePath KeyboardSwitchAppMacOSDirectory =
+    private static AbsolutePath KeyboardSwitchAppMacOSDirectory =>
         KeyboardSwitchAppContentsDirectory / "MacOS";
 
-    private static readonly AbsolutePath KeyboardSwitchAppResourcesDirectory =
+    private static AbsolutePath KeyboardSwitchAppResourcesDirectory =>
         KeyboardSwitchAppContentsDirectory / "Resources";
 
-    private static readonly AbsolutePath KeyboardSwitchSettingsAppDirectory =
+    private static AbsolutePath KeyboardSwitchSettingsAppDirectory =>
         ArtifactsDirectory / "Keyboard Switch Settings.app";
 
-    private static readonly AbsolutePath KeyboardSwitchSettingsAppContentsDirectory =
+    private static AbsolutePath KeyboardSwitchSettingsAppContentsDirectory =>
         KeyboardSwitchSettingsAppDirectory / "Contents";
 
-    private static readonly AbsolutePath KeyboardSwitchSettingsAppMacOSDirectory =
+    private static AbsolutePath KeyboardSwitchSettingsAppMacOSDirectory =>
         KeyboardSwitchSettingsAppContentsDirectory / "MacOS";
 
-    private static readonly AbsolutePath KeyboardSwitchSettingsAppResourcesDirectory =
+    private static AbsolutePath KeyboardSwitchSettingsAppResourcesDirectory =>
         KeyboardSwitchSettingsAppContentsDirectory / "Resources";
 
-    private static readonly AbsolutePath KeyboardSwitchExecutableFile =
+    private static AbsolutePath KeyboardSwitchExecutableFile =>
         PublishOutputDirectory / KeyboardSwitch;
 
-    private static readonly AbsolutePath KeyboardSwitchSettingsExecutableFile =
+    private static AbsolutePath KeyboardSwitchSettingsExecutableFile =>
         PublishOutputDirectory / KeyboardSwitchSettings;
 
-    private static readonly AbsolutePath LibSqLiteFile =
-        PublishOutputDirectory / "libe_sqlite3.dylib";
+    private static AbsolutePath LibSqLiteFile =>
+        PublishOutputDirectory / LibSqLite;
 
-    private static readonly AbsolutePath LibUioHookFile =
-        PublishOutputDirectory / "libuiohook.dylib";
+    private static AbsolutePath LibUioHookFile =>
+        PublishOutputDirectory / LibUioHook;
 
-    private static readonly AbsolutePath LibAvaloniaNativeFile =
-        PublishOutputDirectory / "libAvaloniaNative.dylib";
+    private static AbsolutePath LibAvaloniaNativeFile =>
+        PublishOutputDirectory / LibAvaloniaNative;
 
-    private static readonly AbsolutePath LibHarfBuzzSharpFile =
-        PublishOutputDirectory / "libHarfBuzzSharp.dylib";
+    private static AbsolutePath LibHarfBuzzSharpFile =>
+        PublishOutputDirectory / LibHarfBuzzSharp;
 
-    private static readonly AbsolutePath LibSkiaSharpFile =
-        PublishOutputDirectory / "libSkiaSharp.dylib";
+    private static AbsolutePath LibSkiaSharpFile =>
+        PublishOutputDirectory / LibSkiaSharp;
+
+    private static AbsolutePath KeyboardSwitchAppExecutableFile =>
+        KeyboardSwitchAppMacOSDirectory / KeyboardSwitch;
+
+    private static AbsolutePath KeyboardSwitchAppLibSqLiteFile =>
+        KeyboardSwitchAppMacOSDirectory / LibSqLite;
+
+    private static AbsolutePath KeyboardSwitchAppLibUioHookFile =>
+        KeyboardSwitchAppMacOSDirectory / LibUioHook;
+
+    private static AbsolutePath KeyboardSwitchSettingsAppExecutableFile =>
+        KeyboardSwitchSettingsAppMacOSDirectory / KeyboardSwitchSettings;
+
+    private static AbsolutePath KeyboardSwitchSettingsAppLibSqLiteFile =>
+        KeyboardSwitchSettingsAppMacOSDirectory / LibSqLite;
+
+    private static AbsolutePath KeyboardSwitchSettingsAppLibAvaloniaNativeFile =>
+        KeyboardSwitchSettingsAppMacOSDirectory / LibAvaloniaNative;
+
+    private static AbsolutePath KeyboardSwitchSettingsAppLibHarfBuzzSharpFile =>
+        KeyboardSwitchSettingsAppMacOSDirectory / LibHarfBuzzSharp;
+
+    private static AbsolutePath KeyboardSwitchSettingsAppLibSkiaSharpFile =>
+        KeyboardSwitchSettingsAppMacOSDirectory / LibSkiaSharp;
+
+    private static AbsolutePath KeyboardSwitchPkgFile =>
+        ArtifactsDirectory / $"{KeyboardSwitch}.pkg";
+
+    private static AbsolutePath KeyboardSwitchSettingsPkgFile =>
+        ArtifactsDirectory / $"{KeyboardSwitchSettings}.pkg";
 
     private string PkgFileName =>
         $"{KeyboardSwitch}-{Version}-{this.Platform.Pkg}.pkg";
@@ -62,13 +101,13 @@ public partial class Build
         this.MacOSFilesDirectory / PkgEntitlementsFile;
 
     private AbsolutePath TargetPkgEntitlementsFile =>
-        PublishOutputDirectory / PkgEntitlementsFile;
+        ArtifactsDirectory / PkgEntitlementsFile;
 
     private AbsolutePath SourcePkgDistributionFile =>
         this.MacOSFilesDirectory / PkgDistributionFile;
 
     private AbsolutePath TargetPkgDistributionFile =>
-        PublishOutputDirectory / PkgDistributionFile;
+        ArtifactsDirectory / PkgDistributionFile;
 
     private AbsolutePath SourcePkgPostInstallFile =>
         this.MacOSFilesDirectory / "postinstall-pkg";

@@ -6,10 +6,6 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 public partial class Build
 {
-    private static T AssertNotNull<T>(T? obj, string message)
-        where T : class =>
-        Assert.NotNull(obj, message)!;
-
     private static T AssertFail<T>(string message)
     {
         Assert.Fail(message);
@@ -58,7 +54,7 @@ public partial class Build
 
         DotNetPublish(s => s
             .SetProject(project)
-            .SetRuntime(this.RuntimeIdentifer)
+            .SetRuntime(this.RuntimeIdentifier)
             .SetConfiguration(this.Configuration)
             .SetPlatform(this.Platform)
             .SetProperty(nameof(TargetOS), this.TargetOS)
@@ -67,6 +63,12 @@ public partial class Build
             .SetSelfContained(this.IsSelfContained)
             .SetPublishSingleFile(this.PublishSingleFile));
     }
+
+    private void Sign(AbsolutePath file, bool hardenedRuntime = false) =>
+        this.CodeSign(
+            $"--sign {this.AppleApplicationCertificate} --force --timestamp --no-strict " +
+            $"--entitlements {this.TargetPkgEntitlementsFile} {(hardenedRuntime ? "--options=runtime" : "")} {file}",
+            logger: DebugOnly);
 
     private T PlatformDependent<T>(T windows, T macos, T linux) =>
         this.TargetOS switch

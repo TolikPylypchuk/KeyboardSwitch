@@ -1,9 +1,9 @@
 public partial class Build
 {
-    private static readonly string DebControlFile = "control";
-    private static readonly string DebPostInstallFile = "postinst";
-    private static readonly string DebPreRemoveFile = "prerm";
-    private static readonly string DebPostRemoveFile = "postrm";
+    private const string DebControlFile = "control";
+    private const string DebPostInstallFile = "postinst";
+    private const string DebPreRemoveFile = "prerm";
+    private const string DebPostRemoveFile = "postrm";
 
     private string DebFileName =>
         $"{KeyboardSwitchLower}_{Version}-{ReleaseNumber}_{this.Platform.Deb}";

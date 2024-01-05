@@ -3,10 +3,10 @@ using System.Runtime.InteropServices;
 public partial class Build
 {
     [Parameter("Configuration - Release by default")]
-    private readonly Configuration Configuration = Configuration.Release;
+    public readonly Configuration Configuration = Configuration.Release;
 
     [Parameter("Target OS - current OS by default")]
-    private readonly TargetOS TargetOS =
+    public readonly TargetOS TargetOS =
         RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
             ? TargetOS.MacOS
             : RuntimeInformation.IsOSPlatform(OSPlatform.Linux)
@@ -14,16 +14,36 @@ public partial class Build
                 : TargetOS.Windows;
 
     [Parameter("Platform - current architecture by default")]
-    private readonly Platform Platform =
+    public readonly Platform Platform =
         RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? Platform.Arm64 : Platform.X64;
 
     [Parameter("Publish single file - false by default")]
-    private readonly bool PublishSingleFile = false;
+    public readonly bool PublishSingleFile;
 
     [Parameter("Archive format - zip by default")]
-    private readonly ArchiveFormat ArchiveFormat = ArchiveFormat.Zip;
+    public readonly ArchiveFormat ArchiveFormat = ArchiveFormat.Zip;
 
-    private string RuntimeIdentifer =>
+    [Secret]
+    [Parameter("Apple ID")]
+    public readonly string? AppleId;
+
+    [Secret]
+    [Parameter("Apple team ID")]
+    public readonly string? AppleTeamId;
+
+    [Secret]
+    [Parameter("Apple application certificate")]
+    public readonly string? AppleApplicationCertificate;
+
+    [Secret]
+    [Parameter("Apple installer certificate")]
+    public readonly string? AppleInstallerCertificate;
+
+    [Secret]
+    [Parameter("Password for the Apple notarization service")]
+    public readonly string? NotarizationPassword;
+
+    private string RuntimeIdentifier =>
         $"{this.TargetOS.RuntimeIdentifierPart}-{this.Platform.RuntimeIdentifierPart}";
 
     private bool IsSelfContained =>
