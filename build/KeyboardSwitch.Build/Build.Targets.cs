@@ -105,9 +105,7 @@ public partial class Build
             CopyFile(SourcePkgEntitlementsFile, TargetPkgEntitlementsFile, FileExistsPolicy.Overwrite);
             CopyFile(SourcePkgDistributionFile, TargetPkgDistributionFile, FileExistsPolicy.Overwrite);
 
-            this.TargetPkgDistributionFile.UpdateText(text => text
-                .Replace(VersionPlaceholder, Version)
-                .Replace(ArchitecturePlaceholder, this.Platform.Pkg));
+            ResolvePlaceholders(this.TargetPkgDistributionFile, this.Platform.Pkg);
 
             PkgScriptsDirectory.CreateOrCleanDirectory();
             CopyFile(this.SourcePkgPostInstallFile, this.TargetPkgPostInstallFile);
@@ -168,6 +166,8 @@ public partial class Build
         .Produces(this.PkgFile)
         .Executes(() =>
         {
+            Log.Information("Creating a macOS package containing the published project");
+
             this.Sign(KeyboardSwitchAppLibSqLiteFile);
             this.Sign(KeyboardSwitchAppLibUioHookFile);
             this.Sign(KeyboardSwitchAppExecutableFile, hardenedRuntime: true);
@@ -200,6 +200,61 @@ public partial class Build
                 logger: DebugOnly);
 
             this.XCodeRun($"stapler staple {this.PkgFile}", logger: DebugOnly);
+        });
+
+    public Target PrepareMacOSUninstallerPackage => t => t
+        .Description("Prepares files for creating a macOS uninstaller package")
+        .Executes(() =>
+        {
+            Log.Information("Preparing files for creating a macOS uninstaller package");
+
+            CopyFile(
+                SourceUninstallerPkgDistributionFile,
+                TargetUninstallerPkgDistributionFile,
+                FileExistsPolicy.Overwrite);
+
+            ResolvePlaceholders(
+                this.TargetUninstallerPkgDistributionFile, $"{Platform.X64.Pkg},{(Platform.Arm64.Pkg)}");
+
+            PkgScriptsDirectory.CreateOrCleanDirectory();
+            CopyFile(this.SourceUninstallerPkgPostInstallFile, this.TargetPkgPostInstallFile);
+
+            PkgResourcesDirectory.CreateOrCleanDirectory();
+            CopyFileToDirectory(this.SourceUninstallerPkgWelcomeFile, PkgResourcesDirectory);
+        });
+
+    public Target CreateMacOSUninstallerPackage => t => t
+        .Description("Creates a macOS uninstaller package")
+        .DependsOn(this.PrepareMacOSUninstallerPackage)
+        .Requires(() => OperatingSystem.IsMacOS())
+        .Requires(() => this.pkgBuild, () => this.productBuild, () => this.xCodeRun)
+        .Requires(
+            () => this.AppleId,
+            () => this.AppleTeamId,
+            () => this.AppleInstallerCertificate,
+            () => this.NotarizationPassword)
+        .Produces(this.UninstallerPkgFile)
+        .Executes(() =>
+        {
+            Log.Information("Creating a macOS uninstaller package");
+
+            this.PkgBuild(
+                $"--nopayload --identifier io.tolik.keyboardswitch.uninstaller --scripts {PkgScriptsDirectory} " +
+                $"--version {Version} {KeyboardSwitchUninstallerPkgFile}",
+                logger: DebugOnly);
+
+            this.ProductBuild(
+                $"--sign {this.AppleInstallerCertificate} --distribution {this.TargetUninstallerPkgDistributionFile} " +
+                $"--resources {PkgResourcesDirectory} {this.UninstallerPkgFile}",
+                workingDirectory: ArtifactsDirectory,
+                logger: DebugOnly);
+
+            this.XCodeRun(
+                $"notarytool submit {this.UninstallerPkgFile} --wait --apple-id {this.AppleId} " +
+                $"--team-id {this.AppleTeamId} --password {this.NotarizationPassword}",
+                logger: DebugOnly);
+
+            this.XCodeRun($"stapler staple {this.UninstallerPkgFile}", logger: DebugOnly);
         });
 
     public Target PrepareDebianPackage => t => t
@@ -284,7 +339,12 @@ public partial class Build
 
     public Target LocalCleanUp => t => t
         .Description("Deletes leftover files")
-        .TriggeredBy(this.CreateArchive, this.CreateMacOSPackage, this.CreateDebianPackage, this.CreateRpmPackage)
+        .TriggeredBy(
+            this.CreateArchive,
+            this.CreateMacOSPackage,
+            this.CreateMacOSUninstallerPackage,
+            this.CreateDebianPackage,
+            this.CreateRpmPackage)
         .OnlyWhenStatic(() => IsLocalBuild)
         .Unlisted()
         .Executes(() =>
@@ -295,11 +355,13 @@ public partial class Build
 
             KeyboardSwitchPkgFile.DeleteFile();
             KeyboardSwitchSettingsPkgFile.DeleteFile();
+            KeyboardSwitchUninstallerPkgFile.DeleteFile();
             PkgResourcesDirectory.DeleteDirectory();
             PkgScriptsDirectory.DeleteDirectory();
             KeyboardSwitchAppDirectory.DeleteDirectory();
             KeyboardSwitchSettingsAppDirectory.DeleteDirectory();
             TargetPkgDistributionFile.DeleteFile();
+            TargetUninstallerPkgDistributionFile.DeleteFile();
             TargetPkgEntitlementsFile.DeleteFile();
 
             this.DebDirectory.DeleteDirectory();

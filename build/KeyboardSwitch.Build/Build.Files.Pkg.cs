@@ -2,7 +2,9 @@ public partial class Build
 {
     private const string PkgEntitlementsFile = "entitlements.plist";
     private const string PkgDistributionFile = "dist-pkg.xml";
+    private const string UninstallerPkgDistributionFile = "dist-uninstaller-pkg.xml";
     private const string AppInfoFile = "Info.plist";
+    private const string KeyboardSwitchUninstaller = nameof(KeyboardSwitchUninstaller);
 
     private const string LibSqLite = "libe_sqlite3.dylib";
     private const string LibUioHook = "libuiohook.dylib";
@@ -91,11 +93,14 @@ public partial class Build
     private static AbsolutePath KeyboardSwitchSettingsPkgFile =>
         ArtifactsDirectory / $"{KeyboardSwitchSettings}.pkg";
 
-    private string PkgFileName =>
-        $"{KeyboardSwitch}-{Version}-{this.Platform.Pkg}.pkg";
+    private static AbsolutePath KeyboardSwitchUninstallerPkgFile =>
+        ArtifactsDirectory / $"{KeyboardSwitchUninstaller}.pkg";
 
     private AbsolutePath PkgFile =>
-        ArtifactsDirectory / PkgFileName;
+        ArtifactsDirectory / $"{KeyboardSwitch}-{Version}-{this.Platform.Pkg}.pkg";
+
+    private AbsolutePath UninstallerPkgFile =>
+        ArtifactsDirectory / $"{KeyboardSwitchUninstaller}-{Version}.pkg";
 
     private AbsolutePath SourcePkgEntitlementsFile =>
         this.MacOSFilesDirectory / PkgEntitlementsFile;
@@ -109,8 +114,17 @@ public partial class Build
     private AbsolutePath TargetPkgDistributionFile =>
         ArtifactsDirectory / PkgDistributionFile;
 
+    private AbsolutePath SourceUninstallerPkgDistributionFile =>
+        this.MacOSFilesDirectory / UninstallerPkgDistributionFile;
+
+    private AbsolutePath TargetUninstallerPkgDistributionFile =>
+        ArtifactsDirectory / UninstallerPkgDistributionFile;
+
     private AbsolutePath SourcePkgPostInstallFile =>
         this.MacOSFilesDirectory / "postinstall-pkg";
+
+    private AbsolutePath SourceUninstallerPkgPostInstallFile =>
+        this.MacOSFilesDirectory / "postinstall-uninstaller-pkg";
 
     private AbsolutePath TargetPkgPostInstallFile =>
         PkgScriptsDirectory / "postinstall";
@@ -120,6 +134,9 @@ public partial class Build
 
     private AbsolutePath SourcePkgLicenseFile =>
         this.MacOSFilesDirectory / "license.txt";
+
+    private AbsolutePath SourceUninstallerPkgWelcomeFile =>
+        this.MacOSFilesDirectory / "welcome.txt";
 
     private AbsolutePath SourceKeyboardSwitchAppInfoFile =>
         this.MacOSFilesDirectory / $"{KeyboardSwitch}.plist";
