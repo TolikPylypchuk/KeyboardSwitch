@@ -1,3 +1,0 @@
-Running this installer will remove Keyboard Switch from your computer.
-
-If you want to delete the app's configuration as well, then delete the hidden '.keyboard-switch' folder in your home folder after running the uninstaller.

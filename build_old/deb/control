@@ -1,9 +1,0 @@
-Package: keyboard-switch
-Version: 4.2
-Architecture: %ARCH%
-Maintainer: Tolik Pylypchuk <pylypchuk.tolik@gmail.com>
-Description: Switches typed text as if it were typed with another keyboard layout
-Homepage: https://keyboardswitch.tolik.io
-Vcs-Browser: https://github.com/TolikPylypchuk/KeyboardSwitch
-Vcs-Git: https://github.com/TolikPylypchuk/KeyboardSwitch.git
-Depends: xsel, libxtst6
