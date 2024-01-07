@@ -162,7 +162,7 @@ public partial class Build
             () => this.AppleTeamId,
             () => this.AppleApplicationCertificate,
             () => this.AppleInstallerCertificate,
-            () => this.NotarizationPassword)
+            () => this.NotaryToolKeychainProfile)
         .Produces(this.PkgFile)
         .Executes(() =>
         {
@@ -196,7 +196,7 @@ public partial class Build
 
             this.XCodeRun(
                 $"notarytool submit {this.PkgFile} --wait --apple-id {this.AppleId} " +
-                $"--team-id {this.AppleTeamId} --password {this.NotarizationPassword}",
+                $"--team-id {this.AppleTeamId} --keychain-profile {this.NotaryToolKeychainProfile}",
                 logger: DebugOnly);
 
             this.XCodeRun($"stapler staple {this.PkgFile}", logger: DebugOnly);
@@ -232,7 +232,7 @@ public partial class Build
             () => this.AppleId,
             () => this.AppleTeamId,
             () => this.AppleInstallerCertificate,
-            () => this.NotarizationPassword)
+            () => this.NotaryToolKeychainProfile)
         .Produces(this.UninstallerPkgFile)
         .Executes(() =>
         {
@@ -251,7 +251,7 @@ public partial class Build
 
             this.XCodeRun(
                 $"notarytool submit {this.UninstallerPkgFile} --wait --apple-id {this.AppleId} " +
-                $"--team-id {this.AppleTeamId} --password {this.NotarizationPassword}",
+                $"--team-id {this.AppleTeamId} --keychain-profile {this.NotaryToolKeychainProfile}",
                 logger: DebugOnly);
 
             this.XCodeRun($"stapler staple {this.UninstallerPkgFile}", logger: DebugOnly);

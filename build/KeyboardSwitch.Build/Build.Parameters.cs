@@ -2,6 +2,8 @@ using System.Runtime.InteropServices;
 
 public partial class Build
 {
+    private const string DefaultNotaryToolKeychainProfile = "notarytool-password";
+
     [Parameter("Configuration - Release by default")]
     public readonly Configuration Configuration = Configuration.Release;
 
@@ -23,25 +25,20 @@ public partial class Build
     [Parameter("Archive format - zip by default")]
     public readonly ArchiveFormat ArchiveFormat = ArchiveFormat.Zip;
 
-    [Secret]
     [Parameter("Apple ID")]
     public readonly string? AppleId;
 
-    [Secret]
     [Parameter("Apple team ID")]
     public readonly string? AppleTeamId;
 
-    [Secret]
     [Parameter("Apple application certificate")]
     public readonly string? AppleApplicationCertificate;
 
-    [Secret]
     [Parameter("Apple installer certificate")]
     public readonly string? AppleInstallerCertificate;
 
-    [Secret]
-    [Parameter("Password for the Apple notarization service")]
-    public readonly string? NotarizationPassword;
+    [Parameter($"Keychain profile for the Apple notary tool - '{DefaultNotaryToolKeychainProfile}' by default")]
+    public readonly string NotaryToolKeychainProfile = DefaultNotaryToolKeychainProfile;
 
     private string RuntimeIdentifier =>
         $"{this.TargetOS.RuntimeIdentifierPart}-{this.Platform.RuntimeIdentifierPart}";
