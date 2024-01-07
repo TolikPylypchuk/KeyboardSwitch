@@ -6,6 +6,10 @@
     <AssemblyName>KeyboardSwitchSettings</AssemblyName>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+  </PropertyGroup>
+
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
@@ -71,6 +75,7 @@
 
   <ItemGroup>
     <TrimmerRootAssembly Include="KeyboardSwitch" />
+    <TrimmerRootAssembly Include="ReactiveUI" />
   </ItemGroup>
 
 </Project>
