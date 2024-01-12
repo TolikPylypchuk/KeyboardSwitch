@@ -22,9 +22,6 @@ public partial class Build
     [Parameter("Publish single file - false by default")]
     public readonly bool PublishSingleFile;
 
-    [Parameter("Archive format - zip by default")]
-    public readonly ArchiveFormat ArchiveFormat = ArchiveFormat.Zip;
-
     [Parameter("Apple ID")]
     public readonly string? AppleId;
 
@@ -34,8 +31,26 @@ public partial class Build
     [Parameter("Apple application certificate")]
     public readonly string? AppleApplicationCertificate;
 
+    [Secret, Parameter("Apple application certificate password")]
+    public readonly string? AppleApplicationCertificatePassword;
+
+    [Secret, Parameter("Apple application certificate value in base64")]
+    public readonly string? AppleApplicationCertificateValue;
+
     [Parameter("Apple installer certificate")]
     public readonly string? AppleInstallerCertificate;
+
+    [Secret, Parameter("Apple installer certificate password")]
+    public readonly string? AppleInstallerCertificatePassword;
+
+    [Secret, Parameter("Apple installer certificate value in base64")]
+    public readonly string? AppleInstallerCertificateValue;
+
+    [Secret, Parameter($"Keychain password")]
+    public readonly string? KeychainPassword;
+
+    [Secret, Parameter($"Password for the Apple notary tool")]
+    public readonly string? NotarizationPassword;
 
     [Parameter($"Keychain profile for the Apple notary tool - '{DefaultNotaryToolKeychainProfile}' by default")]
     public readonly string NotaryToolKeychainProfile = DefaultNotaryToolKeychainProfile;

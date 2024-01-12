@@ -2,9 +2,12 @@
 [TypeConverter(typeof(TypeConverter<Platform>))]
 public class Platform : Enumeration
 {
+    public const string X64Value = "x64";
+    public const string Arm64Value = "ARM64";
+
     public static Platform X64 = new()
     {
-        Value = "x64",
+        Value = X64Value,
         RuntimeIdentifierPart = "x64",
         Archive = "x64",
         Pkg = "x86_64",
@@ -14,7 +17,7 @@ public class Platform : Enumeration
 
     public static Platform Arm64 = new()
     {
-        Value = "ARM64",
+        Value = Arm64Value,
         RuntimeIdentifierPart = "arm64",
         Archive = "arm64",
         Pkg = "arm64",

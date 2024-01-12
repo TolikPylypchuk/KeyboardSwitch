@@ -5,6 +5,9 @@ public partial class Build
     private const string DebPreRemoveFile = "prerm";
     private const string DebPostRemoveFile = "postrm";
 
+    private static AbsolutePath AnyDebFile =>
+        ArtifactsDirectory / "*.deb";
+
     private string DebFileName =>
         $"{KeyboardSwitchLower}_{Version}-{ReleaseNumber}_{this.Platform.Deb}";
 

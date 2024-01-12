@@ -96,11 +96,14 @@ public partial class Build
     private static AbsolutePath KeyboardSwitchUninstallerPkgFile =>
         ArtifactsDirectory / $"{KeyboardSwitchUninstaller}.pkg";
 
+    private static AbsolutePath AnyPkgFile =>
+        ArtifactsDirectory / "*.pkg";
+
+    private static AbsolutePath UninstallerPkgFile =>
+        ArtifactsDirectory / $"{KeyboardSwitchUninstaller}-{Version}.pkg";
+
     private AbsolutePath PkgFile =>
         ArtifactsDirectory / $"{KeyboardSwitch}-{Version}-{this.Platform.Pkg}.pkg";
-
-    private AbsolutePath UninstallerPkgFile =>
-        ArtifactsDirectory / $"{KeyboardSwitchUninstaller}-{Version}.pkg";
 
     private AbsolutePath SourcePkgEntitlementsFile =>
         this.MacOSFilesDirectory / PkgEntitlementsFile;

@@ -1,8 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
-
 using Serilog;
-
-using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 public partial class Build
 {
@@ -12,10 +8,6 @@ public partial class Build
         return default!;
     }
 
-    [SuppressMessage(
-        "Style",
-        "IDE0060:Remove unused parameter",
-        Justification = "This is the signature of a logger for external tools")]
     private static void DebugOnly(OutputType type, string text) =>
         Log.Debug(text);
 
@@ -46,22 +38,6 @@ public partial class Build
         {
             yield return this.Solution.KeyboardSwitch_Windows_Installer;
         }
-    }
-
-    private void PublishProject(Project project)
-    {
-        Log.Information("Publishing project {Name}", project.Name);
-
-        DotNetPublish(s => s
-            .SetProject(project)
-            .SetRuntime(this.RuntimeIdentifier)
-            .SetConfiguration(this.Configuration)
-            .SetPlatform(this.Platform)
-            .SetProperty(nameof(TargetOS), this.TargetOS)
-            .SetNoBuild(true)
-            .SetOutput(PublishOutputDirectory)
-            .SetSelfContained(this.IsSelfContained)
-            .SetPublishSingleFile(this.PublishSingleFile));
     }
 
     private void Sign(AbsolutePath file, bool hardenedRuntime = false) =>

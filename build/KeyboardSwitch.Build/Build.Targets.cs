@@ -5,8 +5,24 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 public partial class Build
 {
+    public Target Restore => t => t
+        .Description("Restores the projects")
+        .Executes(() =>
+        {
+            foreach (var project in this.GetProjects(includeInstaller: true))
+            {
+                Log.Information("Restoring project {Name}", project.Name);
+                DotNetRestore(s => s
+                    .SetProjectFile(project)
+                    .SetRuntime(this.RuntimeIdentifier)
+                    .SetPlatform(this.Platform)
+                    .SetProperty(nameof(TargetOS), this.TargetOS));
+            }
+        });
+
     public Target Clean => t => t
         .Description("Cleans the build outputs")
+        .DependsOn(this.Restore)
         .Executes(() =>
         {
             foreach (var project in this.GetProjects(includeInstaller: true))
@@ -35,6 +51,7 @@ public partial class Build
                     .SetConfiguration(this.Configuration)
                     .SetPlatform(this.Platform)
                     .SetProperty(nameof(TargetOS), this.TargetOS)
+                    .SetNoRestore(true)
                     .SetSelfContained(this.IsSelfContained)
                     .SetPublishSingleFile(this.PublishSingleFile)
                     .SetContinuousIntegrationBuild(true));
@@ -50,8 +67,23 @@ public partial class Build
             Log.Information("Cleaning the publish directory");
             PublishOutputDirectory.CreateOrCleanDirectory();
 
-            this.PublishProject(this.Solution.KeyboardSwitch);
-            this.PublishProject(this.Solution.KeyboardSwitch_Settings);
+            Log.Information("Publishing projects");
+
+            var projects =
+                from project in new[] { this.Solution.KeyboardSwitch, this.Solution.KeyboardSwitch_Settings }
+                select new { project };
+
+            DotNetPublish(s => s
+                .SetRuntime(this.RuntimeIdentifier)
+                .SetConfiguration(this.Configuration)
+                .SetPlatform(this.Platform)
+                .SetProperty(nameof(TargetOS), this.TargetOS)
+                .SetNoBuild(true)
+                .SetNoRestore(true)
+                .SetOutput(PublishOutputDirectory)
+                .SetSelfContained(this.IsSelfContained)
+                .SetPublishSingleFile(this.PublishSingleFile)
+                .CombineWith(projects, (s, c) => s.SetProject(c.project)));
 
             Log.Information("Deleting unneeded files after publish");
 
@@ -71,7 +103,7 @@ public partial class Build
 
     public Target PreCreateArchive => t => t
         .Description("Copies additional files to the publish directory")
-        .DependentFor(this.CreateArchive)
+        .DependentFor(this.CreateZip, this.CreateTar)
         .OnlyWhenStatic(() => this.TargetOS == TargetOS.Linux)
         .After(this.Publish)
         .Unlisted()
@@ -83,15 +115,80 @@ public partial class Build
             CopyFileToDirectory(this.SourceLinuxUninstallFile, PublishOutputDirectory);
         });
 
-    public Target CreateArchive => t => t
-        .Description("Creates an archive file containing the published project")
+    public Target CreateZip => t => t
+        .Description("Creates a zip file containing the published project")
         .DependsOn(this.Publish)
-        .Produces(this.ArchiveFile)
+        .Produces(AnyZipFile)
         .Executes(() =>
         {
-            Log.Information("Archiving the publish output into {ArchiveFile}", this.ArchiveFile);
-            this.ArchiveFile.DeleteFile();
-            PublishOutputDirectory.CompressTo(this.ArchiveFile);
+            Log.Information("Archiving the publish output into {ZipFile}", this.ZipFile);
+            this.ZipFile.DeleteFile();
+            PublishOutputDirectory.ZipTo(this.ZipFile);
+        });
+
+    public Target CreateTar => t => t
+        .Description("Creates a tar file containing the published project")
+        .DependsOn(this.Publish)
+        .Produces(AnyTarFile)
+        .Executes(() =>
+        {
+            Log.Information("Archiving the publish output into {TarFile}", this.ZipFile);
+            this.TarFile.DeleteFile();
+            PublishOutputDirectory.TarGZipTo(this.TarFile);
+        });
+
+    public Target SetupKeychain => t => t
+        .Description("Sets up a macOS keychain and stores certificates in it")
+        .DependentFor(this.CreateMacOSPackage, this.CreateMacOSUninstallerPackage)
+        .After(this.PrepareMacOSPackage, this.PrepareMacOSUninstallerPackage)
+        .OnlyWhenStatic(() => IsServerBuild)
+        .Requires(() => this.security, () => this.xCodeRun)
+        .Requires(
+            () => this.AppleId,
+            () => this.AppleTeamId,
+            () => this.AppleApplicationCertificatePassword,
+            () => this.AppleApplicationCertificateValue,
+            () => this.AppleInstallerCertificatePassword,
+            () => this.AppleInstallerCertificateValue,
+            () => this.KeychainPassword,
+            () => this.NotarizationPassword,
+            () => this.NotaryToolKeychainProfile)
+        .Executes(() =>
+        {
+            Log.Information("Setting up a macOS keychain and storing certificates in it");
+
+            var applicationCertificate = RootDirectory / "application_certificate.p12";
+            var installerCertificate = RootDirectory / "installer_certificate.p12";
+            var keychain = RootDirectory / "app-signing.keychain-db";
+
+            applicationCertificate.WriteAllBytes(Convert.FromBase64String(
+                this.AppleApplicationCertificateValue.NotNull("Apple application certificate value not provided")!));
+
+            installerCertificate.WriteAllBytes(Convert.FromBase64String(
+                this.AppleInstallerCertificateValue.NotNull("Apple installer certificate value not provided")!));
+
+            void security(string command) =>
+                this.Security(command, logInvocation: false, logger: DebugOnly);
+
+            security($"create-keychain -p {this.KeychainPassword} {keychain}");
+            security($"set-keychain-settings -lut 21600 {keychain}");
+            security($"unlock-keychain -p {this.KeychainPassword} {keychain}");
+
+            security(
+                $"import {applicationCertificate} -P {this.AppleApplicationCertificatePassword} " +
+                $"-A -t cert -f pkcs12 -k {keychain}");
+
+            security(
+                $"import {installerCertificate} -P {this.AppleInstallerCertificatePassword} " +
+                $"-A -t cert -f pkcs12 -k {keychain}");
+
+            security($"list-keychain -d user -s {keychain}");
+
+            this.XCodeRun(
+                $"notarytool store-credentials {this.NotaryToolKeychainProfile} --apple-id {this.AppleId} " +
+                $"--team-id {this.AppleTeamId} --password {this.NotarizationPassword}",
+                logInvocation: false,
+                logger: DebugOnly);
         });
 
     public Target PrepareMacOSPackage => t => t
@@ -163,7 +260,7 @@ public partial class Build
             () => this.AppleApplicationCertificate,
             () => this.AppleInstallerCertificate,
             () => this.NotaryToolKeychainProfile)
-        .Produces(this.PkgFile)
+        .Produces(AnyPkgFile)
         .Executes(() =>
         {
             Log.Information("Creating a macOS package containing the published project");
@@ -233,7 +330,7 @@ public partial class Build
             () => this.AppleTeamId,
             () => this.AppleInstallerCertificate,
             () => this.NotaryToolKeychainProfile)
-        .Produces(this.UninstallerPkgFile)
+        .Produces(AnyPkgFile)
         .Executes(() =>
         {
             Log.Information("Creating a macOS uninstaller package");
@@ -245,16 +342,16 @@ public partial class Build
 
             this.ProductBuild(
                 $"--sign {this.AppleInstallerCertificate} --distribution {this.TargetUninstallerPkgDistributionFile} " +
-                $"--resources {PkgResourcesDirectory} {this.UninstallerPkgFile}",
+                $"--resources {PkgResourcesDirectory} {UninstallerPkgFile}",
                 workingDirectory: ArtifactsDirectory,
                 logger: DebugOnly);
 
             this.XCodeRun(
-                $"notarytool submit {this.UninstallerPkgFile} --wait --apple-id {this.AppleId} " +
+                $"notarytool submit {UninstallerPkgFile} --wait --apple-id {this.AppleId} " +
                 $"--team-id {this.AppleTeamId} --keychain-profile {this.NotaryToolKeychainProfile}",
                 logger: DebugOnly);
 
-            this.XCodeRun($"stapler staple {this.UninstallerPkgFile}", logger: DebugOnly);
+            this.XCodeRun($"stapler staple {UninstallerPkgFile}", logger: DebugOnly);
         });
 
     public Target PrepareDebianPackage => t => t
@@ -295,7 +392,7 @@ public partial class Build
         .DependsOn(this.PrepareDebianPackage)
         .Requires(() => OperatingSystem.IsLinux(), () => this.TargetOS == TargetOS.Linux)
         .Requires(() => this.debianPackageTool)
-        .Produces(this.DebFile)
+        .Produces(AnyDebFile)
         .Executes(() =>
         {
             Log.Information("Creating a Debian package containing the published project");
@@ -319,12 +416,28 @@ public partial class Build
             ResolvePlaceholders(this.TargetRpmSpecFile, this.Platform.Rpm);
         });
 
+    public Target InstallRpmBuild => t => t
+        .Description("Installs rpmbuild if apt is available")
+        .DependentFor(this.CreateRpmPackage)
+        .After(this.PrepareRpmPackage)
+        .OnlyWhenStatic(() => IsServerBuild)
+        .OnlyWhenStatic(() => OperatingSystem.IsLinux())
+        .Unlisted()
+        .Executes(() =>
+        {
+            if (this.rpmBuild is null && ToolResolver.GetPathTool("apt") is not null)
+            {
+                ProcessTasks.StartShell("sudo apt update", logInvocation: false, logOutput: false);
+                ProcessTasks.StartShell("sudo apt install -y rpm", logInvocation: false, logOutput: false);
+            }
+        });
+
     public Target CreateRpmPackage => t => t
         .Description("Creates an RPM package containing the published project")
         .DependsOn(this.PrepareRpmPackage)
         .Requires(() => OperatingSystem.IsLinux(), () => this.TargetOS == TargetOS.Linux)
         .Requires(() => this.rpmBuild)
-        .Produces(this.RpmFile)
+        .Produces(AnyRpmFile)
         .Executes(() =>
         {
             Log.Information("Creating an RPM package containing the published project");
@@ -337,15 +450,15 @@ public partial class Build
             CopyFile(this.RpmOutputFile, this.RpmFile, FileExistsPolicy.Overwrite);
         });
 
-    public Target LocalCleanUp => t => t
+    public Target CleanUp => t => t
         .Description("Deletes leftover files")
         .TriggeredBy(
-            this.CreateArchive,
+            this.CreateZip,
+            this.CreateTar,
             this.CreateMacOSPackage,
             this.CreateMacOSUninstallerPackage,
             this.CreateDebianPackage,
             this.CreateRpmPackage)
-        .OnlyWhenStatic(() => IsLocalBuild)
         .Unlisted()
         .Executes(() =>
         {

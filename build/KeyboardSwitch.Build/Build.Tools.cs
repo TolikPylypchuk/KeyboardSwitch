@@ -12,6 +12,9 @@ public partial class Build
     [PathVariable("xcrun")]
     private readonly Tool? xCodeRun;
 
+    [PathVariable("security")]
+    private readonly Tool? security;
+
     [PathVariable("dpkg-deb")]
     private readonly Tool? debianPackageTool;
 
@@ -29,6 +32,9 @@ public partial class Build
 
     private Tool XCodeRun =>
         this.xCodeRun.NotNull("xcrun is not available")!;
+
+    private Tool Security =>
+        this.security.NotNull("security is not available")!;
 
     private Tool DebianPackageTool =>
         this.debianPackageTool.NotNull("dpkg-deb is not available")!;
