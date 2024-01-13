@@ -91,7 +91,9 @@ using Nuke.Common.CI.GitHubActions;
 
 public partial class Build
 {
+    // Using nameof(Platform) makes GitHub Actions fail the builds for arm64 -
+    // apparently this env variable is used somewhere else as well - but NUKE allows prefixing env variables with 'Nuke'
+    public const string NukePlatform = "Nuke" + nameof(Platform);
     public const string MatrixPlatform = "platform";
     public const int GitHubActionsTimeout = 30;
-    public const string NukePlatform = "Nuke" + nameof(Platform);
 }

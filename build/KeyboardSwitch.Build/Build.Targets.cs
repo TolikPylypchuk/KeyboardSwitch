@@ -414,22 +414,6 @@ public partial class Build
             ResolvePlaceholders(this.TargetRpmSpecFile, this.Platform.Rpm);
         });
 
-    public Target InstallRpmBuild => t => t
-        .Description("Installs rpmbuild if apt is available")
-        .DependentFor(this.CreateRpmPackage)
-        .After(this.PrepareRpmPackage)
-        .OnlyWhenStatic(() => IsServerBuild)
-        .OnlyWhenStatic(() => OperatingSystem.IsLinux())
-        .Unlisted()
-        .Executes(() =>
-        {
-            if (this.rpmBuild is null && ToolResolver.GetPathTool("apt") is not null)
-            {
-                ProcessTasks.StartShell("sudo apt update", logInvocation: false, logOutput: false);
-                ProcessTasks.StartShell("sudo apt install -y rpm", logInvocation: false, logOutput: false);
-            }
-        });
-
     public Target CreateRpmPackage => t => t
         .Description("Creates an RPM package containing the published project")
         .DependsOn(this.PrepareRpmPackage)

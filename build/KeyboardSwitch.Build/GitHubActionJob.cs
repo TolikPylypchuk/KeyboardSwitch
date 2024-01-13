@@ -43,10 +43,11 @@ public class GitHubActionJob : GitHubActionsJob
 
             if (this.Matrix.Length != 0)
             {
+                writer.WriteLine("continue-on-error: true");
                 writer.WriteLine("strategy:");
                 using (writer.Indent())
                 {
-                    writer.WriteLine("max-parallel: 1");
+                    writer.WriteLine("fail-fast: false");
                     writer.WriteLine("matrix:");
                     using (writer.Indent())
                     {
