@@ -5,15 +5,14 @@ using Nuke.Common.CI.GitHubActions;
     "Build Keyboard Switch",
     typeof(Build),
     OnPushBranches = ["main"],
-    OnWorkflowDispatch = true,
-    CacheKeyFiles = [])]
+    OnWorkflowDispatch = true)]
 
 [GitHubAction(
     "build-zip",
     "Build Zip Archive for Windows",
     GitHubActionsImage.WindowsLatest,
     InvokedTargets = [nameof(CreateZipArchive)],
-    Parameters = [nameof(Platform), $"${{{{ matrix.{MatrixPlatform} }}}}"],
+    Parameters = [nameof(NukePlatform), $"${{{{ matrix.{MatrixPlatform} }}}}"],
     Matrix = [MatrixPlatform, $"[ {Platform.X64Value}, {Platform.Arm64Value} ]"],
     TimeoutMinutes = GitHubActionsTimeout)]
 
@@ -24,7 +23,7 @@ using Nuke.Common.CI.GitHubActions;
     InvokedTargets = [nameof(CreateMacOSPackage)],
     Parameters =
     [
-        nameof(Platform), $"${{{{ matrix.{MatrixPlatform} }}}}",
+        nameof(NukePlatform), $"${{{{ matrix.{MatrixPlatform} }}}}",
         nameof(PublishSingleFile), "true"
     ],
     Matrix = [MatrixPlatform, $"[ {Platform.X64Value}, {Platform.Arm64Value} ]"],
@@ -68,7 +67,7 @@ using Nuke.Common.CI.GitHubActions;
     "Build Tar Archive for Linux",
     GitHubActionsImage.UbuntuLatest,
     InvokedTargets = [nameof(CreateTarArchive)],
-    Parameters = [nameof(Platform), $"${{{{ matrix.{MatrixPlatform} }}}}"],
+    Parameters = [nameof(NukePlatform), $"${{{{ matrix.{MatrixPlatform} }}}}"],
     Matrix = [MatrixPlatform, $"[ {Platform.X64Value}, {Platform.Arm64Value} ]"],
     TimeoutMinutes = GitHubActionsTimeout)]
 
@@ -77,7 +76,7 @@ using Nuke.Common.CI.GitHubActions;
     "Build Debian Package",
     GitHubActionsImage.UbuntuLatest,
     InvokedTargets = [nameof(CreateDebianPackage)],
-    Parameters = [nameof(Platform), $"${{{{ matrix.{MatrixPlatform} }}}}"],
+    Parameters = [nameof(NukePlatform), $"${{{{ matrix.{MatrixPlatform} }}}}"],
     Matrix = [MatrixPlatform, $"[ {Platform.X64Value}, {Platform.Arm64Value} ]"],
     TimeoutMinutes = GitHubActionsTimeout)]
 
@@ -86,7 +85,7 @@ using Nuke.Common.CI.GitHubActions;
     "Build RPM Package",
     GitHubActionsImage.UbuntuLatest,
     InvokedTargets = [nameof(CreateRpmPackage)],
-    Parameters = [nameof(Platform), $"${{{{ matrix.{MatrixPlatform} }}}}"],
+    Parameters = [nameof(NukePlatform), $"${{{{ matrix.{MatrixPlatform} }}}}"],
     Matrix = [MatrixPlatform, $"[ {Platform.X64Value}, {Platform.Arm64Value} ]"],
     TimeoutMinutes = GitHubActionsTimeout)]
 
@@ -94,4 +93,5 @@ public partial class Build
 {
     public const string MatrixPlatform = "platform";
     public const int GitHubActionsTimeout = 30;
+    public const string NukePlatform = "Nuke" + nameof(Platform);
 }
