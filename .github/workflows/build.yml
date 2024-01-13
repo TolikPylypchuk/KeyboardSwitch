@@ -26,11 +26,19 @@ jobs:
   build-zip:
     name: Build Zip Archive for Windows
     runs-on: windows-latest
+    timeout-minutes: 30
     strategy:
       matrix:
         platform: [ x64, arm64 ]
     steps:
       - uses: actions/checkout@v3
+      - name: 'Cache: .nuke/temp, ~/.nuget/packages'
+        uses: actions/cache@v3
+        with:
+          path: |
+            .nuke/temp
+            ~/.nuget/packages
+          key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
       - name: 'Run: CreateZipArchive'
         run: ./build.cmd CreateZipArchive
         env:
@@ -43,11 +51,19 @@ jobs:
   build-pkg:
     name: Build macOS Package
     runs-on: macos-latest
+    timeout-minutes: 30
     strategy:
       matrix:
         platform: [ x64, arm64 ]
     steps:
       - uses: actions/checkout@v3
+      - name: 'Cache: .nuke/temp, ~/.nuget/packages'
+        uses: actions/cache@v3
+        with:
+          path: |
+            .nuke/temp
+            ~/.nuget/packages
+          key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
       - name: 'Run: CreateMacOSPackage'
         run: ./build.cmd CreateMacOSPackage
         env:
@@ -71,8 +87,16 @@ jobs:
   build-uninstaller-pkg:
     name: Build macOS Uninstaller Package
     runs-on: macos-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v3
+      - name: 'Cache: .nuke/temp, ~/.nuget/packages'
+        uses: actions/cache@v3
+        with:
+          path: |
+            .nuke/temp
+            ~/.nuget/packages
+          key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
       - name: 'Run: CreateMacOSUninstallerPackage'
         run: ./build.cmd CreateMacOSUninstallerPackage
         env:
@@ -94,11 +118,19 @@ jobs:
   build-tar:
     name: Build Tar Archive for Linux
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     strategy:
       matrix:
         platform: [ x64, arm64 ]
     steps:
       - uses: actions/checkout@v3
+      - name: 'Cache: .nuke/temp, ~/.nuget/packages'
+        uses: actions/cache@v3
+        with:
+          path: |
+            .nuke/temp
+            ~/.nuget/packages
+          key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
       - name: 'Run: CreateTarArchive'
         run: ./build.cmd CreateTarArchive
         env:
@@ -111,11 +143,19 @@ jobs:
   build-deb:
     name: Build Debian Package
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     strategy:
       matrix:
         platform: [ x64, arm64 ]
     steps:
       - uses: actions/checkout@v3
+      - name: 'Cache: .nuke/temp, ~/.nuget/packages'
+        uses: actions/cache@v3
+        with:
+          path: |
+            .nuke/temp
+            ~/.nuget/packages
+          key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
       - name: 'Run: CreateDebianPackage'
         run: ./build.cmd CreateDebianPackage
         env:
@@ -128,11 +168,19 @@ jobs:
   build-rpm:
     name: Build RPM Package
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     strategy:
       matrix:
         platform: [ x64, arm64 ]
     steps:
       - uses: actions/checkout@v3
+      - name: 'Cache: .nuke/temp, ~/.nuget/packages'
+        uses: actions/cache@v3
+        with:
+          path: |
+            .nuke/temp
+            ~/.nuget/packages
+          key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
       - name: 'Run: CreateRpmPackage'
         run: ./build.cmd CreateRpmPackage
         env:

@@ -167,27 +167,25 @@ public partial class Build
             installerCertificate.WriteAllBytes(Convert.FromBase64String(
                 this.AppleInstallerCertificateValue.NotNull("Apple installer certificate value not provided")!));
 
-            void security(string command) =>
-                this.Security(command, logInvocation: false, logger: DebugOnly);
+            this.Security($"create-keychain -p {this.KeychainPassword} {keychain}", logger: DebugOnly);
+            this.Security($"set-keychain-settings -lut 21600 {keychain}", logger: DebugOnly);
+            this.Security($"unlock-keychain -p {this.KeychainPassword} {keychain}", logger: DebugOnly);
 
-            security($"create-keychain -p {this.KeychainPassword} {keychain}");
-            security($"set-keychain-settings -lut 21600 {keychain}");
-            security($"unlock-keychain -p {this.KeychainPassword} {keychain}");
-
-            security(
+            this.Security(
                 $"import {applicationCertificate} -P {this.AppleApplicationCertificatePassword} " +
-                $"-A -t cert -f pkcs12 -k {keychain}");
+                $"-A -t cert -f pkcs12 -k {keychain}",
+                logger: DebugOnly);
 
-            security(
+            this.Security(
                 $"import {installerCertificate} -P {this.AppleInstallerCertificatePassword} " +
-                $"-A -t cert -f pkcs12 -k {keychain}");
+                $"-A -t cert -f pkcs12 -k {keychain}",
+                logger: DebugOnly);
 
-            security($"list-keychain -d user -s {keychain}");
+            this.Security($"list-keychain -d user -s {keychain}", logger: DebugOnly);
 
             this.XCodeRun(
                 $"notarytool store-credentials {this.NotaryToolKeychainProfile} --apple-id {this.AppleId} " +
                 $"--team-id {this.AppleTeamId} --password {this.NotarizationPassword}",
-                logInvocation: false,
                 logger: DebugOnly);
         });
 
