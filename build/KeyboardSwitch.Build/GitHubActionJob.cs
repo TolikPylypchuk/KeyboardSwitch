@@ -46,6 +46,7 @@ public class GitHubActionJob : GitHubActionsJob
                 writer.WriteLine("strategy:");
                 using (writer.Indent())
                 {
+                    writer.WriteLine("max-parallel: 1");
                     writer.WriteLine("matrix:");
                     using (writer.Indent())
                     {

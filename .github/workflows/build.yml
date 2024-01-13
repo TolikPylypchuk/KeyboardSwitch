@@ -27,6 +27,10 @@ jobs:
     name: Build Zip Archive for Windows
     runs-on: windows-latest
     timeout-minutes: 30
+    strategy:
+      max-parallel: 1
+      matrix:
+        platform: [ x64, arm64 ]
     steps:
       - uses: actions/checkout@v3
       - name: 'Cache: .nuke/temp, ~/.nuget/packages'
@@ -39,7 +43,7 @@ jobs:
       - name: 'Run: CreateZipArchive'
         run: ./build.cmd CreateZipArchive
         env:
-          Platform: x64
+          Platform: ${{ matrix.platform }}
       - name: 'Publish: zip'
         uses: actions/upload-artifact@v3
         with:
@@ -49,6 +53,10 @@ jobs:
     name: Build macOS Package
     runs-on: macos-latest
     timeout-minutes: 30
+    strategy:
+      max-parallel: 1
+      matrix:
+        platform: [ x64, arm64 ]
     steps:
       - uses: actions/checkout@v3
       - name: 'Cache: .nuke/temp, ~/.nuget/packages'
@@ -61,7 +69,7 @@ jobs:
       - name: 'Run: CreateMacOSPackage'
         run: ./build.cmd CreateMacOSPackage
         env:
-          Platform: x64
+          Platform: ${{ matrix.platform }}
           PublishSingleFile: true
           AppleId: ${{ secrets.APPLE_ID }}
           AppleTeamId: ${{ secrets.APPLE_TEAM_ID }}
@@ -113,6 +121,10 @@ jobs:
     name: Build Tar Archive for Linux
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    strategy:
+      max-parallel: 1
+      matrix:
+        platform: [ x64, arm64 ]
     steps:
       - uses: actions/checkout@v3
       - name: 'Cache: .nuke/temp, ~/.nuget/packages'
@@ -125,7 +137,7 @@ jobs:
       - name: 'Run: CreateTarArchive'
         run: ./build.cmd CreateTarArchive
         env:
-          Platform: x64
+          Platform: ${{ matrix.platform }}
       - name: 'Publish: tar.gz'
         uses: actions/upload-artifact@v3
         with:
@@ -135,6 +147,10 @@ jobs:
     name: Build Debian Package
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    strategy:
+      max-parallel: 1
+      matrix:
+        platform: [ x64, arm64 ]
     steps:
       - uses: actions/checkout@v3
       - name: 'Cache: .nuke/temp, ~/.nuget/packages'
@@ -147,7 +163,7 @@ jobs:
       - name: 'Run: CreateDebianPackage'
         run: ./build.cmd CreateDebianPackage
         env:
-          Platform: x64
+          Platform: ${{ matrix.platform }}
       - name: 'Publish: deb'
         uses: actions/upload-artifact@v3
         with:
@@ -157,6 +173,10 @@ jobs:
     name: Build RPM Package
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    strategy:
+      max-parallel: 1
+      matrix:
+        platform: [ x64, arm64 ]
     steps:
       - uses: actions/checkout@v3
       - name: 'Cache: .nuke/temp, ~/.nuget/packages'
@@ -169,7 +189,7 @@ jobs:
       - name: 'Run: CreateRpmPackage'
         run: ./build.cmd CreateRpmPackage
         env:
-          Platform: x64
+          Platform: ${{ matrix.platform }}
       - name: 'Publish: rpm'
         uses: actions/upload-artifact@v3
         with:
