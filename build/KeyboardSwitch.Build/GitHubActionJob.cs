@@ -43,7 +43,6 @@ public class GitHubActionJob : GitHubActionsJob
 
             if (this.Matrix.Length != 0)
             {
-                writer.WriteLine("continue-on-error: true");
                 writer.WriteLine("strategy:");
                 using (writer.Indent())
                 {
