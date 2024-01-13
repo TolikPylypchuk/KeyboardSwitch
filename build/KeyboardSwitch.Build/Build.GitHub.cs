@@ -5,7 +5,8 @@ using Nuke.Common.CI.GitHubActions;
     "Build Keyboard Switch",
     typeof(Build),
     OnPushBranches = ["main"],
-    OnWorkflowDispatch = true)]
+    OnWorkflowDispatch = true,
+    CacheKeyFiles = [])]
 
 [GitHubAction(
     "build-zip",
