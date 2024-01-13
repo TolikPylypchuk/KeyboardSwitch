@@ -5,13 +5,14 @@ using Nuke.Common.CI.GitHubActions;
     "Build Keyboard Switch",
     typeof(Build),
     OnPushBranches = ["main"],
-    OnWorkflowDispatch = true)]
+    OnWorkflowDispatch = true,
+    CacheKeyFiles = [])]
 
 [GitHubAction(
     "build-zip",
     "Build Zip Archive for Windows",
     GitHubActionsImage.WindowsLatest,
-    InvokedTargets = [nameof(CreateZip)],
+    InvokedTargets = [nameof(CreateZipArchive)],
     Parameters = [nameof(Platform), $"${{{{ matrix.{MatrixPlatform} }}}}"],
     Matrix = [MatrixPlatform, $"[ {Platform.X64Value}, {Platform.Arm64Value} ]"])]
 
@@ -63,7 +64,7 @@ using Nuke.Common.CI.GitHubActions;
     "build-tar",
     "Build Tar Archive for Linux",
     GitHubActionsImage.UbuntuLatest,
-    InvokedTargets = [nameof(CreateTar)],
+    InvokedTargets = [nameof(CreateTarArchive)],
     Parameters = [nameof(Platform), $"${{{{ matrix.{MatrixPlatform} }}}}"],
     Matrix = [MatrixPlatform, $"[ {Platform.X64Value}, {Platform.Arm64Value} ]"])]
 

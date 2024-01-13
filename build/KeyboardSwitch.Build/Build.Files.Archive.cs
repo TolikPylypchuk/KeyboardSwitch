@@ -1,19 +1,16 @@
 public partial class Build
 {
-    private const string ZipFormat = "zip";
-    private const string TarFormat = "tar.gz";
-
     private static AbsolutePath AnyZipFile =>
-        ArtifactsDirectory / $"*.{ZipFormat}";
+        ArtifactsDirectory / $"*.zip";
 
     private static AbsolutePath AnyTarFile =>
-        ArtifactsDirectory / $"*.{TarFormat}";
+        ArtifactsDirectory / $"*.tar.gz";
 
     private AbsolutePath ZipFile =>
-        GetArchiveFile(ZipFormat);
+        GetArchiveFile("zip");
 
     private AbsolutePath TarFile =>
-        GetArchiveFile(TarFormat);
+        GetArchiveFile("tar.gz");
 
     private AbsolutePath SourceLinuxInstallFile =>
         this.LinuxFilesDirectory / "install.sh";

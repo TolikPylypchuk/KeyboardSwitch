@@ -15,7 +15,7 @@ public partial class Build
                 DotNetRestore(s => s
                     .SetProjectFile(project)
                     .SetRuntime(this.RuntimeIdentifier)
-                    .SetPlatform(this.Platform)
+                    .SetPlatform(this.Platform.MSBuild)
                     .SetProperty(nameof(TargetOS), this.TargetOS));
             }
         });
@@ -32,7 +32,7 @@ public partial class Build
                     .SetProject(project)
                     .SetRuntime(this.RuntimeIdentifier)
                     .SetConfiguration(this.Configuration)
-                    .SetPlatform(this.Platform)
+                    .SetPlatform(this.Platform.MSBuild)
                     .SetProperty(nameof(TargetOS), this.TargetOS));
             }
         });
@@ -49,7 +49,7 @@ public partial class Build
                     .SetProjectFile(project)
                     .SetRuntime(this.RuntimeIdentifier)
                     .SetConfiguration(this.Configuration)
-                    .SetPlatform(this.Platform)
+                    .SetPlatform(this.Platform.MSBuild)
                     .SetProperty(nameof(TargetOS), this.TargetOS)
                     .SetNoRestore(true)
                     .SetSelfContained(this.IsSelfContained)
@@ -76,7 +76,7 @@ public partial class Build
             DotNetPublish(s => s
                 .SetRuntime(this.RuntimeIdentifier)
                 .SetConfiguration(this.Configuration)
-                .SetPlatform(this.Platform)
+                .SetPlatform(this.Platform.MSBuild)
                 .SetProperty(nameof(TargetOS), this.TargetOS)
                 .SetNoBuild(true)
                 .SetNoRestore(true)
@@ -103,7 +103,7 @@ public partial class Build
 
     public Target PreCreateArchive => t => t
         .Description("Copies additional files to the publish directory")
-        .DependentFor(this.CreateZip, this.CreateTar)
+        .DependentFor(this.CreateZipArchive, this.CreateTarArchive)
         .OnlyWhenStatic(() => this.TargetOS == TargetOS.Linux)
         .After(this.Publish)
         .Unlisted()
@@ -115,8 +115,8 @@ public partial class Build
             CopyFileToDirectory(this.SourceLinuxUninstallFile, PublishOutputDirectory);
         });
 
-    public Target CreateZip => t => t
-        .Description("Creates a zip file containing the published project")
+    public Target CreateZipArchive => t => t
+        .Description("Creates a zip archive containing the published project")
         .DependsOn(this.Publish)
         .Produces(AnyZipFile)
         .Executes(() =>
@@ -126,8 +126,8 @@ public partial class Build
             PublishOutputDirectory.ZipTo(this.ZipFile);
         });
 
-    public Target CreateTar => t => t
-        .Description("Creates a tar file containing the published project")
+    public Target CreateTarArchive => t => t
+        .Description("Creates a tar archive containing the published project")
         .DependsOn(this.Publish)
         .Produces(AnyTarFile)
         .Executes(() =>
@@ -311,7 +311,7 @@ public partial class Build
                 FileExistsPolicy.Overwrite);
 
             ResolvePlaceholders(
-                this.TargetUninstallerPkgDistributionFile, $"{Platform.X64.Pkg},{(Platform.Arm64.Pkg)}");
+                this.TargetUninstallerPkgDistributionFile, $"{Platform.X64.Pkg},{Platform.Arm64.Pkg}");
 
             PkgScriptsDirectory.CreateOrCleanDirectory();
             CopyFile(this.SourceUninstallerPkgPostInstallFile, this.TargetPkgPostInstallFile);
@@ -453,8 +453,8 @@ public partial class Build
     public Target CleanUp => t => t
         .Description("Deletes leftover files")
         .TriggeredBy(
-            this.CreateZip,
-            this.CreateTar,
+            this.CreateZipArchive,
+            this.CreateTarArchive,
             this.CreateMacOSPackage,
             this.CreateMacOSUninstallerPackage,
             this.CreateDebianPackage,
