@@ -28,34 +28,35 @@
     <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(TargetOS) == '' And $([MSBuild]::IsOSPlatform('Windows'))">
+  <PropertyGroup Condition="'$(TargetOS)' == '' And $([MSBuild]::IsOSPlatform('Windows'))">
     <TargetOS>Windows</TargetOS>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(TargetOS) == '' And $([MSBuild]::IsOSPlatform('OSX'))">
+  <PropertyGroup Condition="'$(TargetOS)' == '' And $([MSBuild]::IsOSPlatform('OSX'))">
     <TargetOS>macOS</TargetOS>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(TargetOS) == '' And $([MSBuild]::IsOSPlatform('Linux'))">
+  <PropertyGroup Condition="'$(TargetOS)' == '' And $([MSBuild]::IsOSPlatform('Linux'))">
     <TargetOS>Linux</TargetOS>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(TargetOS) == 'Windows'">
+  <PropertyGroup Condition="'$(TargetOS)' == 'Windows'">
     <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(TargetOS) == 'macOS'">
+  <PropertyGroup Condition="'$(TargetOS)' == 'macOS'">
     <DefineConstants>$(DefineConstants);MACOS</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(TargetOS) == 'Linux'">
+  <PropertyGroup Condition="'$(TargetOS)' == 'Linux'">
     <DefineConstants>$(DefineConstants);LINUX</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(Configuration) == 'Release'">
-    <PublishTrimmed>false</PublishTrimmed>
+  <PropertyGroup>
+    <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>partial</TrimMode>
     <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
     <EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
     <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
     <DebuggerSupport>false</DebuggerSupport>

@@ -142,11 +142,24 @@ public class App : Application, IEnableLogger
                 .CreateLogger());
 
         Locator.CurrentMutable.InitializeReactiveUI();
-        Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
         Locator.CurrentMutable.RegisterConstant(RxApp.TaskpoolScheduler, TaskPoolKey);
         Locator.CurrentMutable.RegisterConstant<IBindingTypeConverter>(new ModifierMaskConverter());
 
+        this.RegisterViews();
+
         RxApp.MainThreadScheduler = AvaloniaScheduler.Instance;
+    }
+
+    private void RegisterViews()
+    {
+        Locator.CurrentMutable.Register<IViewFor<MainViewModel>>(() => new MainWindow());
+
+        Locator.CurrentMutable.Register<IViewFor<AboutViewModel>>(() => new AboutView());
+        Locator.CurrentMutable.Register<IViewFor<CharMappingViewModel>>(() => new CharMappingView());
+        Locator.CurrentMutable.Register<IViewFor<LayoutViewModel>>(() => new LayoutView());
+        Locator.CurrentMutable.Register<IViewFor<MainContentViewModel>>(() => new MainContentView());
+        Locator.CurrentMutable.Register<IViewFor<PreferencesViewModel>>(() => new PreferencesView());
+        Locator.CurrentMutable.Register<IViewFor<ServiceViewModel>>(() => new ServiceView());
     }
 
     private void ConfigureSuspensionDriver()

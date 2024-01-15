@@ -75,7 +75,6 @@
 
   <ItemGroup>
     <TrimmerRootAssembly Include="KeyboardSwitch" />
-    <TrimmerRootAssembly Include="ReactiveUI" />
+    <TrimmerRootDescriptor Include="TrimmerRoots.xml" />
   </ItemGroup>
-
 </Project>
