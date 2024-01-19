@@ -18,8 +18,8 @@ public static class SerivceExtensions
         this IServiceCollection services,
         IConfiguration config) =>
         services
-            .AddSingleton<WinLayoutService>()
-            .AddSingleton<ILayoutService>(provider => provider.GetRequiredService<WinLayoutService>())
+            .AddSingleton<ILayoutService, WinLayoutService>()
+            .AddSingleton<IClipboardService, WinClipboardService>()
             .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
             .AddSingleton<IUserActivitySimulator>(
                 sp => new SharpUserActivitySimulator(sp.GetRequiredService<IEventSimulator>(), KeyCode.VcLeftControl))

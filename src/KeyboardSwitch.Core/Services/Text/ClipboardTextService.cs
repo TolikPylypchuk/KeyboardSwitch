@@ -1,9 +1,7 @@
 namespace KeyboardSwitch.Core.Services.Text;
 
-using TextCopy;
-
 public sealed class ClipboardTextService(
-    IClipboard clipboard,
+    IClipboardService clipboard,
     IUserActivitySimulator simulator,
     IAppSettingsService settingsService,
     IScheduler scheduler,

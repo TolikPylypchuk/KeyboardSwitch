@@ -18,7 +18,7 @@ internal sealed class WinLayoutService(ILogger<WinLayoutService> logger) : Cachi
     public override KeyboardLayout GetCurrentKeyboardLayout()
     {
         logger.LogDebug("Getting the keyboard layout of the foreground process");
-        uint foregroundWindowThreadId = GetWindowThreadProcessId(GetForegroundWindow(), out _);
+        uint foregroundWindowThreadId = User32.GetWindowThreadProcessId(User32.GetForegroundWindow(), out _);
         return this.GetThreadKeyboardLayout(foregroundWindowThreadId);
     }
 
@@ -27,19 +27,19 @@ internal sealed class WinLayoutService(ILogger<WinLayoutService> logger) : Cachi
         logger.LogDebug(
             "Switching the keyboard layout of the foregound process {Direction}", direction.AsString());
 
-        var foregroundWindowHandle = GetForegroundWindow();
-        uint foregroundWindowThreadId = GetWindowThreadProcessId(foregroundWindowHandle, out uint _);
+        var foregroundWindowHandle = User32.GetForegroundWindow();
+        uint foregroundWindowThreadId = User32.GetWindowThreadProcessId(foregroundWindowHandle, out uint _);
 
-        var keyboardLayoutId = GetKeyboardLayout(foregroundWindowThreadId);
+        var keyboardLayoutId = User32.GetKeyboardLayout(foregroundWindowThreadId);
 
         SetThreadKeyboardLayout(keyboardLayoutId);
         SetThreadKeyboardLayout(direction == SwitchDirection.Forward ? HklNext : HklPrev);
 
-        bool success = PostMessage(
+        bool success = User32.PostMessage(
             foregroundWindowHandle,
-            (uint)WindowMessage.WM_INPUTLANGCHANGEREQUEST,
+            (uint)User32.WindowMessage.WM_INPUTLANGCHANGEREQUEST,
             IntPtr.Zero,
-            GetKeyboardLayout(0).DangerousGetHandle());
+            User32.GetKeyboardLayout(0).DangerousGetHandle());
 
         if (success)
         {
@@ -54,10 +54,10 @@ internal sealed class WinLayoutService(ILogger<WinLayoutService> logger) : Cachi
     {
         logger.LogDebug("Getting the list of installed keyboard layouts");
 
-        int count = GetKeyboardLayoutList(0, null);
-        var keyboardLayoutIds = new HKL[count];
+        int count = User32.GetKeyboardLayoutList(0, null);
+        var keyboardLayoutIds = new User32.HKL[count];
 
-        int result = GetKeyboardLayoutList(keyboardLayoutIds.Length, keyboardLayoutIds);
+        int result = User32.GetKeyboardLayoutList(keyboardLayoutIds.Length, keyboardLayoutIds);
 
         if (result == 0)
         {
@@ -71,12 +71,12 @@ internal sealed class WinLayoutService(ILogger<WinLayoutService> logger) : Cachi
     }
 
     private KeyboardLayout GetThreadKeyboardLayout(uint threadId) =>
-        this.CreateKeyboardLayout(GetKeyboardLayout(threadId));
+        this.CreateKeyboardLayout(User32.GetKeyboardLayout(threadId));
 
-    private void SetThreadKeyboardLayout(HKL keyboardLayoutId) =>
-        ActivateKeyboardLayout(keyboardLayoutId, 0);
+    private void SetThreadKeyboardLayout(User32.HKL keyboardLayoutId) =>
+        User32.ActivateKeyboardLayout(keyboardLayoutId, 0);
 
-    private KeyboardLayout CreateKeyboardLayout(HKL keyboardLayoutId)
+    private KeyboardLayout CreateKeyboardLayout(User32.HKL keyboardLayoutId)
     {
         int id = (int)keyboardLayoutId.DangerousGetHandle();
         var (name, tag) = this.GetLayoutDisplayNameAndTag(keyboardLayoutId);
@@ -84,9 +84,9 @@ internal sealed class WinLayoutService(ILogger<WinLayoutService> logger) : Cachi
         return new(id.ToString(), this.GetCultureInfo(id, name).EnglishName, name, tag);
     }
 
-    private (string DisplayName, string Tag) GetLayoutDisplayNameAndTag(HKL keyboardLayoutId)
+    private (string DisplayName, string Tag) GetLayoutDisplayNameAndTag(User32.HKL keyboardLayoutId)
     {
-        var currentLayout = GetKeyboardLayout(0);
+        var currentLayout = User32.GetKeyboardLayout(0);
 
         SetThreadKeyboardLayout(keyboardLayoutId);
         string name = this.GetCurrentLayoutName();
@@ -102,7 +102,7 @@ internal sealed class WinLayoutService(ILogger<WinLayoutService> logger) : Cachi
     private string GetCurrentLayoutName()
     {
         var name = new StringBuilder(KlNameLength);
-        GetKeyboardLayoutName(name);
+        User32.GetKeyboardLayoutName(name);
         return name.ToString();
     }
 

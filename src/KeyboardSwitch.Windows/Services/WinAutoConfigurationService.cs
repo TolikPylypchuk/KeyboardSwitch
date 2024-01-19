@@ -10,55 +10,55 @@ internal class WinAutoConfigurationService : AutoConfigurationServiceBase
     private const int ResultSuccess = 1;
     private const int ResultDeadKey = -1;
 
-    private static readonly ImmutableList<VK> KeyCodesToMap =
+    private static readonly ImmutableList<User32.VK> KeyCodesToMap =
     [
-        VK.VK_Q,
-        VK.VK_W,
-        VK.VK_E,
-        VK.VK_R,
-        VK.VK_T,
-        VK.VK_Y,
-        VK.VK_U,
-        VK.VK_I,
-        VK.VK_O,
-        VK.VK_P,
-        VK.VK_OEM_4,
-        VK.VK_OEM_6,
-        VK.VK_A,
-        VK.VK_S,
-        VK.VK_D,
-        VK.VK_F,
-        VK.VK_G,
-        VK.VK_H,
-        VK.VK_J,
-        VK.VK_K,
-        VK.VK_L,
-        VK.VK_OEM_1,
-        VK.VK_OEM_7,
-        VK.VK_Z,
-        VK.VK_X,
-        VK.VK_C,
-        VK.VK_V,
-        VK.VK_B,
-        VK.VK_N,
-        VK.VK_M,
-        VK.VK_OEM_COMMA,
-        VK.VK_OEM_PERIOD,
-        VK.VK_OEM_2,
-        VK.VK_OEM_5,
-        VK.VK_OEM_3,
-        VK.VK_1,
-        VK.VK_2,
-        VK.VK_3,
-        VK.VK_4,
-        VK.VK_5,
-        VK.VK_6,
-        VK.VK_7,
-        VK.VK_8,
-        VK.VK_9,
-        VK.VK_0,
-        VK.VK_OEM_MINUS,
-        VK.VK_OEM_PLUS
+        User32.VK.VK_Q,
+        User32.VK.VK_W,
+        User32.VK.VK_E,
+        User32.VK.VK_R,
+        User32.VK.VK_T,
+        User32.VK.VK_Y,
+        User32.VK.VK_U,
+        User32.VK.VK_I,
+        User32.VK.VK_O,
+        User32.VK.VK_P,
+        User32.VK.VK_OEM_4,
+        User32.VK.VK_OEM_6,
+        User32.VK.VK_A,
+        User32.VK.VK_S,
+        User32.VK.VK_D,
+        User32.VK.VK_F,
+        User32.VK.VK_G,
+        User32.VK.VK_H,
+        User32.VK.VK_J,
+        User32.VK.VK_K,
+        User32.VK.VK_L,
+        User32.VK.VK_OEM_1,
+        User32.VK.VK_OEM_7,
+        User32.VK.VK_Z,
+        User32.VK.VK_X,
+        User32.VK.VK_C,
+        User32.VK.VK_V,
+        User32.VK.VK_B,
+        User32.VK.VK_N,
+        User32.VK.VK_M,
+        User32.VK.VK_OEM_COMMA,
+        User32.VK.VK_OEM_PERIOD,
+        User32.VK.VK_OEM_2,
+        User32.VK.VK_OEM_5,
+        User32.VK.VK_OEM_3,
+        User32.VK.VK_1,
+        User32.VK.VK_2,
+        User32.VK.VK_3,
+        User32.VK.VK_4,
+        User32.VK.VK_5,
+        User32.VK.VK_6,
+        User32.VK.VK_7,
+        User32.VK.VK_8,
+        User32.VK.VK_9,
+        User32.VK.VK_0,
+        User32.VK.VK_OEM_MINUS,
+        User32.VK.VK_OEM_PLUS
     ];
 
     protected override IEnumerable<List<KeyToCharResult>> GetChars(List<string> layoutIds) =>
@@ -71,12 +71,12 @@ internal class WinAutoConfigurationService : AutoConfigurationServiceBase
             .Concat(KeyCodesToMap.Select(keyCode =>
                 this.GetCharsFromKey(keyCode, shift: true, altGr: true, layoutIds)));
 
-    private List<KeyToCharResult> GetCharsFromKey(VK keyCode, bool shift, bool altGr, List<string> layoutIds) =>
+    private List<KeyToCharResult> GetCharsFromKey(User32.VK keyCode, bool shift, bool altGr, List<string> layoutIds) =>
         layoutIds
             .Select(layoutId => this.GetCharFromKey(keyCode, shift, altGr, layoutId))
             .ToList();
 
-    private KeyToCharResult GetCharFromKey(VK keyCode, bool shift, bool altGr, string layoutId)
+    private KeyToCharResult GetCharFromKey(User32.VK keyCode, bool shift, bool altGr, string layoutId)
     {
         const int bufferSize = 256;
 
@@ -85,25 +85,25 @@ internal class WinAutoConfigurationService : AutoConfigurationServiceBase
 
         if (shift)
         {
-            keyboardState[(int)VK.VK_SHIFT] = KeyStatePressed;
+            keyboardState[(int)User32.VK.VK_SHIFT] = KeyStatePressed;
         }
 
         if (altGr)
         {
-            keyboardState[(int)VK.VK_CONTROL] = KeyStatePressed;
-            keyboardState[(int)VK.VK_MENU] = KeyStatePressed;
+            keyboardState[(int)User32.VK.VK_CONTROL] = KeyStatePressed;
+            keyboardState[(int)User32.VK.VK_MENU] = KeyStatePressed;
         }
 
         uint scanCode = MapToScanCode(keyCode);
-        var hkl = (HKL)Int32.Parse(layoutId);
-        int result = ToUnicodeEx(
+        var hkl = (User32.HKL)Int32.Parse(layoutId);
+        int result = User32.ToUnicodeEx(
             (uint)keyCode, scanCode, keyboardState, buffer, bufferSize, NoKeyboardStateModification, hkl);
 
         if (result == ResultDeadKey)
         {
-            result = ToUnicodeEx(
-                (uint)VK.VK_SPACE,
-                MapToScanCode(VK.VK_SPACE),
+            result = User32.ToUnicodeEx(
+                (uint)User32.VK.VK_SPACE,
+                MapToScanCode(User32.VK.VK_SPACE),
                 keyboardState,
                 buffer,
                 bufferSize,
@@ -118,6 +118,6 @@ internal class WinAutoConfigurationService : AutoConfigurationServiceBase
         };
     }
 
-    private uint MapToScanCode(VK keyCode) =>
-        MapVirtualKey((uint)keyCode, MAPVK.MAPVK_VK_TO_VSC_EX);
+    private uint MapToScanCode(User32.VK keyCode) =>
+        User32.MapVirtualKey((uint)keyCode, User32.MAPVK.MAPVK_VK_TO_VSC_EX);
 }
