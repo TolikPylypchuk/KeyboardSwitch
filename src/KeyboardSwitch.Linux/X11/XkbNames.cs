@@ -9,12 +9,12 @@ internal struct XkbNames
     public Atom Types;
     public Atom Compat;
 
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = XkbNumVirtualMods)]
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = XLib.XkbNumVirtualMods)]
     public Atom[] VMods;
 
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = XkbNumIndicators)]
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = XLib.XkbNumIndicators)]
     public Atom[] Indicators;
 
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = XkbNumKbdGroups)]
+    [MarshalAs(UnmanagedType.ByValArray, SizeConst = XLib.XkbNumKbdGroups)]
     public Atom[] Groups;
 }

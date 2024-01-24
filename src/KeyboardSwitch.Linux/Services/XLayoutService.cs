@@ -3,7 +3,7 @@ namespace KeyboardSwitch.Linux.Services;
 using System.Runtime.InteropServices;
 using System.Text;
 
-public class XLayoutService(ILogger<XLayoutService> logger) : CachingLayoutService
+internal class XLayoutService(X11Service x11, ILogger<XLayoutService> logger) : CachingLayoutService
 {
     private static readonly ImmutableList<string> NonSymbols = ["group", "inet", "pc"];
 
@@ -13,17 +13,15 @@ public class XLayoutService(ILogger<XLayoutService> logger) : CachingLayoutServi
 
         var allLayouts = this.GetKeyboardLayouts();
 
-        using var display = OpenXDisplay();
-
-        XkbSelectEventDetails(
-            display,
+        XLib.XkbSelectEventDetails(
+            x11.Display,
             XkbKeyboardSpec.XkbUseCoreKbd,
             XkbEventType.XkbStateNotify,
             XStateMask.XkbAllStateComponentsMask,
             XStateMask.XkbGroupStateMask);
 
         var state = new XkbState();
-        XkbGetState(display, XkbKeyboardSpec.XkbUseCoreKbd, ref state);
+        XLib.XkbGetState(x11.Display, XkbKeyboardSpec.XkbUseCoreKbd, ref state);
 
         return state.Group < allLayouts.Count
             ? allLayouts[state.Group]
@@ -36,37 +34,33 @@ public class XLayoutService(ILogger<XLayoutService> logger) : CachingLayoutServi
 
         var allLayouts = this.GetKeyboardLayouts();
 
-        using var display = OpenXDisplay();
-
-        XkbSelectEventDetails(
-            display,
+        XLib.XkbSelectEventDetails(
+            x11.Display,
             XkbKeyboardSpec.XkbUseCoreKbd,
             XkbEventType.XkbStateNotify,
             XStateMask.XkbAllStateComponentsMask,
             XStateMask.XkbGroupStateMask);
 
         var state = new XkbState();
-        XkbGetState(display, XkbKeyboardSpec.XkbUseCoreKbd, ref state);
+        XLib.XkbGetState(x11.Display, XkbKeyboardSpec.XkbUseCoreKbd, ref state);
 
         int offset = direction == SwitchDirection.Forward ? 1 : -1;
         int newGroup = (state.Group + offset + allLayouts.Count) % allLayouts.Count;
 
-        this.SetLayout(display, (uint)newGroup);
+        this.SetLayout((uint)newGroup);
     }
 
     protected override unsafe List<KeyboardLayout> GetKeyboardLayoutsInternal()
     {
         logger.LogDebug("Getting all keyboard layouts");
 
-        using var display = OpenXDisplay();
+        int major = XLib.XkbMajorVersion;
+        int minor = XLib.XkbMinorVersion;
 
-        int major = XkbMajorVersion;
-        int minor = XkbMinorVersion;
+        XLib.XkbQueryExtension(x11.Display, out _, out _, out _, ref major, ref minor);
 
-        XkbQueryExtension(display, out _, out _, out _, ref major, ref minor);
-
-        using var keyboardHandle = XkbAllocKeyboard();
-        this.InitKeyboard(display, keyboardHandle);
+        using var keyboardHandle = XLib.XkbAllocKeyboard();
+        this.InitKeyboard(keyboardHandle);
 
         var keyboardDesc = (XkbDesc*)keyboardHandle.DangerousGetHandle().ToPointer();
 
@@ -76,7 +70,7 @@ public class XLayoutService(ILogger<XLayoutService> logger) : CachingLayoutServi
             throw new XException("Failed to get keyboard description");
         }
 
-        keyboardDesc->Display = display.DangerousGetHandle();
+        keyboardDesc->Display = x11.Display.DangerousGetHandle();
 
         var names = Marshal.PtrToStructure<XkbNames>(keyboardDesc->Names);
 
@@ -84,10 +78,10 @@ public class XLayoutService(ILogger<XLayoutService> logger) : CachingLayoutServi
 
         var groupNames = names.Groups
             .Where((group, index) => index < groupCount && group != Atom.None)
-            .Select(group => this.GetGroupName(display, group))
+            .Select(this.GetGroupName)
             .ToList();
 
-        string? symbols = this.GetAllSymbols(display, names.Symbols);
+        string? symbols = this.GetAllSymbols(names.Symbols);
 
         if (symbols == null)
         {
@@ -107,8 +101,8 @@ public class XLayoutService(ILogger<XLayoutService> logger) : CachingLayoutServi
             .ToList();
     }
 
-    private protected virtual void SetLayout(XDisplayHandle display, uint group) =>
-        XkbLockGroup(display, XkbKeyboardSpec.XkbUseCoreKbd, group);
+    private protected virtual void SetLayout(uint group) =>
+        XLib.XkbLockGroup(x11.Display, XkbKeyboardSpec.XkbUseCoreKbd, group);
 
     private static KeyboardLayout CreateKeyboardLayout(string group, string symbol, string variant) =>
         new(
@@ -120,11 +114,11 @@ public class XLayoutService(ILogger<XLayoutService> logger) : CachingLayoutServi
     private static bool IsXkbLayoutSymbol(string symbol) =>
         !NonSymbols.Contains(symbol);
 
-    private string GetGroupName(XDisplayHandle display, Atom group)
+    private string GetGroupName(Atom group)
     {
         logger.LogDebug("Getting a group name for atom: {Group}", group);
 
-        using var atomNameHandle = XGetAtomName(display, group);
+        using var atomNameHandle = XLib.XGetAtomName(x11.Display, group);
         var atomNameRawHandle = atomNameHandle.DangerousGetHandle();
 
         return atomNameRawHandle != IntPtr.Zero
@@ -132,11 +126,11 @@ public class XLayoutService(ILogger<XLayoutService> logger) : CachingLayoutServi
             : String.Empty;
     }
 
-    private string? GetAllSymbols(XDisplayHandle display, Atom symbols)
+    private string? GetAllSymbols(Atom symbols)
     {
         logger.LogDebug("Getting all symbol names");
 
-        using var symbolsHandle = XGetAtomName(display, symbols);
+        using var symbolsHandle = XLib.XGetAtomName(x11.Display, symbols);
         var symbolsRawHandle = symbolsHandle.DangerousGetHandle();
 
         return symbolsRawHandle != IntPtr.Zero
@@ -175,7 +169,7 @@ public class XLayoutService(ILogger<XLayoutService> logger) : CachingLayoutServi
             groupCount = Marshal.PtrToStructure<XkbControls>(keyboardDesc->Ctrls).NumGroups;
         } else
         {
-            while (groupCount < XkbNumKbdGroups && groupSource[groupCount] != Atom.None)
+            while (groupCount < XLib.XkbNumKbdGroups && groupSource[groupCount] != Atom.None)
             {
                 groupCount++;
             }
@@ -272,21 +266,21 @@ public class XLayoutService(ILogger<XLayoutService> logger) : CachingLayoutServi
         return result;
     }
 
-    private void InitKeyboard(XDisplayHandle display, XHandle keyboardHandle)
+    private void InitKeyboard(XHandle keyboardHandle)
     {
         logger.LogDebug("Initializing the keyboard");
 
-        XkbGetControls(display, XControlsDetailMask.XkbAllControlsMask, keyboardHandle);
-        XkbGetNames(display, XNamesComponentMask.XkbSymbolsNameMask, keyboardHandle);
-        XkbGetNames(display, XNamesComponentMask.XkbGroupNamesMask, keyboardHandle);
+        XLib.XkbGetControls(x11.Display, XControlsDetailMask.XkbAllControlsMask, keyboardHandle);
+        XLib.XkbGetNames(x11.Display, XNamesComponentMask.XkbSymbolsNameMask, keyboardHandle);
+        XLib.XkbGetNames(x11.Display, XNamesComponentMask.XkbGroupNamesMask, keyboardHandle);
     }
 
     private void FreeKeyboard(XHandle keyboardHandle)
     {
         logger.LogDebug("Freeing the keyboard");
 
-        XkbFreeControls(keyboardHandle, XControlsDetailMask.XkbAllControlsMask, true);
-        XkbFreeNames(keyboardHandle, XNamesComponentMask.XkbSymbolsNameMask, true);
-        XkbFreeNames(keyboardHandle, XNamesComponentMask.XkbGroupNamesMask, true);
+        XLib.XkbFreeControls(keyboardHandle, XControlsDetailMask.XkbAllControlsMask, true);
+        XLib.XkbFreeNames(keyboardHandle, XNamesComponentMask.XkbSymbolsNameMask, true);
+        XLib.XkbFreeNames(keyboardHandle, XNamesComponentMask.XkbGroupNamesMask, true);
     }
 }

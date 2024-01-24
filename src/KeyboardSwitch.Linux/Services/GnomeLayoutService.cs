@@ -1,6 +1,7 @@
 namespace KeyboardSwitch.Linux.Services;
 
-internal sealed class GnomeLayoutService(ILogger<GnomeLayoutService> logger) : XLayoutService(logger)
+internal sealed class GnomeLayoutService(X11Service x11, ILogger<GnomeLayoutService> logger)
+    : XLayoutService(x11, logger)
 {
     private const string SwitchLayout = "switch-layout@tolik.io";
     private const string Bash = "bash";
@@ -9,7 +10,7 @@ internal sealed class GnomeLayoutService(ILogger<GnomeLayoutService> logger) : X
 
     private bool isSwitchLayoutExtensionEnabled = false;
 
-    private protected override void SetLayout(XDisplayHandle display, uint group)
+    private protected override void SetLayout(uint group)
     {
         if (!this.isSwitchLayoutExtensionEnabled)
         {

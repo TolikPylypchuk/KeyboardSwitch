@@ -1,6 +1,6 @@
 namespace KeyboardSwitch.MacOS.Services;
 
-internal class MacClipboardService : IClipboardService
+internal sealed class MacClipboardService : IClipboardService
 {
     private static readonly IntPtr NSString = AppKit.GetClass("NSString");
     private static readonly IntPtr NSPasteboard = AppKit.GetClass("NSPasteboard");

@@ -9,5 +9,5 @@ internal sealed class XDisplayHandle : XHandleBase
         this.SetHandle(handle);
 
     protected override bool ReleaseHandle() =>
-        XCloseDisplay(this.handle) != XStatus.Failure;
+        XLib.XCloseDisplay(this.handle) != XStatus.Failure;
 }

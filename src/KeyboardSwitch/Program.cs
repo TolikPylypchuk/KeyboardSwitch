@@ -71,7 +71,7 @@ public static class Program
             logger.LogInformation("KeyboardSwitch service execution started");
 
             host.Start();
-            mainLoopRunner.RunMainLoopIfNeeded(applicationLifetime.ApplicationStopping);
+            mainLoopRunner.RunMainLoop(applicationLifetime.ApplicationStopping);
             host.WaitForShutdown();
 
             logger.LogInformation("KeyboardSwitch service execution stopped");

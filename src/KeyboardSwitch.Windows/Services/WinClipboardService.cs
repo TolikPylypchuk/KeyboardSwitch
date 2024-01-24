@@ -3,7 +3,7 @@ namespace KeyboardSwitch.Windows.Services;
 using System.Reactive.Disposables;
 using System.Runtime.InteropServices;
 
-internal class WinClipboardService : IClipboardService
+internal sealed class WinClipboardService : IClipboardService
 {
     private const int RetryCount = 10;
     private const int Delay = 100;

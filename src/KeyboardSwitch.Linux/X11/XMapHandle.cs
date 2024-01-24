@@ -16,7 +16,7 @@ internal class XMapHandle : XHandleBase
 
     protected override bool ReleaseHandle()
     {
-        XkbFreeClientMap(this.DangerousGetHandle(), this.componentMask, true);
+        XLib.XkbFreeClientMap(this.DangerousGetHandle(), this.componentMask, true);
         return true;
     }
 }

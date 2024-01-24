@@ -13,13 +13,15 @@ public static class ServiceExtensions
         services
             .Configure<StartupSettings>(config.GetSection("Startup"))
             .AddLayoutService()
+            .AddSingleton<IClipboardService, XClipboardService>()
             .AddSingleton<IStartupService, FreedesktopStartupService>()
             .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
             .AddSingleton<IUserActivitySimulator>(
                 sp => new SharpUserActivitySimulator(sp.GetRequiredService<IEventSimulator>(), KeyCode.VcLeftControl))
             .AddSingleton<IAutoConfigurationService, XAutoConfigurationService>()
             .AddSingleton<IInitialSetupService, StartupSetupService>()
-            .AddSingleton<IMainLoopRunner, NoOpMainLoopRunner>();
+            .AddSingleton<IMainLoopRunner, XMainLoopRunner>()
+            .AddSingleton<X11Service>();
 
     private static IServiceCollection AddLayoutService(this IServiceCollection services)
     {
