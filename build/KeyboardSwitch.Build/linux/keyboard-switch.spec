@@ -8,7 +8,7 @@ Packager: Tolik Pylypchuk <pylypchuk.tolik@gmail.com>
 URL: https://keyboardswitch.tolik.io
 
 ExclusiveArch: $ARCH
-Requires: xsel libXtst
+Requires: libXtst
 AutoReqProv: no
 
 %description
