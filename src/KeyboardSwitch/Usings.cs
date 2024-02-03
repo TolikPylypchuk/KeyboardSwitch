@@ -10,6 +10,4 @@ global using KeyboardSwitch.Core.Services.Switching;
 global using KeyboardSwitch.Core.Settings;
 global using KeyboardSwitch.Services;
 
-global using Microsoft.Extensions.Options;
-
 global using static KeyboardSwitch.Core.Util;

@@ -6,6 +6,7 @@ using System.Reflection;
 using Avalonia.Controls.ApplicationLifetimes;
 
 using KeyboardSwitch.Core.Exceptions;
+using KeyboardSwitch.Core.Logging;
 
 #if WINDOWS
 using KeyboardSwitch.Windows;
@@ -20,9 +21,6 @@ using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
-
-using Serilog;
-using Serilog.Settings.Configuration;
 
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
@@ -109,10 +107,12 @@ public class App : Application, IEnableLogger
         var config = new ConfigurationRoot(
             new List<IConfigurationProvider> { genericProvider, platformSpecificProvider });
 
+        var settingsSection = config.GetSection("Settings");
+
         services
             .AddOptions()
             .AddLogging(logging => logging.AddSplat())
-            .Configure<GlobalSettings>(config.GetSection("Settings"))
+            .Configure<GlobalSettings>(settingsSection)
             .AddSingleton(Messages.ResourceManager)
             .AddSingleton<IActivationForViewFetcher>(new AvaloniaActivationForViewFetcher())
             .AddSuspensionDriver()
@@ -122,20 +122,8 @@ public class App : Application, IEnableLogger
 #endif
             .UseMicrosoftDependencyResolver();
 
-        var configAssemblies = new[]
-        {
-            typeof(LoggerConfigurationAsyncExtensions).Assembly,
-            typeof(ConsoleLoggerConfigurationExtensions).Assembly,
-            typeof(FileLoggerConfigurationExtensions).Assembly,
-            typeof(LoggerSinkConfigurationDebugExtensions).Assembly
-        };
-
         Locator.CurrentMutable.InitializeSplat();
-        Locator.CurrentMutable.UseSerilogFullLogger(
-            new LoggerConfiguration()
-                .ReadFrom.Configuration(config, new ConfigurationReaderOptions(configAssemblies))
-                .Enrich.FromLogContext()
-                .CreateLogger());
+        Locator.CurrentMutable.UseSerilogFullLogger(SerilogLoggerFactory.CreateLogger(config));
 
         Locator.CurrentMutable.InitializeReactiveUI(RegistrationNamespace.Avalonia);
         Locator.CurrentMutable.RegisterConstant(RxApp.TaskpoolScheduler, TaskPoolKey);

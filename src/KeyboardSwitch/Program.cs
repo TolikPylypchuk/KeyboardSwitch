@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Reactive.Concurrency;
 
+using KeyboardSwitch.Core.Logging;
+
 #if WINDOWS
 using KeyboardSwitch.Windows;
 #elif MACOS
@@ -13,7 +15,6 @@ using KeyboardSwitch.Linux;
 #endif
 
 using Serilog;
-using Serilog.Settings.Configuration;
 
 using ILogger = ILogger; // From Microsoft.Extensions.Logging
 
@@ -85,32 +86,15 @@ public static class Program
             .AddNativeKeyboardSwitchServices(context.Configuration)
             .AddSingleton<IExitService, ExitService>();
 
-    private static void ConfigureLogging(HostBuilderContext context, ILoggingBuilder logging)
-    {
-        var configAssemblies = new[]
-        {
-            typeof(LoggerConfigurationAsyncExtensions).Assembly,
-            typeof(ConsoleLoggerConfigurationExtensions).Assembly,
-            typeof(FileLoggerConfigurationExtensions).Assembly,
-            typeof(LoggerSinkConfigurationDebugExtensions).Assembly
-        };
-
+    private static void ConfigureLogging(HostBuilderContext context, ILoggingBuilder logging) =>
         logging
             .ClearProviders()
-            .AddSerilog(
-                new LoggerConfiguration()
-                    .Enrich.FromLogContext()
-                    .ReadFrom.Configuration(context.Configuration, new ConfigurationReaderOptions(configAssemblies))
-                    .CreateLogger(),
-                dispose: true);
-    }
+            .AddSerilog(SerilogLoggerFactory.CreateLogger(context.Configuration), dispose: true);
 
-    private static Mutex ConfigureSingleInstance(IServiceProvider services)
-    {
-        return services
+    private static Mutex ConfigureSingleInstance(IServiceProvider services) =>
+        services
             .GetRequiredService<ISingleInstanceService>()
             .TryAcquireMutex(nameof(KeyboardSwitch));
-    }
 
     private static void SubscribeToExternalCommands(IHost host, ILogger logger)
     {
