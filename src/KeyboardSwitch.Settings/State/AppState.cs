@@ -1,6 +1,6 @@
 namespace KeyboardSwitch.Settings.State;
 
-public class AppState
+public sealed class AppState
 {
     public double WindowWidth { get; set; }
     public double WindowHeight { get; set; }

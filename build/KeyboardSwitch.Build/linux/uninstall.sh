@@ -9,9 +9,9 @@ GNOME_EXTENSION_DIR=$HOME/.local/share/gnome-shell/extensions/switch-layout@toli
 
 $INSTALL_DIR/KeyboardSwitch --stop
 
-if [ -f "$HOME/.keyboard-switch/.setup-configured" ]
+if [ -f "$HOME/.config/keyboard-switch/.setup-configured" ]
 then
-    rm "$HOME/.keyboard-switch/.setup-configured"
+    rm "$HOME/.config/keyboard-switch/.setup-configured"
 fi
 
 if [ -f "$SERVICE_DESKTOP_FILE" ]

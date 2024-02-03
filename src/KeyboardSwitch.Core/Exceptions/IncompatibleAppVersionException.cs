@@ -1,4 +1,4 @@
-namespace KeyboardSwitch.Core;
+namespace KeyboardSwitch.Core.Exceptions;
 
 public sealed class IncompatibleAppVersionException : Exception
 {

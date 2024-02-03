@@ -24,10 +24,6 @@
     <FileVersion>$(Version)</FileVersion>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <NoWarn>$(NoWarn);NETSDK1206</NoWarn>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(TargetOS)' == '' And $([MSBuild]::IsOSPlatform('Windows'))">
     <TargetOS>Windows</TargetOS>
   </PropertyGroup>

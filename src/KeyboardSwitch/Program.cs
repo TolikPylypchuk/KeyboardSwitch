@@ -4,8 +4,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Reactive.Concurrency;
 
-using Akavache;
-
 #if WINDOWS
 using KeyboardSwitch.Windows;
 #elif MACOS
@@ -35,8 +33,6 @@ public static class Program
         Directory.SetCurrentDirectory(
             Path.GetDirectoryName(AppContext.BaseDirectory) ?? String.Empty);
 
-        BlobCache.ApplicationName = nameof(KeyboardSwitch);
-
         using var host = Host.CreateDefaultBuilder(args)
             .UseContentRoot(GetConfigDirectory())
             .ConfigureServices(ConfigureServices)
@@ -62,6 +58,12 @@ public static class Program
                 logger.LogError("The settings file does not exist - open Keyboard Switch Settings to create them");
                 return ExitCode.SettingsDoNotExist;
             }
+
+            var settingsService = host.Services.GetRequiredService<IAppSettingsService>();
+            var layoutService = host.Services.GetRequiredService<ILayoutService>();
+
+            settingsService.SettingsInvalidated
+                .Subscribe(layoutService.SettingsInvalidated);
 
             var mainLoopRunner = host.Services.GetRequiredService<IMainLoopRunner>();
             var applicationLifetime = host.Services.GetRequiredService<IHostApplicationLifetime>();

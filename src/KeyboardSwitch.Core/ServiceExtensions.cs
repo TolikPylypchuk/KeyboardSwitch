@@ -8,9 +8,7 @@ public static class ServiceExtensions
             .AddSingleton<IEventSimulator, EventSimulator>()
             .AddSingleton<IKeyboardHookService, SharpHookService>()
             .AddSingleton<ITextService, ClipboardTextService>()
-            .AddSingleton(BlobCacheFactory.CreateBlobCache)
-            .AddSingleton<BlobCacheSettingsService>()
-            .AddSingleton<IAppSettingsService, BlobCacheSettingsService>()
+            .AddSingleton<IAppSettingsService, JsonSettingsService>()
             .AddSingleton<ISwitchService, SwitchService>()
             .AddSingleton<INamedPipeService, NamedPipeService>()
             .AddSingleton<ISingleInstanceService, SingleInstanceService>();

@@ -213,7 +213,6 @@ public partial class Build
             KeyboardSwitchAppMacOSDirectory.CreateOrCleanDirectory();
 
             CopyFileToDirectory(KeyboardSwitchExecutableFile, KeyboardSwitchAppMacOSDirectory);
-            CopyFileToDirectory(LibSqLiteFile, KeyboardSwitchAppMacOSDirectory);
             CopyFileToDirectory(LibUioHookFile, KeyboardSwitchAppMacOSDirectory);
 
             KeyboardSwitchAppResourcesDirectory.CreateOrCleanDirectory();
@@ -233,7 +232,6 @@ public partial class Build
 
             CopyFileToDirectory(KeyboardSwitchSettingsExecutableFile, KeyboardSwitchSettingsAppMacOSDirectory);
             CopyFileToDirectory(LibAvaloniaNativeFile, KeyboardSwitchSettingsAppMacOSDirectory);
-            CopyFileToDirectory(LibSqLiteFile, KeyboardSwitchSettingsAppMacOSDirectory);
             CopyFileToDirectory(LibHarfBuzzSharpFile, KeyboardSwitchSettingsAppMacOSDirectory);
             CopyFileToDirectory(LibSkiaSharpFile, KeyboardSwitchSettingsAppMacOSDirectory);
 
@@ -263,12 +261,10 @@ public partial class Build
         {
             Log.Information("Creating a macOS package containing the published project");
 
-            this.Sign(KeyboardSwitchAppLibSqLiteFile);
             this.Sign(KeyboardSwitchAppLibUioHookFile);
             this.Sign(KeyboardSwitchAppExecutableFile, hardenedRuntime: true);
 
             this.Sign(KeyboardSwitchSettingsAppLibAvaloniaNativeFile);
-            this.Sign(KeyboardSwitchSettingsAppLibSqLiteFile);
             this.Sign(KeyboardSwitchSettingsAppLibHarfBuzzSharpFile);
             this.Sign(KeyboardSwitchSettingsAppLibSkiaSharpFile);
             this.Sign(KeyboardSwitchSettingsAppExecutableFile, hardenedRuntime: true);

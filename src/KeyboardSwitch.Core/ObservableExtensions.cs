@@ -1,7 +1,5 @@
 namespace KeyboardSwitch.Core;
 
-using Akavache;
-
 public static class ObservableExtensions
 {
     public static IObservable<Unit> Discard<T>(this IObservable<T> observable) =>
@@ -36,15 +34,4 @@ public static class ObservableExtensions
             await observer();
             return Unit.Default;
         }).Subscribe();
-
-    public static Task<bool> ContainsKey(this IBlobCache cache, string key)
-    {
-        var completionSource = new TaskCompletionSource<bool>();
-
-        cache.Get(key).Subscribe(
-            x => completionSource.SetResult(true),
-            ex => completionSource.SetResult(false));
-
-        return completionSource.Task;
-    }
 }

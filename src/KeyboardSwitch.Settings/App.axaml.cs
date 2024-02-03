@@ -3,9 +3,9 @@ namespace KeyboardSwitch.Settings;
 using System.Reactive.Subjects;
 using System.Reflection;
 
-using Akavache;
-
 using Avalonia.Controls.ApplicationLifetimes;
+
+using KeyboardSwitch.Core.Exceptions;
 
 #if WINDOWS
 using KeyboardSwitch.Windows;
@@ -31,8 +31,6 @@ using Splat.Serilog;
 
 public class App : Application, IEnableLogger
 {
-    private const string SetStartupFile = "set-startup";
-
     private IClassicDesktopStyleApplicationLifetime desktop = null!;
     private Mutex? mutex;
     private ServiceProvider? serviceProvider;
@@ -123,8 +121,6 @@ public class App : Application, IEnableLogger
             .AddNativeKeyboardSwitchServices(config)
 #endif
             .UseMicrosoftDependencyResolver();
-
-        BlobCache.ApplicationName = nameof(KeyboardSwitch);
 
         var configAssemblies = new[]
         {

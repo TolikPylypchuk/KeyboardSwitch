@@ -6,7 +6,6 @@ public partial class Build
     private const string AppInfoFile = "Info.plist";
     private const string KeyboardSwitchUninstaller = nameof(KeyboardSwitchUninstaller);
 
-    private const string LibSqLite = "libe_sqlite3.dylib";
     private const string LibUioHook = "libuiohook.dylib";
     private const string LibAvaloniaNative = "libAvaloniaNative.dylib";
     private const string LibHarfBuzzSharp = "libHarfBuzzSharp.dylib";
@@ -48,9 +47,6 @@ public partial class Build
     private static AbsolutePath KeyboardSwitchSettingsExecutableFile =>
         PublishOutputDirectory / KeyboardSwitchSettings;
 
-    private static AbsolutePath LibSqLiteFile =>
-        PublishOutputDirectory / LibSqLite;
-
     private static AbsolutePath LibUioHookFile =>
         PublishOutputDirectory / LibUioHook;
 
@@ -66,17 +62,11 @@ public partial class Build
     private static AbsolutePath KeyboardSwitchAppExecutableFile =>
         KeyboardSwitchAppMacOSDirectory / KeyboardSwitch;
 
-    private static AbsolutePath KeyboardSwitchAppLibSqLiteFile =>
-        KeyboardSwitchAppMacOSDirectory / LibSqLite;
-
     private static AbsolutePath KeyboardSwitchAppLibUioHookFile =>
         KeyboardSwitchAppMacOSDirectory / LibUioHook;
 
     private static AbsolutePath KeyboardSwitchSettingsAppExecutableFile =>
         KeyboardSwitchSettingsAppMacOSDirectory / KeyboardSwitchSettings;
-
-    private static AbsolutePath KeyboardSwitchSettingsAppLibSqLiteFile =>
-        KeyboardSwitchSettingsAppMacOSDirectory / LibSqLite;
 
     private static AbsolutePath KeyboardSwitchSettingsAppLibAvaloniaNativeFile =>
         KeyboardSwitchSettingsAppMacOSDirectory / LibAvaloniaNative;

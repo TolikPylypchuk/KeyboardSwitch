@@ -3,7 +3,6 @@ global using System.Reactive;
 global using System.Reactive.Concurrency;
 global using System.Reactive.Linq;
 global using System.Reactive.Subjects;
-global using System.Runtime.Serialization;
 
 global using KeyboardSwitch.Core.Keyboard;
 global using KeyboardSwitch.Core.Services.Clipboard;
