@@ -191,10 +191,8 @@ public class App : Application, IEnableLogger
 
         if (state.IsInitialized)
         {
-            window.WindowStartupLocation = WindowStartupLocation.Manual;
             window.Width = state.WindowWidth;
             window.Height = state.WindowHeight;
-            window.Position = new PixelPoint(state.WindowX, state.WindowY);
             window.WindowState = state.IsWindowMaximized ? WindowState.Maximized : WindowState.Normal;
         }
 
@@ -235,8 +233,6 @@ public class App : Application, IEnableLogger
         {
             state.WindowWidth = this.desktop.MainWindow.Width;
             state.WindowHeight = this.desktop.MainWindow.Height;
-            state.WindowX = this.desktop.MainWindow.Position.X;
-            state.WindowY = this.desktop.MainWindow.Position.Y;
         }
 
         state.IsInitialized = true;

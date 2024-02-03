@@ -3,8 +3,8 @@
 dscl . -list /Users UniqueID | grep -v -e ^_ -e root -e daemon -e nobody | while read -r CURRENT_USER CURRENT_UID ; do
     launchctl asuser $CURRENT_UID launchctl remove io.tolik.keyboardswitch
 
-    if [ -f "$(eval echo ~$CURRENT_USER)/.keyboard-switch/.setup-configured" ] ; then
-        rm "$(eval echo ~$CURRENT_USER)/.keyboard-switch/.setup-configured"
+    if [ -f "$(eval echo ~$CURRENT_USER)/Library/Application Support/Keyboard Switch/.setup-configured" ] ; then
+        rm "$(eval echo ~$CURRENT_USER)/Library/Application Support/Keyboard Switch/.setup-configured"
     fi
 done
 
