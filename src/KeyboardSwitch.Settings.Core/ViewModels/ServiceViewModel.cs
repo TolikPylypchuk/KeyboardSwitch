@@ -10,7 +10,7 @@ public sealed class ServiceViewModel : ReactiveObject
 
     public ServiceViewModel(IServiceCommunicator? serviceCommunicator = null, IScheduler? scheduler = null)
     {
-        this.serviceCommunicator = serviceCommunicator ?? GetDefaultService<IServiceCommunicator>();
+        this.serviceCommunicator = serviceCommunicator ?? GetRequiredService<IServiceCommunicator>();
 
         scheduler ??= RxApp.MainThreadScheduler;
 

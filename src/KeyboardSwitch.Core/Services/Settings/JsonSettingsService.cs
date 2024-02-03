@@ -4,9 +4,11 @@ using System.Reflection;
 using System.Text.Json;
 
 using KeyboardSwitch.Core.Exceptions;
+using KeyboardSwitch.Core.Services.AutoConfiguration;
 
 internal sealed class JsonSettingsService(
     ILayoutService layoutService,
+    IAutoConfigurationService autoConfigurationService,
     IOptions<GlobalSettings> globalSettings,
     ILogger<JsonSettingsService> logger)
     : IAppSettingsService
@@ -19,7 +21,7 @@ internal sealed class JsonSettingsService(
     public IObservable<Unit> SettingsInvalidated =>
         this.settingsInvalidated.AsObservable();
 
-    public async Task<AppSettings> GetAppSettings()
+    public async Task<AppSettings> GetAppSettings(bool strict = false)
     {
         logger.LogDebug("Getting the app settings");
 
@@ -34,6 +36,11 @@ internal sealed class JsonSettingsService(
             this.appSettings = await JsonSerializer.DeserializeAsync(stream, AppSettingsContext.Default.AppSettings);
         } else
         {
+            if (strict)
+            {
+                throw new SettingsNotFoundException("Settings file not found");
+            }
+
             logger.LogInformation("App settings not found - creating default settings");
             await this.SaveAppSettings(this.CreateDefaultAppSettings());
         }
@@ -74,10 +81,13 @@ internal sealed class JsonSettingsService(
             this.appSettings.AppVersion,
             defaultSettings.AppVersion);
 
-        this.appSettings.AppVersion = defaultSettings.AppVersion;
-        this.appSettings.SwitchSettings = defaultSettings.SwitchSettings;
+        var newSettings = this.appSettings with
+        {
+            AppVersion = defaultSettings.AppVersion,
+            SwitchSettings = defaultSettings.SwitchSettings
+        };
 
-        await this.SaveAppSettings(this.appSettings);
+        await this.SaveAppSettings(newSettings);
     }
 
     public async Task SaveAppSettings(AppSettings appSettings)
@@ -110,13 +120,38 @@ internal sealed class JsonSettingsService(
                 PressCount = 2,
                 WaitMilliseconds = 400
             },
-            CharsByKeyboardLayoutId = layoutService.GetKeyboardLayouts()
-                .ToDictionary(layout => layout.Id, _ => String.Empty),
+            CharsByKeyboardLayoutId = this.GetAutoConfiguredCharMappings(),
             InstantSwitching = true,
             SwitchLayout = true,
             ShowUninstalledLayoutsMessage = true,
             AppVersion = this.GetAppVersion()
         };
+
+    private ImmutableDictionary<string, string> GetAutoConfiguredCharMappings()
+    {
+        var layouts = this.GetKeyboardLayouts();
+
+        try
+        {
+            return autoConfigurationService.CreateCharMappings(layouts).ToImmutableDictionary();
+        } catch (Exception e)
+        {
+            logger.LogError(e, "Couldn't get auto-configured character mappings");
+            return layouts.ToImmutableDictionary(layout => layout.Id, _ => String.Empty);
+        }
+    }
+
+    private IReadOnlyList<KeyboardLayout> GetKeyboardLayouts()
+    {
+        try
+        {
+            return layoutService.GetKeyboardLayouts();
+        } catch (Exception e)
+        {
+            logger.LogError(e, "Couldn't get keyboard layouts");
+            return ImmutableList.Create<KeyboardLayout>();
+        }
+    }
 
     private Version GetAppVersion() =>
         Assembly.GetEntryAssembly()?.GetName().Version ?? new Version(0, 0);

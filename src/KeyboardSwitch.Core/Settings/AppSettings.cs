@@ -1,16 +1,16 @@
 namespace KeyboardSwitch.Core.Settings;
 
-public sealed class AppSettings
+public sealed record AppSettings
 {
-    public SwitchSettings SwitchSettings { get; set; } = null!;
+    public required SwitchSettings SwitchSettings { get; init; } = null!;
 
-    public Dictionary<string, string> CharsByKeyboardLayoutId { get; set; } = [];
+    public required ImmutableDictionary<string, string> CharsByKeyboardLayoutId { get; init; }
 
-    public bool InstantSwitching { get; set; }
+    public required bool InstantSwitching { get; init; }
 
-    public bool SwitchLayout { get; set; }
+    public required bool SwitchLayout { get; init; }
 
-    public bool ShowUninstalledLayoutsMessage { get; set; }
+    public required bool ShowUninstalledLayoutsMessage { get; init; }
 
-    public Version AppVersion { get; set; } = null!;
+    public required Version AppVersion { get; init; } = null!;
 }

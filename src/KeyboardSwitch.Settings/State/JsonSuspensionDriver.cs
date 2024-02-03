@@ -25,24 +25,21 @@ internal sealed class JsonSuspensionDriver(IOptions<GlobalSettings> settings) : 
             return Observable.Return(new AppState());
         }
 
-        return Observable.FromAsync(async () =>
-        {
-            using var stream = new BufferedStream(this.file.OpenRead());
-            var state = await JsonSerializer.DeserializeAsync(stream, AppStateContext.Default.AppState);
-            return state ?? new AppState();
-        });
+        using var stream = new BufferedStream(this.file.OpenRead());
+        var state = JsonSerializer.Deserialize(stream, AppStateContext.Default.AppState);
+
+        return Observable.Return(state ?? new AppState());
     }
 
     public IObservable<Unit> SaveState(object state)
     {
         if (state is AppState appState)
         {
-            return Observable.FromAsync(async () =>
-            {
-                this.file.Directory?.Create();
-                using var stream = new BufferedStream(this.file.OpenWrite());
-                await JsonSerializer.SerializeAsync(stream, appState, AppStateContext.Default.AppState);
-            });
+            this.file.Directory?.Create();
+            using var stream = new BufferedStream(this.file.OpenWrite());
+            JsonSerializer.Serialize(stream, appState, AppStateContext.Default.AppState);
+
+            return Observable.Return(Unit.Default);
         }
 
         return Observable.Throw<Unit>(new InvalidCastException("AppState must be provided to SaveState"));

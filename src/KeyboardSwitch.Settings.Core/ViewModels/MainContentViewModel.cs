@@ -1,3 +1,5 @@
+using System.Collections.Immutable;
+
 namespace KeyboardSwitch.Settings.Core.ViewModels;
 
 public sealed class MainContentViewModel : ReactiveObject
@@ -15,8 +17,8 @@ public sealed class MainContentViewModel : ReactiveObject
     {
         this.removeLayoutsEnabled = new(preferencesModel.ShowUninstalledLayoutsMessage);
 
-        this.appSettingsService = appSettingsService ?? GetDefaultService<IAppSettingsService>();
-        this.startupService = startupService ?? GetDefaultService<IStartupService>();
+        this.appSettingsService = appSettingsService ?? GetRequiredService<IAppSettingsService>();
+        this.startupService = startupService ?? GetRequiredService<IStartupService>();
 
         this.CharMappingViewModel = new(charMappingModel, this.removeLayoutsEnabled);
         this.PreferencesViewModel = new(preferencesModel);
@@ -50,33 +52,37 @@ public sealed class MainContentViewModel : ReactiveObject
 
         int maxLength = charMappingModel.Layouts.Max(layout => layout.Chars.Length);
 
-        settings.CharsByKeyboardLayoutId = charMappingModel.Layouts
+        var mappings = charMappingModel.Layouts
             .ToDictionary(layout => layout.Id, layout => layout.Chars.PadRight(maxLength));
 
         if (charMappingModel.ShouldRemoveLayouts)
         {
             foreach (var id in charMappingModel.RemovableLayoutIds)
             {
-                settings.CharsByKeyboardLayoutId.Remove(id);
+                mappings.Remove(id);
             }
 
             charMappingModel.ShouldRemoveLayouts = false;
             charMappingModel.RemovableLayoutIds.Clear();
         }
 
-        await this.appSettingsService.SaveAppSettings(settings);
+        var newSettings = settings with { CharsByKeyboardLayoutId = mappings.ToImmutableDictionary() };
+        await this.appSettingsService.SaveAppSettings(newSettings);
     }
 
     private async Task SavePreferencesAsync(PreferencesModel preferencesModel)
     {
         var settings = await this.appSettingsService.GetAppSettings();
 
-        settings.SwitchSettings = preferencesModel.SwitchSettings;
-        settings.InstantSwitching = preferencesModel.InstantSwitching;
-        settings.SwitchLayout = preferencesModel.SwitchLayout;
-        settings.ShowUninstalledLayoutsMessage = preferencesModel.ShowUninstalledLayoutsMessage;
+        var newSettings = settings with
+        {
+            SwitchSettings = preferencesModel.SwitchSettings,
+            InstantSwitching = preferencesModel.InstantSwitching,
+            SwitchLayout = preferencesModel.SwitchLayout,
+            ShowUninstalledLayoutsMessage = preferencesModel.ShowUninstalledLayoutsMessage
+        };
 
-        await this.appSettingsService.SaveAppSettings(settings);
+        await this.appSettingsService.SaveAppSettings(newSettings);
 
         if (this.startupService.IsStartupConfigured() != preferencesModel.Startup)
         {

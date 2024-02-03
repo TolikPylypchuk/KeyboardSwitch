@@ -10,7 +10,6 @@ public class Worker(
     ISwitchService switchService,
     IAppSettingsService settingsService,
     IExitService exitService,
-    IOptions<GlobalSettings> globalSettings,
     ILogger<Worker> logger)
     : BackgroundService
 {
@@ -29,16 +28,17 @@ public class Worker(
             logger.LogDebug("Starting the service execution");
 
             await keyboardHookService.StartHook(token);
+        } catch (SettingsNotFoundException e)
+        {
+            logger.LogCritical(e, "The settings file does not exist - open Keyboard Switch Settings to create it");
+            await exitService.Exit(ExitCode.SettingsDoNotExist, token);
         } catch (IncompatibleAppVersionException e)
         {
-            var settingsPath = Environment.ExpandEnvironmentVariables(globalSettings.Value.SettingsFilePath);
-
             logger.LogCritical(
                 e,
                 "Incompatible app version found in settings: {Version}. " +
-                "Delete the settings at '{SettingsPath}' and let the app recreate a compatible version",
-                e.Version,
-                settingsPath);
+                "Delete the settings and let the app recreate a compatible version",
+                e.Version);
 
             await exitService.Exit(ExitCode.IncompatibleSettingsVersion, token);
         } catch (HookException e) when (e.Result == UioHookResult.ErrorAxApiDisabled)
@@ -63,7 +63,7 @@ public class Worker(
     private async Task RegisterHotKeysFromSettings()
     {
         logger.LogDebug("Registering hot keys to switch forward and backward");
-        var settings = await settingsService.GetAppSettings();
+        var settings = await settingsService.GetAppSettings(strict: true);
         this.RegisterHotKeys(settings.SwitchSettings);
     }
 

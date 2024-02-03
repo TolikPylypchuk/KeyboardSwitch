@@ -53,22 +53,10 @@ public static class Program
                 return ExitCode.KeyboardSwitchNotRunning;
             }
 
-            if (!SettingsExist(host))
-            {
-                logger.LogError("The settings file does not exist - open Keyboard Switch Settings to create them");
-                return ExitCode.SettingsDoNotExist;
-            }
-
-            var settingsService = host.Services.GetRequiredService<IAppSettingsService>();
-            var layoutService = host.Services.GetRequiredService<ILayoutService>();
-
-            settingsService.SettingsInvalidated
-                .Subscribe(layoutService.SettingsInvalidated);
+            SubscribeToExternalCommands(host, logger);
 
             var mainLoopRunner = host.Services.GetRequiredService<IMainLoopRunner>();
             var applicationLifetime = host.Services.GetRequiredService<IHostApplicationLifetime>();
-
-            SubscribeToExternalCommands(host, logger);
 
             logger.LogInformation("KeyboardSwitch service execution started");
 
@@ -124,18 +112,14 @@ public static class Program
             .TryAcquireMutex(nameof(KeyboardSwitch));
     }
 
-    private static bool SettingsExist(IHost host)
-    {
-        var globalSettings = host.Services.GetRequiredService<IOptions<GlobalSettings>>();
-        var settingsPath = Environment.ExpandEnvironmentVariables(globalSettings.Value.SettingsFilePath);
-
-        return File.Exists(settingsPath);
-    }
-
     private static void SubscribeToExternalCommands(IHost host, ILogger logger)
     {
         var namedPipeService = host.Services.GetRequiredService<INamedPipeService>();
         var settingsService = host.Services.GetRequiredService<IAppSettingsService>();
+        var layoutService = host.Services.GetRequiredService<ILayoutService>();
+
+        settingsService.SettingsInvalidated
+            .Subscribe(layoutService.SettingsInvalidated);
 
         namedPipeService.StartServer(nameof(KeyboardSwitch));
 

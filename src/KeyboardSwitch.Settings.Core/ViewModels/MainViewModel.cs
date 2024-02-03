@@ -11,8 +11,8 @@ public class MainViewModel : ReactiveObject
         IStartupService? startupService = null)
     {
         this.appSettings = appSettings;
-        this.layoutService = layoutService ?? GetDefaultService<ILayoutService>();
-        startupService ??= GetDefaultService<IStartupService>();
+        this.layoutService = layoutService ?? GetRequiredService<ILayoutService>();
+        startupService ??= GetRequiredService<IStartupService>();
 
         this.MainContentViewModel = new MainContentViewModel(
             this.CreateCharMappingModel(),

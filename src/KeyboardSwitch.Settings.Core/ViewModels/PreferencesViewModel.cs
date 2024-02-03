@@ -112,12 +112,13 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
         this.PreferencesModel.Startup = this.Startup;
         this.PreferencesModel.ShowUninstalledLayoutsMessage = this.ShowUninstalledLayoutsMessage;
 
-        var switchSettings = this.PreferencesModel.SwitchSettings;
-
-        switchSettings.ForwardModifiers = new(this.forwardModifierKeys);
-        switchSettings.BackwardModifiers = new(this.backwardModifierKeys);
-        switchSettings.PressCount = this.PressCount;
-        switchSettings.WaitMilliseconds = this.WaitMilliseconds;
+        this.PreferencesModel.SwitchSettings = this.PreferencesModel.SwitchSettings with
+        {
+            ForwardModifiers = new(this.forwardModifierKeys),
+            BackwardModifiers = new(this.backwardModifierKeys),
+            PressCount = this.PressCount,
+            WaitMilliseconds = this.WaitMilliseconds
+        };
 
         return Task.FromResult(this.PreferencesModel);
     }

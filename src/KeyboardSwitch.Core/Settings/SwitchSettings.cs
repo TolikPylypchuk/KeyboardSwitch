@@ -1,10 +1,10 @@
 namespace KeyboardSwitch.Core.Settings;
 
-public sealed class SwitchSettings
+public sealed record SwitchSettings
 {
-    public List<ModifierMask> ForwardModifiers { get; set; } = [];
-    public List<ModifierMask> BackwardModifiers { get; set; } = [];
+    public required List<ModifierMask> ForwardModifiers { get; init; }
+    public required List<ModifierMask> BackwardModifiers { get; init; }
 
-    public int PressCount { get; set; }
-    public int WaitMilliseconds { get; set; }
+    public required int PressCount { get; init; }
+    public required int WaitMilliseconds { get; init; }
 }

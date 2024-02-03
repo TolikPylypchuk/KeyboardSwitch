@@ -51,7 +51,7 @@ public class App : Application, IEnableLogger
             this.desktop.MainWindow = await this.CreateMainWindow(mainViewModel);
             this.desktop.MainWindow.Show();
 
-            GetDefaultService<IInitialSetupService>().InitializeKeyboardSwitchSetup();
+            GetRequiredService<IInitialSetupService>().InitializeKeyboardSwitchSetup();
 
             this.desktop.Exit += this.OnExit;
         }
@@ -77,8 +77,7 @@ public class App : Application, IEnableLogger
 
         try
         {
-            var appSettings = await GetDefaultService<IAppSettingsService>().GetAppSettings();
-
+            var appSettings = await GetRequiredService<IAppSettingsService>().GetAppSettings();
             var mainViewModel = new MainViewModel(appSettings);
             this.openExternally.InvokeCommand(mainViewModel.OpenExternally);
 
@@ -86,7 +85,7 @@ public class App : Application, IEnableLogger
         } catch (IncompatibleAppVersionException e)
         {
             var settingsPath = Environment.ExpandEnvironmentVariables(
-                GetDefaultService<IOptions<GlobalSettings>>().Value.SettingsFilePath);
+                GetRequiredService<IOptions<GlobalSettings>>().Value.SettingsFilePath);
 
             this.Log().Error(
                 e,
@@ -111,6 +110,7 @@ public class App : Application, IEnableLogger
             new List<IConfigurationProvider> { genericProvider, platformSpecificProvider });
 
         services
+            .AddOptions()
             .AddLogging(logging => logging.AddSplat())
             .Configure<GlobalSettings>(config.GetSection("Settings"))
             .AddSingleton(Messages.ResourceManager)
@@ -137,7 +137,7 @@ public class App : Application, IEnableLogger
                 .Enrich.FromLogContext()
                 .CreateLogger());
 
-        Locator.CurrentMutable.InitializeReactiveUI();
+        Locator.CurrentMutable.InitializeReactiveUI(RegistrationNamespace.Avalonia);
         Locator.CurrentMutable.RegisterConstant(RxApp.TaskpoolScheduler, TaskPoolKey);
         Locator.CurrentMutable.RegisterConstant<IBindingTypeConverter>(new ModifierMaskConverter());
 
