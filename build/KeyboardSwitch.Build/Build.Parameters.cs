@@ -19,8 +19,8 @@ public partial class Build
     public readonly Platform Platform =
         RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? Platform.Arm64 : Platform.X64;
 
-    [Parameter("Publish single file - false by default")]
-    public readonly bool PublishSingleFile;
+    [Parameter("Publish single file - true by default")]
+    public readonly bool PublishSingleFile = true;
 
     [Parameter("Apple ID")]
     public readonly string? AppleId;

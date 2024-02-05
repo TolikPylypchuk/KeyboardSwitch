@@ -21,11 +21,7 @@ using Nuke.Common.CI.GitHubActions;
     "Build macOS Package",
     GitHubActionsImage.MacOsLatest,
     InvokedTargets = [nameof(CreateMacOSPackage)],
-    Parameters =
-    [
-        nameof(NukePlatform), $"${{{{ matrix.{MatrixPlatform} }}}}",
-        nameof(PublishSingleFile), "true"
-    ],
+    Parameters = [nameof(NukePlatform), $"${{{{ matrix.{MatrixPlatform} }}}}"],
     Matrix = [MatrixPlatform, $"[ {Platform.X64Value}, {Platform.Arm64Value} ]"],
     ImportSecrets =
     [

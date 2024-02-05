@@ -49,6 +49,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>partial</TrimMode>
     <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
