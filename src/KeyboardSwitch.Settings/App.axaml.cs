@@ -33,8 +33,6 @@ public class App : Application, IEnableLogger
     private Mutex? mutex;
     private ServiceProvider? serviceProvider;
 
-    private readonly Subject<Unit> openExternally = new();
-
     public override void Initialize() =>
         AvaloniaXamlLoader.Load(this);
 
@@ -62,47 +60,42 @@ public class App : Application, IEnableLogger
         TransitioningContentControl.PageTransitionProperty.OverrideDefaultValue(typeof(ViewModelViewHost), null);
 
         var services = new ServiceCollection();
-
         this.ConfigureServices(services);
 
         this.serviceProvider = services.BuildServiceProvider();
         this.serviceProvider.UseMicrosoftDependencyResolver();
 
-        this.Log().Info("Starting the settings app");
-
-        this.ConfigureSingleInstance(serviceProvider);
+        var openExternally = this.ConfigureSingleInstance(serviceProvider);
         this.ConfigureSuspensionDriver();
+
+        this.Log().Info("Starting the settings app");
 
         try
         {
             var appSettings = await GetRequiredService<IAppSettingsService>().GetAppSettings();
             var mainViewModel = new MainViewModel(appSettings);
-            this.openExternally.InvokeCommand(mainViewModel.OpenExternally);
+            openExternally.InvokeCommand(mainViewModel.OpenExternally);
 
             return mainViewModel;
         } catch (IncompatibleAppVersionException e)
         {
-            var settingsPath = Environment.ExpandEnvironmentVariables(
-                GetRequiredService<IOptions<GlobalSettings>>().Value.SettingsFilePath);
-
-            this.Log().Error(
+            this.Log().Fatal(
                 e,
                 "Incompatible app version found in settings: {Version}. " +
-                "Delete the settings at '{SettingsPath}' and let the app recreate a compatible version",
-                e.Version,
-                settingsPath);
+                "Delete the settings and let the app recreate a compatible version",
+                e.Version);
 
-            this.desktop.Shutdown(1);
+            this.desktop.Shutdown(2);
             return null!;
         }
     }
 
     private void ConfigureServices(IServiceCollection services)
     {
-        var configDir = GetConfigDirectory();
+        var configDirectory = GetConfigDirectory();
         var environment = PlatformDependent(windows: () => "windows", macos: () => "macos", linux: () => "linux");
-        var genericProvider = this.JsonProvider(configDir, "appsettings.json");
-        var platformSpecificProvider = this.JsonProvider(configDir, $"appsettings.{environment}.json");
+        var genericProvider = this.JsonProvider(configDirectory, "appsettings.json");
+        var platformSpecificProvider = this.JsonProvider(configDirectory, $"appsettings.{environment}.json");
 
         var config = new ConfigurationRoot(
             new List<IConfigurationProvider> { genericProvider, platformSpecificProvider });
@@ -226,12 +219,17 @@ public class App : Application, IEnableLogger
     {
         this.Log().Info("Shutting down the settings app");
 
-        this.serviceProvider?.Dispose();
-        this.mutex?.ReleaseMutex();
-        this.mutex?.Dispose();
+        try
+        {
+            this.serviceProvider?.Dispose();
+        } finally
+        {
+            this.mutex?.ReleaseMutex();
+            this.mutex?.Dispose();
+        }
     }
 
-    private void ConfigureSingleInstance(IServiceProvider services)
+    private Subject<Unit> ConfigureSingleInstance(IServiceProvider services)
     {
         string assemblyName = Assembly.GetExecutingAssembly().GetName()?.Name ?? String.Empty;
 
@@ -243,8 +241,12 @@ public class App : Application, IEnableLogger
 
         namedPipeService.StartServer(assemblyName);
 
+        var openExternally = new Subject<Unit>();
+
         namedPipeService.ReceivedString
             .Discard()
-            .Subscribe(this.openExternally);
+            .Subscribe(openExternally);
+
+        return openExternally;
     }
 }
