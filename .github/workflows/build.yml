@@ -48,7 +48,7 @@ jobs:
       - name: 'Publish: zip'
         uses: actions/upload-artifact@v4
         with:
-          name: zip
+          name: zip-${{ matrix.platform }}
           path: artifacts/*.zip
   build-msi:
     name: Build Windows Installer
@@ -75,7 +75,7 @@ jobs:
       - name: 'Publish: msi'
         uses: actions/upload-artifact@v4
         with:
-          name: msi
+          name: msi-${{ matrix.platform }}
           path: artifacts/*.msi
   build-pkg:
     name: Build macOS Package
@@ -111,7 +111,7 @@ jobs:
       - name: 'Publish: pkg'
         uses: actions/upload-artifact@v4
         with:
-          name: pkg
+          name: pkg-${{ matrix.platform }}
           path: artifacts/*.pkg
   build-uninstaller-pkg:
     name: Build macOS Uninstaller Package
@@ -142,7 +142,7 @@ jobs:
       - name: 'Publish: pkg'
         uses: actions/upload-artifact@v4
         with:
-          name: pkg
+          name: pkg-${{ matrix.platform }}
           path: artifacts/*.pkg
   build-tar:
     name: Build Tar Archive for Linux
@@ -168,7 +168,7 @@ jobs:
       - name: 'Publish: tar.gz'
         uses: actions/upload-artifact@v4
         with:
-          name: tar.gz
+          name: tar.gz-${{ matrix.platform }}
           path: artifacts/*.tar.gz
   build-deb:
     name: Build Debian Package
@@ -194,7 +194,7 @@ jobs:
       - name: 'Publish: deb'
         uses: actions/upload-artifact@v4
         with:
-          name: deb
+          name: deb-${{ matrix.platform }}
           path: artifacts/*.deb
   build-rpm:
     name: Build RPM Package
@@ -220,5 +220,5 @@ jobs:
       - name: 'Publish: rpm'
         uses: actions/upload-artifact@v4
         with:
-          name: rpm
+          name: rpm-${{ matrix.platform }}
           path: artifacts/*.rpm

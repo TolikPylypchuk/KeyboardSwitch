@@ -8,13 +8,14 @@ using Nuke.Common.Utilities;
 /// </summary>
 public class GitHubActionsArtifact4Step : GitHubActionsStep
 {
+    public string SimpleName { get; set; } = String.Empty;
     public string Name { get; set; } = String.Empty;
     public string Path { get; set; } = String.Empty;
     public string? Condition { get; set; }
 
     public override void Write(CustomFileWriter writer)
     {
-        writer.WriteLine("- name: " + $"Publish: {Name}".SingleQuote());
+        writer.WriteLine("- name: " + $"Publish: {this.SimpleName}".SingleQuote());
         writer.WriteLine("  uses: actions/upload-artifact@v4");
 
         using (writer.Indent())

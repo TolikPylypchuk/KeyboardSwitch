@@ -165,12 +165,17 @@ public sealed class MultipleGitHubActionsAttribute(string fileName, string name,
 
             foreach (var artifact in artifacts)
             {
+                var artifactName = artifact.ToString()
+                    .TrimStart(artifact.Parent.ToString())
+                    .TrimStart('/', '\\')
+                    .TrimStart("*.");
+
                 yield return new GitHubActionsArtifact4Step
                 {
-                    Name = artifact.ToString()
-                        .TrimStart(artifact.Parent.ToString())
-                        .TrimStart('/', '\\')
-                        .TrimStart("*."),
+                    SimpleName = artifactName,
+                    Name = action.ArtifactSuffix.IsNullOrEmpty()
+                        ? artifactName
+                        : $"{artifactName}-{action.ArtifactSuffix}",
                     Path = this.Build.RootDirectory.GetUnixRelativePathTo(artifact),
                     Condition = action.PublishCondition
                 };

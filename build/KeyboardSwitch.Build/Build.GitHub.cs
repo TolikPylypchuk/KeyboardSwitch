@@ -14,6 +14,7 @@ using Nuke.Common.CI.GitHubActions;
     InvokedTargets = [nameof(CreateZipArchive)],
     Parameters = [nameof(NukePlatform), PlatformValue, nameof(OutputFileSuffix), WindowsOutputFileSuffix],
     Matrix = [MatrixPlatform, $"[ {Platform.X64Value}, {Platform.Arm64Value} ]"],
+    ArtifactSuffix = PlatformValue,
     TimeoutMinutes = GitHubActionsTimeout)]
 
 [GitHubAction(
@@ -23,6 +24,7 @@ using Nuke.Common.CI.GitHubActions;
     InvokedTargets = [nameof(CreateWindowsInstaller)],
     Parameters = [nameof(NukePlatform), PlatformValue, nameof(OutputFileSuffix), WindowsOutputFileSuffix],
     Matrix = [MatrixPlatform, $"[ {Platform.X64Value}, {Platform.Arm64Value} ]"],
+    ArtifactSuffix = PlatformValue,
     TimeoutMinutes = GitHubActionsTimeout)]
 
 [GitHubAction(
@@ -45,6 +47,7 @@ using Nuke.Common.CI.GitHubActions;
         nameof(KeychainPassword),
         nameof(NotarizationPassword)
     ],
+    ArtifactSuffix = PlatformValue,
     TimeoutMinutes = GitHubActionsTimeout)]
 
 [GitHubAction(
@@ -65,6 +68,7 @@ using Nuke.Common.CI.GitHubActions;
         nameof(KeychainPassword),
         nameof(NotarizationPassword)
     ],
+    ArtifactSuffix = PlatformValue,
     TimeoutMinutes = GitHubActionsTimeout)]
 
 [GitHubAction(
@@ -74,6 +78,7 @@ using Nuke.Common.CI.GitHubActions;
     InvokedTargets = [nameof(CreateTarArchive)],
     Parameters = [nameof(NukePlatform), PlatformValue],
     Matrix = [MatrixPlatform, $"[ {Platform.X64Value}, {Platform.Arm64Value} ]"],
+    ArtifactSuffix = PlatformValue,
     TimeoutMinutes = GitHubActionsTimeout)]
 
 [GitHubAction(
@@ -83,6 +88,7 @@ using Nuke.Common.CI.GitHubActions;
     InvokedTargets = [nameof(CreateDebianPackage)],
     Parameters = [nameof(NukePlatform), PlatformValue],
     Matrix = [MatrixPlatform, $"[ {Platform.X64Value}, {Platform.Arm64Value} ]"],
+    ArtifactSuffix = PlatformValue,
     TimeoutMinutes = GitHubActionsTimeout)]
 
 [GitHubAction(
@@ -92,6 +98,7 @@ using Nuke.Common.CI.GitHubActions;
     InvokedTargets = [nameof(CreateRpmPackage)],
     Parameters = [nameof(NukePlatform), PlatformValue],
     Matrix = [MatrixPlatform, $"[ {Platform.X64Value}, {Platform.Arm64Value} ]"],
+    ArtifactSuffix = PlatformValue,
     TimeoutMinutes = GitHubActionsTimeout)]
 
 public partial class Build
@@ -99,8 +106,8 @@ public partial class Build
     // Using nameof(Platform) makes GitHub Actions fail the builds for arm64 -
     // apparently this env variable is used somewhere else as well - but NUKE allows prefixing env variables with 'Nuke'
     public const string NukePlatform = "Nuke" + nameof(Platform);
-    public const string PlatformValue = $"${{{{ matrix.{MatrixPlatform} }}}}";
     public const string MatrixPlatform = "platform";
+    public const string PlatformValue = $"${{{{ matrix.{MatrixPlatform} }}}}";
     public const int GitHubActionsTimeout = 30;
     public const string WindowsOutputFileSuffix = "win";
 }

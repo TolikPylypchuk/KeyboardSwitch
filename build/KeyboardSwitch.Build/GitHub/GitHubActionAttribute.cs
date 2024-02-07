@@ -19,6 +19,7 @@ public sealed class GitHubActionAttribute(string id, string name, GitHubActionsI
 
     public bool PublishArtifacts { get; set; } = true;
     public string PublishCondition { get; set; } = String.Empty;
+    public string ArtifactSuffix { get; set; } = String.Empty;
 
     public int TimeoutMinutes { get; set; }
 
