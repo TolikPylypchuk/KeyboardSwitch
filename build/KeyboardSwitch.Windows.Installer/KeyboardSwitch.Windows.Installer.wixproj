@@ -12,4 +12,7 @@
     <BindPath Include="$(SolutionDir)artifacts\publish\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="icon.ico" />
+  </ItemGroup>
 </Project>

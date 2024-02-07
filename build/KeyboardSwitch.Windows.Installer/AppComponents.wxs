@@ -2,26 +2,29 @@
   <Fragment>
     <ComponentGroup Id="AppComponents" Directory="InstallFolder">
       <Component>
-        <File Source="KeyboardSwitch.exe" />
+        <File Source="KeyboardSwitch.exe" Id="KeyboardSwitch" />
       </Component>
       <Component>
-        <File Source="KeyboardSwitchSettings.exe" />
+        <File Source="KeyboardSwitchSettings.exe" Id="KeyboardSwitchSettings" />
+        <Shortcut Name="Keyboard Switch Settings" Directory="ProgramMenuFolder" Advertise="yes" Icon="icon.ico" />
       </Component>
       <Component>
-        <File Source="appsettings.json" />
+        <File Source="appsettings.json" Id="appsettings" />
       </Component>
       <Component>
-        <File Source="av_libglesv2.dll" />
+        <File Source="av_libglesv2.dll" Id="av_libglesv2" />
       </Component>
       <Component>
-        <File Source="libHarfBuzzSharp.dll" />
+        <File Source="libHarfBuzzSharp.dll" Id="libHarfBuzzSharp" />
       </Component>
       <Component>
-        <File Source="libSkiaSharp.dll" />
+        <File Source="libSkiaSharp.dll" Id="libSkiaSharp" />
       </Component>
       <Component>
-        <File Source="uiohook.dll" />
+        <File Source="uiohook.dll" Id="uiohook" />
       </Component>
     </ComponentGroup>
+
+    <Icon SourceFile="icon.ico" Id="icon.ico" />
   </Fragment>
 </Wix>
