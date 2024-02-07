@@ -6,7 +6,7 @@
       </Component>
       <Component>
         <File Source="KeyboardSwitchSettings.exe" Id="KeyboardSwitchSettings" />
-        <Shortcut Name="Keyboard Switch Settings" Directory="ProgramMenuFolder" Advertise="yes" Icon="icon.ico" />
+        <Shortcut Name="!(bind.Property.ProductName)" Directory="ProgramMenuFolder" Advertise="yes" Icon="icon.ico" />
       </Component>
       <Component>
         <File Source="appsettings.json" Id="appsettings" />
