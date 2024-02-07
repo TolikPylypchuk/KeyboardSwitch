@@ -1,3 +1,5 @@
+namespace KeyboardSwitch.Build.GitHub;
+
 using Nuke.Common.CI.GitHubActions;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]

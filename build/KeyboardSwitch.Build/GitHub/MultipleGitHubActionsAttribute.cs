@@ -1,4 +1,5 @@
-using System;
+namespace KeyboardSwitch.Build.GitHub;
+
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -129,7 +130,7 @@ public sealed class MultipleGitHubActionsAttribute(string fileName, string name,
         GitHubActionAttribute action,
         IReadOnlyCollection<ExecutableTarget> relevantTargets)
     {
-        yield return new GitHubActionsCheckoutStep
+        yield return new GitHubActionsCheckout4Step
         {
             Submodules = this.submodules,
             Lfs = this.lfs,
@@ -138,7 +139,7 @@ public sealed class MultipleGitHubActionsAttribute(string fileName, string name,
 
         if (this.CacheKeyFiles.Length != 0)
         {
-            yield return new GitHubActionsCacheStep
+            yield return new GitHubActionsCache4Step
             {
                 IncludePatterns = this.CacheIncludePatterns,
                 ExcludePatterns = this.CacheExcludePatterns,
@@ -164,7 +165,7 @@ public sealed class MultipleGitHubActionsAttribute(string fileName, string name,
 
             foreach (var artifact in artifacts)
             {
-                yield return new GitHubActionsArtifactStep
+                yield return new GitHubActionsArtifact4Step
                 {
                     Name = artifact.ToString()
                         .TrimStart(artifact.Parent.ToString())

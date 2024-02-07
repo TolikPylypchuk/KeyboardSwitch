@@ -32,9 +32,9 @@ jobs:
       matrix:
         platform: [ x64, arm64 ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Cache: .nuke/temp, ~/.nuget/packages'
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             .nuke/temp
@@ -46,7 +46,7 @@ jobs:
           NukePlatform: ${{ matrix.platform }}
           OutputFileSuffix: win
       - name: 'Publish: zip'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: zip
           path: artifacts/*.zip
@@ -59,9 +59,9 @@ jobs:
       matrix:
         platform: [ x64, arm64 ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Cache: .nuke/temp, ~/.nuget/packages'
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             .nuke/temp
@@ -73,7 +73,7 @@ jobs:
           NukePlatform: ${{ matrix.platform }}
           OutputFileSuffix: win
       - name: 'Publish: msi'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: msi
           path: artifacts/*.msi
@@ -86,9 +86,9 @@ jobs:
       matrix:
         platform: [ x64, arm64 ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Cache: .nuke/temp, ~/.nuget/packages'
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             .nuke/temp
@@ -109,7 +109,7 @@ jobs:
           KeychainPassword: ${{ secrets.KEYCHAIN_PASSWORD }}
           NotarizationPassword: ${{ secrets.NOTARIZATION_PASSWORD }}
       - name: 'Publish: pkg'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pkg
           path: artifacts/*.pkg
@@ -118,9 +118,9 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Cache: .nuke/temp, ~/.nuget/packages'
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             .nuke/temp
@@ -140,7 +140,7 @@ jobs:
           KeychainPassword: ${{ secrets.KEYCHAIN_PASSWORD }}
           NotarizationPassword: ${{ secrets.NOTARIZATION_PASSWORD }}
       - name: 'Publish: pkg'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pkg
           path: artifacts/*.pkg
@@ -153,9 +153,9 @@ jobs:
       matrix:
         platform: [ x64, arm64 ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Cache: .nuke/temp, ~/.nuget/packages'
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             .nuke/temp
@@ -166,7 +166,7 @@ jobs:
         env:
           NukePlatform: ${{ matrix.platform }}
       - name: 'Publish: tar.gz'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: tar.gz
           path: artifacts/*.tar.gz
@@ -179,9 +179,9 @@ jobs:
       matrix:
         platform: [ x64, arm64 ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Cache: .nuke/temp, ~/.nuget/packages'
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             .nuke/temp
@@ -192,7 +192,7 @@ jobs:
         env:
           NukePlatform: ${{ matrix.platform }}
       - name: 'Publish: deb'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: deb
           path: artifacts/*.deb
@@ -205,9 +205,9 @@ jobs:
       matrix:
         platform: [ x64, arm64 ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: 'Cache: .nuke/temp, ~/.nuget/packages'
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             .nuke/temp
@@ -218,7 +218,7 @@ jobs:
         env:
           NukePlatform: ${{ matrix.platform }}
       - name: 'Publish: rpm'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: rpm
           path: artifacts/*.rpm
