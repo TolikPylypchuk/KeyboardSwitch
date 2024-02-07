@@ -4,6 +4,24 @@
       <Component>
         <File Source="KeyboardSwitch.exe" />
       </Component>
+      <Component>
+        <File Source="KeyboardSwitchSettings.exe" />
+      </Component>
+      <Component>
+        <File Source="appsettings.json" />
+      </Component>
+      <Component>
+        <File Source="av_libglesv2.dll" />
+      </Component>
+      <Component>
+        <File Source="libHarfBuzzSharp.dll" />
+      </Component>
+      <Component>
+        <File Source="libSkiaSharp.dll" />
+      </Component>
+      <Component>
+        <File Source="uiohook.dll" />
+      </Component>
     </ComponentGroup>
   </Fragment>
 </Wix>

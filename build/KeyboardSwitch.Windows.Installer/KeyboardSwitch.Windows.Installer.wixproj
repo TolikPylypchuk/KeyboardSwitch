@@ -9,8 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\KeyboardSwitch.Settings\KeyboardSwitch.Settings.csproj" />
-    <ProjectReference Include="..\..\src\KeyboardSwitch\KeyboardSwitch.csproj" />
+    <BindPath Include="$(SolutionDir)artifacts\publish\" />
   </ItemGroup>
 
 </Project>

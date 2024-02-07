@@ -16,6 +16,7 @@
   <PropertyGroup>
     <UseArtifactsOutput>true</UseArtifactsOutput>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <SolutionDir Condition="'$(SolutionDir)' == ''">$(MSBuildThisFileDirectory)</SolutionDir>
   </PropertyGroup>
 
   <PropertyGroup>
