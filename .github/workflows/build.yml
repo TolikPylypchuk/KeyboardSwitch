@@ -142,7 +142,7 @@ jobs:
       - name: 'Publish: pkg'
         uses: actions/upload-artifact@v4
         with:
-          name: pkg-${{ matrix.platform }}
+          name: pkg-uninstaller
           path: artifacts/*.pkg
   build-tar:
     name: Build Tar Archive for Linux

@@ -68,7 +68,7 @@ using Nuke.Common.CI.GitHubActions;
         nameof(KeychainPassword),
         nameof(NotarizationPassword)
     ],
-    ArtifactSuffix = PlatformValue,
+    ArtifactSuffix = "uninstaller",
     TimeoutMinutes = GitHubActionsTimeout)]
 
 [GitHubAction(
