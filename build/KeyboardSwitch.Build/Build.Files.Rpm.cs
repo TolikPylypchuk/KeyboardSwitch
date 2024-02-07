@@ -15,7 +15,7 @@ public partial class Build
         $"{KeyboardSwitchLower}-{Version}-{ReleaseNumber}.{this.Platform.Rpm}.rpm";
 
     private AbsolutePath RpmFile =>
-        ArtifactsDirectory / RpmFileName;
+        this.WithSuffix(ArtifactsDirectory / RpmFileName);
 
     private AbsolutePath SourceRpmSpecFile =>
         this.LinuxFilesDirectory / RpmSpecFile;

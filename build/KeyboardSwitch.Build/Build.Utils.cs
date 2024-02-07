@@ -20,6 +20,11 @@ public partial class Build
             .Replace(ArchitecturePlaceholder, architecture)
             .Replace(OutputPlaceholder, PublishOutputDirectory));
 
+    private AbsolutePath WithSuffix(AbsolutePath path) =>
+        !String.IsNullOrEmpty(this.OutputFileSuffix)
+            ? path.Parent / (path.NameWithoutExtension + "-" + this.OutputFileSuffix + path.Extension)
+            : path;
+
     private IEnumerable<Project> GetProjects(bool includeInstaller = false)
     {
         yield return this.Solution.KeyboardSwitch_Core;

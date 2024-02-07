@@ -137,6 +137,30 @@ public partial class Build
             PublishOutputDirectory.TarGZipTo(this.TarFile);
         });
 
+    public Target CreateWindowsInstaller => t => t
+        .Description("Creates a Windows installer which installs the published project")
+        .DependsOn(this.Publish)
+        .Requires(() => this.TargetOS == TargetOS.Windows, () => this.PublishSingleFile)
+        .Produces(AnyMsiFile)
+        .Executes(() =>
+        {
+            Log.Information("Creating a Windows installer");
+
+            DotNetBuild(s => s
+                .SetProjectFile(this.Solution.KeyboardSwitch_Windows_Installer)
+                .SetRuntime(this.RuntimeIdentifier)
+                .SetConfiguration(this.Configuration)
+                .SetPlatform(this.Platform.MSBuild)
+                .SetProperty(nameof(TargetOS), this.TargetOS)
+                .SetNoRestore(true)
+                .SetSelfContained(this.IsSelfContained)
+                .SetPublishSingleFile(this.PublishSingleFile)
+                .SetContinuousIntegrationBuild(true));
+
+            this.MsiFile.DeleteFile();
+            this.SourceMsiFile.Move(this.MsiFile);
+        });
+
     public Target SetupKeychain => t => t
         .Description("Sets up a macOS keychain and stores certificates in it")
         .DependentFor(this.CreateMacOSPackage, this.CreateMacOSUninstallerPackage)
@@ -433,6 +457,7 @@ public partial class Build
         .TriggeredBy(
             this.CreateZipArchive,
             this.CreateTarArchive,
+            this.CreateWindowsInstaller,
             this.CreateMacOSPackage,
             this.CreateMacOSUninstallerPackage,
             this.CreateDebianPackage,

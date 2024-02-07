@@ -44,11 +44,39 @@ jobs:
         run: ./build.cmd CreateZipArchive
         env:
           NukePlatform: ${{ matrix.platform }}
+          OutputFileSuffix: win
       - name: 'Publish: zip'
         uses: actions/upload-artifact@v3
         with:
           name: zip
           path: artifacts/*.zip
+  build-msi:
+    name: Build Windows Installer
+    runs-on: windows-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [ x64, arm64 ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: 'Cache: .nuke/temp, ~/.nuget/packages'
+        uses: actions/cache@v3
+        with:
+          path: |
+            .nuke/temp
+            ~/.nuget/packages
+          key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
+      - name: 'Run: CreateWindowsInstaller'
+        run: ./build.cmd CreateWindowsInstaller
+        env:
+          NukePlatform: ${{ matrix.platform }}
+          OutputFileSuffix: win
+      - name: 'Publish: msi'
+        uses: actions/upload-artifact@v3
+        with:
+          name: msi
+          path: artifacts/*.msi
   build-pkg:
     name: Build macOS Package
     runs-on: macos-latest

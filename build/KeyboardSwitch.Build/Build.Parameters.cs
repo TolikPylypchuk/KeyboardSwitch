@@ -22,6 +22,9 @@ public partial class Build
     [Parameter("Publish single file - true by default")]
     public readonly bool PublishSingleFile = true;
 
+    [Parameter("Output file suffix")]
+    public readonly string? OutputFileSuffix;
+
     [Parameter("Apple ID")]
     public readonly string? AppleId;
 

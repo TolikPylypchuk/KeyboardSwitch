@@ -19,5 +19,5 @@ public partial class Build
         this.LinuxFilesDirectory / "uninstall.sh";
 
     private AbsolutePath GetArchiveFile(string format) =>
-        ArtifactsDirectory / $"{KeyboardSwitch}-{Version}-{this.Platform.Archive}.{format}";
+        this.WithSuffix(ArtifactsDirectory / $"{KeyboardSwitch}-{Version}-{this.Platform.Archive}.{format}");
 }

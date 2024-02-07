@@ -15,7 +15,7 @@ public partial class Build
         ArtifactsDirectory / this.DebFileName;
 
     private AbsolutePath DebFile =>
-        ArtifactsDirectory / $"{this.DebFileName}.deb";
+        this.WithSuffix(ArtifactsDirectory / $"{this.DebFileName}.deb");
 
     private AbsolutePath DebConfigDirectory =>
         this.DebDirectory / "DEBIAN";
