@@ -1,10 +1,6 @@
 <Project Sdk="WixToolset.Sdk/4.0.4">
 
   <PropertyGroup>
-    <TargetOS>Windows</TargetOS>
-  </PropertyGroup>
-
-  <PropertyGroup>
     <DefineConstants>Version=$(Version)</DefineConstants>
   </PropertyGroup>
 
@@ -13,11 +9,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="icon.ico" />
+    <Content Include="Resources\Banner.bmp" />
+    <Content Include="Resources\Dialog.bmp" />
+    <Content Include="Resources\icon.ico" />
+    <Content Include="Resources\License.rtf" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="WixToolset.UI.wixext" Version="4.0.4" />
+    <PackageReference Include="WixToolset.Util.wixext" Version="4.0.4" />
   </ItemGroup>
 
 </Project>

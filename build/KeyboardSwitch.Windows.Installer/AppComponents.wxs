@@ -25,6 +25,6 @@
       </Component>
     </ComponentGroup>
 
-    <Icon SourceFile="icon.ico" Id="icon.ico" />
+    <Icon SourceFile="Resources\icon.ico" Id="icon.ico" />
   </Fragment>
 </Wix>
