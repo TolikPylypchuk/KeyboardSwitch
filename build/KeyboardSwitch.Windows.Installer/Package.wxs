@@ -10,9 +10,40 @@
 
     <MediaTemplate EmbedCab="yes" />
 
+    <StandardDirectory Id="ProgramFiles6432Folder">
+      <Directory Id="INSTALLFOLDER" Name="!(bind.Property.ProductName)" />
+    </StandardDirectory>
+
     <Feature Id="Main">
       <ComponentGroupRef Id="AppComponents" />
     </Feature>
+
+    <ComponentGroup Id="AppComponents" Directory="INSTALLFOLDER">
+      <Component>
+        <File Source="KeyboardSwitch.exe" Id="KeyboardSwitch" />
+      </Component>
+      <Component>
+        <File Source="KeyboardSwitchSettings.exe" Id="KeyboardSwitchSettings" />
+        <Shortcut Name="Keyboard Switch Settings" Directory="ProgramMenuFolder" Advertise="yes" Icon="icon.ico" />
+      </Component>
+      <Component>
+        <File Source="appsettings.json" Id="appsettings" />
+      </Component>
+      <Component>
+        <File Source="av_libglesv2.dll" Id="av_libglesv2" />
+      </Component>
+      <Component>
+        <File Source="libHarfBuzzSharp.dll" Id="libHarfBuzzSharp" />
+      </Component>
+      <Component>
+        <File Source="libSkiaSharp.dll" Id="libSkiaSharp" />
+      </Component>
+      <Component>
+        <File Source="uiohook.dll" Id="uiohook" />
+      </Component>
+    </ComponentGroup>
+
+    <Icon SourceFile="Resources\icon.ico" Id="icon.ico" />
 
     <UI Id="UI">
       <ui:WixUI Id="WixUI_InstallDir" InstallDirectory="INSTALLFOLDER" />
