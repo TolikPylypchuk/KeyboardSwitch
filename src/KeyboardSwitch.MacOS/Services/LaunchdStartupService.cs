@@ -1,6 +1,7 @@
 namespace KeyboardSwitch.MacOS.Services;
 
 internal sealed class LaunchdStartupService(
+    IUserProvider userProvider,
     IOptions<LaunchdSettings> launchdSettings,
     ILogger<LaunchdStartupService> logger)
     : IStartupService
@@ -11,12 +12,12 @@ internal sealed class LaunchdStartupService(
     {
         logger.LogDebug("Checking if the KeyboardSwitch service is configured to run on startup");
 
-        int? id = GetCurrentUserId();
+        string? user = userProvider.GetCurrentUser();
 
-        if (id != null)
+        if (!String.IsNullOrEmpty(user))
         {
             var launchctl = Process.Start(
-                new ProcessStartInfo(LaunchCtl, $"print gui/{id}") { RedirectStandardOutput = true });
+                new ProcessStartInfo(LaunchCtl, $"print gui/{user}") { RedirectStandardOutput = true });
 
             if (launchctl != null)
             {
@@ -40,11 +41,11 @@ internal sealed class LaunchdStartupService(
         logger.LogDebug(
             "Configuring to {Action} running the KeyboardSwitch service on startup", startup ? "start" : "stop");
 
-        int? id = GetCurrentUserId();
+        string? user = userProvider.GetCurrentUser();
 
-        if (id != null)
+        if (!String.IsNullOrEmpty(user))
         {
-            Process.Start(LaunchCtl, $"{(startup ? "enable" : "disable")} gui/{id}/{this.serivceName}");
+            Process.Start(LaunchCtl, $"{(startup ? "enable" : "disable")} gui/{user}/{this.serivceName}");
 
             logger.LogDebug(
                 "Configured to {Action} running the KeyboardSwitch service on startup", startup ? "start" : "stop");

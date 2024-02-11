@@ -20,4 +20,10 @@
   <ItemGroup>
     <ProjectReference Include="..\KeyboardSwitch.Core\KeyboardSwitch.Core.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="users.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

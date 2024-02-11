@@ -30,6 +30,11 @@
         <File Source="appsettings.json" Id="appsettings" />
       </Component>
       <Component>
+        <File Source="users.json" Id="users">
+          <Permission User="Users" GenericAll="yes" />
+        </File>
+      </Component>
+      <Component>
         <File Source="av_libglesv2.dll" Id="av_libglesv2" />
       </Component>
       <Component>

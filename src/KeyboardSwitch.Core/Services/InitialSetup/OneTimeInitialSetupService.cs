@@ -1,31 +1,94 @@
 namespace KeyboardSwitch.Core.Services.InitialSetup;
 
-public abstract class OneTimeInitialSetupService(IOptions<GlobalSettings> globalSettings) : IInitialSetupService
+using System.Text.Json;
+
+using KeyboardSwitch.Core.Json;
+using KeyboardSwitch.Core.Services.Users;
+
+public abstract class OneTimeInitialSetupService(
+    IUserProvider userProvider,
+    IOptions<GlobalSettings> globalSettings,
+    ILogger<OneTimeInitialSetupService> logger)
+    : IInitialSetupService
 {
-    private readonly string initialSetupFilePath =
-        Environment.ExpandEnvironmentVariables(globalSettings.Value.InitialSetupFilePath);
+    private readonly FileInfo initialSetupFile =
+        new(Environment.ExpandEnvironmentVariables(globalSettings.Value.InitialSetupFilePath));
 
     public void InitializeKeyboardSwitchSetup()
     {
-        if (this.ShouldDoSetup())
+        var currentUser = userProvider.GetCurrentUser();
+
+        if (String.IsNullOrEmpty(currentUser))
         {
-            this.DoInitialSetup();
-            File.Create(this.initialSetupFilePath).Dispose();
+            logger.LogError("Could not get current user - no initial setup will be done");
+            return;
+        }
+
+        try
+        {
+            if (OperatingSystem.IsWindows())
+            {
+                this.InitializeKeyboardSwitchSetupForWindows(currentUser, this.DoInitialSetup);
+            } else
+            {
+                this.InitializeKeyboardSwitchSetupForNonWindows(currentUser, this.DoInitialSetup);
+            }
+        } catch (Exception e)
+        {
+            logger.LogError(e, "Error during initial setup");
         }
     }
 
-    public abstract void DoInitialSetup();
+    protected abstract void DoInitialSetup(string currentUser);
 
-    private bool ShouldDoSetup()
+    private void InitializeKeyboardSwitchSetupForWindows(string currentUser, Action<string> doSetup)
     {
-        if (!File.Exists(this.initialSetupFilePath))
+        var users = this.ReadUsersFromFile();
+
+        if (!users.Contains(currentUser))
         {
-            return true;
+            doSetup(currentUser);
+
+            users.Add(currentUser);
+            this.WriteToUsersFile(users);
+        }
+    }
+
+    private List<string> ReadUsersFromFile()
+    {
+        if (!this.initialSetupFile.Exists)
+        {
+            return [];
         }
 
-        string? processPath = Environment.ProcessPath;
+        using var fileStream = new BufferedStream(this.initialSetupFile.OpenRead());
+        return JsonSerializer.Deserialize(fileStream, KeyboardSwitchJsonContext.Default.ListString) ?? [];
+    }
 
-        return processPath != null &&
-            File.GetLastWriteTimeUtc(this.initialSetupFilePath) < File.GetCreationTimeUtc(processPath);
+    private void WriteToUsersFile(List<string> users)
+    {
+        using var fileStream = new BufferedStream(this.initialSetupFile.OpenWrite());
+        JsonSerializer.Serialize(fileStream, users, KeyboardSwitchJsonContext.Default.ListString);
+    }
+
+    private void InitializeKeyboardSwitchSetupForNonWindows(string currentUser, Action<string> doSetup)
+    {
+        bool fileExists = this.initialSetupFile.Exists;
+
+        string? processPath = Environment.ProcessPath;
+        bool shouldDoSetup = !fileExists ||
+            processPath is not null && this.initialSetupFile.LastWriteTimeUtc < File.GetCreationTimeUtc(processPath);
+
+        if (shouldDoSetup)
+        {
+            doSetup(currentUser);
+        }
+
+        if (!fileExists)
+        {
+            this.initialSetupFile.Create().Dispose();
+        }
+
+        this.initialSetupFile.LastWriteTimeUtc = DateTime.UtcNow;
     }
 }

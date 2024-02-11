@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text.Json;
 
 using KeyboardSwitch.Core.Exceptions;
+using KeyboardSwitch.Core.Json;
 using KeyboardSwitch.Core.Services.AutoConfiguration;
 
 internal sealed class JsonSettingsService(
@@ -33,7 +34,8 @@ internal sealed class JsonSettingsService(
         if (this.file.Exists)
         {
             using var stream = new BufferedStream(this.file.OpenRead());
-            this.appSettings = await JsonSerializer.DeserializeAsync(stream, AppSettingsContext.Default.AppSettings);
+            this.appSettings = await JsonSerializer.DeserializeAsync(
+                stream, KeyboardSwitchJsonContext.Default.AppSettings);
         } else
         {
             if (strict)
@@ -97,7 +99,7 @@ internal sealed class JsonSettingsService(
         this.file.Directory?.Create();
 
         using var stream = new BufferedStream(this.file.OpenWrite());
-        await JsonSerializer.SerializeAsync(stream, appSettings, AppSettingsContext.Default.AppSettings);
+        await JsonSerializer.SerializeAsync(stream, appSettings, KeyboardSwitchJsonContext.Default.AppSettings);
 
         this.appSettings = appSettings;
     }

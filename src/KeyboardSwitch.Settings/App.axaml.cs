@@ -20,7 +20,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.Options;
 
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
@@ -47,8 +46,6 @@ public class App : Application, IEnableLogger
             this.desktop.MainWindow = await this.CreateMainWindow(mainViewModel);
             this.desktop.MainWindow.Show();
 
-            GetRequiredService<IInitialSetupService>().InitializeKeyboardSwitchSetup();
-
             this.desktop.Exit += this.OnExit;
         }
 
@@ -69,6 +66,8 @@ public class App : Application, IEnableLogger
         this.ConfigureSuspensionDriver();
 
         this.Log().Info("Starting the settings app");
+
+        GetRequiredService<IInitialSetupService>().InitializeKeyboardSwitchSetup();
 
         try
         {
@@ -110,9 +109,7 @@ public class App : Application, IEnableLogger
             .AddSingleton<IActivationForViewFetcher>(new AvaloniaActivationForViewFetcher())
             .AddSuspensionDriver()
             .AddCoreKeyboardSwitchServices()
-#if WINDOWS || MACOS || LINUX
             .AddNativeKeyboardSwitchServices(config)
-#endif
             .UseMicrosoftDependencyResolver();
 
         Locator.CurrentMutable.InitializeSplat();

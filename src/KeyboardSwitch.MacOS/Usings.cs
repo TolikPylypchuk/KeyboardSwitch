@@ -12,6 +12,7 @@ global using KeyboardSwitch.Core.Services.InitialSetup;
 global using KeyboardSwitch.Core.Services.Layout;
 global using KeyboardSwitch.Core.Services.Simulation;
 global using KeyboardSwitch.Core.Services.Startup;
+global using KeyboardSwitch.Core.Services.Users;
 global using KeyboardSwitch.Core.Settings;
 global using KeyboardSwitch.MacOS.Native;
 global using KeyboardSwitch.MacOS.Services;
@@ -20,5 +21,5 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Options;
 
-global using static KeyboardSwitch.MacOS.LaunchdUtil;
+global using static KeyboardSwitch.MacOS.LaunchdConstants;
 global using static KeyboardSwitch.MacOS.Native.NativeUtils;

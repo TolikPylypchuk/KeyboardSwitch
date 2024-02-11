@@ -20,5 +20,6 @@ public static class ServiceExtensions
                 sp => new SharpUserActivitySimulator(sp.GetRequiredService<IEventSimulator>(), KeyCode.VcLeftMeta))
             .AddSingleton<IAutoConfigurationService, MacAutoConfigurationService>()
             .AddSingleton<IInitialSetupService, LaunchdSetupService>()
-            .AddSingleton<IMainLoopRunner, MacOSMainLoopRunner>();
+            .AddSingleton<IUserProvider, PosixUserProvider>()
+            .AddSingleton<IMainLoopRunner, MacMainLoopRunner>();
 }

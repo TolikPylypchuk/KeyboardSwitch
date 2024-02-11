@@ -25,7 +25,7 @@ public static class SerilogLoggerFactory
                         rollOnFileSizeLimit: true,
                         retainedFileCountLimit: settings.MaxRetainedFiles,
                         shared: true))
-                    .Filter.ByIncludingOnly(Matching.FromSource(nameof(KeyboardSwitch))))
+                    /*.Filter.ByIncludingOnly(Matching.FromSource(nameof(KeyboardSwitch)))*/)
                 .Enrich.FromLogContext()
                 .CreateLogger();
     }

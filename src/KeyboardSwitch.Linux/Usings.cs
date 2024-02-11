@@ -11,6 +11,7 @@ global using KeyboardSwitch.Core.Services.InitialSetup;
 global using KeyboardSwitch.Core.Services.Layout;
 global using KeyboardSwitch.Core.Services.Simulation;
 global using KeyboardSwitch.Core.Services.Startup;
+global using KeyboardSwitch.Core.Services.Users;
 global using KeyboardSwitch.Core.Settings;
 global using KeyboardSwitch.Linux.Native;
 global using KeyboardSwitch.Linux.Services;

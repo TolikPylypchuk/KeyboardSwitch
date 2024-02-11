@@ -1,6 +1,6 @@
 namespace KeyboardSwitch.MacOS.Services;
 
-internal sealed class MacOSMainLoopRunner : IMainLoopRunner
+internal sealed class MacMainLoopRunner : IMainLoopRunner
 {
     public void RunMainLoop(CancellationToken token)
     {

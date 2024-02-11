@@ -20,6 +20,7 @@ public static class ServiceExtensions
                 sp => new SharpUserActivitySimulator(sp.GetRequiredService<IEventSimulator>(), KeyCode.VcLeftControl))
             .AddSingleton<IAutoConfigurationService, XAutoConfigurationService>()
             .AddSingleton<IInitialSetupService, StartupSetupService>()
+            .AddSingleton<IUserProvider, PosixUserProvider>()
             .AddSingleton<IMainLoopRunner, XMainLoopRunner>()
             .AddSingleton<X11Service>();
 

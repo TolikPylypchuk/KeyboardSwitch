@@ -1,6 +1,6 @@
-using Microsoft.Extensions.Options;
-
 namespace KeyboardSwitch.Windows.Services;
+
+using Microsoft.Extensions.Options;
 
 internal class RegistryStartupService(IOptions<GlobalSettings> globalSettings, ILogger<RegistryStartupService> logger)
     : IStartupService
