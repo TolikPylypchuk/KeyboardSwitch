@@ -36,13 +36,11 @@ internal sealed class JsonSettingsService(
             using var stream = new BufferedStream(this.file.OpenRead());
             this.appSettings = await JsonSerializer.DeserializeAsync(
                 stream, KeyboardSwitchJsonContext.Default.AppSettings);
+        } else if (strict)
+        {
+            throw new SettingsNotFoundException("Settings file not found");
         } else
         {
-            if (strict)
-            {
-                throw new SettingsNotFoundException("Settings file not found");
-            }
-
             logger.LogInformation("App settings not found - creating default settings");
             await this.SaveAppSettings(this.CreateDefaultAppSettings());
         }
@@ -151,7 +149,7 @@ internal sealed class JsonSettingsService(
         } catch (Exception e)
         {
             logger.LogError(e, "Couldn't get keyboard layouts");
-            return ImmutableList.Create<KeyboardLayout>();
+            return [];
         }
     }
 

@@ -16,9 +16,6 @@ public static class Extensions
             _ => null
         };
 
-    public static ModifierMask Flatten(this IEnumerable<ModifierMask> keys) =>
-        keys.Aggregate(ModifierMask.None, (acc, key) => acc | key);
-
     public static bool IsSubsetKeyOf(this ModifierMask subKey, ModifierMask superKey) =>
         superKey.Contains(subKey, ModifierMask.Ctrl) &&
         superKey.Contains(subKey, ModifierMask.Shift) &&

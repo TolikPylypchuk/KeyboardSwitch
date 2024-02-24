@@ -3,13 +3,15 @@ namespace KeyboardSwitch.Windows.Services;
 using System.Reactive.Disposables;
 using System.Runtime.InteropServices;
 
-internal sealed class WinClipboardService : IClipboardService
+internal sealed class WinClipboardService(ILogger<WinClipboardService> logger) : IClipboardService
 {
     private const int RetryCount = 10;
     private const int Delay = 100;
 
     public async Task<string?> GetTextAsync()
     {
+        logger.LogDebug("Getting text from the clipboard");
+
         using (await this.OpenClipboardAsync())
         {
             var hText = User32.GetClipboardData(CLIPFORMAT.CF_UNICODETEXT);
@@ -32,6 +34,8 @@ internal sealed class WinClipboardService : IClipboardService
 
     public async Task SetTextAsync(string text)
     {
+        logger.LogDebug("Setting text into the clipboard");
+
         using (await this.OpenClipboardAsync())
         {
             User32.EmptyClipboard();
@@ -52,7 +56,7 @@ internal sealed class WinClipboardService : IClipboardService
         {
             if (++i == RetryCount)
             {
-                throw new TimeoutException("Timeout opening clipboard");
+                throw new TimeoutException("Timeout when opening the clipboard");
             }
 
             await Task.Delay(Delay);

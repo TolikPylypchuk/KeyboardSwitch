@@ -1,4 +1,4 @@
-namespace KeyboardSwitch.Services;
+namespace KeyboardSwitch;
 
 public interface IExitService
 {

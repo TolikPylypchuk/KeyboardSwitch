@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 using Serilog;
 using Serilog.Core;
-using Serilog.Filters;
+using Serilog.Events;
 
 public static class SerilogLoggerFactory
 {
@@ -14,7 +14,11 @@ public static class SerilogLoggerFactory
         configuration.GetRequiredSection("Logger").Bind(settings);
 
         return new LoggerConfiguration()
+            .Enrich.FromLogContext()
             .MinimumLevel.Is(settings.MinimumLevel)
+            .MinimumLevel.Override("Avalonia", LogEventLevel.Warning)
+            .MinimumLevel.Override("ReactiveUI", LogEventLevel.Warning)
+            .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Warning)
             .WriteTo.Debug(outputTemplate: settings.OutputTemplate)
             .WriteTo.Console(outputTemplate: settings.OutputTemplate)
             .WriteTo.Logger(config => config
@@ -24,9 +28,7 @@ public static class SerilogLoggerFactory
                     fileSizeLimitBytes: settings.MaxFileSize,
                     rollOnFileSizeLimit: true,
                     retainedFileCountLimit: settings.MaxRetainedFiles,
-                    shared: true))
-                .Filter.ByIncludingOnly(Matching.FromSource(nameof(KeyboardSwitch))))
-            .Enrich.FromLogContext()
+                    shared: true)))
             .CreateLogger();
     }
 }

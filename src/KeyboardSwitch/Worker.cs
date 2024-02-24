@@ -19,7 +19,7 @@ public class Worker(
     {
         try
         {
-            logger.LogDebug("Configuring the KeyboardSwitch service");
+            logger.LogDebug("Configuring the Keyboard Switch service");
 
             await this.RegisterHotKeysFromSettings();
 
@@ -44,12 +44,12 @@ public class Worker(
         } catch (HookException e) when (e.Result == UioHookResult.ErrorAxApiDisabled)
         {
             logger.LogCritical(
-                e, "The KeyboardSwitch service cannot start as it doesn't have access to the macOS accessibility API");
+                e, "The Keyboard Switch service cannot start as it doesn't have access to the macOS accessibility API");
 
             await exitService.Exit(ExitCode.MacOSAccessibilityDisabled, token);
         } catch (Exception e)
         {
-            logger.LogCritical(e, "The KeyboardSwitch service has crashed");
+            logger.LogCritical(e, "Keyboard Switch service has crashed");
             await exitService.Exit(ExitCode.Error, token);
         }
     }
@@ -62,7 +62,7 @@ public class Worker(
 
     private async Task RegisterHotKeysFromSettings()
     {
-        logger.LogDebug("Registering hot keys to switch forward and backward");
+        logger.LogDebug("Registering hot keys which initiate switching text");
         var settings = await settingsService.GetAppSettings(strict: true);
         this.RegisterHotKeys(settings.SwitchSettings);
     }
@@ -73,7 +73,7 @@ public class Worker(
         keyboardHookService.Register(settings.BackwardModifiers, settings.PressCount, settings.WaitMilliseconds);
 
         this.hookSubscription = keyboardHookService.HotKeyPressed
-            .Select(key => key.IsSubsetKeyOf(settings.ForwardModifiers.Flatten())
+            .Select(key => key.IsSubsetKeyOf(settings.ForwardModifiers.ToArray().Merge())
                 ? SwitchDirection.Forward
                 : SwitchDirection.Backward)
             .SubscribeAsync(this.SwitchText);
@@ -81,7 +81,7 @@ public class Worker(
 
     private async Task RefreshHotKeys()
     {
-        logger.LogDebug("Refreshing the hot key registration to switch forward and backward");
+        logger.LogDebug("Refreshing the hot key registrations which initiate switching text");
         keyboardHookService.UnregisterAll();
         this.hookSubscription?.Dispose();
         await this.RegisterHotKeysFromSettings();

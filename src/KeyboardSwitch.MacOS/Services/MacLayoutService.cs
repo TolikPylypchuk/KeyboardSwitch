@@ -1,15 +1,19 @@
 namespace KeyboardSwitch.MacOS.Services;
 
-internal sealed class MacLayoutService : CachingLayoutService
+internal sealed class MacLayoutService(ILogger<MacLayoutService> logger) : CachingLayoutService
 {
     public override KeyboardLayout GetCurrentKeyboardLayout()
     {
+        logger.LogDebug("Getting current keyboard layout");
+
         using var source = HIToolbox.TISCopyCurrentKeyboardInputSource();
         return this.CreateKeyboardLayout(source);
     }
 
     public override void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
     {
+        logger.LogDebug("Switching the current layout {Direction}", direction.AsString());
+
         using var sources = HIToolbox.TISCreateInputSourceList(new CFDictionaryRef(), includeAllInstalled: false);
         long count = CoreFoundation.CFArrayGetCount(sources);
 
@@ -37,7 +41,8 @@ internal sealed class MacLayoutService : CachingLayoutService
 
     protected override List<KeyboardLayout> GetKeyboardLayoutsInternal()
     {
-        using var sources = HIToolbox.TISCreateInputSourceList(new CFDictionaryRef(), includeAllInstalled: false);
+        using var properties = new CFDictionaryRef();
+        using var sources = HIToolbox.TISCreateInputSourceList(properties, includeAllInstalled: false);
         long count = CoreFoundation.CFArrayGetCount(sources);
 
         return Enumerable.Range(0, (int)count)

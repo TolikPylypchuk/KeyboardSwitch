@@ -56,7 +56,7 @@ internal sealed class SharpHookService : Core.Disposable, IKeyboardHookService
     {
         this.ThrowIfDisposed();
 
-        var hotKey = modifiers.Flatten();
+        var hotKey = modifiers.ToArray().Merge();
 
         this.logger.LogDebug("Registering a hot key: {HotKey}", hotKey);
 
@@ -94,7 +94,7 @@ internal sealed class SharpHookService : Core.Disposable, IKeyboardHookService
     {
         if (disposing)
         {
-            this.logger.LogDebug("Destroying a global hook");
+            this.logger.LogDebug("Destroying the global hook");
 
             this.hookSubscription.Dispose();
             this.rawHotKeyPressedSubject.Dispose();
@@ -157,7 +157,7 @@ internal sealed class SharpHookService : Core.Disposable, IKeyboardHookService
 
         if (!modifiers.Any(key => key is null) && modifiers.Count > 1)
         {
-            var hotKey = modifiers.Select(key => key!.Value).Flatten();
+            var hotKey = modifiers.Select(key => key!.Value).ToArray().Merge();
             this.logger.LogDebug("Hot key activated: {HotKey}", hotKey);
             this.rawHotKeyPressedSubject.OnNext(hotKey);
         }

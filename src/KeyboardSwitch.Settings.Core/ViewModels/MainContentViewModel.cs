@@ -1,6 +1,6 @@
-using System.Collections.Immutable;
-
 namespace KeyboardSwitch.Settings.Core.ViewModels;
+
+using System.Collections.Immutable;
 
 public sealed class MainContentViewModel : ReactiveObject
 {

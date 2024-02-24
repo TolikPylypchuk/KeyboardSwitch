@@ -110,8 +110,7 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
     }
 
     private List<ModifierMask> Modifiers() =>
-        new()
-        {
+        [
             ModifierMask.None,
             ModifierMask.Ctrl,
             ModifierMask.Shift,
@@ -125,5 +124,5 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
             ModifierMask.RightShift,
             ModifierMask.RightAlt,
             ModifierMask.RightMeta
-        };
+        ];
 }

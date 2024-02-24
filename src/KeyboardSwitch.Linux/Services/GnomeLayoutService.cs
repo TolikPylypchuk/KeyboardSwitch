@@ -25,6 +25,8 @@ internal sealed class GnomeLayoutService(X11Service x11, ILogger<GnomeLayoutServ
 
     private void EnableSwitchLayoutExtension()
     {
+        logger.LogDebug("Enabling the Switch Layout extension for GNOME");
+
         var command = Process.Start(Bash, $"-c \"command -v {GnomeExtensions}\"");
         command.WaitForExit();
 

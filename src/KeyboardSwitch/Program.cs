@@ -59,16 +59,19 @@ public static class Program
             var mainLoopRunner = host.Services.GetRequiredService<IMainLoopRunner>();
             var applicationLifetime = host.Services.GetRequiredService<IHostApplicationLifetime>();
 
-            logger.LogInformation("KeyboardSwitch service execution started");
+            logger.LogInformation("Keyboard Switch service execution started");
 
             host.Start();
-            mainLoopRunner.RunMainLoop(applicationLifetime.ApplicationStopping);
+            mainLoopRunner.RunMainLoop(token: applicationLifetime.ApplicationStopping);
             host.WaitForShutdown();
 
-            logger.LogInformation("KeyboardSwitch service execution stopped");
+            logger.LogInformation("Keyboard Switch service execution stopped");
         } catch (Exception e) when (e is OperationCanceledException or TaskCanceledException)
         {
-            logger.LogInformation("KeyboardSwitch service execution cancelled");
+            logger.LogInformation("Keyboard Switch service execution cancelled");
+        } catch (Exception e)
+        {
+            logger.LogCritical(e, "Keyboard Switch service has crashed");
         } finally
         {
             mutex.ReleaseMutex();

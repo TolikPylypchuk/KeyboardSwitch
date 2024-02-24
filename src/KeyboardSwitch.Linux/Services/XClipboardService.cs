@@ -37,8 +37,11 @@ internal sealed class XClipboardService : IClipboardService
 
     public async Task<string?> GetTextAsync()
     {
+        this.logger.LogDebug("Getting the text from the clipboard");
+
         if (XLib.XGetSelectionOwner(this.x11.Display, this.x11.ClipboardAtom) == IntPtr.Zero)
         {
+            this.logger.LogDebug("Clipboard selection owner is absent, so there's no text to get");
             return null;
         }
 
@@ -56,6 +59,8 @@ internal sealed class XClipboardService : IClipboardService
 
     public Task SetTextAsync(string text)
     {
+        this.logger.LogDebug("Setting the text into the clipboard");
+
         this.storedText = text;
         XLib.XSetSelectionOwner(this.x11.Display, this.x11.ClipboardAtom, this.windowHandle, IntPtr.Zero);
 

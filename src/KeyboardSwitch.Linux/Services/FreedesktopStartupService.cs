@@ -28,11 +28,11 @@ internal sealed class FreedesktopStartupService(
 
     public bool IsStartupConfigured()
     {
-        logger.LogDebug("Checking if the KeyboardSwitch service is configured to run on startup");
+        logger.LogDebug("Checking if the Keyboard Switch service is configured to run on startup");
 
         bool isConfigured = File.Exists(this.startupFilePath);
 
-        logger.LogDebug("KeyboardSwitch is configured to run on startup: {IsConfigured}", isConfigured);
+        logger.LogDebug("Keyboard Switch is configured to run on startup: {IsConfigured}", isConfigured);
 
         return isConfigured;
     }
@@ -40,7 +40,7 @@ internal sealed class FreedesktopStartupService(
     public void ConfigureStartup(bool startup)
     {
         logger.LogDebug(
-            "Configuring to {Action} running the KeyboardSwitch service on startup", startup ? "start" : "stop");
+            "Configuring to {Action} running the Keyboard Switch service on startup", startup ? "start" : "stop");
 
         if (startup)
         {

@@ -8,6 +8,5 @@ global using KeyboardSwitch.Core.Services.Layout;
 global using KeyboardSwitch.Core.Services.Settings;
 global using KeyboardSwitch.Core.Services.Switching;
 global using KeyboardSwitch.Core.Settings;
-global using KeyboardSwitch.Services;
 
 global using static KeyboardSwitch.Core.Util;

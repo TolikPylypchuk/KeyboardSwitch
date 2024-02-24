@@ -43,10 +43,10 @@ internal sealed class WinLayoutService(ILogger<WinLayoutService> logger) : Cachi
 
         if (success)
         {
-            logger.LogDebug("Posted the input lang change message to the foreground window");
+            logger.LogDebug("Posted the input language change message to the foreground window");
         } else
         {
-            logger.LogError("Failed to post the input lang change message to the foreground window");
+            logger.LogError("Failed to post the input language change message to the foreground window");
         }
     }
 
@@ -115,7 +115,7 @@ internal sealed class WinLayoutService(ILogger<WinLayoutService> logger) : Cachi
             return CultureInfo.GetCultureInfo(lcid);
         } catch (CultureNotFoundException e)
         {
-            logger.LogError(e, "Did not find culture for layout: {Layout} (LCID {Lcid})", layoutName, lcid);
+            logger.LogError(e, "Did not find the culture for layout: {Layout} (LCID {Lcid})", layoutName, lcid);
             return CultureInfo.InvariantCulture;
         }
     }

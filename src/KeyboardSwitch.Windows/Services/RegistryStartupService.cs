@@ -11,12 +11,12 @@ internal class RegistryStartupService(IOptions<GlobalSettings> globalSettings, I
 
     public bool IsStartupConfigured()
     {
-        logger.LogDebug("Checking if the KeyboardSwitch service is configured to run on startup");
+        logger.LogDebug("Checking if the Keyboard Switch service is configured to run on startup");
 
         using var key = Registry.CurrentUser.OpenSubKey(StartupRegistryKey);
         bool isConfigured = key?.GetValue(StartupRegistryName) != null;
 
-        logger.LogDebug("KeyboardSwitch is configured to run on startup: {IsConfigured}", isConfigured);
+        logger.LogDebug("Keyboard Switch is configured to run on startup: {IsConfigured}", isConfigured);
 
         return isConfigured;
     }
@@ -24,7 +24,7 @@ internal class RegistryStartupService(IOptions<GlobalSettings> globalSettings, I
     public void ConfigureStartup(bool startup)
     {
         logger.LogDebug(
-            "Configuring to {Action} running the KeyboardSwitch service on startup", startup ? "start" : "stop");
+            "Configuring to {Action} running the Keyboard Switch service on startup", startup ? "start" : "stop");
 
         using var startupKey = Registry.CurrentUser.OpenSubKey(StartupRegistryKey, true);
 
@@ -37,7 +37,7 @@ internal class RegistryStartupService(IOptions<GlobalSettings> globalSettings, I
         }
 
         logger.LogDebug(
-            "Configured to {Action} running the KeyboardSwitch service on startup", startup ? "start" : "stop");
+            "Configured to {Action} running the Keyboard Switch service on startup", startup ? "start" : "stop");
     }
 
     private string GetServicePath()

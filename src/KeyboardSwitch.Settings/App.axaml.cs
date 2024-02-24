@@ -21,9 +21,10 @@ using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 
+using Serilog;
+
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
-using Splat.Microsoft.Extensions.Logging;
 using Splat.Serilog;
 
 public class App : Application, IEnableLogger
@@ -67,11 +68,11 @@ public class App : Application, IEnableLogger
 
         this.Log().Info("Starting the settings app");
 
-        GetRequiredService<IInitialSetupService>().InitializeKeyboardSwitchSetup();
+        this.serviceProvider.GetRequiredService<IInitialSetupService>().InitializeKeyboardSwitchSetup();
 
         try
         {
-            var appSettings = await GetRequiredService<IAppSettingsService>().GetAppSettings();
+            var appSettings = await this.serviceProvider.GetRequiredService<IAppSettingsService>().GetAppSettings();
             var mainViewModel = new MainViewModel(appSettings);
             openExternally.InvokeCommand(mainViewModel.OpenExternally);
 
@@ -95,16 +96,14 @@ public class App : Application, IEnableLogger
         var environment = PlatformDependent(windows: () => "windows", macos: () => "macos", linux: () => "linux");
         var genericProvider = this.JsonProvider(configDirectory, "appsettings.json");
         var platformSpecificProvider = this.JsonProvider(configDirectory, $"appsettings.{environment}.json");
+        var config = new ConfigurationRoot([genericProvider, platformSpecificProvider]);
 
-        var config = new ConfigurationRoot(
-            new List<IConfigurationProvider> { genericProvider, platformSpecificProvider });
-
-        var settingsSection = config.GetSection("Settings");
+        var logger = SerilogLoggerFactory.CreateLogger(config);
 
         services
             .AddOptions()
-            .AddLogging(logging => logging.AddSplat())
-            .Configure<GlobalSettings>(settingsSection)
+            .AddLogging(config => config.AddSerilog(logger))
+            .Configure<GlobalSettings>(config.GetSection("Settings"))
             .AddSingleton(Messages.ResourceManager)
             .AddSingleton<IActivationForViewFetcher>(new AvaloniaActivationForViewFetcher())
             .AddSuspensionDriver()
@@ -112,8 +111,8 @@ public class App : Application, IEnableLogger
             .AddNativeKeyboardSwitchServices(config)
             .UseMicrosoftDependencyResolver();
 
+        Locator.CurrentMutable.UseSerilogFullLogger(logger);
         Locator.CurrentMutable.InitializeSplat();
-        Locator.CurrentMutable.UseSerilogFullLogger(SerilogLoggerFactory.CreateLogger(config));
 
         Locator.CurrentMutable.InitializeReactiveUI(RegistrationNamespace.Avalonia);
         Locator.CurrentMutable.RegisterConstant(RxApp.TaskpoolScheduler, TaskPoolKey);

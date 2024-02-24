@@ -1,6 +1,6 @@
 namespace KeyboardSwitch.MacOS.Services;
 
-internal sealed class MacClipboardService : IClipboardService
+internal sealed class MacClipboardService(ILogger<MacClipboardService> logger) : IClipboardService
 {
     private static readonly IntPtr NSString = AppKit.GetClass("NSString");
     private static readonly IntPtr NSPasteboard = AppKit.GetClass("NSPasteboard");
@@ -29,6 +29,8 @@ internal sealed class MacClipboardService : IClipboardService
 
     public Task<string?> GetTextAsync()
     {
+        logger.LogDebug("Getting text from the clipboard");
+
         var ptr = AppKit.SendMessage(GeneralPasteboard, StringForType, NSStringPboardType);
         var charArray = AppKit.SendMessage(ptr, Utf8String);
         var result = Marshal.PtrToStringAnsi(charArray);
@@ -38,6 +40,8 @@ internal sealed class MacClipboardService : IClipboardService
 
     public Task SetTextAsync(string text)
     {
+        logger.LogDebug("Setting text into the clipboard");
+
         IntPtr str = default;
         try
         {
