@@ -9,7 +9,7 @@ public partial class Build
         .Description("Restores the projects")
         .Executes(() =>
         {
-            foreach (var project in this.GetProjects(includeInstaller: true))
+            foreach (var project in this.GetProjects(includeTests: true, includeInstaller: true))
             {
                 Log.Information("Restoring project {Name}", project.Name);
                 DotNetRestore(s => s
@@ -25,7 +25,7 @@ public partial class Build
         .DependsOn(this.Restore)
         .Executes(() =>
         {
-            foreach (var project in this.GetProjects(includeInstaller: true))
+            foreach (var project in this.GetProjects(includeTests: true, includeInstaller: true))
             {
                 Log.Information("Cleaning project {Name}", project.Name);
                 DotNetClean(s => s
@@ -58,9 +58,22 @@ public partial class Build
             }
         });
 
+    public Target Test => t => t
+        .Description("Tests the project")
+        .DependsOn(this.Compile)
+        .Executes(() =>
+        {
+            Log.Information("Running tests in the project {Name}", this.Solution.KeyboardSwitch_Tests.Name);
+
+            DotNetTest(s => s
+                .SetProjectFile(this.Solution.KeyboardSwitch_Tests)
+                .SetConfiguration(this.Configuration)
+                .SetNoRestore(true));
+        });
+
     public Target Publish => t => t
         .Description("Publishes the project")
-        .DependsOn(this.Compile)
+        .DependsOn(this.Test)
         .Requires(() => this.Configuration == Configuration.Release)
         .Executes(() =>
         {

@@ -25,7 +25,7 @@ public partial class Build
             ? path.Parent / (path.NameWithoutExtension + "-" + this.OutputFileSuffix + path.Extension)
             : path;
 
-    private IEnumerable<Project> GetProjects(bool includeInstaller = false)
+    private IEnumerable<Project> GetProjects(bool includeTests = false, bool includeInstaller = false)
     {
         yield return this.Solution.KeyboardSwitch_Core;
 
@@ -38,6 +38,11 @@ public partial class Build
 
         yield return this.Solution.KeyboardSwitch_Settings_Core;
         yield return this.Solution.KeyboardSwitch_Settings;
+
+        if (includeTests)
+        {
+            yield return this.Solution.KeyboardSwitch_Tests;
+        }
 
         if (includeInstaller)
         {
