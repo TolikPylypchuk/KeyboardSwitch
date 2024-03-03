@@ -4,8 +4,9 @@ using System.Reactive.Disposables;
 
 internal sealed class SharpHookService : Core.Disposable, IKeyboardHookService
 {
+    private static readonly TimeSpan KeyPressWaitThresshold = TimeSpan.FromSeconds(3);
+
     private DateTimeOffset lastKeyPress = DateTimeOffset.MinValue;
-    private readonly TimeSpan keyPressWaitThresshold = TimeSpan.FromSeconds(3);
 
     private readonly IReactiveGlobalHook hook;
     private readonly IScheduler scheduler;
@@ -27,13 +28,17 @@ internal sealed class SharpHookService : Core.Disposable, IKeyboardHookService
         IScheduler scheduler,
         ILogger<SharpHookService> logger)
     {
+        ArgumentNullException.ThrowIfNull(hook);
+        ArgumentNullException.ThrowIfNull(scheduler);
+        ArgumentNullException.ThrowIfNull(logger);
+
         this.hook = hook;
         this.scheduler = scheduler;
         this.logger = logger;
 
         this.hookSubscription = this.hook.KeyPressed
             .Merge(this.hook.KeyReleased)
-            .Delay(TimeSpan.FromMilliseconds(16))
+            .Delay(TimeSpan.FromMilliseconds(16), scheduler)
             .Subscribe(args =>
             {
                 if (args.RawEvent.Type == EventType.KeyPressed)
@@ -45,9 +50,6 @@ internal sealed class SharpHookService : Core.Disposable, IKeyboardHookService
                 }
             });
     }
-
-    ~SharpHookService() =>
-        this.Dispose(false);
 
     public IObservable<ModifierMask> HotKeyPressed =>
         this.hotKeyPressedSubject.AsObservable();
@@ -73,9 +75,9 @@ internal sealed class SharpHookService : Core.Disposable, IKeyboardHookService
 
     public void UnregisterAll()
     {
-        this.logger.LogDebug("Unregistering all hot keys");
-
         this.ThrowIfDisposed();
+
+        this.logger.LogDebug("Unregistering all hot keys");
 
         this.hotKeys.Clear();
         this.hotKeyPressedSubscriptions.Clear();
@@ -95,6 +97,9 @@ internal sealed class SharpHookService : Core.Disposable, IKeyboardHookService
         if (disposing)
         {
             this.logger.LogDebug("Destroying the global hook");
+
+            this.rawHotKeyPressedSubject.OnCompleted();
+            this.hotKeyPressedSubject.OnCompleted();
 
             this.hookSubscription.Dispose();
             this.rawHotKeyPressedSubject.Dispose();
@@ -124,7 +129,7 @@ internal sealed class SharpHookService : Core.Disposable, IKeyboardHookService
 
     private void HandleKeyDown(KeyCode keyCode)
     {
-        if (this.scheduler.Now - this.lastKeyPress > this.keyPressWaitThresshold)
+        if (this.scheduler.Now - this.lastKeyPress > KeyPressWaitThresshold)
         {
             this.pressedKeys.Clear();
         }

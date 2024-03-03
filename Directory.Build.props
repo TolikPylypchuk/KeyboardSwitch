@@ -65,4 +65,8 @@
     <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
     <StackTraceSupport>false</StackTraceSupport>
   </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="KeyboardSwitch.Tests" />
+  </ItemGroup>
 </Project>
