@@ -4,6 +4,7 @@ using System.Reactive;
 
 using KeyboardSwitch.Core.Services.Hook;
 
+using Microsoft.Extensions.Logging;
 using Microsoft.Reactive.Testing;
 
 using SharpHook.Native;
@@ -12,9 +13,11 @@ using SharpHook.Testing;
 
 using Xunit.Abstractions;
 
-public class SharpHookServiceTests(ITestOutputHelper output)
+public sealed class SharpHookServiceTests(ITestOutputHelper output)
 {
     private static readonly TimeSpan SmallDelay = TimeSpan.FromMilliseconds(32);
+
+    private readonly ILogger<SharpHookService> logger = XUnitLogger.Create<SharpHookService>(output);
 
     public static Arbitrary<SingleModifier> ArbitrarySingleModifier =>
         new ArbitrarySingleModifier();
@@ -40,9 +43,9 @@ public class SharpHookServiceTests(ITestOutputHelper output)
 
         using var hook = new TestGlobalHook();
         var scheduler = new TestScheduler();
-        var logger = XUnitLogger.Create<SharpHookService>(output);
 
-        using var service = new SharpHookService(new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, logger);
+        using var service = new SharpHookService(
+            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, this.logger);
 
         var observer = scheduler.CreateObserver<ModifierMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -73,9 +76,9 @@ public class SharpHookServiceTests(ITestOutputHelper output)
 
         using var hook = new TestGlobalHook();
         var scheduler = new TestScheduler();
-        var logger = XUnitLogger.Create<SharpHookService>(output);
 
-        using var service = new SharpHookService(new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, logger);
+        using var service = new SharpHookService(
+            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, this.logger);
 
         var observer = scheduler.CreateObserver<ModifierMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -111,9 +114,9 @@ public class SharpHookServiceTests(ITestOutputHelper output)
 
         using var hook = new TestGlobalHook();
         var scheduler = new TestScheduler();
-        var logger = XUnitLogger.Create<SharpHookService>(output);
 
-        using var service = new SharpHookService(new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, logger);
+        using var service = new SharpHookService(
+            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, this.logger);
 
         var observer = scheduler.CreateObserver<ModifierMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -149,9 +152,9 @@ public class SharpHookServiceTests(ITestOutputHelper output)
 
         using var hook = new TestGlobalHook();
         var scheduler = new TestScheduler();
-        var logger = XUnitLogger.Create<SharpHookService>(output);
 
-        using var service = new SharpHookService(new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, logger);
+        using var service = new SharpHookService(
+            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, this.logger);
 
         var observer = scheduler.CreateObserver<ModifierMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -179,9 +182,9 @@ public class SharpHookServiceTests(ITestOutputHelper output)
 
         using var hook = new TestGlobalHook();
         var scheduler = new TestScheduler();
-        var logger = XUnitLogger.Create<SharpHookService>(output);
 
-        using var service = new SharpHookService(new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, logger);
+        using var service = new SharpHookService(
+            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, this.logger);
 
         var observer = scheduler.CreateObserver<ModifierMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -213,9 +216,9 @@ public class SharpHookServiceTests(ITestOutputHelper output)
 
         using var hook = new TestGlobalHook();
         var scheduler = new TestScheduler();
-        var logger = XUnitLogger.Create<SharpHookService>(output);
 
-        using var service = new SharpHookService(new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, logger);
+        using var service = new SharpHookService(
+            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, this.logger);
 
         var observer = scheduler.CreateObserver<ModifierMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -246,9 +249,9 @@ public class SharpHookServiceTests(ITestOutputHelper output)
 
         using var hook = new TestGlobalHook();
         var scheduler = new TestScheduler();
-        var logger = XUnitLogger.Create<SharpHookService>(output);
 
-        using var service = new SharpHookService(new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, logger);
+        using var service = new SharpHookService(
+            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, this.logger);
 
         var observer = scheduler.CreateObserver<ModifierMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -275,9 +278,9 @@ public class SharpHookServiceTests(ITestOutputHelper output)
 
         using var hook = new TestGlobalHook();
         var scheduler = new TestScheduler();
-        var logger = XUnitLogger.Create<SharpHookService>(output);
 
-        var service = new SharpHookService(new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, logger);
+        var service = new SharpHookService(
+            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, this.logger);
 
         var observer = scheduler.CreateObserver<ModifierMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -299,9 +302,9 @@ public class SharpHookServiceTests(ITestOutputHelper output)
 
         using var hook = new TestGlobalHook();
         var scheduler = new TestScheduler();
-        var logger = XUnitLogger.Create<SharpHookService>(output);
 
-        using var service = new SharpHookService(new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, logger);
+        using var service = new SharpHookService(
+            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, this.logger);
 
         // Act
 
@@ -314,33 +317,6 @@ public class SharpHookServiceTests(ITestOutputHelper output)
         // Assert
 
         Assert.False(hook.IsRunning);
-    }
-
-    [Fact(DisplayName = "SharpHookService should throw if the global hook is null")]
-    public void HookNull()
-    {
-        var scheduler = new TestScheduler();
-        var logger = XUnitLogger.Create<SharpHookService>(output);
-
-        Assert.Throws<ArgumentNullException>(() => new SharpHookService(null!, scheduler, logger));
-    }
-
-    [Fact(DisplayName = "SharpHookService should throw if the scheduler is null")]
-    public void SchedulerNull()
-    {
-        using var hook = new ReactiveGlobalHookAdapter(new TestGlobalHook());
-        var logger = XUnitLogger.Create<SharpHookService>(output);
-
-        Assert.Throws<ArgumentNullException>(() => new SharpHookService(hook, null!, logger));
-    }
-
-    [Fact(DisplayName = "SharpHookService should throw if the logger is null")]
-    public void LoggerNull()
-    {
-        using var hook = new ReactiveGlobalHookAdapter(new TestGlobalHook());
-        var scheduler = new TestScheduler();
-
-        Assert.Throws<ArgumentNullException>(() => new SharpHookService(hook, scheduler, null!));
     }
 
     private void SimulateKeyEvents(

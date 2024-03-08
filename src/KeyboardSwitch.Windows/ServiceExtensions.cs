@@ -1,6 +1,7 @@
 namespace KeyboardSwitch.Windows;
 
 using System.Diagnostics.CodeAnalysis;
+using System.Reactive.Concurrency;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,7 +23,10 @@ public static class SerivceExtensions
             .AddSingleton<IClipboardService, WinClipboardService>()
             .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
             .AddSingleton<IUserActivitySimulator>(
-                sp => new SharpUserActivitySimulator(sp.GetRequiredService<IEventSimulator>(), KeyCode.VcLeftControl))
+                sp => new SharpUserActivitySimulator(
+                    sp.GetRequiredService<IEventSimulator>(),
+                    sp.GetRequiredService<IScheduler>(),
+                    KeyCode.VcLeftControl))
             .AddSingleton<IStartupService, RegistryStartupService>()
             .AddSingleton<IAutoConfigurationService, WinAutoConfigurationService>()
             .AddSingleton<IInitialSetupService, StartupSetupService>()

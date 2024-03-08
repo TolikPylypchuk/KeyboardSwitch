@@ -28,10 +28,6 @@ internal sealed class SharpHookService : Core.Disposable, IKeyboardHookService
         IScheduler scheduler,
         ILogger<SharpHookService> logger)
     {
-        ArgumentNullException.ThrowIfNull(hook);
-        ArgumentNullException.ThrowIfNull(scheduler);
-        ArgumentNullException.ThrowIfNull(logger);
-
         this.hook = hook;
         this.scheduler = scheduler;
         this.logger = logger;

@@ -1,5 +1,7 @@
 namespace KeyboardSwitch.Linux;
 
+using System.Reactive.Concurrency;
+
 using Microsoft.Extensions.Configuration;
 
 using SharpHook;
@@ -17,7 +19,10 @@ public static class ServiceExtensions
             .AddSingleton<IStartupService, FreedesktopStartupService>()
             .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
             .AddSingleton<IUserActivitySimulator>(
-                sp => new SharpUserActivitySimulator(sp.GetRequiredService<IEventSimulator>(), KeyCode.VcLeftControl))
+                sp => new SharpUserActivitySimulator(
+                    sp.GetRequiredService<IEventSimulator>(),
+                    sp.GetRequiredService<IScheduler>(),
+                    KeyCode.VcLeftControl))
             .AddSingleton<IAutoConfigurationService, XAutoConfigurationService>()
             .AddSingleton<IInitialSetupService, StartupSetupService>()
             .AddSingleton<IUserProvider, PosixUserProvider>()

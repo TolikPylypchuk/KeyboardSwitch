@@ -1,5 +1,7 @@
 namespace KeyboardSwitch.MacOS;
 
+using System.Reactive.Concurrency;
+
 using Microsoft.Extensions.Configuration;
 
 using SharpHook;
@@ -17,7 +19,10 @@ public static class ServiceExtensions
             .AddSingleton<IStartupService, LaunchdStartupService>()
             .AddSingleton<IServiceCommunicator, LaunchdServiceCommunicator>()
             .AddSingleton<IUserActivitySimulator>(
-                sp => new SharpUserActivitySimulator(sp.GetRequiredService<IEventSimulator>(), KeyCode.VcLeftMeta))
+                sp => new SharpUserActivitySimulator(
+                    sp.GetRequiredService<IEventSimulator>(),
+                    sp.GetRequiredService<IScheduler>(),
+                    KeyCode.VcLeftMeta))
             .AddSingleton<IAutoConfigurationService, MacAutoConfigurationService>()
             .AddSingleton<IInitialSetupService, LaunchdSetupService>()
             .AddSingleton<IUserProvider, PosixUserProvider>()
