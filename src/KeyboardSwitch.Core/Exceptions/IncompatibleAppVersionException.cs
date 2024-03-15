@@ -1,5 +1,8 @@
 namespace KeyboardSwitch.Core.Exceptions;
 
+using System.Diagnostics.CodeAnalysis;
+
+[ExcludeFromCodeCoverage]
 public sealed class IncompatibleAppVersionException : Exception
 {
     public IncompatibleAppVersionException()

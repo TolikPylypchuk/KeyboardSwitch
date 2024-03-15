@@ -1,7 +1,10 @@
 namespace KeyboardSwitch.Core;
 
+using System.Diagnostics.CodeAnalysis;
+
 public static class Util
 {
+    [ExcludeFromCodeCoverage]
     public static T PlatformDependent<T>(Func<T> windows, Func<T> macos, Func<T> linux)
     {
         if (OperatingSystem.IsWindows())
@@ -37,6 +40,7 @@ public static class Util
         return arg;
     }
 
+    [ExcludeFromCodeCoverage]
     public static string GetConfigDirectory()
     {
         var currentDirectory = Directory.GetCurrentDirectory();
@@ -45,6 +49,7 @@ public static class Util
             : currentDirectory;
     }
 
+    [ExcludeFromCodeCoverage]
     private static bool IsInMacOsBundle(string directory) =>
         OperatingSystem.IsMacOS() &&
             directory.Split(Path.DirectorySeparatorChar, StringSplitOptions.RemoveEmptyEntries)

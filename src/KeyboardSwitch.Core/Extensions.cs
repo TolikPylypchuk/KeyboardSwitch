@@ -1,6 +1,7 @@
 namespace KeyboardSwitch.Core;
 
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 public static class Extensions
@@ -30,6 +31,7 @@ public static class Extensions
             where (bit & (1 << index)) != 0
             select list[index];
 
+    [ExcludeFromCodeCoverage]
     public static void OpenInBrowser(this Uri uri) =>
         PlatformDependent(
             windows: () => Process.Start(new ProcessStartInfo { FileName = uri.ToString(), UseShellExecute = true }),
