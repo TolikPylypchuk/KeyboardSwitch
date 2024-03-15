@@ -4,6 +4,8 @@ using System.Reflection;
 
 public class AboutViewModel : ReactiveObject
 {
+    private readonly ObservableAsPropertyHelper<Version> latestVersion;
+
     public AboutViewModel()
     {
         this.AppVersion = Assembly.GetExecutingAssembly().GetName().Version!;
@@ -11,11 +13,12 @@ public class AboutViewModel : ReactiveObject
         this.GetNewVersion = ReactiveCommand.Create(this.OnGetNewVersion);
         this.OpenDocs = ReactiveCommand.Create(this.OnOpenDocs);
 
-        this.CheckForUpdates.ToPropertyEx(this, vm => vm.LatestVersion, initialValue: this.AppVersion);
+        this.latestVersion = this.CheckForUpdates
+            .ToProperty(this, vm => vm.LatestVersion, initialValue: this.AppVersion);
     }
 
     public Version AppVersion { get; }
-    public Version LatestVersion { [ObservableAsProperty] get; } = null!;
+    public Version LatestVersion => this.latestVersion.Value;
 
     public ReactiveCommand<Unit, Version> CheckForUpdates { get; }
     public ReactiveCommand<Unit, Unit> GetNewVersion { get; }

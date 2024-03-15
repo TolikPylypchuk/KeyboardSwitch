@@ -6,6 +6,8 @@ public sealed class ServiceViewModel : ReactiveObject
 {
     private readonly IServiceCommunicator serviceCommunicator;
 
+    private readonly ObservableAsPropertyHelper<ServiceStatus> serviceStatus;
+
     private bool isShutdownRequested = false;
 
     public ServiceViewModel(IServiceCommunicator? serviceCommunicator = null, IScheduler? scheduler = null)
@@ -16,7 +18,7 @@ public sealed class ServiceViewModel : ReactiveObject
 
         var serviceStatus = new Subject<ServiceStatus>();
 
-        serviceStatus.ToPropertyEx(this, vm => vm.ServiceStatus);
+        this.serviceStatus = serviceStatus.ToProperty(this, vm => vm.ServiceStatus);
 
         var canStartService = serviceStatus.Select(status => status == ServiceStatus.Stopped);
         var canStopService = serviceStatus.Select(status => status == ServiceStatus.Running);
@@ -36,7 +38,7 @@ public sealed class ServiceViewModel : ReactiveObject
             .Subscribe(serviceStatus);
     }
 
-    public ServiceStatus ServiceStatus { [ObservableAsProperty] get; }
+    public ServiceStatus ServiceStatus => this.serviceStatus.Value;
 
     public ReactiveCommand<Unit, Unit> StartService { get; }
     public ReactiveCommand<Unit, Unit> StopService { get; }

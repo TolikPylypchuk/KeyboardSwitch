@@ -4,6 +4,19 @@ using SharpHook.Native;
 
 public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, PreferencesViewModel>
 {
+    private bool instantSwitching;
+    private bool switchLayout;
+    private bool startup;
+    private bool showUninstalledLayoutsMessage;
+    private ModifierMask forwardModifierFirst;
+    private ModifierMask forwardModifierSecond;
+    private ModifierMask forwardModifierThird;
+    private ModifierMask backwardModifierFirst;
+    private ModifierMask backwardModifierSecond;
+    private ModifierMask backwardModifierThird;
+    private int pressCount;
+    private int waitMilliseconds;
+
     private readonly SourceList<ModifierMask> forwardModifierKeysSource = new();
     private readonly SourceList<ModifierMask> backwardModifierKeysSource = new();
 
@@ -40,44 +53,77 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
 
     public PreferencesModel PreferencesModel { get; }
 
-    [Reactive]
-    public bool InstantSwitching { get; set; }
+    public bool InstantSwitching
+    {
+        get => this.instantSwitching;
+        set => this.RaiseAndSetIfChanged(ref this.instantSwitching, value);
+    }
 
-    [Reactive]
-    public bool SwitchLayout { get; set; }
+    public bool SwitchLayout
+    {
+        get => this.switchLayout;
+        set => this.RaiseAndSetIfChanged(ref this.switchLayout, value);
+    }
 
-    [Reactive]
-    public bool Startup { get; set; }
+    public bool Startup
+    {
+        get => this.startup;
+        set => this.RaiseAndSetIfChanged(ref this.startup, value);
+    }
 
-    [Reactive]
-    public bool ShowUninstalledLayoutsMessage { get; set; }
+    public bool ShowUninstalledLayoutsMessage
+    {
+        get => this.showUninstalledLayoutsMessage;
+        set => this.RaiseAndSetIfChanged(ref this.showUninstalledLayoutsMessage, value);
+    }
 
-    [Reactive]
-    public bool ShowConverter { get; set; }
+    public ModifierMask ForwardModifierFirst
+    {
+        get => this.forwardModifierFirst;
+        set => this.RaiseAndSetIfChanged(ref this.forwardModifierFirst, value);
+    }
 
-    [Reactive]
-    public ModifierMask ForwardModifierFirst { get; set; }
+    public ModifierMask ForwardModifierSecond
+    {
+        get => this.forwardModifierSecond;
+        set => this.RaiseAndSetIfChanged(ref this.forwardModifierSecond, value);
+    }
 
-    [Reactive]
-    public ModifierMask ForwardModifierSecond { get; set; }
+    public ModifierMask ForwardModifierThird
+    {
+        get => this.forwardModifierThird;
+        set => this.RaiseAndSetIfChanged(ref this.forwardModifierThird, value);
+    }
 
-    [Reactive]
-    public ModifierMask ForwardModifierThird { get; set; }
+    public ModifierMask BackwardModifierFirst
+    {
+        get => this.backwardModifierFirst;
+        set => this.RaiseAndSetIfChanged(ref this.backwardModifierFirst, value);
+    }
 
-    [Reactive]
-    public ModifierMask BackwardModifierFirst { get; set; }
+    public ModifierMask BackwardModifierSecond
+    {
+        get => this.backwardModifierSecond;
+        set => this.RaiseAndSetIfChanged(ref this.backwardModifierSecond, value);
+    }
 
-    [Reactive]
-    public ModifierMask BackwardModifierSecond { get; set; }
+    public ModifierMask BackwardModifierThird
+    {
+        get => this.backwardModifierThird;
+        set => this.RaiseAndSetIfChanged(ref this.backwardModifierThird, value);
+    }
 
-    [Reactive]
-    public ModifierMask BackwardModifierThird { get; set; }
+    public int PressCount
+    {
+        get => this.pressCount;
+        set => this.RaiseAndSetIfChanged(ref this.pressCount, value);
+    }
 
-    [Reactive]
-    public int PressCount { get; set; }
-
-    [Reactive]
-    public int WaitMilliseconds { get; set; }
+    public int WaitMilliseconds
+    {
+        get => this.waitMilliseconds;
+        set => this.RaiseAndSetIfChanged(ref this.waitMilliseconds, value);
+    }
 
     public ValidationHelper ModifierKeysAreDifferentRule { get; }
     public ValidationHelper SwitchMethodsAreDifferentRule { get; }

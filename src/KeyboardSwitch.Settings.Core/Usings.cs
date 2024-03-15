@@ -22,7 +22,6 @@ global using KeyboardSwitch.Settings.Core.Models;
 global using Microsoft.Extensions.Logging;
 
 global using ReactiveUI;
-global using ReactiveUI.Fody.Helpers;
 global using ReactiveUI.Validation.Extensions;
 global using ReactiveUI.Validation.Helpers;
 

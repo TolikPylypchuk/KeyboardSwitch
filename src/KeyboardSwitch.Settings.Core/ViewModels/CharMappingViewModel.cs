@@ -10,6 +10,10 @@ public sealed class CharMappingViewModel : ReactiveForm<CharMappingModel, CharMa
 
     private readonly ReadOnlyObservableCollection<LayoutViewModel> layouts;
 
+    private readonly ObservableAsPropertyHelper<bool> hasNewLayouts;
+    private readonly ObservableAsPropertyHelper<bool> canRemoveLayouts;
+    private readonly ObservableAsPropertyHelper<bool> shouldRemoveLayouts;
+
     public CharMappingViewModel(
         CharMappingModel charMappingModel,
         IObservable<bool> removeLayoutsEnabled,
@@ -39,7 +43,10 @@ public sealed class CharMappingViewModel : ReactiveForm<CharMappingModel, CharMa
         this.AutoConfigure = ReactiveCommand.Create(this.OnAutoConfigure, canAutoConfigure);
         this.RemoveLayouts = ReactiveCommand.Create(() => { });
 
-        this.ConfigureLayoutProperties(removeLayoutsEnabled);
+        this.hasNewLayouts = this.ConfigureHasNewLayouts();
+        this.canRemoveLayouts = this.ConfigureCanRemoveLayouts(removeLayoutsEnabled);
+        this.shouldRemoveLayouts = this.ConfigureShouldRemoveLayouts();
+
         this.CopyProperties();
         this.EnableChangeTracking();
     }
@@ -48,9 +55,9 @@ public sealed class CharMappingViewModel : ReactiveForm<CharMappingModel, CharMa
 
     public ReadOnlyObservableCollection<LayoutViewModel> Layouts => this.layouts;
 
-    public bool HasNewLayouts { [ObservableAsProperty] get; }
-    public bool CanRemoveLayouts { [ObservableAsProperty] get; }
-    public bool ShouldRemoveLayouts { [ObservableAsProperty] get; }
+    public bool HasNewLayouts => this.hasNewLayouts.Value;
+    public bool CanRemoveLayouts => this.canRemoveLayouts.Value;
+    public bool ShouldRemoveLayouts => this.shouldRemoveLayouts.Value;
 
     public ReactiveCommand<Unit, Unit> AutoConfigure { get; }
     public ReactiveCommand<Unit, Unit> RemoveLayouts { get; }
@@ -100,27 +107,27 @@ public sealed class CharMappingViewModel : ReactiveForm<CharMappingModel, CharMa
         });
     }
 
-    private void ConfigureLayoutProperties(IObservable<bool> removeLayoutsEnabled)
-    {
+    private ObservableAsPropertyHelper<bool> ConfigureHasNewLayouts() =>
         this.Layouts.ToObservableChangeSet()
             .AutoRefresh()
             .ToCollection()
             .Select(layouts => layouts.Any(layout => layout.IsNew))
             .Merge(this.Save.Select(_ => false))
-            .ToPropertyEx(this, vm => vm.HasNewLayouts, initialValue: false);
+            .ToProperty(this, vm => vm.HasNewLayouts, initialValue: false);
 
+    private ObservableAsPropertyHelper<bool> ConfigureCanRemoveLayouts(IObservable<bool> removeLayoutsEnabled) =>
         this.removableLayoutIdsSource.Connect()
             .Count()
             .Select(count => count > 0)
             .Merge(this.RemoveLayouts.Select(_ => false))
             .CombineLatest(removeLayoutsEnabled, (a, b) => a && b)
-            .ToPropertyEx(this, vm => vm.CanRemoveLayouts, initialValue: false);
+            .ToProperty(this, vm => vm.CanRemoveLayouts, initialValue: false);
 
+    private ObservableAsPropertyHelper<bool> ConfigureShouldRemoveLayouts() =>
         this.RemoveLayouts.Select(_ => true)
             .Merge(this.Save.Select(_ => false))
             .Merge(this.Cancel.Select(_ => false))
-            .ToPropertyEx(this, vm => vm.ShouldRemoveLayouts, initialValue: false);
-    }
+            .ToProperty(this, vm => vm.ShouldRemoveLayouts, initialValue: false);
 
     private void OnAutoConfigure()
     {
