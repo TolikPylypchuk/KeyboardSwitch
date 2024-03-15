@@ -1,5 +1,3 @@
-namespace KeyboardSwitch;
-
 using System.Diagnostics;
 using System.Globalization;
 using System.Reactive.Concurrency;
@@ -16,7 +14,9 @@ using KeyboardSwitch.Linux;
 
 using Serilog;
 
-using ILogger = ILogger; // From Microsoft.Extensions.Logging
+using ILogger = Microsoft.Extensions.Logging.ILogger;
+
+namespace KeyboardSwitch;
 
 public static class Program
 {

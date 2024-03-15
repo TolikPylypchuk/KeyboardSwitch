@@ -1,8 +1,8 @@
-namespace KeyboardSwitch.Core;
-
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
+
+namespace KeyboardSwitch.Core;
 
 public static class Extensions
 {

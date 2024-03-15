@@ -1,7 +1,7 @@
-namespace KeyboardSwitch.Build.GitHub;
-
 using Nuke.Common.CI.GitHubActions.Configuration;
 using Nuke.Common.Utilities;
+
+namespace KeyboardSwitch.Build.GitHub;
 
 public class GitHubActionJob : GitHubActionsJob
 {

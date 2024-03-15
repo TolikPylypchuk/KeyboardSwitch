@@ -1,7 +1,5 @@
 namespace KeyboardSwitch.MacOS.Services;
 
-using System.Diagnostics;
-
 internal sealed class LaunchdServiceCommunicator(
     INamedPipeService namedPipeService,
     IOptions<GlobalSettings> globalSettings,

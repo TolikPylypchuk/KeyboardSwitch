@@ -1,7 +1,7 @@
-namespace KeyboardSwitch.Windows.Services;
-
 using System.Reactive.Disposables;
 using System.Runtime.InteropServices;
+
+namespace KeyboardSwitch.Windows.Services;
 
 internal sealed class WinClipboardService(ILogger<WinClipboardService> logger) : IClipboardService
 {

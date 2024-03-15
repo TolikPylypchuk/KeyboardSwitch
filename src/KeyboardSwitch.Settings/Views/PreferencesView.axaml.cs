@@ -1,6 +1,6 @@
-namespace KeyboardSwitch.Settings.Views;
+using Convert = KeyboardSwitch.Settings.Converters.Convert;
 
-using Convert = Converters.Convert;
+namespace KeyboardSwitch.Settings.Views;
 
 public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
 {

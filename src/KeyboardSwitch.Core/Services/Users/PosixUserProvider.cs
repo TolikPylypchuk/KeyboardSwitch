@@ -1,6 +1,6 @@
-namespace KeyboardSwitch.Core.Services.Users;
-
 using System.Diagnostics;
+
+namespace KeyboardSwitch.Core.Services.Users;
 
 public sealed class PosixUserProvider : IUserProvider
 {

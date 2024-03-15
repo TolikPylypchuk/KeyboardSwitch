@@ -1,6 +1,6 @@
-namespace KeyboardSwitch.Build.GitHub;
-
 using Nuke.Common.CI.GitHubActions;
+
+namespace KeyboardSwitch.Build.GitHub;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public sealed class GitHubActionAttribute(string id, string name, GitHubActionsImage image) : Attribute

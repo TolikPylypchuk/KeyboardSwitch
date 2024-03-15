@@ -1,11 +1,11 @@
-namespace KeyboardSwitch.MacOS;
-
 using System.Reactive.Concurrency;
 
 using Microsoft.Extensions.Configuration;
 
 using SharpHook;
 using SharpHook.Native;
+
+namespace KeyboardSwitch.MacOS;
 
 public static class ServiceExtensions
 {

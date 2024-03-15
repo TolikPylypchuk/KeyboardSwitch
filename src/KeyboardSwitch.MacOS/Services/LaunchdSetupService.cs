@@ -1,6 +1,6 @@
-namespace KeyboardSwitch.MacOS.Services;
-
 using System.IO.Abstractions;
+
+namespace KeyboardSwitch.MacOS.Services;
 
 internal sealed class LaunchdSetupService(
     IUserProvider userProvider,

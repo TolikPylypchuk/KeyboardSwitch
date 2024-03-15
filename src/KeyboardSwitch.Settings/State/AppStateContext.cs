@@ -1,6 +1,6 @@
-namespace KeyboardSwitch.Settings.State;
-
 using System.Text.Json.Serialization;
+
+namespace KeyboardSwitch.Settings.State;
 
 [JsonSerializable(typeof(AppState))]
 [JsonSourceGenerationOptions(WriteIndented = true)]

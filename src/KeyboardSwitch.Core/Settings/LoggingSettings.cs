@@ -1,6 +1,6 @@
-namespace KeyboardSwitch.Core.Settings;
-
 using Serilog.Events;
+
+namespace KeyboardSwitch.Core.Settings;
 
 public sealed class LoggingSettings
 {

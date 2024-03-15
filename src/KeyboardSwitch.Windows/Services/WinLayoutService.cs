@@ -1,7 +1,7 @@
-namespace KeyboardSwitch.Windows.Services;
-
 using System.ComponentModel;
 using System.Globalization;
+
+namespace KeyboardSwitch.Windows.Services;
 
 internal sealed class WinLayoutService(ILogger<WinLayoutService> logger) : CachingLayoutService
 {

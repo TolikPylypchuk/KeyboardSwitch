@@ -1,5 +1,3 @@
-namespace KeyboardSwitch.Tests.Services;
-
 using System.Collections.Immutable;
 using System.IO.Abstractions.TestingHelpers;
 using System.Reflection;
@@ -15,6 +13,10 @@ using KeyboardSwitch.Core.Settings;
 using Microsoft.Extensions.Options;
 
 using NSubstitute.ExceptionExtensions;
+
+using SharpHook.Native;
+
+namespace KeyboardSwitch.Tests.Services;
 
 public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
 {

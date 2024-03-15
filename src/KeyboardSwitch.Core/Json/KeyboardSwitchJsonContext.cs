@@ -1,6 +1,6 @@
-namespace KeyboardSwitch.Core.Json;
-
 using System.Text.Json.Serialization;
+
+namespace KeyboardSwitch.Core.Json;
 
 [JsonSerializable(typeof(AppSettings))]
 [JsonSerializable(typeof(List<string>))]

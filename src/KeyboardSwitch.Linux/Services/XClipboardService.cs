@@ -1,8 +1,6 @@
-namespace KeyboardSwitch.Linux.Services;
-
 using System.Text;
 
-using Microsoft.Extensions.Logging;
+namespace KeyboardSwitch.Linux.Services;
 
 internal sealed class XClipboardService : IClipboardService
 {

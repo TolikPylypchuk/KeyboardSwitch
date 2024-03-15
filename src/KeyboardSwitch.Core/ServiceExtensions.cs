@@ -1,7 +1,7 @@
-namespace KeyboardSwitch.Core;
-
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Abstractions;
+
+namespace KeyboardSwitch.Core;
 
 [ExcludeFromCodeCoverage]
 public static class ServiceExtensions

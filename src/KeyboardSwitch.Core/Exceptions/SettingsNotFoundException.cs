@@ -1,6 +1,6 @@
-namespace KeyboardSwitch.Core.Exceptions;
-
 using System.Diagnostics.CodeAnalysis;
+
+namespace KeyboardSwitch.Core.Exceptions;
 
 [ExcludeFromCodeCoverage]
 public sealed class SettingsNotFoundException : Exception

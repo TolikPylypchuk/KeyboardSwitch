@@ -1,5 +1,3 @@
-namespace KeyboardSwitch.Settings;
-
 using System.Reactive.Subjects;
 using System.Reflection;
 
@@ -26,6 +24,8 @@ using Serilog;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
 using Splat.Serilog;
+
+namespace KeyboardSwitch.Settings;
 
 public class App : Application, IEnableLogger
 {

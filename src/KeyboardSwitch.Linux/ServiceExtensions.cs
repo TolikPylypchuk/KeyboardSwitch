@@ -1,11 +1,11 @@
-namespace KeyboardSwitch.Linux;
-
 using System.Reactive.Concurrency;
 
 using Microsoft.Extensions.Configuration;
 
 using SharpHook;
 using SharpHook.Native;
+
+namespace KeyboardSwitch.Linux;
 
 public static class ServiceExtensions
 {

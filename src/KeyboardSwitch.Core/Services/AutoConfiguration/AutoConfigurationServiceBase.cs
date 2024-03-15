@@ -1,6 +1,6 @@
-namespace KeyboardSwitch.Core.Services.AutoConfiguration;
-
 using System.Collections.ObjectModel;
+
+namespace KeyboardSwitch.Core.Services.AutoConfiguration;
 
 public abstract class AutoConfigurationServiceBase : IAutoConfigurationService
 {

@@ -1,6 +1,6 @@
-namespace KeyboardSwitch.Settings.State;
-
 using Microsoft.Extensions.DependencyInjection;
+
+namespace KeyboardSwitch.Settings.State;
 
 public static class Extensions
 {

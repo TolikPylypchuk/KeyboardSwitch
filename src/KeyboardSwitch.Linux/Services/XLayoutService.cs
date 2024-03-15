@@ -1,7 +1,6 @@
-namespace KeyboardSwitch.Linux.Services;
-
-using System.Runtime.InteropServices;
 using System.Text;
+
+namespace KeyboardSwitch.Linux.Services;
 
 internal class XLayoutService(X11Service x11, ILogger<XLayoutService> logger) : CachingLayoutService
 {

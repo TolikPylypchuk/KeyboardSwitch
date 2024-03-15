@@ -1,7 +1,7 @@
-namespace KeyboardSwitch.Build.GitHub;
-
 using Nuke.Common.CI.GitHubActions.Configuration;
 using Nuke.Common.Utilities;
+
+namespace KeyboardSwitch.Build.GitHub;
 
 /// <summary>
 /// Based on <see cref="GitHubActionsArtifactStep" />, but uses version 4 of the actions/upload-artifact action.

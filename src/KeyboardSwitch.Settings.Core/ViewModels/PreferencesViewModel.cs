@@ -1,6 +1,6 @@
-namespace KeyboardSwitch.Settings.Core.ViewModels;
-
 using SharpHook.Native;
+
+namespace KeyboardSwitch.Settings.Core.ViewModels;
 
 public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, PreferencesViewModel>
 {

@@ -1,9 +1,9 @@
-namespace KeyboardSwitch.Core.Services.InitialSetup;
-
 using System.IO.Abstractions;
 
 using KeyboardSwitch.Core.Services.Startup;
 using KeyboardSwitch.Core.Services.Users;
+
+namespace KeyboardSwitch.Core.Services.InitialSetup;
 
 public class StartupSetupService(
     IStartupService startupService,

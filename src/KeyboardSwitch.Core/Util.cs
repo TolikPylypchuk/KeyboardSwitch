@@ -1,6 +1,6 @@
-namespace KeyboardSwitch.Core;
-
 using System.Diagnostics.CodeAnalysis;
+
+namespace KeyboardSwitch.Core;
 
 public static class Util
 {

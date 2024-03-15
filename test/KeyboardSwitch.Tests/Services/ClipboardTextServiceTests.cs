@@ -1,5 +1,3 @@
-namespace KeyboardSwitch.Tests.Services;
-
 using System.Collections.Immutable;
 
 using KeyboardSwitch.Core.Services.Clipboard;
@@ -7,6 +5,10 @@ using KeyboardSwitch.Core.Services.Settings;
 using KeyboardSwitch.Core.Services.Simulation;
 using KeyboardSwitch.Core.Services.Text;
 using KeyboardSwitch.Core.Settings;
+
+using SharpHook.Native;
+
+namespace KeyboardSwitch.Tests.Services;
 
 public sealed class ClipboardTextServiceTests(ITestOutputHelper output)
 {

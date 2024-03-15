@@ -1,6 +1,6 @@
-namespace KeyboardSwitch.Settings.Core.ViewModels;
-
 using System.Linq.Expressions;
+
+namespace KeyboardSwitch.Settings.Core.ViewModels;
 
 public abstract class ReactiveForm<TModel, TForm> : ReactiveValidationObject, IReactiveForm
     where TModel : class

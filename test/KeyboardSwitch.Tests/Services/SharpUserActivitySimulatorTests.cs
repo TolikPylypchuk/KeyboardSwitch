@@ -1,8 +1,9 @@
-namespace KeyboardSwitch.Tests.Services;
-
 using KeyboardSwitch.Core.Services.Simulation;
 
+using SharpHook.Native;
 using SharpHook.Testing;
+
+namespace KeyboardSwitch.Tests.Services;
 
 public sealed class SharpUserActivitySimulatorTests
 {

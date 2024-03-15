@@ -11,6 +11,4 @@ global using Microsoft.Reactive.Testing;
 
 global using NSubstitute;
 
-global using SharpHook.Native;
-
 global using Xunit.Abstractions;

@@ -1,5 +1,3 @@
-namespace KeyboardSwitch.Build.GitHub;
-
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -8,6 +6,8 @@ using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.CI.GitHubActions.Configuration;
 using Nuke.Common.Execution;
 using Nuke.Common.Utilities;
+
+namespace KeyboardSwitch.Build.GitHub;
 
 /// <summary>
 /// Based on <see cref="GitHubActionsAttribute" />, but allows multiple job definitions in the same file.

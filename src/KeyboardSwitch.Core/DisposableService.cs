@@ -1,11 +1,11 @@
-namespace KeyboardSwitch.Core;
-
 using System.Diagnostics.CodeAnalysis;
 
-public abstract class Disposable : IDisposable
+namespace KeyboardSwitch.Core;
+
+public abstract class DisposableService : IDisposable
 {
     [ExcludeFromCodeCoverage]
-    ~Disposable() =>
+    ~DisposableService() =>
         this.Dispose(false);
 
     protected bool Disposed { get; set; } = false;

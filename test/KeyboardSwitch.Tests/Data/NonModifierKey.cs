@@ -1,6 +1,8 @@
-namespace KeyboardSwitch.Tests.Data;
-
 using KeyboardSwitch.Core.Keyboard;
+
+using SharpHook.Native;
+
+namespace KeyboardSwitch.Tests.Data;
 
 public sealed record NonModifierKey(KeyCode Value);
 

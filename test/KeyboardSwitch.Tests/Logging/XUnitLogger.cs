@@ -1,10 +1,6 @@
-namespace KeyboardSwitch.Tests.Logging;
-
 using System.Text;
 
-using Microsoft.Extensions.Logging;
-
-using Xunit.Abstractions;
+namespace KeyboardSwitch.Tests.Logging;
 
 public class XUnitLogger(
     ITestOutputHelper testOutputHelper,

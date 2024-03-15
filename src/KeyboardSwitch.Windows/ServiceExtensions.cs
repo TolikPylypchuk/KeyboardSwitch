@@ -1,5 +1,3 @@
-namespace KeyboardSwitch.Windows;
-
 using System.Diagnostics.CodeAnalysis;
 using System.Reactive.Concurrency;
 
@@ -8,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 using SharpHook;
 using SharpHook.Native;
+
+namespace KeyboardSwitch.Windows;
 
 public static class SerivceExtensions
 {

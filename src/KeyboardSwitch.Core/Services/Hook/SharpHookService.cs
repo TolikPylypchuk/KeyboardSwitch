@@ -1,8 +1,8 @@
-namespace KeyboardSwitch.Core.Services.Hook;
-
 using System.Reactive.Disposables;
 
-internal sealed class SharpHookService : Core.Disposable, IKeyboardHookService
+namespace KeyboardSwitch.Core.Services.Hook;
+
+internal sealed class SharpHookService : Core.DisposableService, IKeyboardHookService
 {
     private static readonly TimeSpan KeyPressWaitThresshold = TimeSpan.FromSeconds(3);
 

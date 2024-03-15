@@ -1,5 +1,3 @@
-namespace KeyboardSwitch.Core.Logging;
-
 using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.Extensions.Configuration;
@@ -7,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
+
+namespace KeyboardSwitch.Core.Logging;
 
 [ExcludeFromCodeCoverage]
 public static class SerilogLoggerFactory

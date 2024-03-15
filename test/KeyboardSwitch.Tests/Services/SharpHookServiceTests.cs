@@ -1,12 +1,10 @@
-namespace KeyboardSwitch.Tests.Services;
-
-using System.Reactive;
-
 using KeyboardSwitch.Core.Services.Hook;
 
 using SharpHook.Native;
 using SharpHook.Reactive;
 using SharpHook.Testing;
+
+namespace KeyboardSwitch.Tests.Services;
 
 public sealed class SharpHookServiceTests(ITestOutputHelper output)
 {

@@ -1,6 +1,6 @@
 namespace KeyboardSwitch.Core;
 
-public abstract class AsyncDisposable : Disposable, IAsyncDisposable
+public abstract class AsyncDisposableService : DisposableService, IAsyncDisposable
 {
     public async ValueTask DisposeAsync()
     {

@@ -1,6 +1,6 @@
-namespace KeyboardSwitch.Windows.Services;
-
 using System.Collections.Immutable;
+
+namespace KeyboardSwitch.Windows.Services;
 
 internal class WinAutoConfigurationService : AutoConfigurationServiceBase
 {

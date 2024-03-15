@@ -1,6 +1,6 @@
-namespace KeyboardSwitch.Settings.Core.ViewModels;
-
 using System.Reflection;
+
+namespace KeyboardSwitch.Settings.Core.ViewModels;
 
 public class AboutViewModel : ReactiveObject
 {

@@ -1,8 +1,8 @@
-namespace KeyboardSwitch.Settings.State;
-
 using System.Text.Json;
 
 using Microsoft.Extensions.Options;
+
+namespace KeyboardSwitch.Settings.State;
 
 internal sealed class JsonSuspensionDriver(IOptions<GlobalSettings> settings) : ISuspensionDriver
 {

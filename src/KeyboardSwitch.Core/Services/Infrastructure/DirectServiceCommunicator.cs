@@ -1,7 +1,7 @@
-namespace KeyboardSwitch.Core.Services.Infrastructure;
-
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+
+namespace KeyboardSwitch.Core.Services.Infrastructure;
 
 [ExcludeFromCodeCoverage]
 public class DirectServiceCommunicator(

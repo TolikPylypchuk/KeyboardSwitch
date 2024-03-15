@@ -1,5 +1,3 @@
-namespace KeyboardSwitch.Core.Services.Settings;
-
 using System.IO.Abstractions;
 using System.Reflection;
 using System.Text.Json;
@@ -7,6 +5,8 @@ using System.Text.Json;
 using KeyboardSwitch.Core.Exceptions;
 using KeyboardSwitch.Core.Json;
 using KeyboardSwitch.Core.Services.AutoConfiguration;
+
+namespace KeyboardSwitch.Core.Services.Settings;
 
 internal sealed class JsonSettingsService(
     ILayoutService layoutService,

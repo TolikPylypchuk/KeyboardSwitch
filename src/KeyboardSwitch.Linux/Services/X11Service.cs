@@ -1,6 +1,6 @@
 namespace KeyboardSwitch.Linux.Services;
 
-internal sealed class X11Service : Disposable
+internal sealed class X11Service : DisposableService
 {
     public delegate void EventHandler(ref XEvent xEvent);
 

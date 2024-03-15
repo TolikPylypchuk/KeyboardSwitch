@@ -1,9 +1,9 @@
-namespace KeyboardSwitch;
-
 using KeyboardSwitch.Core.Exceptions;
 
 using SharpHook;
 using SharpHook.Native;
+
+namespace KeyboardSwitch;
 
 public class Worker(
     IKeyboardHookService keyboardHookService,

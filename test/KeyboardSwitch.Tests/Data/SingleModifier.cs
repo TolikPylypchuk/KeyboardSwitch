@@ -1,3 +1,5 @@
+using SharpHook.Native;
+
 namespace KeyboardSwitch.Tests.Data;
 
 public sealed record SingleModifier(KeyCode KeyCode, ModifierMask Mask);

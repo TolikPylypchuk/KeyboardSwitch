@@ -1,8 +1,8 @@
-namespace KeyboardSwitch.Settings;
-
 using Avalonia.Controls.Templates;
 
 using Splat;
+
+namespace KeyboardSwitch.Settings;
 
 public sealed class ViewLocator : IDataTemplate
 {
