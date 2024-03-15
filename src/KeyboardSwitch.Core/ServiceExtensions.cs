@@ -1,5 +1,7 @@
 namespace KeyboardSwitch.Core;
 
+using System.IO.Abstractions;
+
 public static class ServiceExtensions
 {
     public static IServiceCollection AddCoreKeyboardSwitchServices(this IServiceCollection services) =>
@@ -11,5 +13,6 @@ public static class ServiceExtensions
             .AddSingleton<IAppSettingsService, JsonSettingsService>()
             .AddSingleton<ISwitchService, SwitchService>()
             .AddSingleton<INamedPipeService, NamedPipeService>()
-            .AddSingleton<ISingleInstanceService, SingleInstanceService>();
+            .AddSingleton<ISingleInstanceService, SingleInstanceService>()
+            .AddSingleton<IFileSystem, FileSystem>();
 }

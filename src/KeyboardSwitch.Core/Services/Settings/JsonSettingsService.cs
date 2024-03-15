@@ -1,5 +1,6 @@
 namespace KeyboardSwitch.Core.Services.Settings;
 
+using System.IO.Abstractions;
 using System.Reflection;
 using System.Text.Json;
 
@@ -10,11 +11,14 @@ using KeyboardSwitch.Core.Services.AutoConfiguration;
 internal sealed class JsonSettingsService(
     ILayoutService layoutService,
     IAutoConfigurationService autoConfigurationService,
+    IFileSystem fileSystem,
     IOptions<GlobalSettings> globalSettings,
     ILogger<JsonSettingsService> logger)
     : IAppSettingsService
 {
-    private readonly FileInfo file = new(Environment.ExpandEnvironmentVariables(globalSettings.Value.SettingsFilePath));
+    private readonly IFileInfo file = fileSystem.FileInfo.New(
+        Environment.ExpandEnvironmentVariables(globalSettings.Value.SettingsFilePath));
+
     private readonly Subject<Unit> settingsInvalidated = new();
 
     private AppSettings? appSettings;
@@ -47,7 +51,7 @@ internal sealed class JsonSettingsService(
 
         if (this.appSettings is null)
         {
-            throw new SettingsException("Could not read the app settings");
+            throw new InvalidOperationException("Could not read the app settings");
         }
 
         var appVersion = this.GetAppVersion();
@@ -61,33 +65,22 @@ internal sealed class JsonSettingsService(
 
         if (this.appSettings.AppVersion < appVersion)
         {
-            await this.MigrateSettingsToLatestVersion();
+            await this.MigrateSettingsToLatestVersion(this.appSettings);
         }
 
         return this.appSettings;
     }
 
-    private async Task MigrateSettingsToLatestVersion()
+    private async Task MigrateSettingsToLatestVersion(AppSettings settings)
     {
-        if (this.appSettings is null)
-        {
-            return;
-        }
-
-        var defaultSettings = this.CreateDefaultAppSettings();
+        var newVersion = this.GetAppVersion();
 
         logger.LogInformation(
             "Migrating settings from version {SourceVersion} to {TargetVersion}",
-            this.appSettings.AppVersion,
-            defaultSettings.AppVersion);
+            settings.AppVersion,
+            newVersion);
 
-        var newSettings = this.appSettings with
-        {
-            AppVersion = defaultSettings.AppVersion,
-            SwitchSettings = defaultSettings.SwitchSettings
-        };
-
-        await this.SaveAppSettings(newSettings);
+        await this.SaveAppSettings(settings with { AppVersion = newVersion });
     }
 
     public async Task SaveAppSettings(AppSettings appSettings)
@@ -154,5 +147,5 @@ internal sealed class JsonSettingsService(
     }
 
     private Version GetAppVersion() =>
-        Assembly.GetEntryAssembly()?.GetName().Version ?? new Version(0, 0);
+        Assembly.GetExecutingAssembly()?.GetName().Version ?? new Version(0, 0);
 }

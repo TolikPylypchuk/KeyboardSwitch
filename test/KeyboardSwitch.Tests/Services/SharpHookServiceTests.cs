@@ -4,14 +4,11 @@ using System.Reactive;
 
 using KeyboardSwitch.Core.Services.Hook;
 
-using Microsoft.Extensions.Logging;
 using Microsoft.Reactive.Testing;
 
 using SharpHook.Native;
 using SharpHook.Reactive;
 using SharpHook.Testing;
-
-using Xunit.Abstractions;
 
 public sealed class SharpHookServiceTests(ITestOutputHelper output)
 {

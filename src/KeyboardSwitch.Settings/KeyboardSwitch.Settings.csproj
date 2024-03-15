@@ -30,7 +30,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
-    <PackageReference Include="ReactiveUI" Version="19.5.41" />
+    <PackageReference Include="ReactiveUI" Version="19.5.72" />
     <PackageReference Include="ReactiveUI.Validation" Version="3.1.7" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="Splat" Version="14.8.12" />
@@ -40,7 +40,7 @@
     <PackageReference Include="System.Interactive" Version="6.0.1" />
     <PackageReference Include="System.Interactive.Async" Version="6.0.1" />
     <PackageReference Include="System.Reactive" Version="6.0.0" />
-    <PackageReference Include="System.Text.Json" Version="8.0.2" />
+    <PackageReference Include="System.Text.Json" Version="8.0.3" />
   </ItemGroup>
 
   <ItemGroup>
