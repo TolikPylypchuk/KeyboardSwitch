@@ -6,35 +6,34 @@ public class SharpUserActivitySimulator(
     KeyCode modifierKey) : IUserActivitySimulator
 {
     private static readonly TimeSpan Delay = TimeSpan.FromMilliseconds(16);
-    private static readonly IObservable<Unit> DummyObservable = Observable.Return(Unit.Default);
 
     public async Task SimulateCopy()
     {
         eventSimulator.SimulateKeyPress(modifierKey);
-        await DummyObservable.Delay(Delay, scheduler);
+        await scheduler.Sleep(Delay);
 
         eventSimulator.SimulateKeyPress(KeyCode.VcC);
-        await DummyObservable.Delay(Delay, scheduler);
+        await scheduler.Sleep(Delay);
 
         eventSimulator.SimulateKeyRelease(KeyCode.VcC);
-        await DummyObservable.Delay(Delay, scheduler);
+        await scheduler.Sleep(Delay);
 
         eventSimulator.SimulateKeyRelease(modifierKey);
-        await DummyObservable.Delay(Delay, scheduler);
+        await scheduler.Sleep(Delay);
     }
 
     public async Task SimulatePaste()
     {
         eventSimulator.SimulateKeyPress(modifierKey);
-        await DummyObservable.Delay(Delay, scheduler);
+        await scheduler.Sleep(Delay);
 
         eventSimulator.SimulateKeyPress(KeyCode.VcV);
-        await DummyObservable.Delay(Delay, scheduler);
+        await scheduler.Sleep(Delay);
 
         eventSimulator.SimulateKeyRelease(KeyCode.VcV);
-        await DummyObservable.Delay(Delay, scheduler);
+        await scheduler.Sleep(Delay);
 
         eventSimulator.SimulateKeyRelease(modifierKey);
-        await DummyObservable.Delay(Delay, scheduler);
+        await scheduler.Sleep(Delay);
     }
 }

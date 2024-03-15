@@ -1,7 +1,9 @@
 namespace KeyboardSwitch.Core.Services.Infrastructure;
 
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
+[ExcludeFromCodeCoverage]
 public class DirectServiceCommunicator(
     INamedPipeService namedPipeService,
     IOptions<GlobalSettings> globalSettings)

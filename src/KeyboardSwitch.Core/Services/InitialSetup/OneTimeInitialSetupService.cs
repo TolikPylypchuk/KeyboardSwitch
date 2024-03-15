@@ -1,5 +1,6 @@
 namespace KeyboardSwitch.Core.Services.InitialSetup;
 
+using System.IO.Abstractions;
 using System.Text.Json;
 
 using KeyboardSwitch.Core.Json;
@@ -7,12 +8,13 @@ using KeyboardSwitch.Core.Services.Users;
 
 public abstract class OneTimeInitialSetupService(
     IUserProvider userProvider,
+    IFileSystem fileSystem,
     IOptions<GlobalSettings> globalSettings,
     ILogger<OneTimeInitialSetupService> logger)
     : IInitialSetupService
 {
-    private readonly FileInfo initialSetupFile =
-        new(Environment.ExpandEnvironmentVariables(globalSettings.Value.InitialSetupFilePath));
+    private readonly IFileInfo initialSetupFile =
+        fileSystem.FileInfo.New(Environment.ExpandEnvironmentVariables(globalSettings.Value.InitialSetupFilePath));
 
     public void InitializeKeyboardSwitchSetup()
     {

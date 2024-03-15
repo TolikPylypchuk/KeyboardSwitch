@@ -4,8 +4,6 @@ using System.Reactive;
 
 using KeyboardSwitch.Core.Services.Hook;
 
-using Microsoft.Reactive.Testing;
-
 using SharpHook.Native;
 using SharpHook.Reactive;
 using SharpHook.Testing;

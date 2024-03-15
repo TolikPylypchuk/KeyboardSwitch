@@ -8,7 +8,7 @@ public sealed class ClipboardTextService(
     ILogger<ClipboardTextService> logger)
     : ITextService
 {
-    private static readonly TimeSpan MaxTextRestoreDuration = TimeSpan.FromSeconds(3);
+    internal static readonly TimeSpan MaxTextRestoreDuration = TimeSpan.FromSeconds(3);
 
     private string? savedClipboardText;
     private DateTimeOffset? saveTime;
@@ -46,11 +46,11 @@ public sealed class ClipboardTextService(
 
             await simulator.SimulatePaste();
 
-            if (this.savedClipboardText != null &&
-                this.saveTime != null &&
+            if (this.savedClipboardText is not null &&
+                this.saveTime is not null &&
                 scheduler.Now - this.saveTime < MaxTextRestoreDuration)
             {
-                Thread.Sleep(50);
+                await scheduler.Sleep(TimeSpan.FromMilliseconds(50));
                 await clipboard.SetTextAsync(this.savedClipboardText);
             }
 

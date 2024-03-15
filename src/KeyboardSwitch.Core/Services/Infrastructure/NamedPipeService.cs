@@ -1,7 +1,9 @@
 namespace KeyboardSwitch.Core.Services.Infrastructure;
 
+using System.Diagnostics.CodeAnalysis;
 using System.IO.Pipes;
 
+[ExcludeFromCodeCoverage]
 internal sealed class NamedPipeService(ILogger<NamedPipeService> logger) : Disposable, INamedPipeService
 {
     private readonly Subject<string> receivedString = new();

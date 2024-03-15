@@ -13,7 +13,6 @@ using KeyboardSwitch.Core.Services.Settings;
 using KeyboardSwitch.Core.Settings;
 
 using Microsoft.Extensions.Options;
-using Microsoft.Reactive.Testing;
 
 using NSubstitute.ExceptionExtensions;
 

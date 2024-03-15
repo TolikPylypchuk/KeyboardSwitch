@@ -2,8 +2,6 @@ namespace KeyboardSwitch.Tests.Services;
 
 using KeyboardSwitch.Core.Services.Simulation;
 
-using Microsoft.Reactive.Testing;
-
 using SharpHook.Testing;
 
 public sealed class SharpUserActivitySimulatorTests
@@ -26,7 +24,7 @@ public sealed class SharpUserActivitySimulatorTests
 
         // Act
 
-        var task = Task.Run(simulator.SimulateCopy);
+        var task = simulator.SimulateCopy();
 
         while (!task.IsCompleted)
         {
@@ -71,7 +69,7 @@ public sealed class SharpUserActivitySimulatorTests
 
         // Act
 
-        var task = Task.Run(simulator.SimulatePaste);
+        var task = simulator.SimulatePaste();
 
         while (!task.IsCompleted)
         {

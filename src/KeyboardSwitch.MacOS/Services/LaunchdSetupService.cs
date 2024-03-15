@@ -1,11 +1,14 @@
 namespace KeyboardSwitch.MacOS.Services;
 
+using System.IO.Abstractions;
+
 internal sealed class LaunchdSetupService(
     IUserProvider userProvider,
+    IFileSystem fileSystem,
     IOptions<GlobalSettings> globalSettings,
     IOptions<LaunchdSettings> launchdSettings,
     ILogger<LaunchdSetupService> logger)
-    : OneTimeInitialSetupService(userProvider, globalSettings, logger)
+    : OneTimeInitialSetupService(userProvider, fileSystem, globalSettings, logger)
 {
     private readonly string serviceDescriptorPath = launchdSettings.Value.ServiceDescriptorPath;
 
