@@ -1,6 +1,3 @@
-using KeyboardSwitch.Core.Services.Hook;
-
-using SharpHook.Native;
 using SharpHook.Reactive;
 using SharpHook.Testing;
 

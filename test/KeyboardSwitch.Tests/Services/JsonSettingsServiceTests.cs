@@ -1,20 +1,10 @@
-using System.Collections.Immutable;
 using System.IO.Abstractions.TestingHelpers;
 using System.Reflection;
 using System.Text.Json.Nodes;
 
-using KeyboardSwitch.Core.Exceptions;
-using KeyboardSwitch.Core.Keyboard;
-using KeyboardSwitch.Core.Services.AutoConfiguration;
-using KeyboardSwitch.Core.Services.Layout;
-using KeyboardSwitch.Core.Services.Settings;
-using KeyboardSwitch.Core.Settings;
-
 using Microsoft.Extensions.Options;
 
 using NSubstitute.ExceptionExtensions;
-
-using SharpHook.Native;
 
 namespace KeyboardSwitch.Tests.Services;
 

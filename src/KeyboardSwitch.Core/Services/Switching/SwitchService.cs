@@ -37,9 +37,11 @@ public class SwitchService(
 
             var mapping = currentChars.Zip(newChars).ToDictionary(chars => chars.First, chars => chars.Second);
 
-            await textService.SetTextAsync(new String(textToSwitch
+            var newText = textToSwitch
                 .Select(ch => mapping.TryGetValue(ch, out char newCh) && newCh != MissingCharacter ? newCh : ch)
-                .ToArray()));
+                .ToArray();
+
+            await textService.SetTextAsync(new String(newText));
         }
 
         if (settings.SwitchLayout)

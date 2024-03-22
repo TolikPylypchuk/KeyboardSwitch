@@ -1,32 +1,18 @@
-using System.Collections.Immutable;
-
-using KeyboardSwitch.Core.Services.Clipboard;
-using KeyboardSwitch.Core.Services.Settings;
-using KeyboardSwitch.Core.Services.Simulation;
-using KeyboardSwitch.Core.Services.Text;
-using KeyboardSwitch.Core.Settings;
-
-using SharpHook.Native;
-
 namespace KeyboardSwitch.Tests.Services;
 
 public sealed class ClipboardTextServiceTests(ITestOutputHelper output)
 {
-    // These will be removed when FsCheck 3.0 is released
-    private const string? ExpectedText = "text"; 
-    private const string? ExpectedOldText = "old";
-
     private static readonly TimeSpan Delay = TimeSpan.FromMilliseconds(16);
 
     private readonly ILogger<ClipboardTextService> logger = XUnitLogger.Create<ClipboardTextService>(output);
 
-    [Fact(DisplayName = "GetTextAsync should get text from clipboard")]
-    public async Task GetTextFromClipboard()
+    [Property(DisplayName = "GetTextAsync should get text from clipboard")]
+    public async void GetTextFromClipboard(string? expectedText)
     {
         // Arrange
 
         var clipboard = Substitute.For<IClipboardService>();
-        clipboard.GetTextAsync().Returns(Task.FromResult(ExpectedText));
+        clipboard.GetTextAsync().Returns(Task.FromResult(expectedText));
 
         var simulator = Substitute.For<IUserActivitySimulator>();
 
@@ -43,18 +29,18 @@ public sealed class ClipboardTextServiceTests(ITestOutputHelper output)
 
         // Assert
 
-        Assert.Equal(ExpectedText, actualText);
+        Assert.Equal(expectedText, actualText);
 
         await simulator.DidNotReceive().SimulateCopy();
     }
 
-    [Fact(DisplayName = "GetTextAsync should simulate copying when instant switching is enabled")]
-    public async Task SimulateCopy()
+    [Property(DisplayName = "GetTextAsync should simulate copying when instant switching is enabled")]
+    public async void SimulateCopy(string? expectedText)
     {
         // Arrange
 
         var clipboard = Substitute.For<IClipboardService>();
-        clipboard.GetTextAsync().Returns(Task.FromResult(ExpectedText));
+        clipboard.GetTextAsync().Returns(Task.FromResult(expectedText));
 
         var simulator = Substitute.For<IUserActivitySimulator>();
 
@@ -71,13 +57,13 @@ public sealed class ClipboardTextServiceTests(ITestOutputHelper output)
 
         // Assert
 
-        Assert.Equal(ExpectedText, actualText);
+        Assert.Equal(expectedText, actualText);
 
         await simulator.Received().SimulateCopy();
     }
 
-    [Fact(DisplayName = "SetTextAsync should set text into clipboard")]
-    public async Task SetTextIntoClipboard()
+    [Property(DisplayName = "SetTextAsync should set text into clipboard")]
+    public async void SetTextIntoClipboard(NonEmptyString expectedText)
     {
         // Arrange
 
@@ -95,16 +81,16 @@ public sealed class ClipboardTextServiceTests(ITestOutputHelper output)
 
         // Act
 
-        await textService.SetTextAsync(ExpectedText ?? String.Empty);
+        await textService.SetTextAsync(expectedText.Get);
 
         // Assert
 
-        await clipboard.Received().SetTextAsync(ExpectedText);
+        await clipboard.Received().SetTextAsync(expectedText.Get);
         await simulator.DidNotReceive().SimulatePaste();
     }
 
-    [Fact(DisplayName = "SetTextAsync should simulate pasting when instant switching is enabled")]
-    public async Task SimulatePaste()
+    [Property(DisplayName = "SetTextAsync should simulate pasting when instant switching is enabled")]
+    public async void SimulatePaste(NonEmptyString expectedText)
     {
         // Arrange
 
@@ -122,22 +108,22 @@ public sealed class ClipboardTextServiceTests(ITestOutputHelper output)
 
         // Act
 
-        await textService.SetTextAsync(ExpectedText ?? String.Empty);
+        await textService.SetTextAsync(expectedText.Get);
 
         // Assert
 
-        await clipboard.Received().SetTextAsync(ExpectedText);
+        await clipboard.Received().SetTextAsync(expectedText.Get);
         await simulator.Received().SimulatePaste();
     }
 
-    [Fact(DisplayName =
+    [Property(DisplayName =
         "GetTextAsync and SetTextAsync should restore the clipboard state when instant switching is enabled")]
-    public async Task RestoreClipboard()
+    public async void RestoreClipboard(NonEmptyString expectedText, NonEmptyString expectedOldText)
     {
         // Arrange
 
         var clipboard = Substitute.For<IClipboardService>();
-        clipboard.GetTextAsync().Returns(Task.FromResult(ExpectedOldText), Task.FromResult(ExpectedText));
+        clipboard.GetTextAsync()!.Returns(Task.FromResult(expectedOldText.Get), Task.FromResult(expectedText.Get));
         clipboard.SetTextAsync(Arg.Any<string>()).Returns(Task.CompletedTask);
 
         var simulator = Substitute.For<IUserActivitySimulator>();
@@ -154,7 +140,7 @@ public sealed class ClipboardTextServiceTests(ITestOutputHelper output)
         await textService.GetTextAsync();
         scheduler.AdvanceBy(1);
 
-        var task = textService.SetTextAsync(ExpectedText ?? String.Empty);
+        var task = textService.SetTextAsync(expectedText.Get);
 
         while (!task.IsCompleted)
         {
@@ -164,21 +150,21 @@ public sealed class ClipboardTextServiceTests(ITestOutputHelper output)
         // Assert
 
         await clipboard.Received(2).GetTextAsync();
-        await clipboard.Received().SetTextAsync(ExpectedText ?? String.Empty);
-        await clipboard.Received().SetTextAsync(ExpectedOldText ?? String.Empty);
+        await clipboard.Received().SetTextAsync(expectedText.Get);
+        await clipboard.Received().SetTextAsync(expectedOldText.Get);
 
         await simulator.Received().SimulateCopy();
         await simulator.Received().SimulatePaste();
     }
 
-    [Fact(DisplayName =
+    [Property(DisplayName =
         "GetTextAsync and SetTextAsync should not restore the clipboard state when the delay is too long")]
-    public async Task RestoreClipboardTooLong()
+    public async void RestoreClipboardTooLong(NonEmptyString expectedText, NonEmptyString expectedOldText)
     {
         // Arrange
 
         var clipboard = Substitute.For<IClipboardService>();
-        clipboard.GetTextAsync().Returns(Task.FromResult(ExpectedOldText), Task.FromResult(ExpectedText));
+        clipboard.GetTextAsync()!.Returns(Task.FromResult(expectedOldText.Get), Task.FromResult(expectedText.Get));
         clipboard.SetTextAsync(Arg.Any<string>()).Returns(Task.CompletedTask);
 
         var simulator = Substitute.For<IUserActivitySimulator>();
@@ -195,7 +181,7 @@ public sealed class ClipboardTextServiceTests(ITestOutputHelper output)
         await textService.GetTextAsync();
         scheduler.AdvanceBy(ClipboardTextService.MaxTextRestoreDuration.Ticks + 100);
 
-        var task = textService.SetTextAsync(ExpectedText ?? String.Empty);
+        var task = textService.SetTextAsync(expectedText.Get);
 
         while (!task.IsCompleted)
         {
@@ -205,8 +191,8 @@ public sealed class ClipboardTextServiceTests(ITestOutputHelper output)
         // Assert
 
         await clipboard.Received(2).GetTextAsync();
-        await clipboard.Received().SetTextAsync(ExpectedText ?? String.Empty);
-        await clipboard.DidNotReceive().SetTextAsync(ExpectedOldText ?? String.Empty);
+        await clipboard.Received().SetTextAsync(expectedText.Get);
+        await clipboard.DidNotReceive().SetTextAsync(expectedOldText.Get);
 
         await simulator.Received().SimulateCopy();
         await simulator.Received().SimulatePaste();

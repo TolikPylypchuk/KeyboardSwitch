@@ -17,6 +17,6 @@
     <PackageReference Include="System.Reactive" Version="6.0.0" />
     <PackageReference Include="System.Text.Json" Version="8.0.3" />
     <PackageReference Include="TestableIO.System.IO.Abstractions.Extensions" Version="2.2.5" />
-    <PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="20.0.34" />
+    <PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="21.0.2" />
   </ItemGroup>
 </Project>

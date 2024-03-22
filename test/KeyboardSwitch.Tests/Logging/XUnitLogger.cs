@@ -1,5 +1,7 @@
 using System.Text;
 
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
+
 namespace KeyboardSwitch.Tests.Logging;
 
 public class XUnitLogger(
