@@ -107,11 +107,9 @@ public partial class Build
 
             appSettingsFile.Rename(AppSettings);
 
-            foreach (var file in new[] { AppSettingsWindows, AppSettingsMacOS, AppSettingsLinux }
-                .Where(f => f != appSettingsFile))
-            {
-                file.DeleteFile();
-            }
+            AppSettingsWindows.DeleteFile();
+            AppSettingsMacOS.DeleteFile();
+            AppSettingsLinux.DeleteFile();
         });
 
     public Target PreCreateArchive => t => t
