@@ -6,46 +6,27 @@
       Language="1033"
       UpgradeCode="6fe30b47-2577-43ad-9095-1861ba25889b"
   >
-    <MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)" />
-
     <MediaTemplate EmbedCab="yes" />
 
     <StandardDirectory Id="ProgramFiles6432Folder">
       <Directory Id="INSTALLFOLDER" Name="!(bind.Property.ProductName)" />
     </StandardDirectory>
 
-    <Feature Id="Main">
-      <ComponentGroupRef Id="AppComponents" />
-    </Feature>
-
     <ComponentGroup Id="AppComponents" Directory="INSTALLFOLDER">
-      <Component>
-        <File Source="KeyboardSwitch.exe" Id="KeyboardSwitch" />
-      </Component>
       <Component>
         <File Source="KeyboardSwitchSettings.exe" Id="KeyboardSwitchSettings" />
         <Shortcut Name="Keyboard Switch Settings" Directory="ProgramMenuFolder" Advertise="yes" Icon="icon.ico" />
       </Component>
-      <Component>
-        <File Source="appsettings.json" Id="appsettings" />
-      </Component>
-      <Component>
-        <File Source="users.json" Id="users">
-          <Permission User="Users" GenericAll="yes" />
-        </File>
-      </Component>
-      <Component>
-        <File Source="av_libglesv2.dll" Id="av_libglesv2" />
-      </Component>
-      <Component>
-        <File Source="libHarfBuzzSharp.dll" Id="libHarfBuzzSharp" />
-      </Component>
-      <Component>
-        <File Source="libSkiaSharp.dll" Id="libSkiaSharp" />
-      </Component>
-      <Component>
-        <File Source="uiohook.dll" Id="uiohook" />
-      </Component>
+
+      <File Source="KeyboardSwitch.exe" Id="KeyboardSwitch" />
+      <File Source="appsettings.json" Id="appsettings" />
+      <File Source="users.json" Id="users">
+        <Permission User="Users" GenericAll="yes" />
+      </File>
+      <File Source="av_libglesv2.dll" Id="av_libglesv2" />
+      <File Source="libHarfBuzzSharp.dll" Id="libHarfBuzzSharp" />
+      <File Source="libSkiaSharp.dll" Id="libSkiaSharp" />
+      <File Source="uiohook.dll" Id="uiohook" />
     </ComponentGroup>
 
     <Icon SourceFile="Resources\icon.ico" Id="icon.ico" />

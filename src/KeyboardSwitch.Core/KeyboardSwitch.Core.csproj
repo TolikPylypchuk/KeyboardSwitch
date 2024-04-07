@@ -10,8 +10,8 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="SharpHook" Version="5.3.1" />
-    <PackageReference Include="SharpHook.Reactive" Version="5.3.1" />
+    <PackageReference Include="SharpHook" Version="5.3.2" />
+    <PackageReference Include="SharpHook.Reactive" Version="5.3.2" />
     <PackageReference Include="System.Interactive" Version="6.0.1" />
     <PackageReference Include="System.Interactive.Async" Version="6.0.1" />
     <PackageReference Include="System.Reactive" Version="6.0.0" />
