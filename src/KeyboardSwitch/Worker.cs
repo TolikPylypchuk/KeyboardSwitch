@@ -91,7 +91,7 @@ public class Worker(
     {
         try
         {
-            await switchService.SwitchTextAsync(direction);
+            await switchService.SwitchText(direction);
         } catch (Exception e)
         {
             logger.LogError(e, "Error when trying to switch text");

@@ -14,7 +14,6 @@ global using KeyboardSwitch.Core.Services.Layout;
 global using KeyboardSwitch.Core.Services.Settings;
 global using KeyboardSwitch.Core.Services.Simulation;
 global using KeyboardSwitch.Core.Services.Switching;
-global using KeyboardSwitch.Core.Services.Text;
 global using KeyboardSwitch.Core.Settings;
 global using KeyboardSwitch.Tests.Data;
 global using KeyboardSwitch.Tests.Logging;
