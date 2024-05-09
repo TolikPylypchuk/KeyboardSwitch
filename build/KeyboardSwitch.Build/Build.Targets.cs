@@ -82,9 +82,7 @@ public partial class Build
 
             Log.Information("Publishing projects");
 
-            var projects =
-                from project in new[] { this.Solution.KeyboardSwitch, this.Solution.KeyboardSwitch_Settings }
-                select new { project };
+            var projects = new[] { this.Solution.KeyboardSwitch, this.Solution.KeyboardSwitch_Settings };
 
             DotNetPublish(s => s
                 .SetRuntime(this.RuntimeIdentifier)
@@ -96,7 +94,7 @@ public partial class Build
                 .SetOutput(PublishOutputDirectory)
                 .SetSelfContained(this.IsSelfContained)
                 .SetPublishSingleFile(this.PublishSingleFile)
-                .CombineWith(projects, (s, c) => s.SetProject(c.project)));
+                .CombineWith(projects, (ps, project) => ps.SetProject(project)));
 
             Log.Information("Deleting unneeded files after publish");
 
@@ -238,6 +236,7 @@ public partial class Build
             ResolvePlaceholders(this.TargetPkgDistributionFile, this.Platform.Pkg);
 
             PkgScriptsDirectory.CreateOrCleanDirectory();
+            CopyFile(this.SourcePkgPreInstallFile, this.TargetPkgPreInstallFile);
             CopyFile(this.SourcePkgPostInstallFile, this.TargetPkgPostInstallFile);
 
             PkgResourcesDirectory.CreateOrCleanDirectory();
@@ -306,12 +305,14 @@ public partial class Build
 
             this.PkgBuild(
                 $"--component {KeyboardSwitchAppDirectory} --identifier io.tolik.keyboardswitch.service " +
-                $"--version {Version} --install-location /opt --scripts {PkgScriptsDirectory} {KeyboardSwitchPkgFile}",
+                $"--version {Version} --install-location {ServiceInstallationDirectory} " +
+                $"--scripts {PkgScriptsDirectory} {KeyboardSwitchPkgFile}",
                 logger: DebugOnly);
 
             this.PkgBuild(
                 $"--component {KeyboardSwitchSettingsAppDirectory} --identifier io.tolik.keyboardswitch.settings " +
-                $"--version {Version} --install-location /Applications {KeyboardSwitchSettingsPkgFile}",
+                $"--version {Version} --install-location {SettingsInstallationDirectory} " +
+                $"{KeyboardSwitchSettingsPkgFile}",
                 logger: DebugOnly);
 
             this.ProductBuild(

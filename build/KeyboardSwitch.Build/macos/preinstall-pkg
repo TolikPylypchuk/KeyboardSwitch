@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+LAUNCH_AGENT=io.tolik.keyboardswitch
+LAUNCH_AGENT_FILE=$LAUNCH_AGENT.plist
+LAUNCH_AGENT_FOLDER=/Library/LaunchAgents/
+LAUNCH_AGENT_PATH=$LAUNCH_AGENT_FILE$LAUNCH_AGENT_FOLDER
+
+if [ -f "$LAUNCH_AGENT_PATH" ]; then
+    dscl . -list /Users UniqueID | grep -v -e ^_ -e root -e daemon -e nobody | while read -r CURRENT_USER CURRENT_UID ; do
+        launchctl asuser $CURRENT_UID launchctl remove $LAUNCH_AGENT
+    done
+
+    rm -f "$LAUNCH_AGENT_PATH"
+fi
+
+rm -rf "/opt/Keyboard Switch.app"
+
+exit 0

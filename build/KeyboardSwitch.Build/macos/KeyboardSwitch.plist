@@ -9,7 +9,7 @@
 		<string>$ARCH</string>
 	</array>
 	<key>CFBundleIdentifier</key>
-	<string>io.tolik.keyboardswitch.service</string>
+	<string>io.tolik.keyboardswitch</string>
 	<key>CFBundleName</key>
 	<string>Keyboard Switch</string>
 	<key>CFBundleDisplayName</key>

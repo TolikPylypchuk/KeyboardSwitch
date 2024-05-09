@@ -11,6 +11,9 @@ public partial class Build
     private const string LibHarfBuzzSharp = "libHarfBuzzSharp.dylib";
     private const string LibSkiaSharp = "libSkiaSharp.dylib";
 
+    private const string ServiceInstallationDirectory = "/Library/Application Support/Keyboard Switch";
+    private const string SettingsInstallationDirectory = "/Applications";
+
     private static AbsolutePath PkgScriptsDirectory =>
         ArtifactsDirectory / "scripts";
 
@@ -113,11 +116,17 @@ public partial class Build
     private AbsolutePath TargetUninstallerPkgDistributionFile =>
         ArtifactsDirectory / UninstallerPkgDistributionFile;
 
+    private AbsolutePath SourcePkgPreInstallFile =>
+        this.MacOSFilesDirectory / "preinstall-pkg";
+
     private AbsolutePath SourcePkgPostInstallFile =>
         this.MacOSFilesDirectory / "postinstall-pkg";
 
     private AbsolutePath SourceUninstallerPkgPostInstallFile =>
         this.MacOSFilesDirectory / "postinstall-uninstaller-pkg";
+
+    private AbsolutePath TargetPkgPreInstallFile =>
+        PkgScriptsDirectory / "preinstall";
 
     private AbsolutePath TargetPkgPostInstallFile =>
         PkgScriptsDirectory / "postinstall";
