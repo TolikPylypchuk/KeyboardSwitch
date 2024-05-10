@@ -71,23 +71,12 @@ internal sealed class JsonSettingsService(
         return this.appSettings;
     }
 
-    private async Task MigrateSettingsToLatestVersion(AppSettings settings)
-    {
-        var newVersion = this.GetAppVersion();
-
-        logger.LogInformation(
-            "Migrating settings from version {SourceVersion} to {TargetVersion}",
-            settings.AppVersion,
-            newVersion);
-
-        await this.SaveAppSettings(settings with { AppVersion = newVersion });
-    }
-
     public async Task SaveAppSettings(AppSettings appSettings)
     {
         logger.LogDebug("Saving the app settings");
 
         this.file.Directory?.Create();
+        this.file.Truncate();
 
         using var stream = new BufferedStream(this.file.OpenWrite());
         await JsonSerializer.SerializeAsync(stream, appSettings, KeyboardSwitchJsonContext.Default.AppSettings);
@@ -101,6 +90,18 @@ internal sealed class JsonSettingsService(
 
         this.appSettings = null;
         this.settingsInvalidated.OnNext(Unit.Default);
+    }
+
+    private async Task MigrateSettingsToLatestVersion(AppSettings settings)
+    {
+        var newVersion = this.GetAppVersion();
+
+        logger.LogInformation(
+            "Migrating settings from version {SourceVersion} to {TargetVersion}",
+            settings.AppVersion,
+            newVersion);
+
+        await this.SaveAppSettings(settings with { AppVersion = newVersion });
     }
 
     private AppSettings CreateDefaultAppSettings() =>

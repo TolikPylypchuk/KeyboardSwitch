@@ -1,3 +1,4 @@
+using SharpHook.Native;
 using SharpHook.Reactive;
 using SharpHook.Testing;
 
@@ -40,7 +41,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var observer = scheduler.CreateObserver<ModifierMask>();
         service.HotKeyPressed.Subscribe(observer);
 
-        var expectedModifierMask = modifiers.Select(modifier => modifier.Mask);
+        var expectedModifierMask = modifiers.Select(modifier => modifier.Mask).ToArray();
 
         // Act
 
@@ -54,7 +55,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         // Assert
 
         Assert.Equal(1, observer.Messages.Count);
-        Assert.Equal(expectedModifierMask.ToArray().Merge(), observer.Messages[0].Value.Value);
+        Assert.Equal(expectedModifierMask.Merge(), observer.Messages[0].Value.Value);
     }
 
     [Property(
@@ -73,7 +74,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var observer = scheduler.CreateObserver<ModifierMask>();
         service.HotKeyPressed.Subscribe(observer);
 
-        var expectedModifierMask = modifiers.Select(modifier => modifier.Mask);
+        var expectedModifierMask = modifiers.Select(modifier => modifier.Mask).ToArray();
 
         // Act
 
@@ -92,7 +93,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         // Assert
 
         Assert.Equal(1, observer.Messages.Count);
-        Assert.Equal(expectedModifierMask.ToArray().Merge(), observer.Messages[0].Value.Value);
+        Assert.Equal(expectedModifierMask.Merge(), observer.Messages[0].Value.Value);
     }
 
     [Property(
@@ -228,6 +229,42 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         // Assert
 
         Assert.Equal(0, observer.Messages.Count);
+    }
+
+    [Property(
+        DisplayName = "Repeated key down events should be ignored",
+        Arbitrary = [typeof(SharpHookServiceTests)])]
+    public void KeyDownRepeated(List<SingleModifier> modifiers, WaitTime waitTime)
+    {
+        // Arrange
+
+        using var hook = new TestGlobalHook();
+        var scheduler = new TestScheduler();
+
+        using var service = new SharpHookService(
+            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, this.logger);
+
+        var observer = scheduler.CreateObserver<ModifierMask>();
+        service.HotKeyPressed.Subscribe(observer);
+
+        var expectedModifierMask = modifiers.Select(modifier => modifier.Mask).ToArray();
+
+        // Act
+
+        service.Register(expectedModifierMask, 1, waitTime.Value);
+
+        _ = service.StartHook(CancellationToken.None);
+        this.WaitToStart(hook);
+
+        hook.SimulateKeyPress(modifiers[0].KeyCode);
+        scheduler.AdvanceBy(SmallDelay.Ticks);
+
+        this.SimulateKeyEvents(hook, scheduler, modifiers.Select(modifier => modifier.KeyCode));
+
+        // Assert
+
+        Assert.Equal(1, observer.Messages.Count);
+        Assert.Equal(expectedModifierMask.Merge(), observer.Messages[0].Value.Value);
     }
 
     [Property(

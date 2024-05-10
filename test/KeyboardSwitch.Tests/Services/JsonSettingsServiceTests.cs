@@ -26,7 +26,7 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
           "SwitchSettings": {
             "ForwardModifiers": [
               "Ctrl",
-              "Shift",
+              "None",
               "None"
             ],
             "BackwardModifiers": [
@@ -78,7 +78,7 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
         Assert.NotNull(settings.CharsByKeyboardLayoutId);
 
         Assert.Equal(
-            [ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.None],
+            [ModifierMask.Ctrl, ModifierMask.None, ModifierMask.None],
             settings.SwitchSettings.ForwardModifiers);
 
         Assert.Equal(
@@ -295,7 +295,7 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
         Assert.NotNull(settings.CharsByKeyboardLayoutId);
 
         Assert.Equal(
-            [ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.None],
+            [ModifierMask.Ctrl, ModifierMask.None, ModifierMask.None],
             settings.SwitchSettings.ForwardModifiers);
 
         Assert.Equal(
@@ -508,7 +508,7 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
         {
             SwitchSettings = new()
             {
-                ForwardModifiers = [ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.None],
+                ForwardModifiers = [ModifierMask.Ctrl, ModifierMask.None, ModifierMask.None],
                 BackwardModifiers = [ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.Alt],
                 PressCount = PressCount,
                 WaitMilliseconds = WaitMilliseconds

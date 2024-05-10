@@ -1,10 +1,12 @@
 using System.Reactive.Disposables;
 
+using KeyboardSwitch.Core.Keyboard;
+
 namespace KeyboardSwitch.Core.Services.Hook;
 
-internal sealed class SharpHookService : Core.DisposableService, IKeyboardHookService
+internal sealed class SharpHookService : DisposableService, IKeyboardHookService
 {
-    private static readonly TimeSpan KeyPressWaitThresshold = TimeSpan.FromSeconds(3);
+    private static readonly TimeSpan KeyPressWaitThreshold = TimeSpan.FromSeconds(3);
 
     private DateTimeOffset lastKeyPress = DateTimeOffset.MinValue;
 
@@ -125,7 +127,12 @@ internal sealed class SharpHookService : Core.DisposableService, IKeyboardHookSe
 
     private void HandleKeyDown(KeyCode keyCode)
     {
-        if (this.scheduler.Now - this.lastKeyPress > KeyPressWaitThresshold)
+        if (this.pressedKeys.Contains(keyCode))
+        {
+            return;
+        }
+
+        if (this.scheduler.Now - this.lastKeyPress > KeyPressWaitThreshold)
         {
             this.pressedKeys.Clear();
         }
@@ -145,22 +152,25 @@ internal sealed class SharpHookService : Core.DisposableService, IKeyboardHookSe
         this.pressedKeys.Remove(keyCode);
         this.releasedKeys.Add(keyCode);
 
-        if (this.pressedKeys.Count != 0)
+        if (this.scheduler.Now - this.lastKeyPress > KeyPressWaitThreshold)
+        {
+            this.releasedKeys.Clear();
+        }
+
+        if (this.pressedKeys.Count != 0 || this.releasedKeys.Any(key => key.ToModifierMask() is null))
         {
             return;
         }
 
         var modifiers = this.releasedKeys
-            .Select(key => key.ToModifierMask())
-            .ToList();
+            .Select(key => key.ToModifierMask()!.Value)
+            .ToArray()
+            .Merge();
 
-        this.releasedKeys.Clear();
-
-        if (!modifiers.Any(key => key is null) && modifiers.Count > 1)
+        if (this.hotKeys.Any(hotKey => modifiers.IsSubsetKeyOf(hotKey)))
         {
-            var hotKey = modifiers.Select(key => key!.Value).ToArray().Merge();
-            this.logger.LogDebug("Hot key activated: {HotKey}", hotKey);
-            this.rawHotKeyPressedSubject.OnNext(hotKey);
+            this.logger.LogDebug("Hot key activated: {HotKey}", modifiers);
+            this.rawHotKeyPressedSubject.OnNext(modifiers);
         }
     }
 }
