@@ -7,7 +7,7 @@
   <ItemGroup>
     <PackageReference Include="DynamicData" Version="8.4.1" />
     <PackageReference Include="ReactiveUI" Version="20.0.1" />
-    <PackageReference Include="ReactiveUI.Validation" Version="4.0.6" />
+    <PackageReference Include="ReactiveUI.Validation" Version="4.0.9" />
     <PackageReference Include="Splat" Version="15.0.1" />
     <PackageReference Include="System.Interactive" Version="6.0.1" />
     <PackageReference Include="System.Interactive.Async" Version="6.0.1" />

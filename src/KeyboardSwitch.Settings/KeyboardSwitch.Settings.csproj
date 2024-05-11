@@ -31,7 +31,7 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
     <PackageReference Include="ReactiveUI" Version="20.0.1" />
-    <PackageReference Include="ReactiveUI.Validation" Version="4.0.6" />
+    <PackageReference Include="ReactiveUI.Validation" Version="4.0.9" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.0" />
     <PackageReference Include="Splat" Version="15.0.1" />
     <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="15.0.1" />
