@@ -14,7 +14,7 @@ internal sealed class FreedesktopStartupService(
         Exec=$SERVICE_APP
         TryExec=$SERVICE_APP
         Path=$DIRECTORY
-        Icon=$DIRECTORY/icon.png
+        Icon=$DIRECTORY/keyboard-switch.png
         Terminal=false
         Type=Application
         Categories=Utility

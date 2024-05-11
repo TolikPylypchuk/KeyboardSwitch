@@ -26,9 +26,6 @@ public partial class Build
     private AbsolutePath DebDocsDirectory =>
         this.DebDirectory / "usr" / "share" / "doc" / KeyboardSwitchLower;
 
-    private AbsolutePath DebIconsDirectory =>
-        this.DebDirectory / "usr" / "share" / "icons" / "hicolor" / "512x512" / "app";
-
     private AbsolutePath SourceDebControlFile =>
         this.LinuxFilesDirectory / DebControlFile;
 
@@ -55,7 +52,4 @@ public partial class Build
 
     private AbsolutePath TargetDebPostRemoveFile =>
         this.DebConfigDirectory / DebPostRemoveFile;
-
-    private AbsolutePath TargetDebIconFile =>
-        this.DebIconsDirectory / LinuxIconFile;
 }

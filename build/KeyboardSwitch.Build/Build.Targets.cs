@@ -122,6 +122,7 @@ public partial class Build
 
             CopyFileToDirectory(this.SourceLinuxInstallFile, PublishOutputDirectory);
             CopyFileToDirectory(this.SourceLinuxUninstallFile, PublishOutputDirectory);
+            CopyFileToDirectory(SourceLinuxIconFile, PublishOutputDirectory, FileExistsPolicy.Overwrite);
         });
 
     public Target CreateZipArchive => t => t
@@ -392,6 +393,8 @@ public partial class Build
         {
             Log.Information("Preparing files for creating a Debian package containing the published project");
 
+            CopyFileToDirectory(SourceLinuxIconFile, PublishOutputDirectory, FileExistsPolicy.Overwrite);
+
             this.DebDirectory.CreateOrCleanDirectory();
 
             this.DebConfigDirectory.CreateDirectory();
@@ -412,9 +415,6 @@ public partial class Build
             CopyDirectoryRecursively(PublishOutputDirectory, this.DebKeyboardSwitchDirectory);
 
             CopyFileToDirectory(this.SourceDebCopyrightFile, this.DebDocsDirectory, createDirectories: true);
-
-            CopyFile(this.SourceLinuxIconFile, this.TargetDebIconFile);
-            this.TargetDebIconFile.SetUnixPermissions("644");
         });
 
     public Target CreateDebianPackage => t => t

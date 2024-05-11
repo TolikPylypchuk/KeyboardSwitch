@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 INSTALL_DIR=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
 
@@ -14,7 +14,7 @@ Comment=Switches typed text as if it were typed with another keyboard layout
 Exec=$SETTINGS_APP
 TryExec=$SETTINGS_APP
 Path=$INSTALL_DIR
-Icon=$INSTALL_DIR/icon.png
+Icon=$INSTALL_DIR/keyboard-switch.png
 Terminal=false
 Type=Application
 Categories=Utility
