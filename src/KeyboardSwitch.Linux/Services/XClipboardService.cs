@@ -13,6 +13,7 @@ internal sealed class XClipboardService : IClipboardService
 
     private readonly IntPtr windowHandle;
     private readonly Atom[] atoms;
+    private readonly Atom[] textAtoms;
 
     private string? storedText;
 
@@ -36,6 +37,10 @@ internal sealed class XClipboardService : IClipboardService
             this.x11.Utf8StringAtom,
             this.x11.Utf16StringAtom
         }.Where(atom => atom != Atom.None).ToArray();
+
+        this.textAtoms = new[] { this.x11.Utf16StringAtom, this.x11.Utf8StringAtom, this.x11.OemTextAtom, Atom.String }
+            .Where(f => f != Atom.None)
+            .ToArray();
     }
 
     public async Task<string?> GetText()
@@ -51,12 +56,12 @@ internal sealed class XClipboardService : IClipboardService
         var response = await this.SendFormatRequest();
 
         var target = response is not null
-            ? new[] { this.x11.Utf16StringAtom, this.x11.Utf8StringAtom, Atom.String }.First(f => response.Contains(f))
-            : this.x11.Utf8StringAtom;
+            ? textAtoms.FirstOrDefault(f => response.Contains(f))
+            : Atom.None;
 
         this.logger.LogDebug("Getting text in format {Atom}", (ulong)target);
 
-        var data = await this.SendDataRequest(target);
+        var data = await this.SendDataRequest(target != Atom.None ? target : this.x11.Utf8StringAtom);
         return data?.ToString();
     }
 
