@@ -39,7 +39,7 @@
     <PackageReference Include="Splat.Serilog" Version="15.1.1" />
     <PackageReference Include="System.Interactive" Version="6.0.1" />
     <PackageReference Include="System.Interactive.Async" Version="6.0.1" />
-    <PackageReference Include="System.Reactive" Version="6.0.0" />
+    <PackageReference Include="System.Reactive" Version="6.0.1" />
     <PackageReference Include="System.Text.Json" Version="8.0.3" />
   </ItemGroup>
 
