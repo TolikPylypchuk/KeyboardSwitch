@@ -31,7 +31,6 @@ internal unsafe sealed class XMainLoopRunner(X11Service x11, ILogger<XMainLoopRu
             if (!token.IsCancellationRequested)
             {
                 this.HandleX11Events(token);
-
             }
         }
     }
