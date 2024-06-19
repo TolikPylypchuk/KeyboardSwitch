@@ -30,6 +30,7 @@
     </ComponentGroup>
 
     <Icon SourceFile="Resources\icon.ico" Id="icon.ico" />
+    <Property Id="ARPPRODUCTICON" Value="icon.ico" />
 
     <UI Id="UI">
       <ui:WixUI Id="WixUI_InstallDir" InstallDirectory="INSTALLFOLDER" />
