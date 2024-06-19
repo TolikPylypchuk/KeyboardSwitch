@@ -1,6 +1,8 @@
 // The 'Switch Layout' extension for GNOME, used by Keyboard Switch to switch layouts
 
-const { Gio } = imports.gi;
+import Gio from 'gi://Gio';
+import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
+import { getInputSourceManager } from 'resource:///org/gnome/shell/ui/status/keyboard.js';
 
 const DBUS_INTERFACE = `
 <node>
@@ -11,7 +13,7 @@ const DBUS_INTERFACE = `
     </interface>
 </node>`;
 
-class Extension {
+export default class SwitchLayoutExtension extends Extension {
 
     enable() {
         this._dbus = Gio.DBusExportedObject.wrapJSObject(DBUS_INTERFACE, this);
@@ -25,10 +27,6 @@ class Extension {
     }
 
     Call(group) {
-        imports.ui.status.keyboard.getInputSourceManager().inputSources[group].activate();
+        getInputSourceManager().inputSources[group].activate();
     }
-}
-
-function init() {
-    return new Extension();
 }
