@@ -8,6 +8,7 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
     private bool switchLayout;
     private bool startup;
     private bool showUninstalledLayoutsMessage;
+    private bool useXsel;
     private ModifierMask forwardModifierFirst;
     private ModifierMask forwardModifierSecond;
     private ModifierMask forwardModifierThird;
@@ -77,6 +78,12 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
         set => this.RaiseAndSetIfChanged(ref this.showUninstalledLayoutsMessage, value);
     }
 
+    public bool UseXsel
+    {
+        get => this.useXsel;
+        set => this.RaiseAndSetIfChanged(ref this.useXsel, value);
+    }
+
     public ModifierMask ForwardModifierFirst
     {
         get => this.forwardModifierFirst;
@@ -139,6 +146,8 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
         this.TrackChanges(
             vm => vm.ShowUninstalledLayoutsMessage, vm => vm.PreferencesModel.ShowUninstalledLayoutsMessage);
 
+        this.TrackChanges(vm => vm.UseXsel, vm => vm.PreferencesModel.UseXsel);
+
         this.TrackChanges(this.IsCollectionChangedSimple(
             vm => vm.forwardModifierKeys, vm => vm.PreferencesModel.SwitchSettings.ForwardModifiers));
 
@@ -157,6 +166,7 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
         this.PreferencesModel.SwitchLayout = this.SwitchLayout;
         this.PreferencesModel.Startup = this.Startup;
         this.PreferencesModel.ShowUninstalledLayoutsMessage = this.ShowUninstalledLayoutsMessage;
+        this.PreferencesModel.UseXsel = this.UseXsel;
 
         this.PreferencesModel.SwitchSettings = this.PreferencesModel.SwitchSettings with
         {
@@ -175,6 +185,7 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
         this.SwitchLayout = this.PreferencesModel.SwitchLayout;
         this.Startup = this.PreferencesModel.Startup;
         this.ShowUninstalledLayoutsMessage = this.PreferencesModel.ShowUninstalledLayoutsMessage;
+        this.UseXsel = this.PreferencesModel.UseXsel;
 
         var switchSettings = this.PreferencesModel.SwitchSettings;
 

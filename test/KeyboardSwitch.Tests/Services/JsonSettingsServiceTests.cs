@@ -44,6 +44,7 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
           "InstantSwitching": true,
           "SwitchLayout": true,
           "ShowUninstalledLayoutsMessage": true,
+          "UseXsel": false,
           "AppVersion": "{{Version}}"
         }
         """;
@@ -519,6 +520,7 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
             InstantSwitching = true,
             SwitchLayout = true,
             ShowUninstalledLayoutsMessage = true,
+            UseXsel = false,
             AppVersion = Version
         };
 

@@ -1,14 +1,11 @@
 using System.Reactive.Concurrency;
 using System.Text;
 
-using static KeyboardSwitch.Core.Constants;
-
 namespace KeyboardSwitch.Linux.Services;
 
-internal sealed class XClipboardService : IClipboardService
+internal sealed class XClipboardService : ClipboardServiceBase
 {
     private readonly X11Service x11;
-    private readonly IScheduler scheduler;
     private readonly ILogger<XClipboardService> logger;
 
     private readonly IntPtr windowHandle;
@@ -22,9 +19,9 @@ internal sealed class XClipboardService : IClipboardService
     private TaskCompletionSource<object?>? requestedDataSource;
 
     public XClipboardService(X11Service x11, IScheduler scheduler, ILogger<XClipboardService> logger)
+        : base(scheduler)
     {
         this.x11 = x11;
-        this.scheduler = scheduler;
         this.logger = logger;
 
         this.windowHandle = this.CreateEventWindow();
@@ -43,7 +40,7 @@ internal sealed class XClipboardService : IClipboardService
             .ToArray();
     }
 
-    public async Task<string?> GetText()
+    public override async Task<string?> GetText()
     {
         this.logger.LogDebug("Getting the text from the clipboard");
 
@@ -65,7 +62,7 @@ internal sealed class XClipboardService : IClipboardService
         return data?.ToString();
     }
 
-    public Task SetText(string text)
+    public override Task SetText(string text)
     {
         this.logger.LogDebug("Setting the text into the clipboard");
 
@@ -73,21 +70,6 @@ internal sealed class XClipboardService : IClipboardService
         XLib.XSetSelectionOwner(this.x11.Display, this.x11.ClipboardAtom, this.windowHandle, IntPtr.Zero);
 
         return this.StoreAtomsInClipboardManager();
-    }
-
-    public async Task<IAsyncDisposable> SaveClipboardState()
-    {
-        var savedText = await this.GetText();
-        var saveTime = this.scheduler.Now;
-
-        return new AsyncDisposable(async () =>
-        {
-            if (!String.IsNullOrEmpty(savedText) && this.scheduler.Now - saveTime < MaxClipboardRestoreDuration)
-            {
-                await this.scheduler.Sleep(TimeSpan.FromMilliseconds(50));
-                await this.SetText(savedText);
-            }
-        });
     }
 
     private IntPtr CreateEventWindow()

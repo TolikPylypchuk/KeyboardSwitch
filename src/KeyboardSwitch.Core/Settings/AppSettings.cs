@@ -12,5 +12,7 @@ public sealed record AppSettings
 
     public required bool ShowUninstalledLayoutsMessage { get; init; }
 
+    public required bool UseXsel { get; init; }
+
     public required Version AppVersion { get; init; }
 }

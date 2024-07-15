@@ -23,6 +23,11 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
         this.BackwardSecondComboBox.ItemsSource = allModifiers;
         this.BackwardThirdComboBox.ItemsSource = allModifiers;
 
+        if (!OperatingSystem.IsLinux())
+        {
+            this.UseXselCheckBox.IsVisible = false;
+        }
+
         this.WhenActivated(disposables =>
         {
             this.BindCheckboxes(disposables);
@@ -47,6 +52,9 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
             this.ViewModel,
             vm => vm.ShowUninstalledLayoutsMessage,
             v => v.ShowRemovedLayoutsMessageCheckBox.IsChecked)
+            .DisposeWith(disposables);
+
+        this.Bind(this.ViewModel, vm => vm.UseXsel, v => v.UseXselCheckBox.IsChecked)
             .DisposeWith(disposables);
     }
 

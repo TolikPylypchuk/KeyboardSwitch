@@ -118,6 +118,7 @@ internal sealed class JsonSettingsService(
             InstantSwitching = true,
             SwitchLayout = true,
             ShowUninstalledLayoutsMessage = true,
+            UseXsel = false,
             AppVersion = this.GetAppVersion()
         };
 

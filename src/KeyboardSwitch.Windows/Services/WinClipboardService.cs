@@ -2,16 +2,15 @@ using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Runtime.InteropServices;
 
-using static KeyboardSwitch.Core.Constants;
-
 namespace KeyboardSwitch.Windows.Services;
 
-internal sealed class WinClipboardService(IScheduler scheduler, ILogger<WinClipboardService> logger) : IClipboardService
+internal sealed class WinClipboardService(IScheduler scheduler, ILogger<WinClipboardService> logger)
+    : ClipboardServiceBase(scheduler)
 {
     private const int RetryCount = 10;
     private const int Delay = 100;
 
-    public async Task<string?> GetText()
+    public override async Task<string?> GetText()
     {
         logger.LogDebug("Getting text from the clipboard");
 
@@ -35,7 +34,7 @@ internal sealed class WinClipboardService(IScheduler scheduler, ILogger<WinClipb
         }
     }
 
-    public async Task SetText(string text)
+    public override async Task SetText(string text)
     {
         logger.LogDebug("Setting text into the clipboard");
 
@@ -49,21 +48,6 @@ internal sealed class WinClipboardService(IScheduler scheduler, ILogger<WinClipb
                 User32.SetClipboardData(CLIPFORMAT.CF_UNICODETEXT, hGlobal);
             }
         }
-    }
-
-    public async Task<IAsyncDisposable> SaveClipboardState()
-    {
-        var savedText = await this.GetText();
-        var saveTime = scheduler.Now;
-
-        return new AsyncDisposable(async () =>
-        {
-            if (!String.IsNullOrEmpty(savedText) && scheduler.Now - saveTime < MaxClipboardRestoreDuration)
-            {
-                await scheduler.Sleep(TimeSpan.FromMilliseconds(50));
-                await this.SetText(savedText);
-            }
-        });
     }
 
     private async Task<IDisposable> OpenClipboardAsync()

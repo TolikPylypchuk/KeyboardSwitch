@@ -1,6 +1,7 @@
 namespace KeyboardSwitch.Linux.Services;
 
-internal unsafe sealed class XMainLoopRunner(X11Service x11, ILogger<XMainLoopRunner> logger) : IMainLoopRunner
+internal unsafe sealed class XMainLoopRunner(X11Service x11, ILogger<XMainLoopRunner> logger)
+    : IMainLoopRunner
 {
     private const int EPollTimeout = 1000;
 

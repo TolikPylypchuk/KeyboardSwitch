@@ -727,6 +727,24 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use xsel for clipboard integration.
+        /// </summary>
+        internal static string UseXsel {
+            get {
+                return ResourceManager.GetString("UseXsel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Try this option if the clipboard handling doesn&apos;t work well for you. xsel must be installed manually for this option to work. Keyboard Switch must be restarted for this setting change to work..
+        /// </summary>
+        internal static string UseXselHint {
+            get {
+                return ResourceManager.GetString("UseXselHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name is required.
         /// </summary>
         internal static string ValidationNameEmpty {

@@ -8,4 +8,5 @@ public sealed class PreferencesModel(AppSettings appSettings, bool startup)
     public bool SwitchLayout { get; set; } = appSettings.SwitchLayout;
     public bool Startup { get; set; } = startup;
     public bool ShowUninstalledLayoutsMessage { get; set; } = appSettings.ShowUninstalledLayoutsMessage;
+    public bool UseXsel { get; set; } = appSettings.UseXsel;
 }

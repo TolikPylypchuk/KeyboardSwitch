@@ -181,6 +181,7 @@ public sealed class SwitchServiceTests(ITestOutputHelper output)
             InstantSwitching = instantSwitching,
             SwitchLayout = switchLayout,
             ShowUninstalledLayoutsMessage = true,
+            UseXsel = false,
             AppVersion = new Version(0, 0)
         };
 }

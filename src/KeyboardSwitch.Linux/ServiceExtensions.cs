@@ -1,5 +1,7 @@
 using System.Reactive.Concurrency;
 
+using KeyboardSwitch.Core.Services.Settings;
+
 using Microsoft.Extensions.Configuration;
 
 using SharpHook;
@@ -15,7 +17,7 @@ public static class ServiceExtensions
         services
             .Configure<StartupSettings>(config.GetSection("Startup"))
             .AddLayoutService()
-            .AddSingleton<IClipboardService, XClipboardService>()
+            .AddSingleton<IClipboardService>(CreateClipboardService)
             .AddSingleton<IStartupService, FreedesktopStartupService>()
             .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
             .AddSingleton<IUserActivitySimulator>(
@@ -39,5 +41,15 @@ public static class ServiceExtensions
         return isGnome
             ? services.AddSingleton<ILayoutService, GnomeLayoutService>()
             : services.AddSingleton<ILayoutService, XLayoutService>();
+    }
+
+    private static IClipboardService CreateClipboardService(this IServiceProvider sp)
+    {
+        var settingsService = sp.GetRequiredService<IAppSettingsService>();
+        var settings = settingsService.GetAppSettings().Result;
+
+        return settings.UseXsel
+            ? ActivatorUtilities.CreateInstance<XselClipboardService>(sp)
+            : ActivatorUtilities.CreateInstance<XClipboardService>(sp);
     }
 }

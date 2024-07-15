@@ -1,10 +1,9 @@
 using System.Reactive.Concurrency;
 
-using static KeyboardSwitch.Core.Constants;
-
 namespace KeyboardSwitch.MacOS.Services;
 
-internal sealed class MacClipboardService(IScheduler scheduler, ILogger<MacClipboardService> logger) : IClipboardService
+internal sealed class MacClipboardService(IScheduler scheduler, ILogger<MacClipboardService> logger)
+    : ClipboardServiceBase(scheduler)
 {
     private static readonly IntPtr NSString = AppKit.GetClass("NSString");
     private static readonly IntPtr NSPasteboard = AppKit.GetClass("NSPasteboard");
@@ -31,7 +30,7 @@ internal sealed class MacClipboardService(IScheduler scheduler, ILogger<MacClipb
         GeneralPasteboard = AppKit.SendMessage(NSPasteboard, AppKit.RegisterName("generalPasteboard"));
     }
 
-    public Task<string?> GetText()
+    public override Task<string?> GetText()
     {
         logger.LogDebug("Getting text from the clipboard");
 
@@ -42,7 +41,7 @@ internal sealed class MacClipboardService(IScheduler scheduler, ILogger<MacClipb
         return Task.FromResult(result);
     }
 
-    public Task SetText(string text)
+    public override Task SetText(string text)
     {
         logger.LogDebug("Setting text into the clipboard");
 
@@ -62,20 +61,5 @@ internal sealed class MacClipboardService(IScheduler scheduler, ILogger<MacClipb
         }
 
         return Task.CompletedTask;
-    }
-
-    public async Task<IAsyncDisposable> SaveClipboardState()
-    {
-        var savedText = await this.GetText();
-        var saveTime = scheduler.Now;
-
-        return new AsyncDisposable(async () =>
-        {
-            if (!String.IsNullOrEmpty(savedText) && scheduler.Now - saveTime < MaxClipboardRestoreDuration)
-            {
-                await scheduler.Sleep(TimeSpan.FromMilliseconds(50));
-                await this.SetText(savedText);
-            }
-        });
     }
 }
