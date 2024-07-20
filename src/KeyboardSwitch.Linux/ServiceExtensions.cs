@@ -26,22 +26,15 @@ public static class ServiceExtensions
                     sp.GetRequiredService<IScheduler>(),
                     KeyCode.VcLeftControl))
             .AddSingleton<IAutoConfigurationService, XAutoConfigurationService>()
-            .AddSingleton<IInitialSetupService, StartupSetupService>()
+            .AddSingleton<IInitialSetupService, LinuxSetupService>()
             .AddSingleton<IUserProvider, PosixUserProvider>()
             .AddSingleton<IMainLoopRunner, XMainLoopRunner>()
             .AddSingleton<X11Service>();
 
-    private static IServiceCollection AddLayoutService(this IServiceCollection services)
-    {
-        var currentDesktopEnvironment = Environment.GetEnvironmentVariable("XDG_CURRENT_DESKTOP");
-        bool isGnome = currentDesktopEnvironment != null &&
-            (currentDesktopEnvironment.Contains("gnome", StringComparison.CurrentCultureIgnoreCase) ||
-            currentDesktopEnvironment.Contains("unity", StringComparison.CurrentCultureIgnoreCase));
-
-        return isGnome
+    private static IServiceCollection AddLayoutService(this IServiceCollection services) =>
+        GnomeDetector.IsRunningOnGnome()
             ? services.AddSingleton<ILayoutService, GnomeLayoutService>()
             : services.AddSingleton<ILayoutService, XLayoutService>();
-    }
 
     private static IClipboardService CreateClipboardService(this IServiceProvider sp)
     {

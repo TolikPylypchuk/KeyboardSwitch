@@ -11,11 +11,14 @@ public class StartupSetupService(
     IFileSystem fileSystem,
     IOptions<GlobalSettings> globalSettings,
     ILogger<StartupSetupService> logger)
-    : OneTimeInitialSetupService(userProvider, fileSystem, globalSettings, logger)
+    : InitialSetupServiceBase(userProvider, fileSystem, globalSettings, logger)
 {
-    protected override void DoInitialSetup(string currentUser)
+    protected override void DoInitialSetup(string currentUser, bool firstTime)
     {
-        logger.LogInformation("Setting the Keyboard Switch service to start at login");
-        startupService.ConfigureStartup(startup: true);
+        if (firstTime)
+        {
+            logger.LogInformation("Setting the Keyboard Switch service to start at login");
+            startupService.ConfigureStartup(startup: true);
+        }
     }
 }

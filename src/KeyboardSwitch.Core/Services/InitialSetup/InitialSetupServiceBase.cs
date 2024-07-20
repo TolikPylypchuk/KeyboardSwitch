@@ -6,15 +6,17 @@ using KeyboardSwitch.Core.Services.Users;
 
 namespace KeyboardSwitch.Core.Services.InitialSetup;
 
-public abstract class OneTimeInitialSetupService(
+public abstract class InitialSetupServiceBase(
     IUserProvider userProvider,
     IFileSystem fileSystem,
     IOptions<GlobalSettings> globalSettings,
-    ILogger<OneTimeInitialSetupService> logger)
+    ILogger<InitialSetupServiceBase> logger)
     : IInitialSetupService
 {
     private readonly IFileInfo initialSetupFile =
         fileSystem.FileInfo.New(Environment.ExpandEnvironmentVariables(globalSettings.Value.InitialSetupFilePath));
+
+    protected readonly IFileSystem FileSystem = fileSystem;
 
     public void InitializeKeyboardSwitchSetup()
     {
@@ -30,10 +32,10 @@ public abstract class OneTimeInitialSetupService(
         {
             if (OperatingSystem.IsWindows())
             {
-                this.InitializeKeyboardSwitchSetupForWindows(currentUser, this.DoInitialSetup);
+                this.InitializeKeyboardSwitchSetupForWindows(currentUser);
             } else
             {
-                this.InitializeKeyboardSwitchSetupForNonWindows(currentUser, this.DoInitialSetup);
+                this.InitializeKeyboardSwitchSetupForNonWindows(currentUser);
             }
         } catch (Exception e)
         {
@@ -41,18 +43,21 @@ public abstract class OneTimeInitialSetupService(
         }
     }
 
-    protected abstract void DoInitialSetup(string currentUser);
+    protected abstract void DoInitialSetup(string currentUser, bool firstTime);
 
-    private void InitializeKeyboardSwitchSetupForWindows(string currentUser, Action<string> doSetup)
+    private void InitializeKeyboardSwitchSetupForWindows(string currentUser)
     {
         var users = this.ReadUsersFromFile();
 
         if (!users.Contains(currentUser))
         {
-            doSetup(currentUser);
+            this.DoInitialSetupSafe(currentUser, true);
 
             users.Add(currentUser);
             this.WriteToUsersFile(users);
+        } else
+        {
+            this.DoInitialSetupSafe(currentUser, false);
         }
     }
 
@@ -73,18 +78,15 @@ public abstract class OneTimeInitialSetupService(
         JsonSerializer.Serialize(fileStream, users, KeyboardSwitchJsonContext.Default.ListString);
     }
 
-    private void InitializeKeyboardSwitchSetupForNonWindows(string currentUser, Action<string> doSetup)
+    private void InitializeKeyboardSwitchSetupForNonWindows(string currentUser)
     {
         bool fileExists = this.initialSetupFile.Exists;
 
         string? processPath = Environment.ProcessPath;
-        bool shouldDoSetup = !fileExists ||
+        bool firstTime = !fileExists ||
             processPath is not null && this.initialSetupFile.LastWriteTimeUtc < File.GetCreationTimeUtc(processPath);
 
-        if (shouldDoSetup)
-        {
-            doSetup(currentUser);
-        }
+        this.DoInitialSetupSafe(currentUser, firstTime);
 
         if (!fileExists)
         {
@@ -92,5 +94,16 @@ public abstract class OneTimeInitialSetupService(
         }
 
         this.initialSetupFile.LastWriteTimeUtc = DateTime.UtcNow;
+    }
+
+    private void DoInitialSetupSafe(string currentUser, bool firstTime)
+    {
+        try
+        {
+            this.DoInitialSetup(currentUser, firstTime);
+        } catch (Exception e)
+        {
+            logger.LogError(e, "Exception when doing the initial setup");
+        }
     }
 }

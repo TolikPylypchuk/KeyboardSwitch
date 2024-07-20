@@ -135,6 +135,8 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
     public ValidationHelper ModifierKeysAreDifferentRule { get; }
     public ValidationHelper SwitchMethodsAreDifferentRule { get; }
 
+    public bool ShowUseXsel => OperatingSystem.IsLinux();
+
     protected override PreferencesViewModel Self => this;
 
     protected override void EnableChangeTracking()

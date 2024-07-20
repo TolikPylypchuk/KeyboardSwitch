@@ -26,5 +26,5 @@ command -v gnome-shell &> /dev/null
 if [ "$?" = 0 ]
 then
     mkdir -p $GNOME_EXTENSION_DIR
-    cp $INSTALL_DIR/{extension.js,metadata.json} $GNOME_EXTENSION_DIR
+    chmod -R 777 $GNOME_EXTENSION_DIR
 fi

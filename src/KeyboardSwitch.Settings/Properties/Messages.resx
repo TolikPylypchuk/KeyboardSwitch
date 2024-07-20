@@ -343,7 +343,7 @@
     <value>Use xsel for clipboard integration</value>
   </data>
   <data name="UseXselHint" xml:space="preserve">
-    <value>Try this option if the clipboard handling doesn't work well for you. xsel must be installed manually for this option to work. Keyboard Switch must be restarted for this setting change to work.</value>
+    <value>Try this option if the clipboard handling doesn't work well for you. xsel must be installed manually for this option to work.</value>
   </data>
   <data name="ValidationNameEmpty" xml:space="preserve">
     <value>Name is required</value>

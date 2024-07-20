@@ -1,0 +1,19 @@
+{
+  "name": "Switch Layout",
+  "description": "Switches keyboard layouts, used by Keyboard Switch",
+  "uuid": "switch-layout@tolik.io",
+  "version": 1,
+  "url": "https://keyboardswitch.tolik.io",
+  "shell-version": [
+    "3.30",
+    "3.32",
+    "3.34",
+    "3.36",
+    "3.38",
+    "40",
+    "41",
+    "42",
+    "43",
+    "44"
+  ]
+}

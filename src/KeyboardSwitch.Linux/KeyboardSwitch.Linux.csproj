@@ -18,10 +18,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="extension.js">
+    <None Update="gnome-extension\v1\extension.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="metadata.json">
+    <None Update="gnome-extension\v1\metadata.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="gnome-extension\v2\extension.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="gnome-extension\v2\metadata.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -736,7 +736,7 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Try this option if the clipboard handling doesn&apos;t work well for you. xsel must be installed manually for this option to work. Keyboard Switch must be restarted for this setting change to work..
+        ///   Looks up a localized string similar to Try this option if the clipboard handling doesn&apos;t work well for you. xsel must be installed manually for this option to work..
         /// </summary>
         internal static string UseXselHint {
             get {

@@ -23,7 +23,7 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
         this.BackwardSecondComboBox.ItemsSource = allModifiers;
         this.BackwardThirdComboBox.ItemsSource = allModifiers;
 
-        if (!OperatingSystem.IsLinux())
+        if (this.ViewModel?.ShowUseXsel == false)
         {
             this.UseXselCheckBox.IsVisible = false;
         }
