@@ -7,10 +7,10 @@ public partial class Build
         ArtifactsDirectory / $"*.tar.gz";
 
     private AbsolutePath ZipFile =>
-        GetArchiveFile("zip");
+        GetArchiveFile("zip", lowercase: false);
 
     private AbsolutePath TarFile =>
-        GetArchiveFile("tar.gz");
+        GetArchiveFile("tar.gz", lowercase: true);
 
     private AbsolutePath SourceLinuxInstallFile =>
         this.LinuxFilesDirectory / "install.sh";
@@ -18,6 +18,8 @@ public partial class Build
     private AbsolutePath SourceLinuxUninstallFile =>
         this.LinuxFilesDirectory / "uninstall.sh";
 
-    private AbsolutePath GetArchiveFile(string format) =>
-        this.WithSuffix(ArtifactsDirectory / $"{KeyboardSwitch}-{Version}-{this.Platform.Archive}.{format}");
+    private AbsolutePath GetArchiveFile(string format, bool lowercase) =>
+        this.WithSuffix(
+            ArtifactsDirectory /
+                $"{(lowercase ? KeyboardSwitchLower : KeyboardSwitch)}-{Version}-{this.Platform.Archive}.{format}");
 }

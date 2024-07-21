@@ -34,7 +34,7 @@ internal sealed class LinuxSetupService(
         {
             try
             {
-                this.DeployGnomeExtensionFiles();
+                this.InstallGnomeExtensionFiles();
             } catch (Exception e)
             {
                 logger.LogError(e, "Exception when trying to deploy the GNOME extension files");
@@ -42,7 +42,7 @@ internal sealed class LinuxSetupService(
         }
     }
 
-    private void DeployGnomeExtensionFiles()
+    private void InstallGnomeExtensionFiles()
     {
         var versionDirectory = GnomeDetector.TryGetGnomeVersion() >= GnomeVersionForExtensionV2
             ? GnomeExtensionV2Directory
