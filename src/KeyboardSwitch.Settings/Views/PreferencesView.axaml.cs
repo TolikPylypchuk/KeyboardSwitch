@@ -23,17 +23,17 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
         this.BackwardSecondComboBox.ItemsSource = allModifiers;
         this.BackwardThirdComboBox.ItemsSource = allModifiers;
 
-        if (this.ViewModel?.ShowUseXsel == false)
-        {
-            this.UseXselCheckBox.IsVisible = false;
-        }
-
         this.WhenActivated(disposables =>
         {
             this.BindCheckboxes(disposables);
             this.BindControls(disposables);
             this.BindValidations(disposables);
             this.BindCommands(disposables);
+
+            if (this.ViewModel?.ShowUseXsel == false)
+            {
+                this.UseXselCheckBox.IsVisible = false;
+            }
         });
     }
 
