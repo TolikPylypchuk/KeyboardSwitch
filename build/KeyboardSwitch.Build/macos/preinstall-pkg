@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 LAUNCH_AGENT=io.tolik.keyboardswitch
 LAUNCH_AGENT_FILE=$LAUNCH_AGENT.plist

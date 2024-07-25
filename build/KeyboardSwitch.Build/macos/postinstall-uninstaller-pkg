@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 dscl . -list /Users UniqueID | grep -v -e ^_ -e root -e daemon -e nobody | while read -r CURRENT_USER CURRENT_UID ; do
     launchctl asuser $CURRENT_UID launchctl remove io.tolik.keyboardswitch

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 cp "$2/Keyboard Switch.app/Contents/Resources/io.tolik.keyboardswitch.plist" /Library/LaunchAgents/
 

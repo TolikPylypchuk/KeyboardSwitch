@@ -8,6 +8,10 @@
     <array>
         <string>/Library/Application Support/Keyboard Switch/Keyboard Switch.app/Contents/MacOS/KeyboardSwitch</string>
     </array>
+    <key>AssociatedBundleIdentifiers</key>
+    <array>
+        <string>io.tolik.keyboardswitch</string>
+    </array>
     <key>KeepAlive</key>
     <false />
     <key>RunAtLoad</key>
