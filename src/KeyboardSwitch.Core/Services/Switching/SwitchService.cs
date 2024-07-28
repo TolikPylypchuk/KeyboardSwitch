@@ -28,7 +28,7 @@ public class SwitchService(
         if (!String.IsNullOrEmpty(textToSwitch))
         {
             var newText = this.MapText(textToSwitch, direction, settings);
-            await clipboard.SetText(new String(newText));
+            await clipboard.SetText(newText);
         }
 
         if (settings.InstantSwitching)

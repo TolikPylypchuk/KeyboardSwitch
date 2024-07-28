@@ -1,12 +1,25 @@
+using KeyboardSwitch.Core.Services.Settings;
+
 namespace KeyboardSwitch.Linux.Services;
 
-internal unsafe sealed class XMainLoopRunner(X11Service x11, ILogger<XMainLoopRunner> logger)
+internal unsafe sealed class XMainLoopRunner(
+    X11Service x11,
+    IAppSettingsService settingsService,
+    ILogger<XMainLoopRunner> logger)
     : IMainLoopRunner
 {
     private const int EPollTimeout = 1000;
 
     public void RunMainLoop(CancellationToken token)
     {
+        var settings = settingsService.GetAppSettings().Result;
+
+        if (settings.UseXsel)
+        {
+            logger.LogInformation("Will use xsel for clipboard integration, so no need to run the X11 event loop");
+            return;
+        }
+
         var (epoll, sigread) = this.InitializeEPoll();
 
         logger.LogInformation("Running the main loop to listen for X11 events");
