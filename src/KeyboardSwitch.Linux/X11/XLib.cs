@@ -127,6 +127,9 @@ internal unsafe static partial class XLib
     public static partial int XSetSelectionOwner(XDisplayHandle display, Atom selection, IntPtr owner, IntPtr time);
 
     [LibraryImport(X11)]
+    public static partial IntPtr XSynchronize(XDisplayHandle display, [MarshalAs(UnmanagedType.I1)] bool on);
+
+    [LibraryImport(X11)]
     public static partial XHandle XkbAllocKeyboard();
 
     [LibraryImport(X11)]

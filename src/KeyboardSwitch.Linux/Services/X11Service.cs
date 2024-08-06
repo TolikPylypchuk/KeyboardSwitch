@@ -10,6 +10,10 @@ internal sealed class X11Service : DisposableService
     {
         this.Display = this.OpenXDisplay();
 
+        // For some reason without setting the synchronous mode on, switching the current keyboard layout
+        // doesn't work when xsel integration is enabled
+        XLib.XSynchronize(this.Display, true);
+
         this.AtomPairAtom = XLib.XInternAtom(this.Display, "ATOM_PAIR", true);
         this.ClipboardAtom = XLib.XInternAtom(this.Display, "CLIPBOARD", true);
         this.ClipboardManagerAtom = XLib.XInternAtom(this.Display, "CLIPBOARD_MANAGER", true);
