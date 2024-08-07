@@ -14,6 +14,14 @@ then
     rm "$HOME/.config/keyboard-switch/.setup-configured"
 fi
 
+if [ "$1" == "--purge" ]
+then
+    if [ -d "$HOME/.config/keyboard-switch" ]
+    then
+        rm -rf "$HOME/.config/keyboard-switch"
+    fi
+fi
+
 if [ -f "$SERVICE_DESKTOP_FILE" ]
 then
     rm "$SERVICE_DESKTOP_FILE"
