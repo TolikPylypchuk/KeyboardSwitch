@@ -17,13 +17,13 @@ When the settings app starts up you should configure the character mappings (you
 You can uninstall the app using the Settings app just like you would uninstall any other app.
 
 {% hint style="warning" %}
-**Note:** The installer will not delete the registry entry which says that your app should start when you log in! If you want to keep your registry clean, you have to disable it in the settings app before uninstalling it.
+The installer will not delete the registry entry which says that your app should start when you log in! If you want to keep your registry clean, you have to disable it in the settings app before uninstalling it.
 {% endhint %}
 
 Upon uninstallation the installer will ask whether you want to delete the app's configuration as well. If you choose not to delete the configuration, you can delete it later manually at any other time. It's stored under the user's local app data folder.
 
 {% hint style="warning" %}
-**Note:** The installer will only delete the current user's configuration! If there are other users on the PC, they will have to delete the configuration manually.
+The installer will only delete the current user's configuration! If there are other users on the PC, they will have to delete the configuration manually.
 {% endhint %}
 
 ### Using the Portable Version

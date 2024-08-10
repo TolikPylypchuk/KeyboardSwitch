@@ -3,7 +3,7 @@
 The converter lets you manually convert text between arbitrary layouts, not just those installed in your system. In order to enable it, check the 'Show the converter' check-box in the Preferences tab.
 
 {% hint style="info" %}
-**Note** Converter is a very niche feature. Chances are that you'll never need to use it and never even think of using it, and that's why it's hidden by default. Moreover, it has nothing to do with the main functionality of the app - switching text in the background. Feel free to skip this article if you're not interested.
+Converter is a very niche feature. Chances are that you'll never need to use it and never even think of using it, and that's why it's hidden by default. Moreover, it has nothing to do with the main functionality of the app - switching text in the background. Feel free to skip this article if you're not interested.
 {% endhint %}
 
 ## The Converter Functionality
@@ -24,7 +24,7 @@ Configuration area is where you configure how to switch the text. You can select
 Custom layouts are configured in the Converter Settings tab, discussed in the next section.
 
 {% hint style="info" %}
-**Note** At least two custom layouts are required to enable the converter.
+At least two custom layouts are required to enable the converter.
 {% endhint %}
 
 ## Converter Settings
@@ -42,7 +42,7 @@ Just like with Character Mappings, you can auto-configure custom layouts, but he
 You can select layouts using the drop-down. It includes all keyboard layouts that you can choose in Windows. After you selected the layouts, and clicked _Save_, the app will load those layouts into Windows, execute the same auto-configuration algorithm as it does in the Character Mappings tab, and then unload those layouts from the system.
 
 {% hint style="info" %}
-**Note** It's best to auto-configure all layouts you want to add at once. If you auto-configure them one by one, then some characters may not be mapped correctly since auto-configuration will remove mappings which are not defined in _all_ layouts.
+It's best to auto-configure all layouts you want to add at once. If you auto-configure them one by one, then some characters may not be mapped correctly since auto-configuration will remove mappings which are not defined in _all_ layouts.
 {% endhint %}
 
 ## Why the Converter Was Added
