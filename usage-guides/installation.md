@@ -10,14 +10,14 @@ After installing the app, the installer will run the settings app. Currently it'
 
 When the settings app starts up you should configure the character mappings (you can read more about it in the next article). After you have configured the character mappings and possibly some other preferences, start the app using the _Start_ button at the bottom of the window. That's it! Now you're ready to use the Keyboard Switch service.
 
-Current only the x64 version can be installed with an installer. If you want the Arm64 version then you should use a portable version or [build the installer yourself](../other/technical.md#building-the-windows-installer).
+Current only the x64 version can be installed with an installer. If you want the Arm64 version, then you should use a portable version or [build the installer yourself](../other/technical.md#building-the-windows-installer).
 
 ### Uninstalling the App
 
 You can uninstall the app using the Settings app just like you would uninstall any other app.
 
 {% hint style="warning" %}
-**Note:** The installer will not delete the registry entry which says that your app should start when you log in! If you want to keep your registry clean, you have to disable it in the settings app before uninstalling it.
+The installer will not delete the registry entry which says that your app should start when you log in! If you want to keep your registry clean, you have to disable it in the settings app before uninstalling it.
 {% endhint %}
 
 Upon uninstallation the installer will ask whether you want to delete the app's configuration as well. If you choose not to delete the configuration, you can delete it later manually at any other time. It's stored under the user's local app data folder.

@@ -22,13 +22,13 @@ Press _Save_.
 
 Press _Start_.
 
-That's it! You're ready to use Keyboard Switch in it's basic configuration. There's a big chance you won't need to configure it further. But if you do, then all the info you'll ever need is provided in these docs.
+That's it! You're ready to use Keyboard Switch in its basic configuration. There's a big chance you won't need to configure it further. But if you do, then all the info you'll ever need is provided in these docs.
 
 To switch text forward, select the text, and press _Ctrl+Shift_ twice. To switch it backward, press _Ctrl+Alt+Shift_ twice instead.
 
 ### macOS
 
-You can get the latest version of the app from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download the _.pkg_ file and run it to install the app. If your computer is running on an Intel CPU then you should get the _x86\_64_ package. If your computer is running on an Apple CPU (e.g. M1) then you should get the _arm64_ package.
+You can get the latest version of the app from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download the _.pkg_ file and run it to install the app. If your computer runs on an Intel CPU then you should get the _x86\_64_ package. If your computer runs on an Apple CPU (e.g. M1) then you should get the _arm64_ package.
 
 After installing the app, open Keyboard Switch Settings - it should appear in the list of your apps.
 
@@ -42,7 +42,7 @@ Press _Save_.
 
 Press _Start_.
 
-That's it! You're ready to use Keyboard Switch in it's basic configuration. There's a big chance you won't need to configure it further. But if you do, then all the info you'll ever need is provided in these docs.
+That's it! You're ready to use Keyboard Switch in its basic configuration. There's a big chance you won't need to configure it further. But if you do, then all the info you'll ever need is provided in these docs.
 
 To switch text forward, select the text, and press _Ctrl+Shift_ twice. To switch it backward, press _Ctrl+Option+Shift_ twice instead.
 
@@ -72,7 +72,7 @@ Press _Save_.
 
 Press _Start_.
 
-That's it! You're ready to use Keyboard Switch in it's basic configuration. There's a big chance you won't need to configure it further. But if you do, then all the info you'll ever need is provided in these docs.
+That's it! You're ready to use Keyboard Switch in its basic configuration. There's a big chance you won't need to configure it further. But if you do, then all the info you'll ever need is provided in these docs.
 
 To switch text forward, select the text, and press _Ctrl+Shift_ twice. To switch it backward, press _Ctrl+Alt+Shift_ twice instead.
 
@@ -93,7 +93,7 @@ The app uses the list of your layouts in the same order as defined by the system
 The app uses the clipboard to get the text to transform, and then puts the transformed text back into the clipboard. The app will try to preserve the text that was in the clipboard before switching, and to restore it afterwards. It doesn't guarantee that the text will be restored though. Also, any non-text data (e.g. a file or a picture) will not be restored.
 
 {% hint style="info" %}
-**Note:** The app simulates pressing _Ctrl+C_ (or _Command+C_ on macOS) to copy and _Ctrl+V_ (or _Command+V_ on macOS) to paste text. This is the default behavior for most applications. But if you are working in an app which behaves differently on those key presses (e.g. a terminal), this app will not be able to instantly switch text. You can disable this behavior, and copy/paste the text manually.
+The app simulates pressing _Ctrl+C_ (or _Command+C_ on macOS) to copy and _Ctrl+V_ (or _Command+V_ on macOS) to paste text. This is the default behavior for most applications. But if you are working in an app which behaves differently on those key presses (e.g. a terminal), this app will not be able to instantly switch text. You can disable this behavior, and copy/paste the text manually.
 {% endhint %}
 
 ## Supported Platforms
