@@ -4,9 +4,9 @@ Keyboard Switch: version 3.0. Created by [Tolik Pylypchuk](https://github.com/To
 
 ## Acknowledgements
 
-Icon made by [Smashicons](https://smashicons.com) from [www.flaticon.com](https://www.flaticon.com).
+Icon made by [Smashicons](https://smashicons.com/) from [www.flaticon.com](https://www.flaticon.com/).
 
-The UI for the settings app was created using [Avalonia](https://avaloniaui.net) with [ReactiveUI](https://www.reactiveui.net) and the [Citrus theme](https://github.com/worldbeater/Citrus.Avalonia) by [worldbeater](https://github.com/worldbeater).
+The UI for the settings app was created using [Avalonia](https://avaloniaui.net/) with [ReactiveUI](https://www.reactiveui.net/).
 
 Docs are built using [GitBook](https://www.gitbook.com).
 
@@ -51,7 +51,7 @@ All the basic functionality:
 
 MIT License
 
-Copyright (c) 2015-2021 Anatoliy Pylypchuk
+Copyright (c) 2015 Anatoliy Pylypchuk
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

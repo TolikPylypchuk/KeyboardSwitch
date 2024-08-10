@@ -27,7 +27,7 @@ Here are the basic steps you should take to switch the text:
 The app uses the clipboard to get the text to transform, and then puts the transformed text back into the clipboard. Bear this in mind when you use it - if you have anything else in the clipboard, it will be lost. This isn't that big of an issue since Windows 10 October 2019 Update, because you can enable multiple items in the clipboard.
 
 {% hint style="info" %}
-**Note:** The app simulates pressing _Ctrl+C_ to copy and _Ctrl+V_ to paste text. This is the default behaviour for most (if not all) applications. But if you are working in an app which behaves differently on those key presses, this app will not be able to instantly switch text. You can disable this behaviour, and copy/paste the text manually.
+The app simulates pressing _Ctrl+C_ to copy and _Ctrl+V_ to paste text. This is the default behaviour for most (if not all) applications. But if you are working in an app which behaves differently on those key presses, this app will not be able to instantly switch text. You can disable this behaviour, and copy/paste the text manually.
 {% endhint %}
 
 ## Supported Platforms
@@ -36,8 +36,8 @@ This app works only on Windows 10. It can probably work on older versions of Win
 
 ## Layouts
 
-The app uses the list of your layouts in the same order as defined by the system. You can switch both forward and backward through this list. The app also automatically changes your layouts, so you don't have to do it yourself. You can disable this as well if you so wish. You cannot add a layout that's not present as one of the system's layouts. If you add/remove a layout while the app is running, you'll have configure it in the settings and restart the service.
+The app uses the list of your layouts in the same order as defined by the system. You can switch both forward and backward through this list. The app also automatically changes your layouts, so you don't have to do it yourself. You can disable this as well if you so wish. You cannot add a layout that's not present as one of the system's layouts. If you add/remove a layout while the app is running, you'll have to configure it in the settings and restart the service.
 
 {% hint style="info" %}
-**Note:** This app is "Western-oriented". I developed it specifically to handle switching between Cyrillic and Latin scripts. I don't know how it will work (if at all) with Eastern languages/scripts.
+This app is "Western-oriented". I developed it specifically to handle switching between Cyrillic and Latin scripts. I don't know how it will work (if at all) with Eastern languages/scripts.
 {% endhint %}
