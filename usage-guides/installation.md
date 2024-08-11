@@ -8,7 +8,7 @@ These docs are for version 4.2 which is not yet released.
 
 ### Using a Windows Installer
 
-You can get the latest version of the app from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download the _.msi_ file and run it to install the app. If your computer runs on an Intel CPU then you should get the _x64_ installer. If your computer runs on an Arm CPU then you should get the _arm64_ installer. If you're not sure, then you should most likely need the _x64_ installer.
+You can get the latest version of the app from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download the _.msi_ file and run it to install the app. If your computer runs on an x64 architecture, then you should get the _x64_ installer. If your computer runs on an Arm architecture, then you should get the _arm64_ installer. If you're not sure, then you most likely need the _x64_ installer.
 
 After installing the app, the installer will start the settings app. On the first start-up the settings app will configure the service to run when you log into the system.
 
@@ -32,7 +32,7 @@ If you don't want to install the app (or can't), you can use the portable versio
 
 ### Installing the App
 
-You can get the latest version of the app from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download the _.pkg_ file and run it to install the app. If your computer runs on an Apple CPU (e.g. M1) then you should get the _arm64_ package. If your computer runs on an Intel CPU then you should get the _x86\_64_ package.
+You can get the latest version of the app from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download the _.pkg_ file and run it to install the app. If your computer runs on an Apple CPU (e.g. M1), then you should get the _arm64_ package. If your computer runs on an Intel CPU, then you should get the _x86\_64_ package.
 
 The installer will install multiple things:
 
@@ -52,7 +52,7 @@ You can configure the character mappings (you can read more about it in the next
 
 ### Uninstalling the App
 
-Many apps on macOS can be uninstalled just by deleting the app bundle from the _/Applications_ folder. This is not the case with Keyboard Switch. Multiple things should be done to remove it from the system. You shouldn't concern yourself with those things though - you should just run an uninstaller package and it will remove Keyboard Switch.
+Many apps on macOS can be uninstalled just by deleting the app bundle from the _/Applications_ folder. This is not the case with Keyboard Switch. Multiple things should be done to remove it from the system. You shouldn't concern yourself with those things though - you should just run an uninstaller package, and it will remove Keyboard Switch.
 
 As with the installer package, you can also get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download and run the _KeyboardSwitchUninstaller-4.1.pkg_ file, and Keyboard Switch will be removed.
 
@@ -76,7 +76,7 @@ Keyboard Switch doesn't support Wayland (even with XWayland).
 
 The most popular desktop systems (at least GNOME, KDE Plasma, Cinnamon, LXQt, and Xfce) all adhere to the Freedesktop protocols, so the last prerequisite is automatically available, unless you're running a very unusual setup.
 
-Starting with version 4.2, Keyboard Switch uses native clipboard integration by default. This works well on newer desktop environments, but doesn't work well on older versions. If you notice that Keyboard Switch doesn't work well on your system, then you can switch to using xsel instead. xsel must be installed manually though, and the service app must be restarted when this setting is changed.
+Starting with version 4.2, Keyboard Switch uses native clipboard integration by default. This works well on newer desktop environments but doesn't work well on older versions. If you notice that Keyboard Switch doesn't work well on your system, then you can switch to using xsel instead. xsel must be installed manually though, and the service app must be restarted when this setting is changed.
 
 [Click here](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/94) to see the list of Linux distributions on which the app was tested.
 
