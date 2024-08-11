@@ -124,7 +124,7 @@ The app consists of 10 projects grouped into 3 folders:
 
 ### Building the App Itself
 
-Keyboard Switch uses NUKE as its build system. It's not required to build Keyboard Switch, but it greatly simplifies creating the target artifacts. You should call the `./build.cmd` script from the root folder to run NUKE (the script is cross-platform).
+Keyboard Switch uses [NUKE](https://nuke.build) as its build system. It's not required to build Keyboard Switch, but it greatly simplifies creating the target artifacts. You should call the `./build.cmd` script from the root folder to run NUKE (the script is cross-platform).
 
 The following targets are available (the default target is `Compile`):
 
