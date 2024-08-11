@@ -1,7 +1,5 @@
 # Installation
 
-
-
 {% hint style="warning" %}
 These docs are for version 4.2 which is not yet released.
 {% endhint %}
@@ -28,7 +26,7 @@ The uninstaller will also not delete the registry entry which says that your app
 
 ### Using the Portable Version
 
-If you don't want to install the app (or can't), you can use the portable version of the app. It's literally the same as the installable version; there are no differences. Again, go to the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases) and download _KeyboardSwitch-4.1-x64-win.zip_ or _KeyboardSwitch-4.1-arm64-win.zip_. If you're not sure which one you should download, then it's most probably _x64_. Extract the archive to anywhere you want and start _KeyboardSwitchSettings.exe_. It will configure the app to run when you log in just like the installed version. The configuration for the portable version is also stored under your local app data folder.
+If you don't want to install the app (or can't), you can use the portable version of the app. It's literally the same as the installable version; there are no differences. Again, go to the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases) and download _KeyboardSwitch-4.2.0-x64-win.zip_ or _KeyboardSwitch-4.2.0-arm64-win.zip_. If you're not sure which one you should download, then it's most probably _x64_. Extract the archive to anywhere you want and start _KeyboardSwitchSettings.exe_. It will configure the app to run when you log in just like the installed version. The configuration for the portable version is also stored under your local app data folder.
 
 ## macOS
 

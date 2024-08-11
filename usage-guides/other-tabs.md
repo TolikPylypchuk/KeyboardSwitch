@@ -10,7 +10,7 @@ Other tabs in the settings app include the Sandbox tab and the About tab.
 
 Sandbox is absurdly simple - it's just a text box. That's it! Here's how it looks:
 
-![](../.gitbook/assets/v4.1-screen-sandbox.png)
+<figure><img src="../.gitbook/assets/v4.2-screen-sandbox.png" alt="The sandbox tab"><figcaption><p>The sandbox tab</p></figcaption></figure>
 
 Sandbox lets you play around with switching text when you change the app's settings. It contains no logic whatsoever. It's literally just a text box.
 
@@ -18,7 +18,7 @@ Sandbox lets you play around with switching text when you change the app's setti
 
 The About tab contains some general info about the app. Here's how it looks:
 
-![](../.gitbook/assets/v4.1-screen-about.png)
+<figure><img src="../.gitbook/assets/v4.2-screen-about.png" alt="The about tab"><figcaption><p>The about tab</p></figcaption></figure>
 
 If you want more info, you can view the docs (these very pages).
 

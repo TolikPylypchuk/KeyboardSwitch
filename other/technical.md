@@ -126,7 +126,7 @@ The app consists of 10 projects grouped into 3 folders:
 
 Keyboard Switch uses NUKE as its build system. It's not required to build Keyboard Switch, but it greatly simplifies creating the target artifacts. You should call the `./build.cmd` script from the root folder to run NUKE (the script is cross-platform).
 
-The following targets are available:
+The following targets are available (the default target is `Compile`):
 
 * `Restore` - runs `dotnet restore` for all projects.
 * `Clean` - runs `dotnet clean` for all projects.
@@ -145,7 +145,7 @@ The following targets are available:
 * `PrepareRpmPackage` - prepares all files required for an RPM package.
 * `CreateRpmPackage` - creates an RPM package.
 
-The Windows intaller can be created on any OS. The macOS packages can only be created on macOS and require an Apple developer account and certificates. The deb and RPM packages can only be created on Linux.
+The Windows installer can be created on any OS. The macOS packages can only be created on macOS and require an Apple developer account and certificates. The deb and RPM packages can only be created on Linux.
 
 The following parameters are available:
 
@@ -164,3 +164,7 @@ The following parameters are available for building macOS packages:
 * `NotaryToolKeychainProfile` - the Keychain profile to be used by `notarytool` when notarizing the package.
 
 There are more parameters available for macOS, but they are only used when running in GitHub Actions. Certificates must be stored in Keychain for macOS packages to be built.
+
+Here is the NUKE execution plan which shows the dependencies between targets:
+
+<figure><img src="../.gitbook/assets/v4.2-nuke-execution-plan.png" alt="NUKE execution plan"><figcaption><p>NUKE execution plan</p></figcaption></figure>

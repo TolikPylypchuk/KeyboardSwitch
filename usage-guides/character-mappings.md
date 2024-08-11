@@ -24,9 +24,9 @@ And that's why the app uses a much simpler solution - it lets you, the user, fig
 
 ## How Character Mappings Work
 
-Here's how the tab looks when the app is opened for the first time:
+Here's how the tab looks if the configuration is empty:
 
-![](../.gitbook/assets/v4.1-screen-char-mappings-empty.png)
+<figure><img src="../.gitbook/assets/v4.2-screen-char-mappings-empty.png" alt="The character mapping tab when the configuration is empty"><figcaption><p>The character mapping tab when the configuration is empty</p></figcaption></figure>
 
 You have to enter every character you can think of (which can be entered using your keyboard) into the text fields which correspond to layouts. For example, press the _Q_ key, then press the _W_ key, and so on. Then press _Shift+Q_, then _Shift+W_ etc. to add uppercase letters.
 
@@ -44,9 +44,13 @@ Even though you have to do it only once, configuring character mappings is still
 
 Auto-configuration is available only when the character mapping configuration is completely empty.
 
+{% hint style="info" %}
+The character mappings are auto-configured automatically when the settings app is opened for the first time.
+{% endhint %}
+
 Here's how the tab looks after running auto-configuration:
 
-![](../.gitbook/assets/v4.1-screen-auto-configuration.png)
+<figure><img src="../.gitbook/assets/v4.2-screen-auto-configuration.png" alt="The character mapping tab after auto-configuration"><figcaption><p>The character mapping tab after auto-configuration</p></figcaption></figure>
 
 ### Windows and macOS
 

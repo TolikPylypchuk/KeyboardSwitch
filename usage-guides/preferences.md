@@ -6,7 +6,7 @@ These docs are for version 4.2 which is not yet released.
 
 The Preferences tab contains other settings which control the behavior of the Keyboard Switch service. Here's how it looks:
 
-![](../.gitbook/assets/v4.1-screen-preferences.png)
+<figure><img src="../.gitbook/assets/v4.2-screen-preferences.png" alt="The preferences tab"><figcaption><p>The preferences tab</p></figcaption></figure>
 
 Following is the discussion on the many fields that are in this tab.
 
