@@ -1,6 +1,6 @@
 # Changelog
 
-## v4.2 (TBD)
+## [v4.2.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.2.0) (14 August 2024)
 
 - Arm64 is now oficially supported for Windows and Linux
 - The converter has been removed
@@ -10,6 +10,7 @@ environments, so integration through xsel is still possible
 - The internal format of the settings was changed, so when updating to version 4.2 from older versions, the settings
 will be reverted to the defaults - you should reconfigure the app if you had custom configuration before
 - Windows installer doesn't delete all users' configurations when uninstalling the app anymore
+- Purging configuration is now available on Linux for deb packages and the _tar.gz_ file
 - The settings app now does auto-configuration by itself when being opened for the first time
 - Switching layouts now works on GNOME 45+
 - The application size and startup time has been reduced
