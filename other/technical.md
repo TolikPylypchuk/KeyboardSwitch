@@ -1,9 +1,5 @@
 # Technical Stuff
 
-{% hint style="warning" %}
-These docs are for version 4.2 which is not yet released.
-{% endhint %}
-
 Keyboard Switch is written using [C#](https://github.com/dotnet/csharplang) and [.NET 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0). Following is the list of technologies used in this app and some other technical aspects.
 
 ## UI

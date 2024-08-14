@@ -1,9 +1,5 @@
 # Keyboard Switch
 
-{% hint style="warning" %}
-These docs are for version 4.2 which is not yet released.
-{% endhint %}
-
 Welcome to the Keyboard Switch docs!
 
 Keyboard Switch is an application which switches typed text as if it were typed with another keyboard layout.

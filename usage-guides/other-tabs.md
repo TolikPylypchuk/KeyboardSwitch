@@ -1,9 +1,5 @@
 # Other Tabs
 
-{% hint style="warning" %}
-These docs are for version 4.2 which is not yet released.
-{% endhint %}
-
 Other tabs in the settings app include the Sandbox tab and the About tab.
 
 ## Sandbox

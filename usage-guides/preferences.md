@@ -1,9 +1,5 @@
 # Preferences
 
-{% hint style="warning" %}
-These docs are for version 4.2 which is not yet released.
-{% endhint %}
-
 The Preferences tab contains other settings which control the behavior of the Keyboard Switch service. Here's how it looks:
 
 <figure><img src="../.gitbook/assets/v4.2-screen-preferences.png" alt="The preferences tab"><figcaption><p>The preferences tab</p></figcaption></figure>

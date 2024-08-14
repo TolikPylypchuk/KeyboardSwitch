@@ -1,9 +1,5 @@
 # Installation
 
-{% hint style="warning" %}
-These docs are for version 4.2 which is not yet released.
-{% endhint %}
-
 ## Windows
 
 ### Using a Windows Installer

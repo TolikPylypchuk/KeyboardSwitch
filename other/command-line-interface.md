@@ -1,9 +1,5 @@
 # Command Line Interface
 
-{% hint style="warning" %}
-These docs are for version 4.2 which is not yet released.
-{% endhint %}
-
 The Keyboard Switch service app has a CLI which you can use to control it. On Windows it's not really convenient as GUI apps cannot output anything to the console but can be used as well.
 
 The name of the executable is `KeyboardSwitch`. This article will assume it's installed on Linux in the `/opt/keyboard-switch` directory. On macOS it's located in the `/Library/Application Support/Keyboard Switch.app/Contents/MacOS` directory.

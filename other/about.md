@@ -1,9 +1,5 @@
 # About
 
-{% hint style="warning" %}
-These docs are for version 4.2 which is not yet released.
-{% endhint %}
-
 Keyboard Switch. Version 4.2.0. Created by [Tolik Pylypchuk](https://github.com/TolikPylypchuk).
 
 ## Acknowledgements
@@ -12,14 +8,15 @@ The UI for the settings app was created using [Avalonia](https://avaloniaui.net)
 
 ## Changelog
 
-### v4.2 (TBD)
+### [v4.2.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.2.0) (14 August 2024)
 
-* Arm64 is now oficially supported for Windows and Linux
+* Arm64 is now officially supported for Windows and Linux
 * The converter has been removed
 * A single modifier key can now be configured as the magic key for Keyboard Switch
 * The app now integrates with the clipboard directly on Linux, without xsel, but this may not work well on older desktop environments, so integration through xsel is still possible
 * The internal format of the settings was changed, so when updating to version 4.2 from older versions, the settings will be reverted to the defaults - you should reconfigure the app if you had custom configuration before
 * Windows installer doesn't delete all users' configurations when uninstalling the app anymore
+* Purging configuration is now available on Linux for deb packages and the _tar.gz_ file
 * The settings app now does auto-configuration by itself when being opened for the first time
 * Switching layouts now works on GNOME 45+
 * The application size and startup time has been reduced

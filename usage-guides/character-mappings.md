@@ -1,9 +1,5 @@
 # Character Mappings
 
-{% hint style="warning" %}
-These docs are for version 4.2 which is not yet released.
-{% endhint %}
-
 In order for the Keyboard Switch service to know how to map characters, ideally, you have to configure the character mappings yourself. The app reads the list of installed layouts in the system, so it knows which layouts you use and in what order. What it doesn't (and can't) know is the physical layout of your keyboard, so it doesn't know what happens if you press certain keys on your keyboard. Although it can auto-configure the mappings, and it will usually work well, there may be cases when it doesn't work well.
 
 ## Text vs Keyboard
