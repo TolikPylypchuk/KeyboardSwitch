@@ -8,7 +8,7 @@ These docs are for version 4.2 which is not yet released.
 
 ### Using a Windows Installer
 
-You can get the latest version of the app from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download the _.msi_ file and run it to install the app. If your computer runs on an x64 architecture, then you should get the _x64_ installer. If your computer runs on an Arm architecture, then you should get the _arm64_ installer. If you're not sure, then you most likely need the _x64_ installer.
+You can get the latest version of the app from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download the _.msi_ file and run it to install the app. If your computer runs on the x64 architecture, then you should get the _x64_ installer. If your computer runs on the Arm architecture, then you should get the _arm64_ installer. If you're not sure, then you most likely need the _x64_ installer.
 
 After installing the app, the installer will start the settings app. On the first start-up the settings app will configure the service to run when you log into the system.
 

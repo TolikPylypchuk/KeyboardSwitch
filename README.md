@@ -16,7 +16,7 @@ I hope this app will make your life at least 1% easier :)
 
 ### Windows
 
-You can get the latest version of the app from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download the _.msi_ file and run it to install the app. If your computer runs on an Intel CPU then you should get the _x64_ installer. If your computer runs on an Arm CPU then you should get the _arm64_ installer. If you're not sure, then you should most likely need the _x64_ installer.
+You can get the latest version of the app from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download the _.msi_ file and run it to install the app. If your computer runs on the x64 architecture, then you should get the _x64_ installer. If your computer runs on the Arm architecture, then you should get the _arm64_ installer. If you're not sure, then you most likely need the _x64_ installer.
 
 After installation, the Keyboard Switch Settings app will start. It may take some time as the app will do some initial setup. If it doesn't start for some reason, then find it in the list of your apps.
 
