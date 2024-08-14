@@ -1,7 +1,5 @@
 # Keyboard Switch
 
-Version 4.1. Created by Tolik Pylypchuk.
-
 Keyboard Switch is an application which switches typed text as if it were typed with another keyboard layout.
 
 Instead of manually retyping all that text that you have mistyped, you can switch it using this app. It will copy the
@@ -21,27 +19,25 @@ You can get the latest release of the app [in the releases page](https://github.
 
 ### Windows
 
-Download the _.msi_ file and run it to install the app.
+Download the _.msi_ file and run it to install the app. If your computer runs on the x64 architecture, then you should
+get the _x64_ installer. If your computer runs on the Arm architecture, then you should get the _arm64_ installer. If
+you're not sure, then you most likely need the _x64_ installer.
 
 After installation, the Keyboard Switch Settings app will start. It may take some time as the app will do some initial
 setup. If it doesn't start for some reason, then find it in the list of your apps.
 
-In the opened app press the _Auto-configure_ button.
+In the opened app press _Start_.
 
-Press _Save_.
-
-Press _Start_.
-
-That's it! You're ready to use Keyboard Switch in it's basic configuration. There's a big chance you won't need to
+That's it! You're ready to use Keyboard Switch in its basic configuration. There's a big chance you won't need to
 configure it further. But if you do, the you can read more [in the docs](https://docs.keyboardswitch.tolik.io).
 
-To switch text forward, select the text, and press _Ctrl+Shift_ twice. To switch it backward, press _Ctrl+Alt+Shift_
-twice instead.
+To switch text forward, select the text, and press <kbd>Ctrl</kbd>+<kbd>Shift</kbd> twice. To switch it backward, press
+<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Shift</kbd> twice instead.
 
 ### macOS
 
-Download the _.pkg_ file to install the app. If your computer is running on an Intel CPU then you should get the
-_x86\_64_ package. If your computer is running on an Apple CPU (e.g. M1) then you should get the _arm64_ package.
+Download the _.pkg_ file to install the app. If your computer runs on an Intel CPU then you should get the _x86\_64_
+package. If your computer runs on an Apple CPU (e.g. M1) then you should get the _arm64_ package.
 
 After installing the app, open Keyboard Switch Settings - it should appear in the list of your apps.
 
@@ -52,24 +48,20 @@ the background, and without these permissions it won't work.
 Click the _Open System Preferences_ button on the dialog window. Unlock the settings and check the _Keyboard Switch_
 checkbox. Lock the settings, close System Preferences, and go back to the Keyboard Switch Settings app.
 
-In the settings app press the _Auto-configure_ button.
+In the settings app press _Start_.
 
-Press _Save_.
-
-Press _Start_.
-
-That's it! You're ready to use Keyboard Switch in it's basic configuration. There's a big chance you won't need to
+That's it! You're ready to use Keyboard Switch in its basic configuration. There's a big chance you won't need to
 configure it further. But if you do, the you can read more [in the docs](https://docs.keyboardswitch.tolik.io).
 
-To switch text forward, select the text, and press _Ctrl+Shift_ twice. To switch it backward, press _Ctrl+Option+Shift_
-twice instead.
+To switch text forward, select the text, and press <kbd>Ctrl</kbd>+<kbd>Shift</kbd> twice. To switch it backward, press
+<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Shift</kbd> twice instead.
 
 To uninstall Keyboard Switch you should run an uninstaller package. You can get it from the releases page as well.
 
 ### Linux
 
 The app is available as a deb package (for Debian-based distributions, such as Ubuntu, Mint etc.), an RPM package (for
-RHEL-based distributions, like CentOS or Fedora, as well as SUSE), and a simple _tar.gz_ file.
+RHEL-based distributions, like Rocky Linux or Fedora, as well as SUSE), and a simple _tar.gz_ file.
 
 Note that Keyboard Switch only works on X11 - it won't work on Wayland (even with XWayland).
 
@@ -80,24 +72,21 @@ you use the _tar.gz_ file, then the set-up is not quite as quick, so you can rea
 Bear in mind that the RPM package may need
 [additional setup](https://docs.keyboardswitch.tolik.io/usage-guides/installation#linux).
 
-If your desktop environment is GNOME then you should restart it right after installation. If you're not sure which
-desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu, Debian, CentOS,
-Fedora and others (but not Linux Mint). Press _Alt+F2_, then type _r_ and press _Enter_. This will restart GNOME.
-
 After installing the app, open Keyboard Switch Settings - it should appear in the list of your apps (if your desktop
 environment groups your apps, then it will most probably appear under the _Utilities_ or _Accessories_ group).
 
-In the opened app press the _Auto-configure_ button.
+If your desktop environment is GNOME then you should restart it right after opening Keyboard Switch Settings. If you're
+not sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu,
+Debian, Rocky Linux, Fedora and others (but not Linux Mint). Press <kbd>Alt</kbd>+<kbd>F2</kbd>, then type <kbd>r</kbd>
+and press <kbd>Enter</kbd>. This will restart GNOME.
 
-Press _Save_.
+In the opened settings app press _Start_.
 
-Press _Start_.
-
-That's it! You're ready to use Keyboard Switch in it's basic configuration. There's a big chance you won't need to
+That's it! You're ready to use Keyboard Switch in its basic configuration. There's a big chance you won't need to
 configure it further. But if you do, the you can read more [in the docs](https://docs.keyboardswitch.tolik.io).
 
-To switch text forward, select the text, and press _Ctrl+Shift_ twice. To switch it backward, press _Ctrl+Alt+Shift_
-twice instead.
+To switch text forward, select the text, and press <kbd>Ctrl</kbd>+<kbd>Shift</kbd> twice. To switch it backward, press
+<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Shift</kbd> twice instead.
 
 ## How the App Works
 
@@ -110,8 +99,9 @@ Here are the basic steps you should take to switch the text:
 
 - Type some text using an incorrect layout
 - Realize your mistake
-- Select the text (you can press _Ctrl+A_ to select all text, or _Command+A_ on macOS)
-- Press the magic key combination (the default is pressing _Ctrl+Shift_ twice)
+- Select the text (you can press <kbd>Ctrl</kbd>+<kbd>A</kbd> to select all text, or <kbd>Command</kbd>+<kbd>A</kbd> on
+macOS)
+- Press the magic key combination (the default is pressing <kbd>Ctrl</kbd>+<kbd>Shift</kbd> twice)
 - Profit
 
 The app uses the list of your layouts in the same order as defined by the system. You can switch both forward and
@@ -125,12 +115,11 @@ be restored.
 
 ## Supported Platforms
 
-Version 4.1 works on Windows 10/11, macOS 10.11+, and Linux via X11. Wayland support may come in a future version, but
-there are [several prerequisites](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/54). Versions up to 4.0 were
-Windows-only.
+Keyboard Switch works on Windows 10/11 (version 1607 or later), macOS 10.15 or later, and Linux via X11. Wayland support
+may come in a future version, but there are
+[several prerequisites](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/54).
 
-The x64 and Arm64 architectures are both supported, but for Windows and Linux the latter is experimental since I don't
-have any devices on which I can test the app.
+The x64 and Arm64 architectures are both supported.
 
 ## More Info
 
