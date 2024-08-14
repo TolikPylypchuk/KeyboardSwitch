@@ -1,11 +1,11 @@
 source "https://rubygems.org"
 
-gem "jekyll", "~> 3.9"
+gem "jekyll", "~> 3.10"
 
-gem "github-pages", "~> 221", group: :jekyll_plugins
+gem "github-pages", "~> 232", group: :jekyll_plugins
 
 group :jekyll_plugins do
-  gem "jekyll-feed", "~> 0.15"
+  gem "jekyll-feed", "~> 0.17"
 end
 
 install_if -> { RUBY_PLATFORM =~ %r!mingw|mswin|java! } do
@@ -13,6 +13,6 @@ install_if -> { RUBY_PLATFORM =~ %r!mingw|mswin|java! } do
   gem "tzinfo-data"
 end
 
-gem "wdm", "~> 0.1.0", :install_if => Gem.win_platform?
+gem "wdm", "~> 0.2.0", :install_if => Gem.win_platform?
 
 gem "kramdown-parser-gfm"
