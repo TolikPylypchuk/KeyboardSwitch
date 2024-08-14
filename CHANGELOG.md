@@ -2,7 +2,7 @@
 
 ## [v4.2.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.2.0) (14 August 2024)
 
-- Arm64 is now oficially supported for Windows and Linux
+- Arm64 is now officially supported for Windows and Linux
 - The converter has been removed
 - A single modifier key can now be configured as the magic key for Keyboard Switch
 - The app now integrates with the clipboard directly on Linux, without xsel, but this may not work well on older desktop
