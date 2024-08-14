@@ -8,6 +8,10 @@ If you ever write some text and then realize that you have written it using a wr
 
 I hope this app will make your life at least 1% easier :)
 
+{% hint style="info" %}
+If you're using version 4.1, then you should upgrade to version 4.2 since it contains numerous improvements.
+{% endhint %}
+
 ## Quick Start
 
 ### Windows
@@ -28,7 +32,7 @@ To switch text forward, select the text, and press _Ctrl+Shift_ twice. To switch
 
 ### macOS
 
-You can get the latest version of the app from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download the _.pkg_ file and run it to install the app. If your computer runs on an Intel CPU then you should get the _x86\_64_ package. If your computer runs on an Apple CPU (e.g. M1) then you should get the _arm64_ package.
+You can get the latest version of the app from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download the _.pkg_ file and run it to install the app. If your computer runs on an Intel CPU, then you should get the _x86\_64_ package. If your computer runs on an Apple CPU (e.g. M1), then you should get the _arm64_ package.
 
 After installing the app, open Keyboard Switch Settings - it should appear in the list of your apps.
 

@@ -30,7 +30,7 @@ If you don't want to install the app (or can't), you can use the portable versio
 
 ### Installing the App
 
-You can get the latest version of the app from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download the _.pkg_ file and run it to install the app. If your computer is running on an Intel CPU then you should get the _x86\_64_ package. If your computer is running on an Apple CPU (e.g. M1) then you should get the _arm64_ package.
+You can get the latest version of the app from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download the _.pkg_ file and run it to install the app. If your computer runs on an Intel CPU, then you should get the _x86\_64_ package. If your computer runs on an Apple CPU (e.g. M1), then you should get the _arm64_ package.
 
 The installer will install multiple things:
 
