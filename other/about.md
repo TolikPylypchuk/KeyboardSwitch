@@ -14,7 +14,18 @@ The UI for the settings app was created using [Avalonia](https://avaloniaui.net)
 
 ### v4.2 (TBD)
 
-TBD
+* Arm64 is now oficially supported for Windows and Linux
+* The converter has been removed
+* A single modifier key can now be configured as the magic key for Keyboard Switch
+* The app now integrates with the clipboard directly on Linux, without xsel, but this may not work well on older desktop environments, so integration through xsel is still possible
+* The internal format of the settings was changed, so when updating to version 4.2 from older versions, the settings will be reverted to the defaults - you should reconfigure the app if you had custom configuration before
+* Windows installer doesn't delete all users' configurations when uninstalling the app anymore
+* The settings app now does auto-configuration by itself when being opened for the first time
+* Switching layouts now works on GNOME 45+
+* The application size and startup time has been reduced
+* The application has been upgraded to .NET 8 and Avalonia 11
+* WiX Toolset 5.0 is now used for the Windows installer, removing the need for .NET Framework
+* NUKE is now used as the build tool
 
 ### [v4.1](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.1) (10 February 2022)
 
