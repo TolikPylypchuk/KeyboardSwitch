@@ -1,13 +1,16 @@
+using KeyboardSwitch.Core.Services.Users;
+
 namespace KeyboardSwitch.Core.Services.Infrastructure;
 
 internal sealed class SingleInstanceService(
     INamedPipeService namedPipeService,
+    IUserProvider userProvider,
     ILogger<SingleInstanceService> logger)
     : ISingleInstanceService
 {
     public Mutex TryAcquireMutex(string name)
     {
-        var mutex = new Mutex(false, $"Global\\{name}", out bool createdNew);
+        var mutex = new Mutex(false, $"Global\\{userProvider.GetCurrentUser()}-{name}", out bool createdNew);
 
         if (!createdNew)
         {

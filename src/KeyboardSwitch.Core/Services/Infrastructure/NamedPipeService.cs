@@ -1,10 +1,15 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO.Pipes;
 
+using KeyboardSwitch.Core.Services.Users;
+
 namespace KeyboardSwitch.Core.Services.Infrastructure;
 
 [ExcludeFromCodeCoverage]
-internal sealed class NamedPipeService(ILogger<NamedPipeService> logger) : DisposableService, INamedPipeService
+internal sealed class NamedPipeService(
+    IUserProvider userProvider,
+    ILogger<NamedPipeService> logger)
+    : DisposableService, INamedPipeService
 {
     private readonly Subject<string> receivedString = new();
 
@@ -12,11 +17,11 @@ internal sealed class NamedPipeService(ILogger<NamedPipeService> logger) : Dispo
         this.receivedString.AsObservable();
 
     public void StartServer(string pipeName) =>
-        Task.Run(() => this.WaitForMessages(pipeName));
+        Task.Run(() => this.WaitForMessages(this.ScopePipeName(pipeName)));
 
     public bool Write(string pipeName, string text, int connectTimeout = 300)
     {
-        using var client = new NamedPipeClientStream(pipeName);
+        using var client = new NamedPipeClientStream(this.ScopePipeName(pipeName));
 
         try
         {
@@ -59,4 +64,7 @@ internal sealed class NamedPipeService(ILogger<NamedPipeService> logger) : Dispo
             this.receivedString.OnNext(text);
         }
     }
+
+    private string ScopePipeName(string pipeName) =>
+        $"{userProvider.GetCurrentUser()}-{pipeName}";
 }
