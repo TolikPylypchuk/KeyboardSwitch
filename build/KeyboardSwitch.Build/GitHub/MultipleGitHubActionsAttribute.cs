@@ -137,6 +137,8 @@ public sealed class MultipleGitHubActionsAttribute(string fileName, string name,
             FetchDepth = this.fetchDepth
         };
 
+        yield return new GitHubActionsSetupDotnetStep();
+
         if (this.CacheKeyFiles.Length != 0)
         {
             yield return new GitHubActionsCache4Step
