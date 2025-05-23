@@ -3,7 +3,7 @@ using System.Reactive.Concurrency;
 using Microsoft.Extensions.Configuration;
 
 using SharpHook;
-using SharpHook.Native;
+using SharpHook.Data;
 
 namespace KeyboardSwitch.MacOS;
 

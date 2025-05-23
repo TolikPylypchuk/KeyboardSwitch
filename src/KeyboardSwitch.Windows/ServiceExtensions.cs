@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using SharpHook;
-using SharpHook.Native;
+using SharpHook.Data;
 
 namespace KeyboardSwitch.Windows;
 

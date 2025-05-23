@@ -116,7 +116,7 @@ public class App : Application, IEnableLogger
 
         Locator.CurrentMutable.InitializeReactiveUI(RegistrationNamespace.Avalonia);
         Locator.CurrentMutable.RegisterConstant(RxApp.TaskpoolScheduler, TaskPoolKey);
-        Locator.CurrentMutable.RegisterConstant<IBindingTypeConverter>(new ModifierMaskConverter());
+        Locator.CurrentMutable.RegisterConstant<IBindingTypeConverter>(new EventMaskConverter());
 
         this.RegisterViews();
 

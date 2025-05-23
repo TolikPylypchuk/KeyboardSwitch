@@ -1,9 +1,9 @@
 namespace KeyboardSwitch.Settings.Converters;
 
-public sealed class ModifierMaskConverter : IBindingTypeConverter
+public sealed class EventMaskConverter : IBindingTypeConverter
 {
     public int GetAffinityForObjects(Type fromType, Type toType) =>
-        fromType == typeof(ModifierMask) || toType == typeof(ModifierMask)
+        fromType == typeof(EventMask) || toType == typeof(EventMask)
             ? 10000
             : 0;
 
@@ -11,7 +11,7 @@ public sealed class ModifierMaskConverter : IBindingTypeConverter
     {
         switch (from)
         {
-            case ModifierMask modifier:
+            case EventMask modifier:
                 result = Convert.ModifierToString(modifier);
                 return true;
             case string str:

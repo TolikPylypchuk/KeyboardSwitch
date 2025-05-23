@@ -5,7 +5,7 @@ using KeyboardSwitch.Core.Services.Settings;
 using Microsoft.Extensions.Configuration;
 
 using SharpHook;
-using SharpHook.Native;
+using SharpHook.Data;
 
 namespace KeyboardSwitch.Linux;
 

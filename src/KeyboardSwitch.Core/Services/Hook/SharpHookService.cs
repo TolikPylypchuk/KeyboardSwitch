@@ -1,7 +1,5 @@
 using System.Reactive.Disposables;
 
-using KeyboardSwitch.Core.Keyboard;
-
 namespace KeyboardSwitch.Core.Services.Hook;
 
 internal sealed class SharpHookService : DisposableService, IKeyboardHookService
@@ -14,10 +12,10 @@ internal sealed class SharpHookService : DisposableService, IKeyboardHookService
     private readonly IScheduler scheduler;
     private readonly ILogger<SharpHookService> logger;
 
-    private readonly HashSet<ModifierMask> hotKeys = [];
+    private readonly HashSet<EventMask> hotKeys = [];
 
-    private readonly Subject<ModifierMask> rawHotKeyPressedSubject = new();
-    private readonly Subject<ModifierMask> hotKeyPressedSubject = new();
+    private readonly Subject<EventMask> rawHotKeyPressedSubject = new();
+    private readonly Subject<EventMask> hotKeyPressedSubject = new();
     private readonly CompositeDisposable hotKeyPressedSubscriptions = [];
 
     private readonly HashSet<KeyCode> pressedKeys = [];
@@ -34,6 +32,8 @@ internal sealed class SharpHookService : DisposableService, IKeyboardHookService
         this.scheduler = scheduler;
         this.logger = logger;
 
+        this.hook.HookEnabled.Subscribe(e => this.logger.LogInformation("Created a global keyboard hook"));
+
         this.hookSubscription = this.hook.KeyPressed
             .Merge(this.hook.KeyReleased)
             .Delay(TimeSpan.FromMilliseconds(16), scheduler)
@@ -49,10 +49,10 @@ internal sealed class SharpHookService : DisposableService, IKeyboardHookService
             });
     }
 
-    public IObservable<ModifierMask> HotKeyPressed =>
+    public IObservable<EventMask> HotKeyPressed =>
         this.hotKeyPressedSubject.AsObservable();
 
-    public void Register(IEnumerable<ModifierMask> modifiers, int pressedCount, int waitMilliseconds)
+    public void Register(IEnumerable<EventMask> modifiers, int pressedCount, int waitMilliseconds)
     {
         this.ThrowIfDisposed();
 
@@ -85,8 +85,7 @@ internal sealed class SharpHookService : DisposableService, IKeyboardHookService
 
     public async Task StartHook(CancellationToken token)
     {
-        this.hook.HookEnabled.Subscribe(e => this.logger.LogInformation("Created a global keyboard hook"));
-        token.Register(this.hook.Dispose);
+        token.Register(this.hook.Stop);
         await this.hook.RunAsync();
     }
 
@@ -106,12 +105,12 @@ internal sealed class SharpHookService : DisposableService, IKeyboardHookService
         }
     }
 
-    private IDisposable SubscribeToKeyPressesSimple(ModifierMask modifier) =>
+    private IDisposable SubscribeToKeyPressesSimple(EventMask modifier) =>
         this.rawHotKeyPressedSubject
             .Where(key => key.IsSubsetKeyOf(modifier))
             .Subscribe(this.hotKeyPressedSubject);
 
-    private IDisposable SubscribeToKeyPresses(ModifierMask modifier, int pressedCount, TimeSpan waitTime) =>
+    private IDisposable SubscribeToKeyPresses(EventMask modifier, int pressedCount, TimeSpan waitTime) =>
         this.rawHotKeyPressedSubject
             .Where(key => key.IsSubsetKeyOf(modifier))
             .Buffer(this.rawHotKeyPressedSubject
@@ -132,6 +131,8 @@ internal sealed class SharpHookService : DisposableService, IKeyboardHookService
             return;
         }
 
+        this.logger.LogDebug("Received key down: {KeyCode}", keyCode);
+
         if (this.scheduler.Now - this.lastKeyPress > KeyPressWaitThreshold)
         {
             this.pressedKeys.Clear();
@@ -149,6 +150,8 @@ internal sealed class SharpHookService : DisposableService, IKeyboardHookService
             return;
         }
 
+        this.logger.LogDebug("Received key up: {KeyCode}", keyCode);
+
         this.pressedKeys.Remove(keyCode);
         this.releasedKeys.Add(keyCode);
 
@@ -157,13 +160,13 @@ internal sealed class SharpHookService : DisposableService, IKeyboardHookService
             this.releasedKeys.Clear();
         }
 
-        if (this.pressedKeys.Count != 0 || this.releasedKeys.Any(key => key.ToModifierMask() is null))
+        if (this.pressedKeys.Count != 0 || this.releasedKeys.Any(key => key.ToEventMask() is null))
         {
             return;
         }
 
         var modifiers = this.releasedKeys
-            .Select(key => key.ToModifierMask()!.Value)
+            .Select(key => key.ToEventMask()!.Value)
             .ToArray()
             .Merge();
 

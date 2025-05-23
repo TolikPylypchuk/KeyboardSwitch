@@ -1,4 +1,4 @@
-using SharpHook.Native;
+using SharpHook.Data;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels;
 
@@ -9,20 +9,20 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
     private bool startup;
     private bool showUninstalledLayoutsMessage;
     private bool useXsel;
-    private ModifierMask forwardModifierFirst;
-    private ModifierMask forwardModifierSecond;
-    private ModifierMask forwardModifierThird;
-    private ModifierMask backwardModifierFirst;
-    private ModifierMask backwardModifierSecond;
-    private ModifierMask backwardModifierThird;
+    private EventMask forwardModifierFirst;
+    private EventMask forwardModifierSecond;
+    private EventMask forwardModifierThird;
+    private EventMask backwardModifierFirst;
+    private EventMask backwardModifierSecond;
+    private EventMask backwardModifierThird;
     private int pressCount;
     private int waitMilliseconds;
 
-    private readonly SourceList<ModifierMask> forwardModifierKeysSource = new();
-    private readonly SourceList<ModifierMask> backwardModifierKeysSource = new();
+    private readonly SourceList<EventMask> forwardModifierKeysSource = new();
+    private readonly SourceList<EventMask> backwardModifierKeysSource = new();
 
-    private readonly ReadOnlyObservableCollection<ModifierMask> forwardModifierKeys;
-    private readonly ReadOnlyObservableCollection<ModifierMask> backwardModifierKeys;
+    private readonly ReadOnlyObservableCollection<EventMask> forwardModifierKeys;
+    private readonly ReadOnlyObservableCollection<EventMask> backwardModifierKeys;
 
     public PreferencesViewModel(
         PreferencesModel preferencesModel,
@@ -84,37 +84,37 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
         set => this.RaiseAndSetIfChanged(ref this.useXsel, value);
     }
 
-    public ModifierMask ForwardModifierFirst
+    public EventMask ForwardModifierFirst
     {
         get => this.forwardModifierFirst;
         set => this.RaiseAndSetIfChanged(ref this.forwardModifierFirst, value);
     }
 
-    public ModifierMask ForwardModifierSecond
+    public EventMask ForwardModifierSecond
     {
         get => this.forwardModifierSecond;
         set => this.RaiseAndSetIfChanged(ref this.forwardModifierSecond, value);
     }
 
-    public ModifierMask ForwardModifierThird
+    public EventMask ForwardModifierThird
     {
         get => this.forwardModifierThird;
         set => this.RaiseAndSetIfChanged(ref this.forwardModifierThird, value);
     }
 
-    public ModifierMask BackwardModifierFirst
+    public EventMask BackwardModifierFirst
     {
         get => this.backwardModifierFirst;
         set => this.RaiseAndSetIfChanged(ref this.backwardModifierFirst, value);
     }
 
-    public ModifierMask BackwardModifierSecond
+    public EventMask BackwardModifierSecond
     {
         get => this.backwardModifierSecond;
         set => this.RaiseAndSetIfChanged(ref this.backwardModifierSecond, value);
     }
 
-    public ModifierMask BackwardModifierThird
+    public EventMask BackwardModifierThird
     {
         get => this.backwardModifierThird;
         set => this.RaiseAndSetIfChanged(ref this.backwardModifierThird, value);
@@ -275,16 +275,16 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
         var switchMethodsAreDifferent = Observable.CombineLatest(
             this.forwardModifierKeysSource.Connect().ToCollection(),
             this.backwardModifierKeysSource.Connect().ToCollection(),
-            (forward, backward) => !new HashSet<ModifierMask>(forward).SetEquals(backward));
+            (forward, backward) => !new HashSet<EventMask>(forward).SetEquals(backward));
 
         return this.LocalizedValidationRule(switchMethodsAreDifferent, "SwitchMethodsAreSame");
     }
 
-    private bool ContainsDistinctElements(IReadOnlyCollection<ModifierMask> keys) =>
+    private bool ContainsDistinctElements(IReadOnlyCollection<EventMask> keys) =>
         !keys
             .SelectMany((x, index1) =>
                 keys.Select((y, index2) => (Key1: x, Key2: y, Index1: index1, Index2: index2)))
             .Where(keys => keys.Index1 < keys.Index2)
-            .Select(keys => (keys.Key1 & keys.Key2) == ModifierMask.None)
+            .Select(keys => (keys.Key1 & keys.Key2) == EventMask.None)
             .Any(equals => !equals);
 }

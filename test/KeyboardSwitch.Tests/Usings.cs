@@ -2,6 +2,7 @@ global using System.Collections.Immutable;
 global using System.Reactive;
 
 global using FsCheck;
+global using FsCheck.Fluent;
 global using FsCheck.Xunit;
 
 global using KeyboardSwitch.Core;
@@ -23,6 +24,6 @@ global using Microsoft.Reactive.Testing;
 
 global using NSubstitute;
 
-global using SharpHook.Native;
+global using SharpHook.Data;
 
 global using Xunit.Abstractions;

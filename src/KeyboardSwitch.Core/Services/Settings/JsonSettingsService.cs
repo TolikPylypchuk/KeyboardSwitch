@@ -109,8 +109,8 @@ internal sealed class JsonSettingsService(
         {
             SwitchSettings = new SwitchSettings
             {
-                ForwardModifiers = [ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.None],
-                BackwardModifiers = [ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.Alt],
+                ForwardModifiers = [EventMask.Ctrl, EventMask.Shift, EventMask.None],
+                BackwardModifiers = [EventMask.Ctrl, EventMask.Shift, EventMask.Alt],
                 PressCount = 2,
                 WaitMilliseconds = 400
             },

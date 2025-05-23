@@ -19,7 +19,7 @@ global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Options;
 
 global using SharpHook;
-global using SharpHook.Native;
+global using SharpHook.Data;
 global using SharpHook.Reactive;
 
 global using static KeyboardSwitch.Core.Constants;

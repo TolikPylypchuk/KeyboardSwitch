@@ -79,11 +79,11 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
         Assert.NotNull(settings.CharsByKeyboardLayoutId);
 
         Assert.Equal(
-            [ModifierMask.Ctrl, ModifierMask.None, ModifierMask.None],
+            [EventMask.Ctrl, EventMask.None, EventMask.None],
             settings.SwitchSettings.ForwardModifiers);
 
         Assert.Equal(
-            [ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.Alt],
+            [EventMask.Ctrl, EventMask.Shift, EventMask.Alt],
             settings.SwitchSettings.BackwardModifiers);
 
         Assert.Equal(PressCount, settings.SwitchSettings.PressCount);
@@ -158,11 +158,11 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
         Assert.NotNull(settings.CharsByKeyboardLayoutId);
 
         Assert.Equal(
-            [ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.None],
+            [EventMask.Ctrl, EventMask.Shift, EventMask.None],
             settings.SwitchSettings.ForwardModifiers);
 
         Assert.Equal(
-            [ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.Alt],
+            [EventMask.Ctrl, EventMask.Shift, EventMask.Alt],
             settings.SwitchSettings.BackwardModifiers);
 
         Assert.Equal(PressCount, settings.SwitchSettings.PressCount);
@@ -296,11 +296,11 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
         Assert.NotNull(settings.CharsByKeyboardLayoutId);
 
         Assert.Equal(
-            [ModifierMask.Ctrl, ModifierMask.None, ModifierMask.None],
+            [EventMask.Ctrl, EventMask.None, EventMask.None],
             settings.SwitchSettings.ForwardModifiers);
 
         Assert.Equal(
-            [ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.Alt],
+            [EventMask.Ctrl, EventMask.Shift, EventMask.Alt],
             settings.SwitchSettings.BackwardModifiers);
 
         Assert.Equal(PressCount, settings.SwitchSettings.PressCount);
@@ -346,11 +346,11 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
         Assert.NotNull(settings.CharsByKeyboardLayoutId);
 
         Assert.Equal(
-            [ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.None],
+            [EventMask.Ctrl, EventMask.Shift, EventMask.None],
             settings.SwitchSettings.ForwardModifiers);
 
         Assert.Equal(
-            [ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.Alt],
+            [EventMask.Ctrl, EventMask.Shift, EventMask.Alt],
             settings.SwitchSettings.BackwardModifiers);
 
         Assert.Equal(PressCount, settings.SwitchSettings.PressCount);
@@ -404,11 +404,11 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
         Assert.NotNull(settings.CharsByKeyboardLayoutId);
 
         Assert.Equal(
-            [ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.None],
+            [EventMask.Ctrl, EventMask.Shift, EventMask.None],
             settings.SwitchSettings.ForwardModifiers);
 
         Assert.Equal(
-            [ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.Alt],
+            [EventMask.Ctrl, EventMask.Shift, EventMask.Alt],
             settings.SwitchSettings.BackwardModifiers);
 
         Assert.Equal(PressCount, settings.SwitchSettings.PressCount);
@@ -509,8 +509,8 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
         {
             SwitchSettings = new()
             {
-                ForwardModifiers = [ModifierMask.Ctrl, ModifierMask.None, ModifierMask.None],
-                BackwardModifiers = [ModifierMask.Ctrl, ModifierMask.Shift, ModifierMask.Alt],
+                ForwardModifiers = [EventMask.Ctrl, EventMask.None, EventMask.None],
+                BackwardModifiers = [EventMask.Ctrl, EventMask.Shift, EventMask.Alt],
                 PressCount = PressCount,
                 WaitMilliseconds = WaitMilliseconds
             },

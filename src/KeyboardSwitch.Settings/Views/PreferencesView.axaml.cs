@@ -9,11 +9,11 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
         this.InitializeComponent();
 
         var modifiers = this.Modifiers()
-            .Where(key => key != ModifierMask.None)
+            .Where(key => key != EventMask.None)
             .Select(Convert.ModifierToString)
             .ToImmutableList();
 
-        var allModifiers = modifiers.Insert(0, Convert.ModifierToString(ModifierMask.None));
+        var allModifiers = modifiers.Insert(0, Convert.ModifierToString(EventMask.None));
 
         this.ForwardFirstComboBox.ItemsSource = modifiers;
         this.ForwardSecondComboBox.ItemsSource = allModifiers;
@@ -117,20 +117,20 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
             .DisposeWith(disposables);
     }
 
-    private List<ModifierMask> Modifiers() =>
+    private List<EventMask> Modifiers() =>
         [
-            ModifierMask.None,
-            ModifierMask.Ctrl,
-            ModifierMask.Shift,
-            ModifierMask.Alt,
-            ModifierMask.Meta,
-            ModifierMask.LeftCtrl,
-            ModifierMask.LeftShift,
-            ModifierMask.LeftAlt,
-            ModifierMask.LeftMeta,
-            ModifierMask.RightCtrl,
-            ModifierMask.RightShift,
-            ModifierMask.RightAlt,
-            ModifierMask.RightMeta
+            EventMask.None,
+            EventMask.Ctrl,
+            EventMask.Shift,
+            EventMask.Alt,
+            EventMask.Meta,
+            EventMask.LeftCtrl,
+            EventMask.LeftShift,
+            EventMask.LeftAlt,
+            EventMask.LeftMeta,
+            EventMask.RightCtrl,
+            EventMask.RightShift,
+            EventMask.RightAlt,
+            EventMask.RightMeta
         ];
 }

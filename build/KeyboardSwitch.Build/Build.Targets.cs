@@ -1,6 +1,5 @@
 using Serilog;
 
-using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 public partial class Build
@@ -120,9 +119,9 @@ public partial class Build
         {
             Log.Information("Copying additional files to the publish directory");
 
-            CopyFileToDirectory(this.SourceLinuxInstallFile, PublishOutputDirectory);
-            CopyFileToDirectory(this.SourceLinuxUninstallFile, PublishOutputDirectory);
-            CopyFileToDirectory(SourceLinuxIconFile, PublishOutputDirectory, FileExistsPolicy.Overwrite);
+            this.SourceLinuxInstallFile.CopyToDirectory(PublishOutputDirectory);
+            this.SourceLinuxUninstallFile.CopyToDirectory(PublishOutputDirectory);
+            SourceLinuxIconFile.CopyToDirectory(PublishOutputDirectory, ExistsPolicy.FileOverwrite);
         });
 
     public Target CreateZipArchive => t => t
@@ -231,51 +230,51 @@ public partial class Build
         {
             Log.Information("Preparing files for creating a macOS package containing the published project");
 
-            CopyFile(SourcePkgEntitlementsFile, TargetPkgEntitlementsFile, FileExistsPolicy.Overwrite);
-            CopyFile(SourcePkgDistributionFile, TargetPkgDistributionFile, FileExistsPolicy.Overwrite);
+            SourcePkgEntitlementsFile.Copy(TargetPkgEntitlementsFile, ExistsPolicy.FileOverwrite);
+            SourcePkgDistributionFile.Copy(TargetPkgDistributionFile, ExistsPolicy.FileOverwrite);
 
             ResolvePlaceholders(this.TargetPkgDistributionFile, this.Platform.Pkg);
 
             PkgScriptsDirectory.CreateOrCleanDirectory();
-            CopyFile(this.SourcePkgPreInstallFile, this.TargetPkgPreInstallFile);
-            CopyFile(this.SourcePkgPostInstallFile, this.TargetPkgPostInstallFile);
+            this.SourcePkgPreInstallFile.Copy(this.TargetPkgPreInstallFile);
+            this.SourcePkgPostInstallFile.Copy(this.TargetPkgPostInstallFile);
 
             PkgResourcesDirectory.CreateOrCleanDirectory();
-            CopyFileToDirectory(this.SourcePkgReadmeFile, PkgResourcesDirectory);
-            CopyFileToDirectory(this.SourcePkgLicenseFile, PkgResourcesDirectory);
+            this.SourcePkgReadmeFile.CopyToDirectory(PkgResourcesDirectory);
+            this.SourcePkgLicenseFile.CopyToDirectory(PkgResourcesDirectory);
 
             KeyboardSwitchAppDirectory.CreateOrCleanDirectory();
             KeyboardSwitchAppMacOSDirectory.CreateOrCleanDirectory();
 
-            CopyFileToDirectory(KeyboardSwitchExecutableFile, KeyboardSwitchAppMacOSDirectory);
-            CopyFileToDirectory(LibUioHookFile, KeyboardSwitchAppMacOSDirectory);
+            KeyboardSwitchExecutableFile.CopyToDirectory(KeyboardSwitchAppMacOSDirectory);
+            LibUioHookFile.CopyToDirectory(KeyboardSwitchAppMacOSDirectory);
 
             KeyboardSwitchAppResourcesDirectory.CreateOrCleanDirectory();
 
             var appSettings = PublishOutputDirectory / AppSettings;
 
-            CopyFileToDirectory(appSettings, KeyboardSwitchAppResourcesDirectory);
-            CopyFileToDirectory(this.SourceAppleIconFile, KeyboardSwitchAppResourcesDirectory);
-            CopyFileToDirectory(this.SourceKeyboardSwitchServiceInfoFile, KeyboardSwitchAppResourcesDirectory);
+            appSettings.CopyToDirectory(KeyboardSwitchAppResourcesDirectory);
+            this.SourceAppleIconFile.CopyToDirectory(KeyboardSwitchAppResourcesDirectory);
+            this.SourceKeyboardSwitchServiceInfoFile.CopyToDirectory(KeyboardSwitchAppResourcesDirectory);
 
-            CopyFile(this.SourceKeyboardSwitchAppInfoFile, this.TargetKeyboardSwitchAppInfoFile);
+            this.SourceKeyboardSwitchAppInfoFile.Copy(this.TargetKeyboardSwitchAppInfoFile);
 
             ResolvePlaceholders(this.TargetKeyboardSwitchAppInfoFile, this.Platform.Pkg);
 
             KeyboardSwitchSettingsAppDirectory.CreateOrCleanDirectory();
             KeyboardSwitchSettingsAppMacOSDirectory.CreateOrCleanDirectory();
 
-            CopyFileToDirectory(KeyboardSwitchSettingsExecutableFile, KeyboardSwitchSettingsAppMacOSDirectory);
-            CopyFileToDirectory(LibAvaloniaNativeFile, KeyboardSwitchSettingsAppMacOSDirectory);
-            CopyFileToDirectory(LibHarfBuzzSharpFile, KeyboardSwitchSettingsAppMacOSDirectory);
-            CopyFileToDirectory(LibSkiaSharpFile, KeyboardSwitchSettingsAppMacOSDirectory);
+            KeyboardSwitchSettingsExecutableFile.CopyToDirectory(KeyboardSwitchSettingsAppMacOSDirectory);
+            LibAvaloniaNativeFile.CopyToDirectory(KeyboardSwitchSettingsAppMacOSDirectory);
+            LibHarfBuzzSharpFile.CopyToDirectory(KeyboardSwitchSettingsAppMacOSDirectory);
+            LibSkiaSharpFile.CopyToDirectory(KeyboardSwitchSettingsAppMacOSDirectory);
 
             KeyboardSwitchSettingsAppResourcesDirectory.CreateOrCleanDirectory();
 
-            CopyFileToDirectory(appSettings, KeyboardSwitchSettingsAppResourcesDirectory);
-            CopyFileToDirectory(this.SourceAppleIconFile, KeyboardSwitchSettingsAppResourcesDirectory);
+            appSettings.CopyToDirectory(KeyboardSwitchSettingsAppResourcesDirectory);
+            this.SourceAppleIconFile.CopyToDirectory(KeyboardSwitchSettingsAppResourcesDirectory);
 
-            CopyFile(this.SourceKeyboardSwitchSettingsAppInfoFile, this.TargetKeyboardSwitchSettingsAppInfoFile);
+            this.SourceKeyboardSwitchSettingsAppInfoFile.Copy(this.TargetKeyboardSwitchSettingsAppInfoFile);
 
             ResolvePlaceholders(this.TargetKeyboardSwitchSettingsAppInfoFile, this.Platform.Pkg);
         });
@@ -336,19 +335,16 @@ public partial class Build
         {
             Log.Information("Preparing files for creating a macOS uninstaller package");
 
-            CopyFile(
-                SourceUninstallerPkgDistributionFile,
-                TargetUninstallerPkgDistributionFile,
-                FileExistsPolicy.Overwrite);
+            SourceUninstallerPkgDistributionFile.Copy(TargetUninstallerPkgDistributionFile, ExistsPolicy.FileOverwrite);
 
             ResolvePlaceholders(
                 this.TargetUninstallerPkgDistributionFile, $"{Platform.X64.Pkg},{Platform.Arm64.Pkg}");
 
             PkgScriptsDirectory.CreateOrCleanDirectory();
-            CopyFile(this.SourceUninstallerPkgPostInstallFile, this.TargetPkgPostInstallFile);
+            this.SourceUninstallerPkgPostInstallFile.Copy(this.TargetPkgPostInstallFile);
 
             PkgResourcesDirectory.CreateOrCleanDirectory();
-            CopyFileToDirectory(this.SourceUninstallerPkgWelcomeFile, PkgResourcesDirectory);
+            this.SourceUninstallerPkgWelcomeFile.CopyToDirectory(PkgResourcesDirectory);
         });
 
     public Target CreateMacOSUninstallerPackage => t => t
@@ -393,16 +389,16 @@ public partial class Build
         {
             Log.Information("Preparing files for creating a Debian package containing the published project");
 
-            CopyFileToDirectory(SourceLinuxIconFile, PublishOutputDirectory, FileExistsPolicy.Overwrite);
+            SourceLinuxIconFile.CopyToDirectory(PublishOutputDirectory, ExistsPolicy.FileOverwrite);
 
             this.DebDirectory.CreateOrCleanDirectory();
 
             this.DebConfigDirectory.CreateDirectory();
 
-            CopyFile(this.SourceDebControlFile, this.TargetDebControlFile);
-            CopyFile(this.SourceDebPostInstallFile, this.TargetDebPostInstallFile);
-            CopyFile(this.SourceDebPreRemoveFile, this.TargetDebPreRemoveFile);
-            CopyFile(this.SourceDebPostRemoveFile, this.TargetDebPostRemoveFile);
+            this.SourceDebControlFile.Copy(this.TargetDebControlFile);
+            this.SourceDebPostInstallFile.Copy(this.TargetDebPostInstallFile);
+            this.SourceDebPreRemoveFile.Copy(this.TargetDebPreRemoveFile);
+            this.SourceDebPostRemoveFile.Copy(this.TargetDebPostRemoveFile);
 
             ResolvePlaceholders(this.TargetDebControlFile, this.Platform.Deb);
 
@@ -412,9 +408,9 @@ public partial class Build
             this.TargetDebPreRemoveFile.SetUnixPermissions(readAndExecute);
             this.TargetDebPostRemoveFile.SetUnixPermissions(readAndExecute);
 
-            CopyDirectoryRecursively(PublishOutputDirectory, this.DebKeyboardSwitchDirectory);
+            PublishOutputDirectory.Copy(this.DebKeyboardSwitchDirectory, createDirectories: true);
 
-            CopyFileToDirectory(this.SourceDebCopyrightFile, this.DebDocsDirectory, createDirectories: true);
+            this.SourceDebCopyrightFile.CopyToDirectory(this.DebDocsDirectory, createDirectories: true);
         });
 
     public Target CreateDebianPackage => t => t
@@ -439,9 +435,9 @@ public partial class Build
 
             RpmDirectory.CreateOrCleanDirectory();
 
-            CopyFile(this.SourceRpmSpecFile, this.TargetRpmSpecFile, FileExistsPolicy.Overwrite);
-            CopyFile(SourceLicenseFile, TargetRpmLicenseFile, FileExistsPolicy.Overwrite);
-            CopyFileToDirectory(SourceLinuxIconFile, PublishOutputDirectory, FileExistsPolicy.Overwrite);
+            this.SourceRpmSpecFile.Copy(this.TargetRpmSpecFile, ExistsPolicy.FileOverwrite);
+            SourceLicenseFile.Copy(TargetRpmLicenseFile, ExistsPolicy.FileOverwrite);
+            SourceLinuxIconFile.CopyToDirectory(PublishOutputDirectory, ExistsPolicy.FileOverwrite);
 
             ResolvePlaceholders(this.TargetRpmSpecFile, this.Platform.Rpm);
         });
@@ -461,7 +457,7 @@ public partial class Build
                 $"--target {this.Platform.Rpm} \"{this.TargetRpmSpecFile}\"",
                 logger: DebugOnly);
 
-            CopyFile(this.RpmOutputFile, this.RpmFile, FileExistsPolicy.Overwrite);
+            this.RpmOutputFile.Copy(this.RpmFile, ExistsPolicy.FileOverwrite);
         });
 
     public Target CleanUp => t => t

@@ -28,8 +28,7 @@ global using KeyboardSwitch.Settings.Views;
 global using ReactiveUI;
 global using ReactiveUI.Validation.Extensions;
 
-global using SharpHook.Native;
+global using SharpHook.Data;
 
 global using static KeyboardSwitch.Core.Util;
 global using static KeyboardSwitch.Settings.Core.Constants;
-global using static KeyboardSwitch.Settings.Core.ServiceUtil;

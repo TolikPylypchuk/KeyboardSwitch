@@ -58,7 +58,10 @@ public class XUnitLogger(
             },
             sb);
 
-        this.testOutputHelper.WriteLine(sb.ToString());
+        try
+        {
+            this.testOutputHelper.WriteLine(sb.ToString());
+        } catch { }
     }
 
     private string GetLogLevelString(LogLevel logLevel) =>

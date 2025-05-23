@@ -1,9 +1,9 @@
-using SharpHook.Native;
 using SharpHook.Reactive;
 using SharpHook.Testing;
 
 namespace KeyboardSwitch.Tests.Services;
 
+[Properties(Arbitrary = [typeof(SharpHookServiceTests)])]
 public sealed class SharpHookServiceTests(ITestOutputHelper output)
 {
     private static readonly TimeSpan SmallDelay = TimeSpan.FromMilliseconds(32);
@@ -25,9 +25,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
     public static Arbitrary<WaitTime> ArbitraryWaitTime =>
         new ArbitraryWaitTime();
 
-    [Property(
-        DisplayName = "Modifiers pressed once should work as a hot key",
-        Arbitrary = [typeof(SharpHookServiceTests)])]
+    [Property(DisplayName = "Modifiers pressed once should work as a hot key")]
     public void ModifiersOnce(List<SingleModifier> modifiers, WaitTime waitTime)
     {
         // Arrange
@@ -38,14 +36,14 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         using var service = new SharpHookService(
             new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, this.logger);
 
-        var observer = scheduler.CreateObserver<ModifierMask>();
+        var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
 
-        var expectedModifierMask = modifiers.Select(modifier => modifier.Mask).ToArray();
+        var expectedEventMask = modifiers.Select(modifier => modifier.Mask).ToArray();
 
         // Act
 
-        service.Register(expectedModifierMask, 1, waitTime.Value);
+        service.Register(expectedEventMask, 1, waitTime.Value);
 
         _ = service.StartHook(CancellationToken.None);
         this.WaitToStart(hook);
@@ -55,12 +53,10 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         // Assert
 
         Assert.Equal(1, observer.Messages.Count);
-        Assert.Equal(expectedModifierMask.Merge(), observer.Messages[0].Value.Value);
+        Assert.Equal(expectedEventMask.Merge(), observer.Messages[0].Value.Value);
     }
 
-    [Property(
-        DisplayName = "Modifiers pressed multiple times should work as a hot key",
-        Arbitrary = [typeof(SharpHookServiceTests)])]
+    [Property(DisplayName = "Modifiers pressed multiple times should work as a hot key")]
     public void ModifiersMultiple(List<SingleModifier> modifiers, PressCount pressCount, WaitTime waitTime)
     {
         // Arrange
@@ -71,14 +67,14 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         using var service = new SharpHookService(
             new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, this.logger);
 
-        var observer = scheduler.CreateObserver<ModifierMask>();
+        var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
 
-        var expectedModifierMask = modifiers.Select(modifier => modifier.Mask).ToArray();
+        var expectedEventMask = modifiers.Select(modifier => modifier.Mask).ToArray();
 
         // Act
 
-        service.Register(expectedModifierMask, pressCount.Value, waitTime.Value);
+        service.Register(expectedEventMask, pressCount.Value, waitTime.Value);
 
         _ = service.StartHook(CancellationToken.None);
         this.WaitToStart(hook);
@@ -93,12 +89,10 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         // Assert
 
         Assert.Equal(1, observer.Messages.Count);
-        Assert.Equal(expectedModifierMask.Merge(), observer.Messages[0].Value.Value);
+        Assert.Equal(expectedEventMask.Merge(), observer.Messages[0].Value.Value);
     }
 
-    [Property(
-        DisplayName = "Modifiers pressed multiple times should not work as a hot key if the break is too long",
-        Arbitrary = [typeof(SharpHookServiceTests)])]
+    [Property(DisplayName = "Modifiers pressed multiple times should not work as a hot key if the break is too long")]
     public void ModifiersMultipleTooLong(List<SingleModifier> modifiers, PressCount pressCount, WaitTime waitTime)
     {
         // Arrange
@@ -109,7 +103,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         using var service = new SharpHookService(
             new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, this.logger);
 
-        var observer = scheduler.CreateObserver<ModifierMask>();
+        var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
 
         // Act
@@ -134,9 +128,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         Assert.Equal(0, observer.Messages.Count);
     }
 
-    [Property(
-        DisplayName = "Other keys being pressed should disable the hot key",
-        Arbitrary = [typeof(SharpHookServiceTests)])]
+    [Property(DisplayName = "Other keys being pressed should disable the hot key")]
     public void OtherKeys(List<SingleModifier> modifiers, NonModifierKey key, WaitTime waitTime)
     {
         // Arrange
@@ -147,7 +139,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         using var service = new SharpHookService(
             new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, this.logger);
 
-        var observer = scheduler.CreateObserver<ModifierMask>();
+        var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
 
         // Act
@@ -164,9 +156,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         Assert.Equal(0, observer.Messages.Count);
     }
 
-    [Property(
-        DisplayName = "Key up events should be ignored without corresponding key down events",
-        Arbitrary = [typeof(SharpHookServiceTests)])]
+    [Property(DisplayName = "Key up events should be ignored without corresponding key down events")]
     public void OnlyKeyUp(List<SingleModifier> modifiers, WaitTime waitTime)
     {
         // Arrange
@@ -177,7 +167,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         using var service = new SharpHookService(
             new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, this.logger);
 
-        var observer = scheduler.CreateObserver<ModifierMask>();
+        var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
 
         // Act
@@ -198,9 +188,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         Assert.Equal(0, observer.Messages.Count);
     }
 
-    [Property(
-        DisplayName = "Modifiers pressed down for too long should disable the hot key",
-        Arbitrary = [typeof(SharpHookServiceTests)])]
+    [Property(DisplayName = "Modifiers pressed down for too long should disable the hot key")]
     public void KeyDownTooLong(List<SingleModifier> modifiers, WaitTime waitTime)
     {
         // Arrange
@@ -211,14 +199,14 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         using var service = new SharpHookService(
             new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, this.logger);
 
-        var observer = scheduler.CreateObserver<ModifierMask>();
+        var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
 
-        var expectedModifierMask = modifiers.Select(modifier => modifier.Mask);
+        var expectedEventMask = modifiers.Select(modifier => modifier.Mask);
 
         // Act
 
-        service.Register(expectedModifierMask, 1, waitTime.Value);
+        service.Register(expectedEventMask, 1, waitTime.Value);
 
         _ = service.StartHook(CancellationToken.None);
         this.WaitToStart(hook);
@@ -231,9 +219,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         Assert.Equal(0, observer.Messages.Count);
     }
 
-    [Property(
-        DisplayName = "Repeated key down events should be ignored",
-        Arbitrary = [typeof(SharpHookServiceTests)])]
+    [Property(DisplayName = "Repeated key down events should be ignored")]
     public void KeyDownRepeated(List<SingleModifier> modifiers, WaitTime waitTime)
     {
         // Arrange
@@ -244,14 +230,14 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         using var service = new SharpHookService(
             new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, this.logger);
 
-        var observer = scheduler.CreateObserver<ModifierMask>();
+        var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
 
-        var expectedModifierMask = modifiers.Select(modifier => modifier.Mask).ToArray();
+        var expectedEventMask = modifiers.Select(modifier => modifier.Mask).ToArray();
 
         // Act
 
-        service.Register(expectedModifierMask, 1, waitTime.Value);
+        service.Register(expectedEventMask, 1, waitTime.Value);
 
         _ = service.StartHook(CancellationToken.None);
         this.WaitToStart(hook);
@@ -264,12 +250,10 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         // Assert
 
         Assert.Equal(1, observer.Messages.Count);
-        Assert.Equal(expectedModifierMask.Merge(), observer.Messages[0].Value.Value);
+        Assert.Equal(expectedEventMask.Merge(), observer.Messages[0].Value.Value);
     }
 
-    [Property(
-        DisplayName = "Modifiers should not work as a hot key after unregistering them",
-        Arbitrary = [typeof(SharpHookServiceTests)])]
+    [Property(DisplayName = "Modifiers should not work as a hot key after unregistering them")]
     public void UnregisterModifiers(List<SingleModifier> modifiers, WaitTime waitTime)
     {
         // Arrange
@@ -280,7 +264,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         using var service = new SharpHookService(
             new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, this.logger);
 
-        var observer = scheduler.CreateObserver<ModifierMask>();
+        var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
 
         // Act
@@ -309,7 +293,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var service = new SharpHookService(
             new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, this.logger);
 
-        var observer = scheduler.CreateObserver<ModifierMask>();
+        var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
 
         // Act

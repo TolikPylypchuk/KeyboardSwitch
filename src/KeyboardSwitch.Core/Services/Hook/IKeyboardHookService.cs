@@ -2,9 +2,9 @@ namespace KeyboardSwitch.Core.Services.Hook;
 
 public interface IKeyboardHookService : IDisposable
 {
-    IObservable<ModifierMask> HotKeyPressed { get; }
+    IObservable<EventMask> HotKeyPressed { get; }
 
-    void Register(IEnumerable<ModifierMask> modifiers, int pressedCount, int waitMilliseconds);
+    void Register(IEnumerable<EventMask> modifiers, int pressedCount, int waitMilliseconds);
 
     void UnregisterAll();
 

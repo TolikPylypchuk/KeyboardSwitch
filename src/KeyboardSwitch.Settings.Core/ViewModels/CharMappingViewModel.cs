@@ -30,8 +30,7 @@ public sealed class CharMappingViewModel : ReactiveForm<CharMappingModel, CharMa
 
         this.layoutsSource.Connect()
             .Transform(ch => new LayoutViewModel(ch))
-            .Sort(SortExpressionComparer<LayoutViewModel>.Ascending(vm => vm.Index))
-            .Bind(out this.layouts)
+            .SortAndBind(out this.layouts, SortExpressionComparer<LayoutViewModel>.Ascending(vm => vm.Index))
             .Subscribe();
 
         var canAutoConfigure = this.Layouts
