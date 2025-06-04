@@ -44,7 +44,14 @@ public class Worker(
         } catch (HookException e) when (e.Result == UioHookResult.ErrorAxApiDisabled)
         {
             logger.LogCritical(
-                e, "The Keyboard Switch service cannot start as it doesn't have access to the macOS accessibility API");
+                e, "The Keyboard Switch service cannot start as it doesn't have access to the macOS Accessibility API");
+
+            await exitService.Exit(ExitCode.MacOSAccessibilityDisabled, token);
+        } catch (HookException e) when (e.Result == UioHookResult.ErrorAxApiRevoked)
+        {
+            logger.LogCritical(
+                e,
+                "The Keyboard Switch service cannot run as its access to the macOS Accessibility API has been revoked");
 
             await exitService.Exit(ExitCode.MacOSAccessibilityDisabled, token);
         } catch (Exception e)

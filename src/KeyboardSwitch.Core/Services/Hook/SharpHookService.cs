@@ -1,9 +1,13 @@
 using System.Reactive.Disposables;
 
+using SharpHook.Providers;
+
 namespace KeyboardSwitch.Core.Services.Hook;
 
 internal sealed class SharpHookService : DisposableService, IKeyboardHookService
 {
+    internal const uint AxPollFrequencySeconds = 5;
+
     private static readonly TimeSpan KeyPressWaitThreshold = TimeSpan.FromSeconds(3);
 
     private DateTimeOffset lastKeyPress = DateTimeOffset.MinValue;
@@ -26,11 +30,14 @@ internal sealed class SharpHookService : DisposableService, IKeyboardHookService
     public SharpHookService(
         IReactiveGlobalHook hook,
         IScheduler scheduler,
+        IAccessibilityProvider accessibilityProvider,
         ILogger<SharpHookService> logger)
     {
         this.hook = hook;
         this.scheduler = scheduler;
         this.logger = logger;
+
+        accessibilityProvider.AxPollFrequency = AxPollFrequencySeconds;
 
         this.hook.HookEnabled.Subscribe(e => this.logger.LogInformation("Created a global keyboard hook"));
 
