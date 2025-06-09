@@ -23,6 +23,14 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
         this.BackwardSecondComboBox.ItemsSource = allModifiers;
         this.BackwardThirdComboBox.ItemsSource = allModifiers;
 
+        this.AppThemeComboBox.ItemsSource = Enum.GetValues<AppTheme>()
+            .Select(Convert.AppThemeToString)
+            .ToImmutableList();
+
+        this.AppThemeVariantComboBox.ItemsSource = Enum.GetValues<AppThemeVariant>()
+            .Select(Convert.AppThemeVariantToString)
+            .ToImmutableList();
+
         this.WhenActivated(disposables =>
         {
             this.BindCheckboxes(disposables);
@@ -82,6 +90,12 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
             .DisposeWith(disposables);
 
         this.Bind(this.ViewModel, vm => vm.WaitMilliseconds, v => v.WaitMillisecondsBox.Value)
+            .DisposeWith(disposables);
+
+        this.Bind(this.ViewModel, vm => vm.AppTheme, v => v.AppThemeComboBox.SelectedItem)
+            .DisposeWith(disposables);
+
+        this.Bind(this.ViewModel, vm => vm.AppThemeVariant, v => v.AppThemeVariantComboBox.SelectedItem)
             .DisposeWith(disposables);
     }
 

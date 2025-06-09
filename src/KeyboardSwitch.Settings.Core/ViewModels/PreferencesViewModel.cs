@@ -17,6 +17,8 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
     private EventMask backwardModifierThird;
     private int pressCount;
     private int waitMilliseconds;
+    private AppTheme appTheme;
+    private AppThemeVariant appThemeVariant;
 
     private readonly SourceList<EventMask> forwardModifierKeysSource = new();
     private readonly SourceList<EventMask> backwardModifierKeysSource = new();
@@ -132,6 +134,18 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
         set => this.RaiseAndSetIfChanged(ref this.waitMilliseconds, value);
     }
 
+    public AppTheme AppTheme
+    {
+        get => this.appTheme;
+        set => this.RaiseAndSetIfChanged(ref this.appTheme, value);
+    }
+
+    public AppThemeVariant AppThemeVariant
+    {
+        get => this.appThemeVariant;
+        set => this.RaiseAndSetIfChanged(ref this.appThemeVariant, value);
+    }
+
     public ValidationHelper ModifierKeysAreDifferentRule { get; }
     public ValidationHelper SwitchMethodsAreDifferentRule { get; }
 
@@ -159,6 +173,9 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
         this.TrackChanges(vm => vm.PressCount, vm => vm.PreferencesModel.SwitchSettings.PressCount);
         this.TrackChanges(vm => vm.WaitMilliseconds, vm => vm.PreferencesModel.SwitchSettings.WaitMilliseconds);
 
+        this.TrackChanges(vm => vm.AppTheme, vm => vm.PreferencesModel.AppTheme);
+        this.TrackChanges(vm => vm.AppThemeVariant, vm => vm.PreferencesModel.AppThemeVariant);
+
         base.EnableChangeTracking();
     }
 
@@ -169,13 +186,15 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
         this.PreferencesModel.Startup = this.Startup;
         this.PreferencesModel.ShowUninstalledLayoutsMessage = this.ShowUninstalledLayoutsMessage;
         this.PreferencesModel.UseXsel = this.UseXsel;
+        this.PreferencesModel.AppTheme = this.AppTheme;
+        this.PreferencesModel.AppThemeVariant = this.AppThemeVariant;
 
         this.PreferencesModel.SwitchSettings = this.PreferencesModel.SwitchSettings with
         {
-            ForwardModifiers = new(this.forwardModifierKeys),
-            BackwardModifiers = new(this.backwardModifierKeys),
+            ForwardModifiers = [..this.forwardModifierKeys],
+            BackwardModifiers = [..this.backwardModifierKeys],
             PressCount = this.PressCount,
-            WaitMilliseconds = this.WaitMilliseconds
+            WaitMilliseconds = this.WaitMilliseconds,
         };
 
         return Task.FromResult(this.PreferencesModel);
@@ -188,6 +207,8 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
         this.Startup = this.PreferencesModel.Startup;
         this.ShowUninstalledLayoutsMessage = this.PreferencesModel.ShowUninstalledLayoutsMessage;
         this.UseXsel = this.PreferencesModel.UseXsel;
+        this.AppTheme = this.PreferencesModel.AppTheme;
+        this.AppThemeVariant = this.PreferencesModel.AppThemeVariant;
 
         var switchSettings = this.PreferencesModel.SwitchSettings;
 

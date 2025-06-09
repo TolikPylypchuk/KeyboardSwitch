@@ -2,7 +2,7 @@ namespace KeyboardSwitch.Settings.Converters;
 
 public static class Convert
 {
-    private static readonly IReadOnlyDictionary<EventMask, string> ModifiersToStrings =
+    private static readonly Dictionary<EventMask, string> ModifiersToStrings =
         new List<EventMask>
         {
                 EventMask.None,
@@ -20,7 +20,7 @@ public static class Convert
                 EventMask.Alt,
         }.ToDictionary(modifier => modifier, EventMaskToString);
 
-    private static readonly IReadOnlyDictionary<string, EventMask> StringsToModifiers =
+    private static readonly Dictionary<string, EventMask> StringsToModifiers =
         ModifiersToStrings.ToDictionary(e => e.Value, e => e.Key);
 
     public static string ModifierToString(EventMask modifierKey) =>
@@ -28,6 +28,38 @@ public static class Convert
 
     public static EventMask StringToModifier(string str) =>
         StringsToModifiers[str];
+
+    public static string AppThemeToString(AppTheme theme) =>
+        theme switch
+        {
+            AppTheme.Fluent => Messages.AppThemeFluent,
+            AppTheme.MacOS => Messages.AppThemeMacOS,
+            _ => String.Empty
+        };
+
+    public static AppTheme StringToAppTheme(string theme) =>
+        theme switch
+        {
+            var str when str == Messages.AppThemeMacOS => AppTheme.MacOS,
+            _ => AppTheme.Fluent
+        };
+
+    public static string AppThemeVariantToString(AppThemeVariant variant) =>
+        variant switch
+        {
+            AppThemeVariant.Auto => Messages.AppThemeVariantAuto,
+            AppThemeVariant.Light => Messages.AppThemeVariantLight,
+            AppThemeVariant.Dark => Messages.AppThemeVariantDark,
+            _ => String.Empty
+        };
+
+    public static AppThemeVariant StringToAppThemeVariant(string theme) =>
+        theme switch
+        {
+            var str when str == Messages.AppThemeVariantLight => AppThemeVariant.Light,
+            var str when str == Messages.AppThemeVariantDark => AppThemeVariant.Dark,
+            _ => AppThemeVariant.Auto
+        };
 
     private static string EventMaskToString(EventMask modifier) =>
         modifier switch

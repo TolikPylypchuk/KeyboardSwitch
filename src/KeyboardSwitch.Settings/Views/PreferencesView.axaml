@@ -62,6 +62,13 @@
                                   Minimum="100" Maximum="1000" />
                 </Grid>
 
+                <StackPanel Orientation="Horizontal" Margin="10 10 0 0">
+                    <TextBlock Text="{l:Translate AppTheme}" Classes="Label" />
+                    <ComboBox x:Name="AppThemeComboBox" Classes="FormControl" />
+                    <TextBlock Text="{l:Translate AppThemeVariant}" Classes="Label" />
+                    <ComboBox x:Name="AppThemeVariantComboBox" Classes="FormControl" />
+                </StackPanel>
+
                 <TextBlock x:Name="PressCountValidationTextBlock" Classes="Error" />
                 <TextBlock x:Name="WaitMillisecondsValidationTextBlock" Classes="Error" />
                 <TextBlock x:Name="ModifierKeysValidationTextBlock" Classes="Error" />

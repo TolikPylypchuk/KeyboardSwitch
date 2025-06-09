@@ -79,6 +79,69 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to App theme.
+        /// </summary>
+        internal static string AppTheme {
+            get {
+                return ResourceManager.GetString("AppTheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fluent.
+        /// </summary>
+        internal static string AppThemeFluent {
+            get {
+                return ResourceManager.GetString("AppThemeFluent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to macOS.
+        /// </summary>
+        internal static string AppThemeMacOS {
+            get {
+                return ResourceManager.GetString("AppThemeMacOS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variant.
+        /// </summary>
+        internal static string AppThemeVariant {
+            get {
+                return ResourceManager.GetString("AppThemeVariant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System.
+        /// </summary>
+        internal static string AppThemeVariantAuto {
+            get {
+                return ResourceManager.GetString("AppThemeVariantAuto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dark.
+        /// </summary>
+        internal static string AppThemeVariantDark {
+            get {
+                return ResourceManager.GetString("AppThemeVariantDark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Light.
+        /// </summary>
+        internal static string AppThemeVariantLight {
+            get {
+                return ResourceManager.GetString("AppThemeVariantLight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto-configure.
         /// </summary>
         internal static string AutoConfigure {

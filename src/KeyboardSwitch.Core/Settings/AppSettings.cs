@@ -1,5 +1,18 @@
 namespace KeyboardSwitch.Core.Settings;
 
+public enum AppTheme
+{
+    Fluent,
+    MacOS
+}
+
+public enum AppThemeVariant
+{
+    Auto,
+    Light,
+    Dark
+}
+
 public sealed record AppSettings
 {
     public required SwitchSettings SwitchSettings { get; init; }
@@ -15,4 +28,8 @@ public sealed record AppSettings
     public required bool UseXsel { get; init; }
 
     public required Version AppVersion { get; init; }
+
+    public AppTheme AppTheme { get; init; } = AppTheme.Fluent;
+
+    public AppThemeVariant AppThemeVariant { get; init; } = AppThemeVariant.Auto;
 }

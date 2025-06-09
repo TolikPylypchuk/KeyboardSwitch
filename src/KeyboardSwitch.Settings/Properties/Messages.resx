@@ -123,6 +123,27 @@
   <data name="AddKeyFormat" xml:space="preserve">
     <value>Add {0}</value>
   </data>
+  <data name="AppTheme" xml:space="preserve">
+    <value>App theme</value>
+  </data>
+  <data name="AppThemeFluent" xml:space="preserve">
+    <value>Fluent</value>
+  </data>
+  <data name="AppThemeMacOS" xml:space="preserve">
+    <value>macOS</value>
+  </data>
+  <data name="AppThemeVariant" xml:space="preserve">
+    <value>Variant</value>
+  </data>
+  <data name="AppThemeVariantAuto" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="AppThemeVariantDark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="AppThemeVariantLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
   <data name="AutoConfigure" xml:space="preserve">
     <value>Auto-configure</value>
   </data>

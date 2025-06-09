@@ -9,4 +9,7 @@ public sealed class PreferencesModel(AppSettings appSettings, bool startup)
     public bool Startup { get; set; } = startup;
     public bool ShowUninstalledLayoutsMessage { get; set; } = appSettings.ShowUninstalledLayoutsMessage;
     public bool UseXsel { get; set; } = appSettings.UseXsel;
+
+    public AppTheme AppTheme { get; set; } = appSettings.AppTheme;
+    public AppThemeVariant AppThemeVariant { get; set; } = appSettings.AppThemeVariant;
 }

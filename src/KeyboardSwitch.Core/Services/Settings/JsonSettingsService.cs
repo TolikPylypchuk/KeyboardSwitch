@@ -119,7 +119,9 @@ internal sealed class JsonSettingsService(
             SwitchLayout = true,
             ShowUninstalledLayoutsMessage = true,
             UseXsel = false,
-            AppVersion = this.GetAppVersion()
+            AppVersion = this.GetAppVersion(),
+            AppTheme = OperatingSystem.IsMacOS() ? AppTheme.MacOS : AppTheme.Fluent,
+            AppThemeVariant = AppThemeVariant.Auto
         };
 
     private ImmutableDictionary<string, string> GetAutoConfiguredCharMappings()

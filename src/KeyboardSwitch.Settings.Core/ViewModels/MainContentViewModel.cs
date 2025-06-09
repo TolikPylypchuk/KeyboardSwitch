@@ -80,7 +80,9 @@ public sealed class MainContentViewModel : ReactiveObject
             InstantSwitching = preferencesModel.InstantSwitching,
             SwitchLayout = preferencesModel.SwitchLayout,
             ShowUninstalledLayoutsMessage = preferencesModel.ShowUninstalledLayoutsMessage,
-            UseXsel = preferencesModel.UseXsel
+            UseXsel = preferencesModel.UseXsel,
+            AppTheme = preferencesModel.AppTheme,
+            AppThemeVariant = preferencesModel.AppThemeVariant
         };
 
         await this.appSettingsService.SaveAppSettings(newSettings);

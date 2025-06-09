@@ -11,7 +11,7 @@
     </Application.DataTemplates>
 
     <Application.Styles>
-        <uis:FluentAvaloniaTheme />
+        <uis:FluentAvaloniaTheme PreferUserAccentColor="True" PreferSystemTheme="True" />
 
         <Style Selector="TextBlock.Error">
             <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
