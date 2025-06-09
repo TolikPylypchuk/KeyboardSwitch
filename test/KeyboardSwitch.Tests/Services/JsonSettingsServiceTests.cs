@@ -45,7 +45,9 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
           "SwitchLayout": true,
           "ShowUninstalledLayoutsMessage": true,
           "UseXsel": false,
-          "AppVersion": "{{Version}}"
+          "AppVersion": "{{Version}}",
+          "AppTheme": "MacOS",
+          "AppThemeVariant": "Dark"
         }
         """;
 
@@ -97,6 +99,9 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
         Assert.True(settings.SwitchLayout);
         Assert.True(settings.ShowUninstalledLayoutsMessage);
         Assert.Equal(Version, settings.AppVersion);
+
+        Assert.Equal(AppTheme.MacOS, settings.AppTheme);
+        Assert.Equal(AppThemeVariant.Dark, settings.AppThemeVariant);
     }
 
     [Fact(DisplayName = "An exception should be thrown if the settings file is not found in strict mode")]
@@ -176,6 +181,9 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
         Assert.True(settings.SwitchLayout);
         Assert.True(settings.ShowUninstalledLayoutsMessage);
         Assert.Equal(Version, settings.AppVersion);
+
+        Assert.Equal(AppTheme.Fluent, settings.AppTheme);
+        Assert.Equal(AppThemeVariant.Auto, settings.AppThemeVariant);
 
         layoutService.Received().GetKeyboardLayouts();
         autoConfigService.Received().CreateCharMappings(
@@ -521,7 +529,9 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
             SwitchLayout = true,
             ShowUninstalledLayoutsMessage = true,
             UseXsel = false,
-            AppVersion = Version
+            AppVersion = Version,
+            AppTheme = AppTheme.MacOS,
+            AppThemeVariant = AppThemeVariant.Dark
         };
 
         // Act
