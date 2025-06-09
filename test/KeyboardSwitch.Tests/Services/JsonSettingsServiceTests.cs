@@ -182,7 +182,7 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
         Assert.True(settings.ShowUninstalledLayoutsMessage);
         Assert.Equal(Version, settings.AppVersion);
 
-        Assert.Equal(AppTheme.Fluent, settings.AppTheme);
+        Assert.Equal(OperatingSystem.IsMacOS() ? AppTheme.MacOS : AppTheme.Fluent, settings.AppTheme);
         Assert.Equal(AppThemeVariant.Auto, settings.AppThemeVariant);
 
         layoutService.Received().GetKeyboardLayouts();
