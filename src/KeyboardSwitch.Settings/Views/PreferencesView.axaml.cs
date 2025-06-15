@@ -86,10 +86,10 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
         this.Bind(this.ViewModel, vm => vm.BackwardModifierThird, v => v.BackwardThirdComboBox.SelectedItem)
             .DisposeWith(disposables);
 
-        this.Bind(this.ViewModel, vm => vm.PressCount, v => v.PressCountBox.Value)
+        this.Bind(this.ViewModel, vm => vm.PressCount, v => v.PressCountBox.Value, v => v, v => (int)(v ?? 0M))
             .DisposeWith(disposables);
 
-        this.Bind(this.ViewModel, vm => vm.WaitMilliseconds, v => v.WaitMillisecondsBox.Value)
+        this.Bind(this.ViewModel, vm => vm.WaitMilliseconds, v => v.WaitMillisecondsBox.Value, v => v, v => (int)(v ?? 0M))
             .DisposeWith(disposables);
 
         this.Bind(this.ViewModel, vm => vm.AppTheme, v => v.AppThemeComboBox.SelectedItem)

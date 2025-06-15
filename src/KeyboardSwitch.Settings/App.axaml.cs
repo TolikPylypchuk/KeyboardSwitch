@@ -2,9 +2,13 @@ using System.Reactive.Subjects;
 using System.Reflection;
 
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Styling;
+
+using FluentAvalonia.Styling;
 
 using KeyboardSwitch.Core.Exceptions;
 using KeyboardSwitch.Core.Logging;
+using KeyboardSwitch.Settings.Themes;
 
 #if WINDOWS
 using KeyboardSwitch.Windows;
@@ -75,6 +79,8 @@ public class App : Application, IEnableLogger
             var appSettings = await this.serviceProvider.GetRequiredService<IAppSettingsService>().GetAppSettings();
             var mainViewModel = new MainViewModel(appSettings);
             openExternally.InvokeCommand(mainViewModel.OpenExternally);
+
+            this.SetTheme(appSettings);
 
             return mainViewModel;
         } catch (IncompatibleAppVersionException e)
@@ -191,6 +197,28 @@ public class App : Application, IEnableLogger
             .Subscribe(this.SaveAppState);
 
         return window;
+    }
+
+    private void SetTheme(AppSettings appSettings)
+    {
+        if (appSettings.AppTheme == AppTheme.MacOS)
+        {
+            this.Styles.Insert(0, new MacOSTheme());
+        } else
+        {
+            this.Styles.Insert(0, new FluentAvaloniaTheme
+            {
+                PreferUserAccentColor = true,
+                PreferSystemTheme = true
+            });
+        }
+
+        this.RequestedThemeVariant = appSettings.AppThemeVariant switch
+        {
+            AppThemeVariant.Light => ThemeVariant.Light,
+            AppThemeVariant.Dark => ThemeVariant.Dark,
+            _ => ThemeVariant.Default
+        };
     }
 
     private void SaveAppState()

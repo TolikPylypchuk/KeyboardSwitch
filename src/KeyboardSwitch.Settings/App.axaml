@@ -1,8 +1,6 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:sys="using:System"
-             xmlns:ui="using:FluentAvalonia.UI.Controls"
-             xmlns:uis="using:FluentAvalonia.Styling"
              xmlns:l="using:KeyboardSwitch.Settings.Localization"
              xmlns:local="using:KeyboardSwitch.Settings"
              x:Class="KeyboardSwitch.Settings.App">
@@ -11,8 +9,6 @@
     </Application.DataTemplates>
 
     <Application.Styles>
-        <uis:FluentAvaloniaTheme PreferUserAccentColor="True" PreferSystemTheme="True" />
-
         <Style Selector="TextBlock.Error">
             <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
             <Setter Property="Margin" Value="10 2" />
@@ -35,15 +31,13 @@
             <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
 
-        <Style Selector="ui|NumberBox.FormControl">
-            <Setter Property="Width" Value="150" />
-            <Setter Property="SpinButtonPlacementMode" Value="Inline" />
+        <Style Selector="NumericUpDown.FormControl">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="ToolTip.Tip" Value="{l:Translate NumberBoxHint}" />
-            <Setter Property="ValidationMode" Value="InvalidInputOverwritten" />
             <Setter Property="Margin" Value="0 0 10 0" />
         </Style>
 
-        <Style Selector="ui|NumberBox.FormControl /template/ TextBox#InputBox">
+        <Style Selector="NumericUpDown.FormControl /template/ TextBox#InputBox">
             <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
 
