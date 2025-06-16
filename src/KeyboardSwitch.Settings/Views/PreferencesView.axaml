@@ -1,64 +1,189 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:c="using:KeyboardSwitch.Settings.Controls"
-             xmlns:l="using:KeyboardSwitch.Settings.Localization"
-             x:Class="KeyboardSwitch.Settings.Views.PreferencesView">
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="using:KeyboardSwitch.Settings.Controls"
+    xmlns:l="using:KeyboardSwitch.Settings.Localization"
+    x:Class="KeyboardSwitch.Settings.Views.PreferencesView"
+>
     <DockPanel>
         <StackPanel x:Name="ActionPanel" DockPanel.Dock="Bottom" IsVisible="False">
             <Button x:Name="SaveButton" Content="{l:Translate Save}" Classes="accent" />
             <Button x:Name="CancelButton" Content="{l:Translate Cancel}" />
         </StackPanel>
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
-                      VerticalAlignment="Stretch">
+        <ScrollViewer
+            VerticalScrollBarVisibility="Auto"
+            HorizontalScrollBarVisibility="Auto"
+            VerticalAlignment="Stretch"
+        >
             <StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="10 10 0 0">
-                    <CheckBox x:Name="InstantSwitchingCheckBox" Classes="FormControl"
-                              Content="{l:Translate InstantSwitching}" />
-                    <CheckBox x:Name="SwitchLayoutCheckBox" Classes="FormControl"
-                              Content="{l:Translate SwitchLayouts}" />
-                    <CheckBox x:Name="StartupCheckBox" Classes="FormControl"
-                              Content="{l:Translate StartOnLogIn}" />
+                    <CheckBox
+                        x:Name="InstantSwitchingCheckBox"
+                        Content="{l:Translate InstantSwitching}"
+                        Classes="FormControl"
+                    />
+
+                    <CheckBox
+                        x:Name="SwitchLayoutCheckBox"
+                        Content="{l:Translate SwitchLayouts}"
+                        Classes="FormControl"
+                    />
+
+                    <CheckBox
+                        x:Name="StartupCheckBox"
+                        Content="{l:Translate StartOnLogIn}"
+                        Classes="FormControl"
+                    />
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Margin="10">
-                    <CheckBox x:Name="ShowRemovedLayoutsMessageCheckBox" Classes="FormControl"
-                              Content="{l:Translate ShowUninstalledLayoutsMessage}" />
-                    <CheckBox x:Name="UseXselCheckBox" Classes="FormControl" IsVisible="False"
-                              Content="{l:Translate UseXsel}" ToolTip.Tip="{l:Translate UseXselHint}" />
+                    <CheckBox
+                        x:Name="ShowRemovedLayoutsMessageCheckBox"
+                        Content="{l:Translate ShowUninstalledLayoutsMessage}"
+                        Classes="FormControl"
+                    />
+
+                    <CheckBox
+                        x:Name="UseXselCheckBox"
+                        Content="{l:Translate UseXsel}"
+                        Classes="FormControl"
+                        IsVisible="False"
+                        ToolTip.Tip="{l:Translate UseXselHint}"
+                    />
                 </StackPanel>
 
                 <TextBlock Text="{l:Translate KeysToSwitchText}" Margin="10 5" />
 
-                <Grid RowDefinitions="Auto,10,Auto" Margin="10"
-                      ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{l:Translate Forward}" Classes="Label" />
-                    <ComboBox x:Name="ForwardFirstComboBox" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch"
-                              Classes="FormControl ModifierKey" />
-                    <TextBlock Grid.Row="0" Grid.Column="2" Text="{l:Translate ModifierKeySeparator}" Classes="Label" />
-                    <ComboBox x:Name="ForwardSecondComboBox" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Stretch"
-                              Classes="FormControl ModifierKey" />
-                    <TextBlock Grid.Row="0" Grid.Column="4" Text="{l:Translate ModifierKeySeparator}" Classes="Label" />
-                    <ComboBox x:Name="ForwardThirdComboBox" Grid.Row="0" Grid.Column="5" HorizontalAlignment="Stretch"
-                              Classes="FormControl ModifierKey" />
+                <Grid
+                    RowDefinitions="Auto,10,Auto"
+                    Margin="10"
+                    ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                >
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Text="{l:Translate Forward}"
+                        Classes="Label"
+                    />
 
-                    <TextBlock Grid.Row="0" Grid.Column="6" Text="{l:Translate PressCount}" Classes="Label" />
-                    <NumericUpDown x:Name="PressCountBox" Grid.Row="0" Grid.Column="7" Classes="FormControl"
-                                   Minimum="1" Maximum="10" FormatString="N0" />
+                    <ComboBox
+                        x:Name="ForwardFirstComboBox"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        HorizontalAlignment="Stretch"
+                        Classes="FormControl ModifierKey"
+                    />
 
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{l:Translate Backward}" Classes="Label" />
-                    <ComboBox x:Name="BackwardFirstComboBox" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch"
-                              Classes="FormControl ModifierKey" />
-                    <TextBlock Grid.Row="2" Grid.Column="2" Text="{l:Translate ModifierKeySeparator}" Classes="Label" />
-                    <ComboBox x:Name="BackwardSecondComboBox" Grid.Row="2" Grid.Column="3" HorizontalAlignment="Stretch"
-                              Classes="FormControl ModifierKey" />
-                    <TextBlock Grid.Row="2" Grid.Column="4" Text="{l:Translate ModifierKeySeparator}" Classes="Label" />
-                    <ComboBox x:Name="BackwardThirdComboBox" Grid.Row="2" Grid.Column="5" HorizontalAlignment="Stretch"
-                              Classes="FormControl ModifierKey" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Text="{l:Translate ModifierKeySeparator}"
+                        Classes="Label"
+                    />
 
-                    <TextBlock Grid.Row="2" Grid.Column="6" Text="{l:Translate WaitMilliseconds}" Classes="Label" />
-                    <NumericUpDown x:Name="WaitMillisecondsBox" Grid.Row="2" Grid.Column="7" Classes="FormControl"
-                                   Minimum="100" Maximum="1000" Increment="50" FormatString="N0" />
+                    <ComboBox
+                        x:Name="ForwardSecondComboBox"
+                        Grid.Row="0"
+                        Grid.Column="3"
+                        HorizontalAlignment="Stretch"
+                        Classes="FormControl ModifierKey"
+                    />
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="4"
+                        Text="{l:Translate ModifierKeySeparator}"
+                        Classes="Label"
+                    />
+
+                    <ComboBox
+                        x:Name="ForwardThirdComboBox"
+                        Grid.Row="0"
+                        Grid.Column="5"
+                        HorizontalAlignment="Stretch"
+                        Classes="FormControl ModifierKey"
+                    />
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="6"
+                        Text="{l:Translate PressCount}"
+                        Classes="Label"
+                    />
+
+                    <NumericUpDown
+                        x:Name="PressCountBox"
+                        Grid.Row="0"
+                        Grid.Column="7"
+                        Classes="FormControl"
+                        Minimum="1"
+                        Maximum="10"
+                        FormatString="N0"
+                    />
+
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Text="{l:Translate Backward}"
+                        Classes="Label"
+                    />
+
+                    <ComboBox
+                        x:Name="BackwardFirstComboBox"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        HorizontalAlignment="Stretch"
+                        Classes="FormControl ModifierKey"
+                    />
+
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="2"
+                        Text="{l:Translate ModifierKeySeparator}"
+                        Classes="Label"
+                    />
+
+                    <ComboBox
+                        x:Name="BackwardSecondComboBox"
+                        Grid.Row="2"
+                        Grid.Column="3"
+                        HorizontalAlignment="Stretch"
+                        Classes="FormControl ModifierKey"
+                    />
+
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="4"
+                        Text="{l:Translate ModifierKeySeparator}"
+                        Classes="Label"
+                    />
+
+                    <ComboBox
+                        x:Name="BackwardThirdComboBox"
+                        Grid.Row="2"
+                        Grid.Column="5"
+                        HorizontalAlignment="Stretch"
+                        Classes="FormControl ModifierKey"
+                    />
+
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="6"
+                        Text="{l:Translate WaitMilliseconds}"
+                        Classes="Label"
+                    />
+
+                    <NumericUpDown
+                        x:Name="WaitMillisecondsBox"
+                        Grid.Row="2"
+                        Grid.Column="7"
+                        Classes="FormControl"
+                        Minimum="100"
+                        Maximum="1000"
+                        Increment="50"
+                        FormatString="N0"
+                    />
                 </Grid>
 
                 <StackPanel Orientation="Horizontal" Margin="10 10 0 0">

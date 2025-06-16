@@ -1,9 +1,11 @@
-<Application xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:sys="using:System"
-             xmlns:l="using:KeyboardSwitch.Settings.Localization"
-             xmlns:local="using:KeyboardSwitch.Settings"
-             x:Class="KeyboardSwitch.Settings.App">
+<Application
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="using:System"
+    xmlns:l="using:KeyboardSwitch.Settings.Localization"
+    xmlns:local="using:KeyboardSwitch.Settings"
+    x:Class="KeyboardSwitch.Settings.App"
+>
     <Application.DataTemplates>
         <local:ViewLocator />
     </Application.DataTemplates>

@@ -1,29 +1,74 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:l="using:KeyboardSwitch.Settings.Localization"
-             x:Class="KeyboardSwitch.Settings.Views.AboutView">
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="using:KeyboardSwitch.Settings.Localization"
+    x:Class="KeyboardSwitch.Settings.Views.AboutView"
+>
     <StackPanel Margin="20 0">
-        <TextBlock Text="{l:Translate KeyboardSwitch}" Margin="10" FontSize="{DynamicResource FontSizeHuge}" />
-        <TextBlock Text="{l:Translate CreatedBy}" Margin="10" FontSize="{DynamicResource FontSizeNormal}" />
-        <TextBlock x:Name="VersionTextBlock" Margin="10 0 10 10" FontSize="{DynamicResource FontSizeNormal}" />
+        <TextBlock
+            Text="{l:Translate KeyboardSwitch}"
+            Margin="10"
+            FontSize="{DynamicResource FontSizeHuge}"
+        />
 
-        <TextBlock x:Name="NewVersionTextBlock" Margin="10" FontSize="{DynamicResource FontSizeNormal}" />
+        <TextBlock
+            Text="{l:Translate CreatedBy}"
+            Margin="10"
+            FontSize="{DynamicResource FontSizeNormal}"
+        />
+
+        <TextBlock
+            x:Name="VersionTextBlock"
+            Margin="10 0 10 10"
+            FontSize="{DynamicResource FontSizeNormal}"
+        />
+
+        <TextBlock
+            x:Name="NewVersionTextBlock"
+            Margin="10"
+            FontSize="{DynamicResource FontSizeNormal}"
+        />
 
         <WrapPanel Background="Transparent">
-            <Button x:Name="ViewDocsButton" Margin="10 0" Content="{l:Translate ViewDocs}" Classes="accent"
-                    HorizontalAlignment="Left" />
+            <Button
+                x:Name="ViewDocsButton"
+                Margin="10 0"
+                Content="{l:Translate ViewDocs}"
+                Classes="accent"
+                HorizontalAlignment="Left"
+            />
 
-            <Button x:Name="CheckForUpdatesButton" Content="{l:Translate CheckForUpdates}" Classes="accent"
-                    HorizontalAlignment="Left" />
+            <Button
+                x:Name="CheckForUpdatesButton"
+                Content="{l:Translate CheckForUpdates}"
+                Classes="accent"
+                HorizontalAlignment="Left"
+            />
 
-            <Button x:Name="GetNewVersionButton" Content="{l:Translate GetNewVersion}" Classes="accent"
-                    HorizontalAlignment="Left" IsVisible="False" />
+            <Button
+                x:Name="GetNewVersionButton"
+                Content="{l:Translate GetNewVersion}"
+                Classes="accent"
+                HorizontalAlignment="Left"
+                IsVisible="False"
+            />
         </WrapPanel>
 
-        <TextBlock x:Name="NoNewVersionsTextBlock" Text="{l:Translate NoNewVersions}" Margin="10"
-                   FontSize="{DynamicResource FontSizeNormal}" IsVisible="False" />
+        <TextBlock
+            x:Name="NoNewVersionsTextBlock"
+            Text="{l:Translate NoNewVersions}"
+            Margin="10"
+            FontSize="{DynamicResource FontSizeNormal}"
+            IsVisible="False"
+        />
 
-        <TextBlock x:Name="GetNewVersionHintTextBlock" Text="{l:Translate GetNewVersionHint}" Margin="10"
-                   FontSize="{DynamicResource FontSizeNormal}" TextWrapping="Wrap" IsVisible="False" />
+        <TextBlock
+            x:Name="GetNewVersionHintTextBlock"
+            Text="{l:Translate GetNewVersionHint}"
+            Margin="10"
+            FontSize="{DynamicResource FontSizeNormal}"
+            TextWrapping="Wrap"
+            IsVisible="False"
+        />
     </StackPanel>
 </UserControl>

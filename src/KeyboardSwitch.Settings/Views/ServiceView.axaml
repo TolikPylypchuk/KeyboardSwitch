@@ -1,7 +1,9 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:l="using:KeyboardSwitch.Settings.Localization"
-             x:Class="KeyboardSwitch.Settings.Views.ServiceView">
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:l="using:KeyboardSwitch.Settings.Localization"
+    x:Class="KeyboardSwitch.Settings.Views.ServiceView"
+>
     <Border>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
             <StackPanel.Styles>
@@ -12,14 +14,26 @@
                 </Style>
             </StackPanel.Styles>
 
-            <TextBlock x:Name="ServiceRunningTextBlock" Classes="Status" IsVisible="False"
-                       Text="{l:Translate KeyboardSwitchServiceRunning}" />
+            <TextBlock
+                x:Name="ServiceRunningTextBlock"
+                Classes="Status"
+                IsVisible="False"
+                Text="{l:Translate KeyboardSwitchServiceRunning}"
+            />
 
-            <TextBlock x:Name="ServiceNotRunningTextBlock" Classes="Status" IsVisible="False"
-                       Text="{l:Translate KeyboardSwitchServiceNotRunning}" />
+            <TextBlock
+                x:Name="ServiceNotRunningTextBlock"
+                Text="{l:Translate KeyboardSwitchServiceNotRunning}"
+                Classes="Status"
+                IsVisible="False"
+            />
 
-            <TextBlock x:Name="ServiceShuttingDownTextBlock" Classes="Status" IsVisible="False"
-                       Text="{l:Translate KeyboardSwitchServiceShuttingDown}" />
+            <TextBlock
+                x:Name="ServiceShuttingDownTextBlock"
+                Text="{l:Translate KeyboardSwitchServiceShuttingDown}"
+                Classes="Status"
+                IsVisible="False"
+            />
 
             <Button x:Name="StartServiceButton" Content="{l:Translate Start}" Classes="accent" IsVisible="False" />
             <Button x:Name="StopServiceButton" Content="{l:Translate Stop}" IsVisible="False" />
