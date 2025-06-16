@@ -31,8 +31,7 @@ public static class Program
 
     private static ExitCode Run(string[] args)
     {
-        Directory.SetCurrentDirectory(
-            Path.GetDirectoryName(AppContext.BaseDirectory) ?? String.Empty);
+        Directory.SetCurrentDirectory(Path.GetDirectoryName(AppContext.BaseDirectory) ?? String.Empty);
 
         using var host = Host.CreateDefaultBuilder(args)
             .UseContentRoot(GetConfigDirectory())
