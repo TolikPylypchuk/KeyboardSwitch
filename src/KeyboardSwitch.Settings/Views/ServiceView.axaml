@@ -5,7 +5,7 @@
     x:Class="KeyboardSwitch.Settings.Views.ServiceView"
 >
     <Border>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <StackPanel.Styles>
                 <Style Selector="TextBlock.Status">
                     <Setter Property="VerticalAlignment" Value="Center" />
