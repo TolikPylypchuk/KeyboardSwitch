@@ -4,7 +4,7 @@
              xmlns:l="using:KeyboardSwitch.Settings.Localization"
              x:Class="KeyboardSwitch.Settings.Views.PreferencesView">
     <DockPanel>
-        <StackPanel x:Name="ActionPanel" DockPanel.Dock="Bottom">
+        <StackPanel x:Name="ActionPanel" DockPanel.Dock="Bottom" IsVisible="False">
             <Button x:Name="SaveButton" Content="{l:Translate Save}" Classes="accent" />
             <Button x:Name="CancelButton" Content="{l:Translate Cancel}" />
         </StackPanel>
@@ -24,7 +24,7 @@
                 <StackPanel Orientation="Horizontal" Margin="10">
                     <CheckBox x:Name="ShowRemovedLayoutsMessageCheckBox" Classes="FormControl"
                               Content="{l:Translate ShowUninstalledLayoutsMessage}" />
-                    <CheckBox x:Name="UseXselCheckBox" Classes="FormControl"
+                    <CheckBox x:Name="UseXselCheckBox" Classes="FormControl" IsVisible="False"
                               Content="{l:Translate UseXsel}" ToolTip.Tip="{l:Translate UseXselHint}" />
                 </StackPanel>
 
@@ -68,10 +68,10 @@
                     <ComboBox x:Name="AppThemeVariantComboBox" Classes="FormControl" />
                 </StackPanel>
 
-                <TextBlock x:Name="PressCountValidationTextBlock" Classes="Error" />
-                <TextBlock x:Name="WaitMillisecondsValidationTextBlock" Classes="Error" />
-                <TextBlock x:Name="ModifierKeysValidationTextBlock" Classes="Error" />
-                <TextBlock x:Name="SwitchMethodsValidationTextBlock" Classes="Error" />
+                <TextBlock x:Name="PressCountValidationTextBlock" Classes="Error" IsVisible="False" />
+                <TextBlock x:Name="WaitMillisecondsValidationTextBlock" Classes="Error" IsVisible="False" />
+                <TextBlock x:Name="ModifierKeysValidationTextBlock" Classes="Error" IsVisible="False" />
+                <TextBlock x:Name="SwitchMethodsValidationTextBlock" Classes="Error" IsVisible="False" />
             </StackPanel>
         </ScrollViewer>
     </DockPanel>

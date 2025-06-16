@@ -12,18 +12,18 @@
                 </Style>
             </StackPanel.Styles>
 
-            <TextBlock x:Name="ServiceRunningTextBlock" Classes="Status"
+            <TextBlock x:Name="ServiceRunningTextBlock" Classes="Status" IsVisible="False"
                        Text="{l:Translate KeyboardSwitchServiceRunning}" />
 
-            <TextBlock x:Name="ServiceNotRunningTextBlock" Classes="Status"
+            <TextBlock x:Name="ServiceNotRunningTextBlock" Classes="Status" IsVisible="False"
                        Text="{l:Translate KeyboardSwitchServiceNotRunning}" />
 
-            <TextBlock x:Name="ServiceShuttingDownTextBlock" Classes="Status"
+            <TextBlock x:Name="ServiceShuttingDownTextBlock" Classes="Status" IsVisible="False"
                        Text="{l:Translate KeyboardSwitchServiceShuttingDown}" />
 
-            <Button x:Name="StartServiceButton" Content="{l:Translate Start}" Classes="accent" />
-            <Button x:Name="StopServiceButton" Content="{l:Translate Stop}" />
-            <Button x:Name="KillServiceButton" Content="{l:Translate Kill}" />
+            <Button x:Name="StartServiceButton" Content="{l:Translate Start}" Classes="accent" IsVisible="False" />
+            <Button x:Name="StopServiceButton" Content="{l:Translate Stop}" IsVisible="False" />
+            <Button x:Name="KillServiceButton" Content="{l:Translate Kill}" IsVisible="False" />
         </StackPanel>
     </Border>
 </UserControl>

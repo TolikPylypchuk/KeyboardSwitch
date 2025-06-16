@@ -17,13 +17,13 @@
                     HorizontalAlignment="Left" />
 
             <Button x:Name="GetNewVersionButton" Content="{l:Translate GetNewVersion}" Classes="accent"
-                    HorizontalAlignment="Left" />
+                    HorizontalAlignment="Left" IsVisible="False" />
         </WrapPanel>
 
         <TextBlock x:Name="NoNewVersionsTextBlock" Text="{l:Translate NoNewVersions}" Margin="10"
                    FontSize="{DynamicResource FontSizeNormal}" IsVisible="False" />
 
         <TextBlock x:Name="GetNewVersionHintTextBlock" Text="{l:Translate GetNewVersionHint}" Margin="10"
-                   FontSize="{DynamicResource FontSizeNormal}" TextWrapping="Wrap" />
+                   FontSize="{DynamicResource FontSizeNormal}" TextWrapping="Wrap" IsVisible="False" />
     </StackPanel>
 </UserControl>

@@ -12,7 +12,7 @@
     </UserControl.Styles>
 
     <DockPanel>
-        <StackPanel x:Name="ActionPanel" DockPanel.Dock="Bottom">
+        <StackPanel x:Name="ActionPanel" DockPanel.Dock="Bottom" IsVisible="False">
             <Button x:Name="SaveButton" Content="{l:Translate Save}" Classes="accent" />
             <Button x:Name="CancelButton" Content="{l:Translate Cancel}" />
         </StackPanel>
@@ -26,11 +26,14 @@
                               Grid.IsSharedSizeScope="True" />
 
                 <Button x:Name="AutoConfigureButton" Content="{l:Translate AutoConfigure}" Classes="accent"
-                        FontSize="{DynamicResource FontSizeLarge}" Margin="10" HorizontalAlignment="Center" />
+                        FontSize="{DynamicResource FontSizeLarge}" Margin="10" HorizontalAlignment="Center"
+                        IsVisible="False" />
 
-                <TextBlock x:Name="NewLayoutsTextBlock" Text="{l:Translate NewLayoutsHint}" Classes="Hint" />
+                <TextBlock x:Name="NewLayoutsTextBlock" Text="{l:Translate NewLayoutsHint}" Classes="Hint"
+                           IsVisible="False" />
 
-                <StackPanel x:Name="RemoveLayoutsPanel" Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel x:Name="RemoveLayoutsPanel" Orientation="Horizontal" HorizontalAlignment="Center"
+                            IsVisible="False">
                     <TextBlock Text="{l:Translate RemoveLayoutsHint}" Classes="Hint" MaxWidth="500" />
                     <Button x:Name="RemoveLayoutsButton" Content="{l:Translate DeleteLayoutConfiguration}"
                             Margin="0 10" VerticalAlignment="Center" />
