@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="Nuke.Common" Version="9.0.4" />
-    <PackageReference Include="System.Interactive" Version="6.0.1" />
+    <PackageReference Include="System.Interactive" Version="6.0.3" />
   </ItemGroup>
 
 </Project>

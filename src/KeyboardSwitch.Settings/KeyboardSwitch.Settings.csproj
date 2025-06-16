@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -38,8 +38,8 @@
     <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="15.3.1" />
     <PackageReference Include="Splat.Microsoft.Extensions.Logging" Version="15.3.1" />
     <PackageReference Include="Splat.Serilog" Version="15.3.1" />
-    <PackageReference Include="System.Interactive" Version="6.0.1" />
-    <PackageReference Include="System.Interactive.Async" Version="6.0.1" />
+    <PackageReference Include="System.Interactive" Version="6.0.3" />
+    <PackageReference Include="System.Interactive.Async" Version="6.0.3" />
     <PackageReference Include="System.Reactive" Version="6.0.1" />
     <PackageReference Include="System.Text.Json" Version="9.0.6" />
   </ItemGroup>
