@@ -6,8 +6,8 @@
     x:Class="KeyboardSwitch.Settings.Views.MainContentView"
 >
     <TabControl Padding="10,10,10,0">
-        <TabItem x:Name="CharMappingTabItem" Header="{l:Translate CharMapping}" />
         <TabItem x:Name="PreferencesTabItem" Header="{l:Translate Preferences}" />
+        <TabItem x:Name="CharMappingTabItem" Header="{l:Translate CharMapping}" />
         <TabItem x:Name="SandboxTabItem" Header="{l:Translate Sandbox}">
             <local:SandboxView />
         </TabItem>

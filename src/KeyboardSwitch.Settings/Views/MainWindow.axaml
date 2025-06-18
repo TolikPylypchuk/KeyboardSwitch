@@ -6,8 +6,8 @@
     Icon="/Assets/icon.ico"
     WindowStartupLocation="CenterScreen"
     Title="{l:Translate WindowTitle}"
-    Width="1100"
-    Height="450"
+    Width="720"
+    Height="420"
     MinWidth="450"
     MinHeight="400"
 >
