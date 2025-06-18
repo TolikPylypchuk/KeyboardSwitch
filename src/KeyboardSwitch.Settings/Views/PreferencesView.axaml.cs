@@ -89,13 +89,20 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
         this.Bind(this.ViewModel, vm => vm.PressCount, v => v.PressCountBox.Value, v => v, v => (int)(v ?? 0M))
             .DisposeWith(disposables);
 
-        this.Bind(this.ViewModel, vm => vm.WaitMilliseconds, v => v.WaitMillisecondsBox.Value, v => v, v => (int)(v ?? 0M))
+        this.Bind(
+            this.ViewModel, vm => vm.WaitMilliseconds, v => v.WaitMillisecondsBox.Value, v => v, v => (int)(v ?? 0M))
             .DisposeWith(disposables);
 
         this.Bind(this.ViewModel, vm => vm.AppTheme, v => v.AppThemeComboBox.SelectedItem)
             .DisposeWith(disposables);
 
         this.Bind(this.ViewModel, vm => vm.AppThemeVariant, v => v.AppThemeVariantComboBox.SelectedItem)
+            .DisposeWith(disposables);
+
+        this.ViewModel!.WhenAnyValue(vm => vm.AppTheme)
+            .Merge(this.ViewModel!.Save.Select(p => this.ViewModel!.AppTheme))
+            .Select(theme => theme != this.ViewModel!.PreferencesModel.AppTheme)
+            .BindTo(this, v => v.UpdateThemeHintTextBlock.IsVisible)
             .DisposeWith(disposables);
     }
 
@@ -116,6 +123,22 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
         this.BindValidation(
             this.ViewModel, vm => vm!.SwitchMethodsAreDifferentRule, v => v.SwitchMethodsValidationTextBlock.Text)
             .DisposeWith(disposables);
+
+        this.PressCountValidationTextBlock.WhenAnyValue(v => v.Text)
+            .Select(text => text is { Length: > 0 })
+            .BindTo(this, v => v.PressCountValidationTextBlock.IsVisible);
+
+        this.WaitMillisecondsValidationTextBlock.WhenAnyValue(v => v.Text)
+            .Select(text => text is { Length: > 0 })
+            .BindTo(this, v => v.WaitMillisecondsValidationTextBlock.IsVisible);
+
+        this.ModifierKeysValidationTextBlock.WhenAnyValue(v => v.Text)
+            .Select(text => text is { Length: > 0 })
+            .BindTo(this, v => v.ModifierKeysValidationTextBlock.IsVisible);
+
+        this.SwitchMethodsValidationTextBlock.WhenAnyValue(v => v.Text)
+            .Select(text => text is { Length: > 0 })
+            .BindTo(this, v => v.SwitchMethodsValidationTextBlock.IsVisible);
     }
 
     private void BindCommands(CompositeDisposable disposables)

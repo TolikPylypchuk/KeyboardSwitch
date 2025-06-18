@@ -360,6 +360,9 @@
   <data name="SwitchSettings" xml:space="preserve">
     <value>Switch settings:</value>
   </data>
+  <data name="UpdateThemeHint" xml:space="preserve">
+    <value>Theme will be updated after application restart</value>
+  </data>
   <data name="UseXsel" xml:space="preserve">
     <value>Use xsel for clipboard integration</value>
   </data>

@@ -4,4 +4,23 @@
     x:Class="KeyboardSwitch.Settings.Themes.MacOSTheme"
 >
     <StyleInclude Source="avares://Devolutions.AvaloniaTheme.MacOS/MacOSTheme.axaml" />
+
+    <Styles.Resources>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="SystemFillColorCriticalBrush" Color="{StaticResource SystemFillColorCritical}" />
+            <Color x:Key="SystemFillColorCritical">#FF0000</Color>
+
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Default">
+                    <Color x:Key="SystemFillColorCritical">#C42B1C</Color>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <Color x:Key="SystemFillColorCritical">#C42B1C</Color>
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <Color x:Key="SystemFillColorCritical">#FF99A4</Color>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
 </Styles>

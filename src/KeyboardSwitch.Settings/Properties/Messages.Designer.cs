@@ -790,6 +790,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Theme will be updated after application restart.
+        /// </summary>
+        internal static string UpdateThemeHint {
+            get {
+                return ResourceManager.GetString("UpdateThemeHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use xsel for clipboard integration.
         /// </summary>
         internal static string UseXsel {
