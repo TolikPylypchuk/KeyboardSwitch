@@ -26,7 +26,7 @@ public sealed class MainContentViewModel : ReactiveObject
 
         this.SaveCharMappingSettings = ReactiveCommand.CreateFromTask<CharMappingModel>(
             this.SaveCharMappingSettingsAsync);
-        this.SavePreferences = ReactiveCommand.CreateFromTask<PreferencesModel>(
+        this.SavePreferences = ReactiveCommand.CreateFromTask<PreferencesModel, PreferencesModel>(
             this.SavePreferencesAsync);
         this.OpenAboutTab = ReactiveCommand.Create(() => { });
 
@@ -43,7 +43,7 @@ public sealed class MainContentViewModel : ReactiveObject
     public AboutViewModel AboutViewModel { get; }
 
     public ReactiveCommand<CharMappingModel, Unit> SaveCharMappingSettings { get; }
-    public ReactiveCommand<PreferencesModel, Unit> SavePreferences { get; }
+    public ReactiveCommand<PreferencesModel, PreferencesModel> SavePreferences { get; }
     public ReactiveCommand<Unit, Unit> OpenAboutTab { get; }
 
     private async Task SaveCharMappingSettingsAsync(CharMappingModel charMappingModel)
@@ -70,7 +70,7 @@ public sealed class MainContentViewModel : ReactiveObject
         await this.appSettingsService.SaveAppSettings(newSettings);
     }
 
-    private async Task SavePreferencesAsync(PreferencesModel preferencesModel)
+    private async Task<PreferencesModel> SavePreferencesAsync(PreferencesModel preferencesModel)
     {
         var settings = await this.appSettingsService.GetAppSettings();
 
@@ -91,5 +91,7 @@ public sealed class MainContentViewModel : ReactiveObject
         {
             this.startupService.ConfigureStartup(preferencesModel.Startup);
         }
+
+        return preferencesModel;
     }
 }

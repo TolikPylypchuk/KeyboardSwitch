@@ -16,7 +16,7 @@
     <PackageReference Include="System.Interactive.Async" Version="6.0.3" />
     <PackageReference Include="System.Reactive" Version="6.0.1" />
     <PackageReference Include="System.Text.Json" Version="9.0.6" />
-    <PackageReference Include="TestableIO.System.IO.Abstractions.Extensions" Version="22.0.3" />
+    <PackageReference Include="TestableIO.System.IO.Abstractions.Extensions" Version="22.0.4" />
     <PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="22.0.14" />
   </ItemGroup>
 </Project>

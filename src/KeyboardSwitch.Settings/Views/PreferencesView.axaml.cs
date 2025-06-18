@@ -38,9 +38,9 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
             this.BindValidations(disposables);
             this.BindCommands(disposables);
 
-            if (this.ViewModel?.ShowUseXsel == false)
+            if (this.ViewModel?.ShowUseXsel == true)
             {
-                this.UseXselCheckBox.IsVisible = false;
+                this.UseXselCheckBox.IsVisible = true;
             }
         });
     }

@@ -77,10 +77,17 @@ public class App : Application, IEnableLogger
         try
         {
             var appSettings = await this.serviceProvider.GetRequiredService<IAppSettingsService>().GetAppSettings();
+
+            this.SetTheme(appSettings.AppTheme);
+
             var mainViewModel = new MainViewModel(appSettings);
             openExternally.InvokeCommand(mainViewModel.OpenExternally);
 
-            this.SetTheme(appSettings);
+            mainViewModel.PreferencesSaved
+                .Select(p => p.AppThemeVariant)
+                .StartWith(appSettings.AppThemeVariant)
+                .DistinctUntilChanged()
+                .Subscribe(this.SetThemeVariant);
 
             return mainViewModel;
         } catch (IncompatibleAppVersionException e)
@@ -199,21 +206,22 @@ public class App : Application, IEnableLogger
         return window;
     }
 
-    private void SetTheme(AppSettings appSettings)
+    private void SetTheme(AppTheme appTheme)
     {
-        if (appSettings.AppTheme == AppTheme.MacOS)
+        this.Styles.Insert(0, appTheme switch
         {
-            this.Styles.Insert(0, new MacOSTheme());
-        } else
-        {
-            this.Styles.Insert(0, new FluentAvaloniaTheme
+            AppTheme.MacOS => new MacOSTheme(),
+            _ => new FluentAvaloniaTheme
             {
                 PreferUserAccentColor = true,
                 PreferSystemTheme = true
-            });
-        }
+            }
+        });
+    }
 
-        this.RequestedThemeVariant = appSettings.AppThemeVariant switch
+    private void SetThemeVariant(AppThemeVariant appThemeVariant)
+    {
+        this.RequestedThemeVariant = appThemeVariant switch
         {
             AppThemeVariant.Light => ThemeVariant.Light,
             AppThemeVariant.Dark => ThemeVariant.Dark,

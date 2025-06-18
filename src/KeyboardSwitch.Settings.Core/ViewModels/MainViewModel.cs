@@ -1,21 +1,21 @@
+using KeyboardSwitch.Core.Keyboard;
+
 namespace KeyboardSwitch.Settings.Core.ViewModels;
 
 public class MainViewModel : ReactiveObject
 {
-    private readonly AppSettings appSettings;
-    private readonly ILayoutService layoutService;
+    private readonly Subject<PreferencesModel> preferencesSaved = new();
 
     public MainViewModel(
         AppSettings appSettings,
         ILayoutService? layoutService = null,
         IStartupService? startupService = null)
     {
-        this.appSettings = appSettings;
-        this.layoutService = layoutService ?? GetRequiredService<ILayoutService>();
+        layoutService ??= GetRequiredService<ILayoutService>();
         startupService ??= GetRequiredService<IStartupService>();
 
         this.MainContentViewModel = new MainContentViewModel(
-            this.CreateCharMappingModel(),
+            this.CreateCharMappingModel(appSettings, layoutService.GetKeyboardLayouts()),
             new PreferencesModel(appSettings, startupService.IsStartupConfigured()));
 
         this.ServiceViewModel = new ServiceViewModel();
@@ -28,7 +28,11 @@ public class MainViewModel : ReactiveObject
             .Merge(this.MainContentViewModel.SavePreferences.Discard())
             .InvokeCommand(this.ServiceViewModel.ReloadSettings);
 
+        this.MainContentViewModel.SavePreferences.Subscribe(this.preferencesSaved);
+
         this.OpenAboutTab.InvokeCommand(this.MainContentViewModel.OpenAboutTab);
+
+        this.PreferencesSaved = this.preferencesSaved.AsObservable();
     }
 
     public MainContentViewModel MainContentViewModel { get; }
@@ -37,11 +41,11 @@ public class MainViewModel : ReactiveObject
     public ReactiveCommand<Unit, Unit> OpenExternally { get; }
     public ReactiveCommand<Unit, Unit> OpenAboutTab { get; }
 
-    private CharMappingModel CreateCharMappingModel()
-    {
-        var layouts = this.layoutService.GetKeyboardLayouts();
+    public IObservable<PreferencesModel> PreferencesSaved { get; }
 
-        var charsByLayoutId = this.appSettings.CharsByKeyboardLayoutId;
+    private CharMappingModel CreateCharMappingModel(AppSettings appSettings, IReadOnlyList<KeyboardLayout> layouts)
+    {
+        var charsByLayoutId = appSettings.CharsByKeyboardLayoutId;
 
         var layoutModels = layouts
             .Select((layout, index) => new LayoutModel
