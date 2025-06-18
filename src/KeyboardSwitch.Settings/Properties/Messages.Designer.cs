@@ -106,6 +106,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Simple.
+        /// </summary>
+        internal static string AppThemeSimple {
+            get {
+                return ResourceManager.GetString("AppThemeSimple", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Variant.
         /// </summary>
         internal static string AppThemeVariant {

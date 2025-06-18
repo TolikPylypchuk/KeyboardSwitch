@@ -186,7 +186,7 @@
                     />
                 </Grid>
 
-                <StackPanel Orientation="Horizontal" Margin="10 10 0 0">
+                <StackPanel Orientation="Horizontal" Margin="10 10 0 10">
                     <TextBlock Text="{l:Translate AppTheme}" Classes="Label" />
                     <ComboBox x:Name="AppThemeComboBox" Classes="FormControl" />
 

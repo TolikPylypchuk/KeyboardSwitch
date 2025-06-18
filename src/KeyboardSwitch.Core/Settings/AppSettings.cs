@@ -3,7 +3,8 @@ namespace KeyboardSwitch.Core.Settings;
 public enum AppTheme
 {
     Fluent,
-    MacOS
+    MacOS,
+    Simple
 }
 
 public enum AppThemeVariant

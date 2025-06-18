@@ -34,6 +34,7 @@ public static class Convert
         {
             AppTheme.Fluent => Messages.AppThemeFluent,
             AppTheme.MacOS => Messages.AppThemeMacOS,
+            AppTheme.Simple => Messages.AppThemeSimple,
             _ => String.Empty
         };
 
@@ -41,6 +42,7 @@ public static class Convert
         theme switch
         {
             var str when str == Messages.AppThemeMacOS => AppTheme.MacOS,
+            var str when str == Messages.AppThemeSimple => AppTheme.Simple,
             _ => AppTheme.Fluent
         };
 

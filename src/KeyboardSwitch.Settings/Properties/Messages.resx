@@ -132,6 +132,9 @@
   <data name="AppThemeMacOS" xml:space="preserve">
     <value>macOS</value>
   </data>
+  <data name="AppThemeSimple" xml:space="preserve">
+    <value>Simple</value>
+  </data>
   <data name="AppThemeVariant" xml:space="preserve">
     <value>Variant</value>
   </data>

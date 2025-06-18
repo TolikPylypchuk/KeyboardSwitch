@@ -120,7 +120,9 @@ internal sealed class JsonSettingsService(
             ShowUninstalledLayoutsMessage = true,
             UseXsel = false,
             AppVersion = this.GetAppVersion(),
-            AppTheme = OperatingSystem.IsMacOS() ? AppTheme.MacOS : AppTheme.Fluent,
+            AppTheme = OperatingSystem.IsMacOS()
+                ? AppTheme.MacOS
+                : OperatingSystem.IsLinux() ? AppTheme.Simple : AppTheme.Fluent,
             AppThemeVariant = AppThemeVariant.Auto
         };
 

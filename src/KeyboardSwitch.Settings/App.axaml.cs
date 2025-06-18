@@ -3,6 +3,7 @@ using System.Reflection;
 
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Styling;
+using Avalonia.Themes.Simple;
 
 using FluentAvalonia.Styling;
 
@@ -211,6 +212,7 @@ public class App : Application, IEnableLogger
         this.Styles.Insert(0, appTheme switch
         {
             AppTheme.MacOS => new MacOSTheme(),
+            AppTheme.Simple => new SimpleTheme(),
             _ => new FluentAvaloniaTheme
             {
                 PreferUserAccentColor = true,
