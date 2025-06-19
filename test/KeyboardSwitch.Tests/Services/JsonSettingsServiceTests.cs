@@ -182,11 +182,7 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
         Assert.True(settings.ShowUninstalledLayoutsMessage);
         Assert.Equal(Version, settings.AppVersion);
 
-        var expectedTheme = OperatingSystem.IsMacOS()
-            ? AppTheme.MacOS
-            : OperatingSystem.IsLinux() ? AppTheme.Simple : AppTheme.Fluent;
-
-        Assert.Equal(expectedTheme, settings.AppTheme);
+        Assert.Equal(this.GetExpectedDefaultTheme(), settings.AppTheme);
         Assert.Equal(AppThemeVariant.Auto, settings.AppThemeVariant);
 
         layoutService.Received().GetKeyboardLayouts();
@@ -325,6 +321,10 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
         Assert.True(settings.InstantSwitching);
         Assert.True(settings.SwitchLayout);
         Assert.True(settings.ShowUninstalledLayoutsMessage);
+
+        Assert.Equal(this.GetExpectedDefaultTheme(), settings.AppTheme);
+        Assert.Equal(AppThemeVariant.Auto, settings.AppThemeVariant);
+
         Assert.Equal(Version, settings.AppVersion);
     }
 
@@ -551,4 +551,9 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
         var actualJson = JsonNode.Parse(file.TextContents);
         Assert.True(JsonNode.DeepEquals(expectedJson, actualJson));
     }
+
+    private AppTheme GetExpectedDefaultTheme() =>
+        OperatingSystem.IsMacOS()
+            ? AppTheme.MacOS
+            : OperatingSystem.IsLinux() ? AppTheme.Simple : AppTheme.Fluent;
 }

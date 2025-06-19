@@ -16,6 +16,8 @@ internal sealed class JsonSettingsService(
     ILogger<JsonSettingsService> logger)
     : IAppSettingsService
 {
+    private static readonly Version VersionWithAppThemes = new(4, 3, 0);
+
     private readonly IFileInfo file = fileSystem.FileInfo.New(
         Environment.ExpandEnvironmentVariables(globalSettings.Value.SettingsFilePath));
 
@@ -101,7 +103,11 @@ internal sealed class JsonSettingsService(
             settings.AppVersion,
             newVersion);
 
-        await this.SaveAppSettings(settings with { AppVersion = newVersion });
+        var newSettings = settings.AppVersion < VersionWithAppThemes
+            ? settings with { AppTheme = this.GetDefaultTheme(), AppThemeVariant = AppThemeVariant.Auto }
+            : settings;
+
+        await this.SaveAppSettings(newSettings with { AppVersion = newVersion });
     }
 
     private AppSettings CreateDefaultAppSettings() =>
@@ -120,9 +126,7 @@ internal sealed class JsonSettingsService(
             ShowUninstalledLayoutsMessage = true,
             UseXsel = false,
             AppVersion = this.GetAppVersion(),
-            AppTheme = OperatingSystem.IsMacOS()
-                ? AppTheme.MacOS
-                : OperatingSystem.IsLinux() ? AppTheme.Simple : AppTheme.Fluent,
+            AppTheme = this.GetDefaultTheme(),
             AppThemeVariant = AppThemeVariant.Auto
         };
 
@@ -154,4 +158,9 @@ internal sealed class JsonSettingsService(
 
     private Version GetAppVersion() =>
         Assembly.GetExecutingAssembly()?.GetName().Version ?? new Version(0, 0);
+
+    private AppTheme GetDefaultTheme() =>
+        OperatingSystem.IsMacOS()
+            ? AppTheme.MacOS
+            : OperatingSystem.IsLinux() ? AppTheme.Simple : AppTheme.Fluent;
 }
