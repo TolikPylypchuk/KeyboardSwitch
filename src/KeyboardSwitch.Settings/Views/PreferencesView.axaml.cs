@@ -98,12 +98,6 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
 
         this.Bind(this.ViewModel, vm => vm.AppThemeVariant, v => v.AppThemeVariantComboBox.SelectedItem)
             .DisposeWith(disposables);
-
-        this.ViewModel!.WhenAnyValue(vm => vm.AppTheme)
-            .Merge(this.ViewModel!.Save.Select(p => this.ViewModel!.AppTheme))
-            .Select(theme => theme != this.ViewModel!.PreferencesModel.AppTheme)
-            .BindTo(this, v => v.UpdateThemeHintTextBlock.IsVisible)
-            .DisposeWith(disposables);
     }
 
     private void BindValidations(CompositeDisposable disposables)

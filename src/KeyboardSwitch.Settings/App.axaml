@@ -2,6 +2,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:sys="using:System"
+    xmlns:ui="using:FluentAvalonia.Styling"
     xmlns:l="using:KeyboardSwitch.Settings.Localization"
     xmlns:local="using:KeyboardSwitch.Settings"
     x:Class="KeyboardSwitch.Settings.App"
@@ -11,6 +12,9 @@
     </Application.DataTemplates>
 
     <Application.Styles>
+        <!-- This is a placeholder for the theme that's set in App.axaml.cs -->
+        <ui:FluentAvaloniaTheme PreferSystemTheme="True" PreferUserAccentColor="True" />
+
         <Style Selector="TextBlock.Error">
             <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
             <Setter Property="Margin" Value="10 2" />

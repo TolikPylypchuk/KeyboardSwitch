@@ -1,3 +1,4 @@
+using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Reflection;
 
@@ -49,7 +50,10 @@ public class App : Application, IEnableLogger
 
             var mainViewModel = await this.InitializeApp();
 
-            this.desktop.MainWindow = await this.CreateMainWindow(mainViewModel);
+            var mainWindow = this.CreateMainWindow(mainViewModel);
+            await this.SetWindowSizeFromState(mainWindow);
+
+            this.desktop.MainWindow = mainWindow;
             this.desktop.MainWindow.Show();
 
             this.desktop.Exit += this.OnExit;
@@ -85,9 +89,17 @@ public class App : Application, IEnableLogger
             openExternally.InvokeCommand(mainViewModel.OpenExternally);
 
             mainViewModel.PreferencesSaved
+                .Select(p => p.AppTheme)
+                .StartWith(appSettings.AppTheme)
+                .DistinctUntilChanged()
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(this.SetTheme);
+
+            mainViewModel.PreferencesSaved
                 .Select(p => p.AppThemeVariant)
                 .StartWith(appSettings.AppThemeVariant)
                 .DistinctUntilChanged()
+                .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(this.SetThemeVariant);
 
             return mainViewModel;
@@ -169,21 +181,12 @@ public class App : Application, IEnableLogger
             Optional = true
         });
 
-    private async Task<MainWindow> CreateMainWindow(MainViewModel viewModel)
+    private MainWindow CreateMainWindow(MainViewModel viewModel)
     {
-        var state = await RxApp.SuspensionHost.ObserveAppState<AppState>().Take(1);
-
         var window = new MainWindow
         {
             ViewModel = viewModel
         };
-
-        if (state.IsInitialized)
-        {
-            window.Width = state.WindowWidth;
-            window.Height = state.WindowHeight;
-            window.WindowState = state.IsWindowMaximized ? WindowState.Maximized : WindowState.Normal;
-        }
 
         var windowStateChanged = window
             .GetObservable(Window.WindowStateProperty)
@@ -207,9 +210,21 @@ public class App : Application, IEnableLogger
         return window;
     }
 
+    private async Task SetWindowSizeFromState(MainWindow window)
+    {
+        var state = await RxApp.SuspensionHost.ObserveAppState<AppState>().Take(1);
+
+        if (state.IsInitialized)
+        {
+            window.Width = state.WindowWidth;
+            window.Height = state.WindowHeight;
+            window.WindowState = state.IsWindowMaximized ? WindowState.Maximized : WindowState.Normal;
+        }
+    }
+
     private void SetTheme(AppTheme appTheme)
     {
-        this.Styles.Insert(0, appTheme switch
+        this.Styles[0] = appTheme switch
         {
             AppTheme.MacOS => new MacOSTheme(),
             AppTheme.Simple => new SimpleTheme(),
@@ -218,7 +233,23 @@ public class App : Application, IEnableLogger
                 PreferUserAccentColor = true,
                 PreferSystemTheme = true
             }
-        });
+        };
+
+        if (this.desktop.MainWindow is MainWindow window)
+        {
+            var newMainWindow = this.CreateMainWindow(window.ViewModel!);
+
+            newMainWindow.Width = window.Width;
+            newMainWindow.Height = window.Height;
+            newMainWindow.WindowState = window.WindowState;
+
+            this.desktop.MainWindow = newMainWindow;
+            this.desktop.MainWindow.Show();
+
+            newMainWindow.Position = window.Position;
+
+            window.Close();
+        }
     }
 
     private void SetThemeVariant(AppThemeVariant appThemeVariant)

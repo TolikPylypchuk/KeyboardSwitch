@@ -192,14 +192,6 @@
 
                     <TextBlock Text="{l:Translate AppThemeVariant}" Classes="Label" />
                     <ComboBox x:Name="AppThemeVariantComboBox" Classes="FormControl" />
-
-                    <TextBlock
-                        x:Name="UpdateThemeHintTextBlock"
-                        Text="{l:Translate UpdateThemeHint}"
-                        VerticalAlignment="Center"
-                        Margin="10 0 0 0"
-                        IsVisible="False"
-                    />
                 </StackPanel>
 
                 <TextBlock x:Name="PressCountValidationTextBlock" Classes="Error" IsVisible="False" />
