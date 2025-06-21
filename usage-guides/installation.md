@@ -17,13 +17,13 @@ When the settings app starts up you should configure the character mappings (you
 You can uninstall the app using the Settings app just like you would uninstall any other app.
 
 {% hint style="warning" %}
-The installer will not delete the registry entry which says that your app should start when you log in! If you want to keep your registry clean, you have to disable it in the settings app before uninstalling it.
+The installer will not delete the registry entry which says that your app should start when you log in. If you want to keep your registry clean, you have to disable it in the settings app before uninstalling it.
 {% endhint %}
 
 Upon uninstallation the installer will ask whether you want to delete the app's configuration as well. If you choose not to delete the configuration, you can delete it later manually at any other time. It's stored under the user's local app data folder.
 
 {% hint style="warning" %}
-The installer will only delete the current user's configuration! If there are other users on the PC, they will have to delete the configuration manually.
+The installer will only delete the current user's configuration. If there are other users on the PC, they will have to delete the configuration manually.
 {% endhint %}
 
 ### Using the Portable Version
@@ -40,12 +40,12 @@ There are several prerequisites for running the app on Linux:
 
 * X11
 * X Keyboard Extension (XKB) which is enabled by default
-* X Test Extension - used to simulate pressing keys like _Ctrl+C_ and _Ctrl+V_ for you
-* [xsel](https://github.com/kfish/xsel) - used to copy and paste text
-* Bash - used to call xsel, but you don't need to have it as your default shell
-* Freedesktop conventions - used to make the service app start when you log in, and to make the settings app appear in the list of your installed apps (not required for the app itself though)
+* X Test Extension — used to simulate pressing keys like <kbd>Ctrl</kbd>+<kbd>C</kbd> and <kbd>Ctrl</kbd>+<kbd>V</kbd> for you
+* [xsel](https://github.com/kfish/xsel) — used to copy and paste text
+* Bash — used to call xsel, but you don't need to have it as your default shell
+* Freedesktop conventions — used to make the service app start when you log in, and to make the settings app appear in the list of your installed apps (not required for the app itself though)
 
-Keyboard Switch doesn't support Wayland (even with XWayland apparently).
+Keyboard Switch doesn't support Wayland (even with XWayland).
 
 The most popular desktop systems (at least GNOME, KDE Plasma, Xfce, and LXQt) all adhere to the Freedesktop protocols, so the last prerequisite is automatically available, unless you're running a very unusual setup.
 
@@ -53,7 +53,7 @@ The most popular desktop systems (at least GNOME, KDE Plasma, Xfce, and LXQt) al
 
 #### Using a Deb Package
 
-If you're running a Debian-based distribution (e.g. Ubuntu or Mint), then you can install KeyboardSwitch using a deb package. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases).
+If you're running a Debian-based distribution (e.g., Ubuntu or Mint), then you can install Keyboard Switch using a deb package. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases).
 
 The package takes care of xsel and the X Test extension, so you don't need to install them yourself.
 
@@ -61,12 +61,12 @@ After installation, the settings app will be available in the list of installed 
 
 #### Using an RPM Package
 
-If you're running a RHEL-based distribution (e.g. CentOS or Fedora), or SUSE, then you can install KeyboardSwitch using an RPM package. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases).
+If you're running a RHEL-based distribution (e.g., CentOS or Fedora), or SUSE, then you can install KeyboardSwitch using an RPM package. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases).
 
 The package takes care of xsel and the X Test extension, so you don't need to install them yourself.
 
 {% hint style="info" %}
-If you're using RHEL, CentOS, or Rocky Linux, then make sure that the EPEL repository is installed before installing KeyboardSwitch. Otherwise, it won't be able to install xsel.
+If you're using RHEL, CentOS, or Rocky Linux, then make sure that the EPEL repository is installed before installing Keyboard Switch. Otherwise, it won't be able to install xsel.
 {% endhint %}
 
 {% hint style="info" %}
@@ -77,7 +77,7 @@ After installation, the settings app will be available in the list of installed 
 
 #### Using a Tar Archive
 
-KeyboardSwitch is also available as a _tar.gz_ fie. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). You can then extract it to anywhere you like (e.g. into the _/opt_ directory). The deployed app includes two scripts - _install.sh_ and _uninstall.sh_. _install.sh_ configures Freedesktop to start the KeyboardSwitch service when you log in, and to add the settings app to the list of installed apps. _uninstall.sh_ deletes this configuration.
+Keyboard Switch is also available as a _tar.gz_ fie. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). You can then extract it to anywhere you like (e.g., into the _/opt_ directory). The deployed app includes two scripts — _install.sh_ and _uninstall.sh_. _install.sh_ configures Freedesktop to start the KeyboardSwitch service when you log in and to add the settings app to the list of installed apps. _uninstall.sh_ deletes this configuration.
 
 Here are the steps required for installing the app on Debian, Ubuntu, Linux Mint, etc.:
 
@@ -126,4 +126,4 @@ sudo chmod 755 install.sh uninstall.sh  # Let every user use the app
 
 ### Uninstalling the App
 
-For the deb and RPM packages, it's simple - just uninstall the package. For the _tar.gz_ file, run the included _uninstall.sh_ script, and delete the app's directory. If you want to delete the app's configuration as well, then delete the _\~/.keyboard-switch_ directory.
+For the deb and RPM packages, it's simple — just uninstall the package. For the _tar.gz_ file, run the included _uninstall.sh_ script, and delete the app's directory. If you want to delete the app's configuration as well, then delete the _\~/.keyboard-switch_ directory.
