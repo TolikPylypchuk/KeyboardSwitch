@@ -19,20 +19,20 @@ The app is composed of two parts: the Keyboard Switch service and the Keyboard S
 Here are the basic steps you should take to switch the text:
 
 * Type some text using an incorrect layout
-* Realise your mistake
-* Select the text (you can press _Ctrl+A_ to select all text)
-* Press the magic key combination (the default is pressing _Ctrl+Shift_ twice)
+* Realize your mistake
+* Select the text (you can press <kbd>Ctrl</kbd>+<kbd>A</kbd> to select all text)
+* Press the magic key combination (the default is pressing <kbd>Ctrl</kbd>+<kbd>Shift</kbd> twice)
 * Profit
 
-The app uses the clipboard to get the text to transform, and then puts the transformed text back into the clipboard. Bear this in mind when you use it - if you have anything else in the clipboard, it will be lost. This isn't that big of an issue since Windows 10 October 2019 Update, because you can enable multiple items in the clipboard.
+The app uses the clipboard to get the text to transform and then puts the transformed text back into the clipboard. Bear this in mind when you use it — if you have anything else in the clipboard, it will be lost. This isn't that big of an issue since Windows 10 October 2019 Update, because you can enable multiple items in the clipboard.
 
 {% hint style="info" %}
-The app simulates pressing _Ctrl+C_ to copy and _Ctrl+V_ to paste text. This is the default behaviour for most (if not all) applications. But if you are working in an app which behaves differently on those key presses, this app will not be able to instantly switch text. You can disable this behaviour, and copy/paste the text manually.
+The app simulates pressing <kbd>Ctrl</kbd>+<kbd>C</kbd> to copy and <kbd>Ctrl</kbd>+<kbd>V</kbd> to paste text. This is the default behavior for most (if not all) applications. But if you are working in an app which behaves differently on those key presses, this app will not be able to instantly switch text. You can disable this behavior and copy/paste the text manually.
 {% endhint %}
 
 ## Supported Platforms
 
-This app works only on Windows 10. It can probably work on older versions of Windows as well, but I'm not going to support them. Future versions of the app will be supported on other platforms, so if you don't use Windows then stay tuned!
+This app works only on Windows 10 and 11. It can probably work on older versions of Windows as well, but I'm not going to support them. Future versions of the app will be supported on other platforms, so if you don't use Windows then stay tuned!
 
 ## Layouts
 
