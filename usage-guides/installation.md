@@ -17,7 +17,7 @@ Current only the x64 version can be installed with an installer. If you want the
 You can uninstall the app using the Settings app just like you would uninstall any other app.
 
 {% hint style="warning" %}
-The installer will not delete the registry entry which says that your app should start when you log in! If you want to keep your registry clean, you have to disable it in the settings app before uninstalling it.
+The installer will not delete the registry entry which says that your app should start when you log in. If you want to keep your registry clean, you have to disable it in the settings app before uninstalling it.
 {% endhint %}
 
 Upon uninstallation the installer will ask whether you want to delete the app's configuration as well. If you choose not to delete the configuration, you can delete it later manually at any other time. It's stored under the user's local app data folder.
@@ -34,13 +34,13 @@ You can get the latest version of the app from the [releases page on GitHub](htt
 
 The installer will install multiple things:
 
-* The Keyboard Switch Service app will be put into the _/opt_ folder - you shouldn't run or interact with this app directly
+* The Keyboard Switch Service app will be put into the _/opt_ folder — you shouldn't run or interact with this app directly
 * The Keyboard Switch Settings app will be put into the _/Applications_ folder
 * The descriptor file for running the service app when you log in will be put into the _/Library/LaunchAgents_ folder
 
-After installing the app, open Keyboard Switch Settings - it should appear in the list of your apps.
+After installing the app, open Keyboard Switch Settings — it should appear in the list of your apps.
 
-Immediately upon opening the app a dialog window should appear which says that Keyboard Switch would like to control this computer using accessibility features. The app needs this to listen to the magic key combination while running in the background, and without these permissions it won't work. This dialog will appear only when you're installing the app for the first time. If you have installed it previously, then macOS will most probably remember that you gave the app appropriate permissions.
+Immediately upon opening the app, a dialog window should appear which says that Keyboard Switch would like to control this computer using accessibility features. The app needs this to listen to the magic key combination while running in the background, and without these permissions it won't work. This dialog will appear only when you're installing the app for the first time. If you have installed it previously, then macOS will most probably remember that you gave the app appropriate permissions.
 
 Click the _Open System Preferences_ button on the dialog window. Unlock the settings and check the _Keyboard Switch_ checkbox. Lock the settings, close System Preferences, and go back to the Keyboard Switch Settings app.
 
@@ -50,7 +50,7 @@ You should configure the character mappings (you can read more about it in the n
 
 ### Uninstalling the App
 
-Many apps on macOS can be uninstalled just by deleting the app bundle from the _/Applications_ folder. This is not the case with Keyboard Switch. Multiple things should be done to remove it from the system. You shouldn't concern yourself with those things though - you should just run an uninstaller package and it will remove Keyboard Switch.
+Many apps on macOS can be uninstalled just by deleting the app bundle from the _/Applications_ folder. This is not the case with Keyboard Switch. Multiple things should be done to remove it from the system. You shouldn't concern yourself with those things though — you should just run an uninstaller package, and it will remove Keyboard Switch.
 
 As with the installer package, you can also get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download and run the _KeyboardSwitchUninstaller-4.1.pkg_ file, and Keyboard Switch will be removed.
 
@@ -66,10 +66,10 @@ There are several prerequisites for running the app on Linux:
 
 * X11
 * X Keyboard Extension (XKB) which is enabled by default
-* X Test Extension - used to simulate pressing keys like _Ctrl+C_ and _Ctrl+V_ for you
-* [xsel](https://github.com/kfish/xsel) - used to copy and paste text
-* Bash - used to call xsel, but you don't need to have it as your default shell
-* Freedesktop conventions - used to make the service app start when you log in, and to make the settings app appear in the list of your installed apps (not required for the app itself though)
+* X Test Extension — used to simulate pressing keys like <kbd>Ctrl</kbd>+<kbd>C</kbd> and <kbd>Ctrl</kbd>+<kbd>V</kbd> for you
+* [xsel](https://github.com/kfish/xsel) — used to copy and paste text
+* Bash — used to call xsel, but you don't need to have it as your default shell
+* Freedesktop conventions — used to make the service app start when you log in, and to make the settings app appear in the list of your installed apps (not required for the app itself though)
 
 Keyboard Switch doesn't support Wayland (even with XWayland).
 
@@ -78,12 +78,12 @@ The most popular desktop systems (at least GNOME, KDE Plasma, Cinnamon, and LXQt
 [Click here](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/76) to see the list of Linux distributions on which the app was tested.
 
 {% hint style="warning" %}
-If your desktop environment is GNOME then you should restart it right after installation. If you're not sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu, Debian, CentOS, Fedora and others (but not Linux Mint). Press _Alt+F2_, then type _r_ and press _Enter_. This will restart GNOME.
+If your desktop environment is GNOME, then you should restart it right after installation. If you're not sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu, Debian, CentOS, Fedora and others (but not Linux Mint). Press <kbd>Alt</kbd>+<kbd>F2</kbd>, then type <kbd>r</kbd> and press <kbd>Enter</kbd>. This will restart GNOME.
 {% endhint %}
 
 #### Using a Deb Package
 
-If you're running a Debian-based distribution (e.g. Ubuntu or Mint), then you can install KeyboardSwitch using a deb package. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases).
+If you're running a Debian-based distribution (e.g., Ubuntu or Mint), then you can install Keyboard Switch using a deb package. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases).
 
 The package takes care of xsel and the X Test extension, so you don't need to install them yourself.
 
@@ -93,12 +93,12 @@ Both the _amd64_ and _arm64_ versions are available, but the latter is experimen
 
 #### Using an RPM Package
 
-If you're running a RHEL-based distribution (e.g. CentOS or Fedora), or SUSE, then you can install KeyboardSwitch using an RPM package. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases).
+If you're running a RHEL-based distribution (e.g., CentOS or Fedora), or SUSE, then you can install Keyboard Switch using an RPM package. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases).
 
 The package takes care of xsel and the X Test extension, so you don't need to install them yourself.
 
 {% hint style="info" %}
-If you're using RHEL, CentOS, or Rocky Linux, then make sure that the EPEL repository is installed before installing KeyboardSwitch. Otherwise, it won't be able to install xsel.
+If you're using RHEL, CentOS, or Rocky Linux, then make sure that the EPEL repository is installed before installing Keyboard Switch. Otherwise, it won't be able to install xsel.
 {% endhint %}
 
 {% hint style="info" %}
@@ -111,7 +111,7 @@ Both the _x86\_64_ and _aarch64_ versions are available, but the latter is exper
 
 #### Using a Tar Archive
 
-KeyboardSwitch is also available as a _tar.gz_ fie. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). You can then extract it to anywhere you like (e.g. into the _/opt_ directory). The deployed app includes two scripts - _install.sh_ and _uninstall.sh_. _install.sh_ adds the settings app to the list of installed apps. _uninstall.sh_ deletes this configuration.
+Keyboard Switch is also available as a _tar.gz_ fie. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). You can then extract it to anywhere you like (e.g., into the _/opt_ directory). The deployed app includes two scripts — _install.sh_ and _uninstall.sh_. _install.sh_ adds the settings app to the list of installed apps. _uninstall.sh_ deletes this configuration.
 
 Both the _x64_ and _arm64_ versions are available, but the latter is experimental.
 
@@ -160,4 +160,4 @@ cd /opt/keyboard-switch
 
 ### Uninstalling the App
 
-For the deb and RPM packages, it's simple - just uninstall the package. For the _tar.gz_ file, run the included _uninstall.sh_ script, and delete the app's directory. If you want to delete the app's configuration as well, then delete the _\~/.keyboard-switch_ directory.
+For the deb and RPM packages, it's simple — just uninstall the package. For the _tar.gz_ file, run the included _uninstall.sh_ script, and delete the app's directory. If you want to delete the app's configuration as well, then delete the _\~/.keyboard-switch_ directory.
