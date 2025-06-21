@@ -75,7 +75,7 @@ internal sealed class JsonSettingsService(
 
     public async Task SaveAppSettings(AppSettings appSettings)
     {
-        logger.LogDebug("Saving the app settings");
+        logger.LogInformation("Saving the app settings");
 
         this.file.Directory?.Create();
         this.file.Truncate();
@@ -88,7 +88,7 @@ internal sealed class JsonSettingsService(
 
     public void InvalidateAppSettings()
     {
-        logger.LogDebug("Invalidating the app settings");
+        logger.LogInformation("Invalidating the app settings");
 
         this.appSettings = null;
         this.settingsInvalidated.OnNext(Unit.Default);

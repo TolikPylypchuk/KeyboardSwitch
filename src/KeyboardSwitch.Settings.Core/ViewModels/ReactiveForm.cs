@@ -70,14 +70,11 @@ public abstract class ReactiveForm<TModel, TForm> : ReactiveValidationObject, IR
         this.validationsToTrack.Add(validation.StartWith(false));
 
     protected IObservable<bool> IsCollectionChanged<TOtherForm, TOtherModel>(
-        Expression<Func<TForm, ReadOnlyObservableCollection<TOtherForm>>> property,
+        Func<TForm, ReadOnlyObservableCollection<TOtherForm>> property,
         Func<TForm, ICollection<TOtherModel>> itemCollection)
         where TOtherForm : ReactiveForm<TOtherModel, TOtherForm>
-        where TOtherModel : class
-    {
-        string propertyName = property.GetMemberName();
-
-        return property.Compile()(this.Self)
+        where TOtherModel : class =>
+        property(this.Self)
             .ToObservableChangeSet()
             .AutoRefreshOnObservable(vm => vm.FormChanged)
             .ToCollection()
@@ -86,22 +83,17 @@ public abstract class ReactiveForm<TModel, TForm> : ReactiveValidationObject, IR
                 vms.Any(vm => vm.IsFormChanged || !this.IsNew && vm.IsNew))
             .Merge(this.Save.Select(_ => false))
             .Merge(this.Cancel.Select(_ => false));
-    }
 
     protected IObservable<bool> IsCollectionChangedSimple<TItem>(
-        Expression<Func<TForm, ReadOnlyObservableCollection<TItem>>> property,
+        Func<TForm, ReadOnlyObservableCollection<TItem>> property,
         Func<TForm, ICollection<TItem>> itemCollection)
-        where TItem : notnull
-    {
-        string propertyName = property.GetMemberName();
-
-        return property.Compile()(this.Self)
+        where TItem : notnull =>
+        property(this.Self)
             .ToObservableChangeSet()
             .ToCollection()
             .Select(items => !Enumerable.SequenceEqual(items, itemCollection(this.Self)))
             .Merge(this.Save.Select(_ => false))
             .Merge(this.Cancel.Select(_ => false));
-    }
 
     protected IObservable<bool> IsCollectionValid<TOtherForm>(ReadOnlyObservableCollection<TOtherForm> viewModels)
         where TOtherForm : IReactiveForm =>
@@ -115,7 +107,7 @@ public abstract class ReactiveForm<TModel, TForm> : ReactiveValidationObject, IR
         Expression<Func<TForm, T?>> property,
         Func<T?, bool> validate)
     {
-        var propertyName = property.GetMemberName();
+        string propertyName = property.GetMemberName();
         return this.Self.ValidationRule(
             property, validate, _ => this.ResourceManager.GetString($"{propertyName}Invalid") ?? String.Empty);
     }

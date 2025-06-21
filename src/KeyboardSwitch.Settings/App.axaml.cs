@@ -66,6 +66,9 @@ public class App : Application, IEnableLogger
     {
         TransitioningContentControl.PageTransitionProperty.OverrideDefaultValue(typeof(ViewModelViewHost), null);
 
+        RxApp.DefaultExceptionHandler = Observer.Create<Exception>(e =>
+            this.Log().Error(e, "Unhandled exception in the settings app"));
+
         var services = new ServiceCollection();
         this.ConfigureServices(services);
 
@@ -82,8 +85,6 @@ public class App : Application, IEnableLogger
         try
         {
             var appSettings = await this.serviceProvider.GetRequiredService<IAppSettingsService>().GetAppSettings();
-
-            this.SetTheme(appSettings.AppTheme);
 
             var mainViewModel = new MainViewModel(appSettings);
             openExternally.InvokeCommand(mainViewModel.OpenExternally);
@@ -111,7 +112,7 @@ public class App : Application, IEnableLogger
                 "Delete the settings and let the app recreate a compatible version",
                 e.Version);
 
-            this.desktop.Shutdown(2);
+            this.desktop.Shutdown((int)ExitCode.IncompatibleSettingsVersion);
             return null!;
         }
     }
@@ -125,6 +126,7 @@ public class App : Application, IEnableLogger
         var config = new ConfigurationRoot([genericProvider, platformSpecificProvider]);
 
         var logger = SerilogLoggerFactory.CreateLogger(config);
+        Log.Logger = logger;
 
         services
             .AddOptions()
