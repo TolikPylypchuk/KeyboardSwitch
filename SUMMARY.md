@@ -6,8 +6,8 @@
 
 * [Installation](usage-guides/installation.md)
 * [The Settings App](usage-guides/settings-app.md)
-* [Character Mappings](usage-guides/character-mappings.md)
 * [Preferences](usage-guides/preferences.md)
+* [Character Mappings](usage-guides/character-mappings.md)
 * [Other Tabs](usage-guides/other-tabs.md)
 
 ## Other

@@ -1,10 +1,10 @@
 # About
 
-Keyboard Switch. Version 4.2.0. Created by [Tolik Pylypchuk](https://github.com/TolikPylypchuk).
+Keyboard Switch. Version 4.3.0. Created by [Tolik Pylypchuk](https://github.com/TolikPylypchuk).
 
 ## Acknowledgements
 
-The UI for the settings app was created using [Avalonia](https://avaloniaui.net) with [ReactiveUI](https://www.reactiveui.net) and [FluentAvalonia](https://github.com/amwx/FluentAvalonia). The global keyboard hook is implemented using [libuiohook](https://github.com/kwhat/libuiohook). Windows installer created with [WiX Toolset](https://wixtoolset.org). Docs are built using [GitBook](https://www.gitbook.com). Icon made by [Smashicons](https://smashicons.com) from [www.flaticon.com](https://www.flaticon.com).
+The UI for the settings app was created using [Avalonia](https://avaloniaui.net) with [ReactiveUI](https://www.reactiveui.net), [FluentAvalonia](https://github.com/amwx/FluentAvalonia), and the [Devolutions macOS theme](https://github.com/Devolutions/avalonia-extensions). The global keyboard hook is implemented using [libuiohook](https://github.com/kwhat/libuiohook). Windows installer created with [WiX Toolset](https://wixtoolset.org). Docs are built using [GitBook](https://www.gitbook.com). Icon made by [Smashicons](https://smashicons.com) from [www.flaticon.com](https://www.flaticon.com).
 
 ## Changelog
 
@@ -14,7 +14,7 @@ The UI for the settings app was created using [Avalonia](https://avaloniaui.net)
 * The converter has been removed
 * A single modifier key can now be configured as the magic key for Keyboard Switch
 * The app now integrates with the clipboard directly on Linux, without xsel, but this may not work well on older desktop environments, so integration through xsel is still possible
-* The internal format of the settings was changed, so when updating to version 4.2 from older versions, the settings will be reverted to the defaults - you should reconfigure the app if you had custom configuration before
+* The internal format of the settings was changed, so when updating to version 4.2 from older versions, the settings will be reverted to the defaults — you should reconfigure the app if you had custom configuration before
 * Windows installer doesn't delete all users' configurations when uninstalling the app anymore
 * Purging configuration is now available on Linux for deb packages and the _tar.gz_ file
 * The settings app now does auto-configuration by itself when being opened for the first time
@@ -30,7 +30,7 @@ The UI for the settings app was created using [Avalonia](https://avaloniaui.net)
 * The app now supports Arm64 in addition to x64 (but the support is experimental for Windows and Linux)
 * The app now switches layouts using native methods on Linux, hence layout settings are not needed anymore
 * On Windows switching backward works correctly when there are more than two layouts
-* The settings app will configure the service app to run at login when opened for the first time, instead of installers doing that - this means that the service app will be configured correctly for all users
+* The settings app will configure the service app to run at login when opened for the first time, instead of installers doing that — this means that the service app will be configured correctly for all users
 * Windows Installer can delete all users' configurations when uninstalling the app
 
 This is the first minor release which contains new features instead of just bug fixes, and it's a big one at that.
@@ -38,7 +38,7 @@ This is the first minor release which contains new features instead of just bug 
 ### [v4.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.0) (28 November 2021)
 
 * The app now works on Linux (via X11 only; Wayland is not supported)
-* The legacy hot-key mode was removed - only the modifier keys mode is available
+* The legacy hot-key mode was removed — only the modifier keys mode is available
 * The UI theme is overhauled
 * The converter is hidden by default
 * .NET 6 is used instead of .NET Core 3.1
