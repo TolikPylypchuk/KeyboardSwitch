@@ -11,7 +11,7 @@ The UI for the settings app was created using [Avalonia](https://avaloniaui.net/
 ### [v4.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.0) (28 November 2021)
 
 * The app now works on Linux (via X11 only; Wayland is not supported)
-* The legacy hot-key mode was removed - only the modifier keys mode is available
+* The legacy hot-key mode was removed — only the modifier keys mode is available
 * The UI theme is overhauled
 * The converter is hidden by default
 * .NET 6 is used instead of .NET Core 3.1
