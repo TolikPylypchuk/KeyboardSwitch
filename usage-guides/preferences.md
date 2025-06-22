@@ -2,7 +2,7 @@
 
 The Preferences tab contains other settings which control the behavior of the Keyboard Switch service. Here's how it looks:
 
-![](../.gitbook/assets/v4.1-screen-preferences.png)
+![The preferences tab](../.gitbook/assets/v4.1-screen-preferences.png)
 
 Following is the discussion on the many fields that are in this tab.
 
@@ -16,26 +16,26 @@ There are five checkboxes at the top of the Preferences tab:
 * Show a message about uninstalled layouts
 * Show the converter
 
-The first checkbox controls whether the Keyboard Switch service should use instant switching or not. The default is yes. The service app needs to access the text to transform it, and for that it uses the clipboard. When instant switching is enabled, the service app will simulate pressing _Ctrl+C_ (or _Command+C_ on macOS) to copy text into the clipboard. This is why you must first select the text before you let the service app switch it. After transforming the text, the service app will put it back into the clipboard and if the instant switching mode is enabled, it will simulate pressing _Ctrl+V_ (or _Command+V_ on macOS) to paste the new text instead of the selected text. If you disable this mode, you will have to manually copy the text before switching, and then paste it afterwards. In addition, when this mode is enabled, the app will try to preserve the text that was in clipboard previously, and restore it after switching (if the clipboard didn't contain text before switching, e.g. a file or a picture, it won't be restored).
+The first checkbox controls whether the Keyboard Switch service should use instant switching or not. The default is yes. The service app needs to access the text to transform it, and for that it uses the clipboard. When instant switching is enabled, the service app will simulate pressing <kbd>Ctrl</kbd>+<kbd>C</kbd> (or <kbd>Command</kbd>+<kbd>C</kbd> on macOS) to copy text into the clipboard. This is why you must first select the text before you let the service app switch it. After transforming the text, the service app will put it back into the clipboard and if the instant switching mode is enabled, it will simulate pressing <kbd>Ctrl</kbd>+<kbd>V</kbd> (or <kbd>Command</kbd>+<kbd>V</kbd> on macOS) to paste the new text instead of the selected text. If you disable this mode, you will have to manually copy the text before switching, and then paste it afterwards. In addition, when this mode is enabled, the app will try to preserve the text that was in clipboard previously and restore it after switching (if the clipboard didn't contain text before switching, e.g., a file or a picture, it won't be restored).
 
 The second checkbox controls whether the service app should switch the layout for you after transforming the text. The default is yes, and there's probably no reason to ever disable it. It just reduces the number of actions you have to do in order to get back on track with typing the text.
 
 The third checkbox lets you control whether the service app will start when you log in. When you open the settings app for the first time, it configures the service app to run at startup automatically.
 
-The fourth checkbox controls whether the settings app should show a warning about uninstalled layouts. If you install a new layout in the system, you should open the settings app and configure it in the Character Mappings tab. If you uninstall a layout, its configuration will still be saved in the app's settings, but it will essentially be redundant - the layout is not present in the system anymore and hence the service app won't need its configuration. When you uninstall a layout and open the settings app, it will show you a warning and a button to delete the unused configuration. If you want to ignore this warning for whatever reason, then uncheck this checkbox.
+The fourth checkbox controls whether the settings app should show a warning about uninstalled layouts. If you install a new layout in the system, you should open the settings app and configure it in the Character Mappings tab. If you uninstall a layout, its configuration will still be saved in the app's settings, but it will essentially be redundant — the layout is not present in the system anymore and hence the service app won't need its configuration. When you uninstall a layout and open the settings app, it will show you a warning and a button to delete the unused configuration. If you want to ignore this warning for whatever reason, then uncheck this checkbox.
 
 The fifth checkbox controls whether the converter is visible. Since this is a very niche feature, you will likely never need to use it, so it's hidden by default.
 
 ## Switch Settings
 
-You can switch text just by pressing modifier keys. This is similar to switching keyboard layouts in Windows itself - the default key combination to switch layouts in Windows is _Alt+Shift_. You can control which key combination to press to switch text and how many times. The setting contains four fields:
+You can switch text just by pressing modifier keys. This is similar to switching keyboard layouts in Windows itself — the default key combination to switch layouts in Windows is <kbd>Alt</kbd>+<kbd>Shift</kbd>. You can control which key combination to press to switch text and how many times. The setting contains four fields:
 
 * Modifier keys for switching forward
 * Modifier keys for switching backward
 * Press count
 * Wait time (in milliseconds)
 
-You can select _Ctrl_, _Alt_/_Option_, _Shift,_ and _Win_ (also known as _Super_, _Meta_, or _Command_), or their combination as modifier keys for switching. The default is _Ctrl+Shift_ to switch forward, and _Ctrl+Alt+Shift_ (_Ctrl+Option+Shift_ on macOS) to switch backward.
+You can select <kbd>Ctrl</kbd>, <kbd>Alt</kbd>/<kbd>Option</kbd>, <kbd>Shift</kbd>_,_ and <kbd>Win</kbd> (also known as <kbd>Super</kbd>, <kbd>Meta</kbd>, or <kbd>Command</kbd>), or their combination as modifier keys for switching. The default is <kbd>Ctrl</kbd>+<kbd>Shift</kbd> to switch forward, and <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Shift</kbd> (<kbd>Ctrl</kbd>+<kbd>Option</kbd>+<kbd>Shift</kbd> on macOS) to switch backward.
 
 You can also control how many times you should press those modifier keys to switch the text. The default is 2. Max value for this field is 10, but even that is way too much. Min value is 1, but be careful if you set it to 1, because then it would be easy to press it by accident.
 
