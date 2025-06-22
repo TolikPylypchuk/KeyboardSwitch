@@ -11,7 +11,7 @@ The app is composed of four tabs:
 * Sandbox: lets you play around with switching text
 * About: contains info about the app
 
-At the bottom there's a strip with the status of the Keyboard Switch service. If it's not running, you can press the _Start_ button to start it manually (although usually you wouldn't do that because the service will start when you log in). If the service is running, you can stop it by pressing the _Stop_ button. It won't actually kill it - it will send a _stop_ command, and the service will do some clean-up and stop on its own. If it's taking a long time to stop, it may mean that something went wrong. In that case you can force it to stop by pressing the _Kill_ button.
+At the bottom there's a strip with the status of the Keyboard Switch service. If it's not running, you can press the _Start_ button to start it manually (although usually you wouldn't do that because the service will start when you log in). If the service is running, you can stop it by pressing the _Stop_ button. It won't actually kill it — it will send a _stop_ command, and the service will do some clean-up and stop on its own. If it's taking a long time to stop, it may mean that something went wrong. In that case you can force it to stop by pressing the _Kill_ button.
 
 {% hint style="info" %}
 If you change anything in the settings app, you can save it or cancel it. When you save it, the settings app sends a notification to the service app (if it's running) about changes in configuration, so you don't have to restart the service after saving.
