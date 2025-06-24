@@ -15,11 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.3.1" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.3.1" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.1" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="11.3.1" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.3.1" />
+    <PackageReference Include="Avalonia" Version="11.3.2" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.2" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.2" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="11.3.2" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.3.2" />
     <PackageReference Include="Devolutions.AvaloniaTheme.MacOS" Version="2025.6.19" />
     <PackageReference Include="DynamicData" Version="9.4.1" />
     <PackageReference Include="FluentAvaloniaUI" Version="2.3.0" />

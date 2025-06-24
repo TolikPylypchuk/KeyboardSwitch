@@ -43,8 +43,8 @@
             <Setter Property="Margin" Value="0 0 10 0" />
         </Style>
 
-        <Style Selector="NumericUpDown.FormControl /template/ TextBox#InputBox">
-            <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Style Selector="ComboBox.FormControl /template/ ContentPresenter TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
 
         <Style Selector="Button">

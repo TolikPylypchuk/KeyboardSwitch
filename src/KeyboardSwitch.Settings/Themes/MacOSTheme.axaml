@@ -5,6 +5,10 @@
 >
     <StyleInclude Source="avares://Devolutions.AvaloniaTheme.MacOS/MacOSTheme.axaml" />
 
+    <Style Selector="TabControl">
+        <Setter Property="Margin" Value="0 8 0 0" />
+    </Style>
+
     <Styles.Resources>
         <ResourceDictionary>
             <SolidColorBrush x:Key="SystemFillColorCriticalBrush" Color="{StaticResource SystemFillColorCritical}" />
