@@ -163,4 +163,4 @@ There are more parameters available for macOS, but they are only used when runni
 
 Here is the NUKE execution plan which shows the dependencies between targets:
 
-<figure><img src="../.gitbook/assets/v4.2-nuke-execution-plan.png" alt="NUKE execution plan"><figcaption><p>NUKE execution plan</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/v4.3-nuke-execution-plan.png" alt="NUKE execution plan"><figcaption><p>NUKE execution plan</p></figcaption></figure>

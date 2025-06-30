@@ -2,7 +2,7 @@
 
 The Preferences tab contains other settings which control the behavior of the Keyboard Switch service. Here's how it looks:
 
-<figure><img src="../.gitbook/assets/v4.2-screen-preferences.png" alt="The preferences tab"><figcaption><p>The preferences tab</p></figcaption></figure>
+<figure><picture><source srcset="../.gitbook/assets/v4.3-screen-preferences-dark.png" media="(prefers-color-scheme: dark)"><img src="../.gitbook/assets/v4.3-screen-preferences.png" alt="The preferences tab"></picture><figcaption><p>The preferences tab</p></figcaption></figure>
 
 Following is the discussion on the many fields that are in this tab.
 
@@ -44,3 +44,19 @@ Wait time controls how much time the service app waits before deciding that you'
 {% hint style="info" %}
 Wait time is ignored if the press count is set to 1.
 {% endhint %}
+
+## Theme Settings
+
+The way the settings app looks can be configured using the _App theme_ and _Variant_ dropdowns.
+
+Three themes are supported:
+
+* Fluent — this theme uses Fluent Design v2 and is the default one on Windows. The screenshots in these docs show the Fluent theme.
+* macOS — this theme uses the default macOS look and feel and is the default one on macOS.
+* Simple — this theme uses simple styles and is the default one on Linux.
+
+Three variants are supported:
+
+* Light
+* Dark
+* System — light or dark depending on system settings. This variant is the default one.

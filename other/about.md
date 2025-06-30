@@ -8,7 +8,15 @@ The UI for the settings app was created using [Avalonia](https://avaloniaui.net)
 
 ## Changelog
 
-### [v4.2.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.2.0) (14 August 2024)
+### [v4.3.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.3.0) (June 30, 2025)
+
+* The settings app now supports different themes for different OSes
+* Dark mode is now available for the settings app
+* The preferences tab is now the default tab in the settings app
+* The application now works correctly when multiple users are logged in at the same time
+* The application doesn't interfere with Alt codes on Windows anymore
+
+### [v4.2.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.2.0) (August 14, 2024)
 
 * Arm64 is now officially supported for Windows and Linux
 * The converter has been removed
@@ -24,7 +32,7 @@ The UI for the settings app was created using [Avalonia](https://avaloniaui.net)
 * WiX Toolset 5.0 is now used for the Windows installer, removing the need for .NET Framework
 * NUKE is now used as the build tool
 
-### [v4.1](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.1) (10 February 2022)
+### [v4.1](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.1) (February 10, 2022)
 
 * The app now works on macOS
 * The app now supports Arm64 in addition to x64 (but the support is experimental for Windows and Linux)
@@ -35,7 +43,7 @@ The UI for the settings app was created using [Avalonia](https://avaloniaui.net)
 
 This is the first minor release which contains new features instead of just bug fixes, and it's a big one at that.
 
-### [v4.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.0) (28 November 2021)
+### [v4.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.0) (November 28, 2021)
 
 * The app now works on Linux (via X11 only; Wayland is not supported)
 * The legacy hot-key mode was removed — only the modifier keys mode is available
@@ -46,7 +54,7 @@ This is the first minor release which contains new features instead of just bug 
 
 This is the first major version of the app which is not completely rewritten, though it was significantly changed. From now on, most changes (like macOS support) will come as minor versions, and version 4 will be the major version for the foreseeable future.
 
-### [v3.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v3.0) (4 August 2020)
+### [v3.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v3.0) (August 4, 2020)
 
 * A completely rewritten app based on .NET Core and working as a truly UI-less app instead of an app with a hidden window
 * The settings are now a separate app written with Avalonia instead of WPF
@@ -56,11 +64,11 @@ This is the first major version of the app which is not completely rewritten, th
 * Added the ability to auto-configure character mappings
 * Added checking for updates
 
-### [v2.1](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v2.1) (1 April 2018)
+### [v2.1](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v2.1) (April 1, 2018)
 
 Minor bug fixes
 
-### [v2.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v2.0) (13 January 2018)
+### [v2.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v2.0) (January 13, 2018)
 
 * Brand new installer for the app
 * Instant switching mode
