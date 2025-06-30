@@ -11,10 +11,10 @@ That's it!
 
 Keyboard Switch consists of two apps:
 
-- Keyboard Switch Service - this app always runs in the background and does the switching when you press the magic key
+- Keyboard Switch Service — this app always runs in the background and does the switching when you press the magic key
   combination
 
-- Keyboard Switch Settings - this app is used to configure the service app
+- Keyboard Switch Settings — this app is used to configure the service app
 
 ![App screen](/assets/images/app-screen.png)
 
@@ -29,12 +29,12 @@ Download the _.msi_ file and run it to install the app. If your computer runs on
 get the _x64_ installer. If your computer runs on the Arm architecture, then you should get the _arm64_ installer. If
 you're not sure, then you most likely need the _x64_ installer.
 
-After installation, the Keyboard Switch Settings app will start. If it doesn't start for some reason, then find it in
-the list of your apps.
+After installation, the Keyboard Switch Settings app will start. It may take some time as the app will do some initial
+setup. If it doesn't start for some reason, then find it in the list of your apps.
 
-In the opened app press _Start_.
+In the opened settings app, press _Start_.
 
-That's it! You're ready to use Keyboard Switch in it's basic configuration. There's a big chance you won't need to
+That's it! You're ready to use Keyboard Switch in its basic configuration. There's a big chance you won't need to
 configure it further. But if you do, the you can read more [in the docs](https://docs.keyboardswitch.tolik.io).
 
 To switch text forward, select the text, and press <kbd>Ctrl</kbd>+<kbd>Shift</kbd> twice. To switch it backward, press
@@ -45,18 +45,18 @@ To switch text forward, select the text, and press <kbd>Ctrl</kbd>+<kbd>Shift</k
 Download the _.pkg_ file to install the app. If your computer runs on an Intel CPU then you should get the _x86_64_
 package. If your computer runs on an Apple CPU (e.g. M1) then you should get the _arm64_ package.
 
-After installing the app, open Keyboard Switch Settings - it should appear in the list of your apps.
+After installing the app, open Keyboard Switch Settings — it should appear in the list of your apps.
 
-Immediately upon opening the app a dialog window should appear which says that Keyboard Switch would like to control
+Immediately upon opening the app, a dialog window should appear which says that Keyboard Switch would like to control
 this computer using accessibility features. The app needs this to listen to the magic key combination while running in
 the background, and without these permissions it won't work.
 
-Click the _Open System Preferences_ button on the dialog window. Unlock the settings and check the _Keyboard Switch_
-checkbox. Lock the settings, close System Preferences, and go back to the Keyboard Switch Settings app.
+Click the _Open System Preferences_ button on the dialog window. Enable the _Keyboard Switch_ item. Close System
+Preferences and go back to the Keyboard Switch Settings app.
 
-In the settings app press _Start_.
+In the settings app, press _Start_.
 
-That's it! You're ready to use Keyboard Switch in it's basic configuration. There's a big chance you won't need to
+That's it! You're ready to use Keyboard Switch in its basic configuration. There's a big chance you won't need to
 configure it further. But if you do, the you can read more [in the docs](https://docs.keyboardswitch.tolik.io).
 
 To switch text forward, select the text, and press <kbd>Ctrl</kbd>+<kbd>Shift</kbd> twice. To switch it backward, press
@@ -69,7 +69,7 @@ To uninstall Keyboard Switch you should run an uninstaller package. You can get 
 The app is available as a deb package (for Debian-based distributions, such as Ubuntu, Mint etc.), an RPM package (for
 RHEL-based distributions, like Rocky Linux or Fedora, as well as SUSE), and a simple _tar.gz_ file.
 
-Note that Keyboard Switch only works on X11 - it won't work on Wayland (even with XWayland).
+Note that Keyboard Switch only works on X11 — it won't work on Wayland (even with XWayland).
 
 If you use the deb or RPM package, then simply install it either by double-clicking on it, or through the terminal. If
 you use the _tar.gz_ file, then the set-up is not quite as quick, so you can read about it in
@@ -78,7 +78,7 @@ you use the _tar.gz_ file, then the set-up is not quite as quick, so you can rea
 Bear in mind that the RPM package may need
 [additional setup](https://docs.keyboardswitch.tolik.io/usage-guides/installation#linux).
 
-After installing the app, open Keyboard Switch Settings - it should appear in the list of your apps (if your desktop
+After installing the app, open Keyboard Switch Settings — it should appear in the list of your apps (if your desktop
 environment groups your apps, then it will most probably appear under the _Utilities_ or _Accessories_ group).
 
 If your desktop environment is GNOME then you should restart it right after opening Keyboard Switch Settings. If you're
@@ -86,9 +86,9 @@ not sure which desktop environment you're using then it's most probably GNOME si
 Debian, Rocky Linux, Fedora and others (but not Linux Mint). Press <kbd>Alt</kbd>+<kbd>F2</kbd>, then type <kbd>r</kbd>
 and press <kbd>Enter</kbd>. This will restart GNOME.
 
-In the opened settings app press _Start_.
+In the opened settings app, press _Start_.
 
-That's it! You're ready to use Keyboard Switch in it's basic configuration. There's a big chance you won't need to
+That's it! You're ready to use Keyboard Switch in its basic configuration. There's a big chance you won't need to
 configure it further. But if you do, the you can read more [in the docs](https://docs.keyboardswitch.tolik.io).
 
 To switch text forward, select the text, and press <kbd>Ctrl</kbd>+<kbd>Shift</kbd> twice. To switch it backward, press
@@ -116,7 +116,7 @@ the layout before switching. The app also automatically changes the layout, so y
 
 The app uses the clipboard to get the text to transform, and then puts the transformed text back into the clipboard.
 The app will try to preserve the text that was in the clipboard before switching, and to restore it afterwards. It
-doesn't guarantee that the text will be restored though. Also, any non-text data (e.g. a file or a picture) will not
+doesn't guarantee that the text will be restored though. Also, any non-text data (e.g., a file or a picture) will not
 be restored.
 
 # Supported Platforms
@@ -134,5 +134,5 @@ If you want to know more about the Keyboard Switch app and how to use it, check 
 
 # Changelog
 
-See the [changlog file](https://github.com/TolikPylypchuk/KeyboardSwitch/blob/master/CHANGELOG.md) for the detailed list
+See the [changlog file](https://github.com/TolikPylypchuk/KeyboardSwitch/blob/main/CHANGELOG.md) for the detailed list
 of changes across versions.
