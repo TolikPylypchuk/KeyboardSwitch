@@ -20,7 +20,7 @@
     <PackageReference Include="Avalonia.Diagnostics" Version="11.3.2" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="11.3.2" />
     <PackageReference Include="Avalonia.Themes.Simple" Version="11.3.2" />
-    <PackageReference Include="Devolutions.AvaloniaTheme.MacOS" Version="2025.6.19" />
+    <PackageReference Include="Devolutions.AvaloniaTheme.MacOS" Version="2025.6.27" />
     <PackageReference Include="DynamicData" Version="9.4.1" />
     <PackageReference Include="FluentAvaloniaUI" Version="2.3.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.6" />
@@ -32,13 +32,13 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.6" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.6" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.6" />
-    <PackageReference Include="ReactiveUI" Version="20.3.1" />
+    <PackageReference Include="ReactiveUI" Version="20.4.1" />
     <PackageReference Include="ReactiveUI.Validation" Version="4.1.1" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.2" />
-    <PackageReference Include="Splat" Version="15.3.1" />
-    <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="15.3.1" />
-    <PackageReference Include="Splat.Microsoft.Extensions.Logging" Version="15.3.1" />
-    <PackageReference Include="Splat.Serilog" Version="15.3.1" />
+    <PackageReference Include="Splat" Version="15.4.1" />
+    <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="15.4.1" />
+    <PackageReference Include="Splat.Microsoft.Extensions.Logging" Version="15.4.1" />
+    <PackageReference Include="Splat.Serilog" Version="15.4.1" />
     <PackageReference Include="System.Interactive" Version="6.0.3" />
     <PackageReference Include="System.Interactive.Async" Version="6.0.3" />
     <PackageReference Include="System.Reactive" Version="6.0.1" />
