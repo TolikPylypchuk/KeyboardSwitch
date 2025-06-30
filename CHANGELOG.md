@@ -1,6 +1,14 @@
 # Changelog
 
-## [v4.2.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.2.0) (14 August 2024)
+## [v4.3.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.3.0) (June 30, 2025)
+
+- The settings app now supports different themes for different OSes
+- Dark mode is now available for the settings app
+- The preferences tab is now the default tab in the settings app
+- The application now works correctly when multiple users are logged in at the same time
+- The application doesn't interfere with Alt codes on Windows anymore
+
+## [v4.2.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.2.0) (August 14, 2024)
 
 - Arm64 is now officially supported for Windows and Linux
 - The converter has been removed
@@ -8,7 +16,7 @@
 - The app now integrates with the clipboard directly on Linux, without xsel, but this may not work well on older desktop
 environments, so integration through xsel is still possible
 - The internal format of the settings was changed, so when updating to version 4.2 from older versions, the settings
-will be reverted to the defaults - you should reconfigure the app if you had custom configuration before
+will be reverted to the defaults — you should reconfigure the app if you had custom configuration before
 - Windows installer doesn't delete all users' configurations when uninstalling the app anymore
 - Purging configuration is now available on Linux for deb packages and the _tar.gz_ file
 - The settings app now does auto-configuration by itself when being opened for the first time
@@ -18,7 +26,7 @@ will be reverted to the defaults - you should reconfigure the app if you had cus
 - WiX Toolset 5.0 is now used for the Windows installer, removing the need for .NET Framework
 - NUKE is now used as the build tool
 
-## [v4.1](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.1) (10 February 2022)
+## [v4.1](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.1) (February 10, 2022)
 
 - The app now works on macOS
 - The app now supports Arm64 in addition to x64 (but the support is experimental for Windows and Linux)
@@ -29,10 +37,10 @@ will be reverted to the defaults - you should reconfigure the app if you had cus
 
 This is the first minor release which contains new features instead of just bug fixes, and it's a big one at that.
 
-## [v4.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.0) (28 November 2021)
+## [v4.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.0) (November 28, 2021)
 
 - The app now works on Linux (via X11 only; Wayland is not supported)
-- The legacy hot-key mode was removed - only the modifier keys mode is available
+- The legacy hot-key mode was removed — only the modifier keys mode is available
 - The UI theme is overhauled
 - The converter is hidden by default
 - .NET 6 is used instead of .NET Core 3.1
@@ -42,7 +50,7 @@ This is the first major version of the app which is not completely rewritten, th
 now on, most changes (like macOS support) will come as minor versions, and version 4 will be the major version for the
 foreseeable future.
 
-## [v3.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v3.0) (4 August 2020)
+## [v3.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v3.0) (August 4, 2020)
 
 - A completely rewritten app based on .NET Core and working as a truly UI-less app instead of an app with a hidden
 window
@@ -53,11 +61,11 @@ window
 - Added the ability to auto-configure character mappings
 - Added checking for updates
 
-## [v2.1](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v2.1) (1 April 2018)
+## [v2.1](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v2.1) (April 1, 2018)
 
 Minor bug fixes
 
-## [v2.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v2.0) (13 January 2018)
+## [v2.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v2.0) (January 13, 2018)
 
 - Brand new installer for the app
 - Instant switching mode
