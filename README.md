@@ -38,11 +38,11 @@ The app is available as a deb package (for Debian-based distributions, such as U
 If you're using an RPM package, there are a couple things to note before installing the app (which you can find in the [installation](usage-guides/installation.md#installing-the-app) article).
 {% endhint %}
 
-Bear in mind that KeyboardSwitch only works on X11 — it won't work on Wayland (even with XWayland apparently).
+Bear in mind that KeyboardSwitch only works on X11 – it won't work on Wayland (even with XWayland apparently).
 
 If you use the deb or RPM package, then simply install it either by double-clicking on it, or through the terminal. If you use the _tar.gz_ file, then the set-up is not quite as quick, so you can read about it in the [installation page](usage-guides/installation.md#installing-the-app).
 
-After installing the app, open Keyboard Switch Settings — it should appear in the list of your apps.
+After installing the app, open Keyboard Switch Settings – it should appear in the list of your apps.
 
 In the opened app, press the _Auto-configure_ button.
 

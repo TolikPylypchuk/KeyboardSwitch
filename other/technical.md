@@ -26,7 +26,7 @@ At first, I decided to run the app as a _systemd_ service, but it proved not to 
 
 The service app uses X11, especially the X Keyboard Extension, and the X Test Extension. Currently it doesn't work on Wayland, even through XWayland. It uses the [X11](https://www.nuget.org/packages/X11/) package to call various native Xlib functions.
 
-The app also uses Bash and [xsel](https://github.com/kfish/xsel), but those are not used directly — rather they are used by the [TextCopy library](https://github.com/CopyText/TextCopy) which the app uses for copying and pasting text.
+The app also uses Bash and [xsel](https://github.com/kfish/xsel), but those are not used directly – rather they are used by the [TextCopy library](https://github.com/CopyText/TextCopy) which the app uses for copying and pasting text.
 
 ### The Settings App
 

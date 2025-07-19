@@ -65,8 +65,8 @@ The aforementioned commands can be prefixed with `--`, `-`, or `/`. For example,
 
 The following exit codes are available:
 
-* `0` — The app has exited successfully.
-* `1` — An unspecified error has occurred.
-* `2` — The app cannot run, because its settings have an incompatible version. The app is backward-compatible with respect to settings versions — it will read the settings created by an older version and modify them to fit the current version. But it's not forward-compatible — version 4.0 will not work if the settings were created or updated by a newer version.
-* `3` — `stop`, `reload-settings`, or `check` was specified as the command, but no instance of Keyboard Switch is running.
-* `4` — An invalid command was specified.
+* `0` – The app has exited successfully.
+* `1` – An unspecified error has occurred.
+* `2` – The app cannot run, because its settings have an incompatible version. The app is backward-compatible with respect to settings versions – it will read the settings created by an older version and modify them to fit the current version. But it's not forward-compatible – version 4.0 will not work if the settings were created or updated by a newer version.
+* `3` – `stop`, `reload-settings`, or `check` was specified as the command, but no instance of Keyboard Switch is running.
+* `4` – An invalid command was specified.

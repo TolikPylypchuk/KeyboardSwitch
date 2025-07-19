@@ -40,10 +40,10 @@ There are several prerequisites for running the app on Linux:
 
 * X11
 * X Keyboard Extension (XKB) which is enabled by default
-* X Test Extension — used to simulate pressing keys like <kbd>Ctrl</kbd>+<kbd>C</kbd> and <kbd>Ctrl</kbd>+<kbd>V</kbd> for you
-* [xsel](https://github.com/kfish/xsel) — used to copy and paste text
-* Bash — used to call xsel, but you don't need to have it as your default shell
-* Freedesktop conventions — used to make the service app start when you log in, and to make the settings app appear in the list of your installed apps (not required for the app itself though)
+* X Test Extension – used to simulate pressing keys like <kbd>Ctrl</kbd>+<kbd>C</kbd> and <kbd>Ctrl</kbd>+<kbd>V</kbd> for you
+* [xsel](https://github.com/kfish/xsel) – used to copy and paste text
+* Bash – used to call xsel, but you don't need to have it as your default shell
+* Freedesktop conventions – used to make the service app start when you log in, and to make the settings app appear in the list of your installed apps (not required for the app itself though)
 
 Keyboard Switch doesn't support Wayland (even with XWayland).
 
@@ -77,7 +77,7 @@ After installation, the settings app will be available in the list of installed 
 
 #### Using a Tar Archive
 
-Keyboard Switch is also available as a _tar.gz_ fie. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). You can then extract it to anywhere you like (e.g., into the _/opt_ directory). The deployed app includes two scripts — _install.sh_ and _uninstall.sh_. _install.sh_ configures Freedesktop to start the KeyboardSwitch service when you log in and to add the settings app to the list of installed apps. _uninstall.sh_ deletes this configuration.
+Keyboard Switch is also available as a _tar.gz_ fie. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). You can then extract it to anywhere you like (e.g., into the _/opt_ directory). The deployed app includes two scripts – _install.sh_ and _uninstall.sh_. _install.sh_ configures Freedesktop to start the KeyboardSwitch service when you log in and to add the settings app to the list of installed apps. _uninstall.sh_ deletes this configuration.
 
 Here are the steps required for installing the app on Debian, Ubuntu, Linux Mint, etc.:
 
@@ -126,4 +126,4 @@ sudo chmod 755 install.sh uninstall.sh  # Let every user use the app
 
 ### Uninstalling the App
 
-For the deb and RPM packages, it's simple — just uninstall the package. For the _tar.gz_ file, run the included _uninstall.sh_ script, and delete the app's directory. If you want to delete the app's configuration as well, then delete the _\~/.keyboard-switch_ directory.
+For the deb and RPM packages, it's simple – just uninstall the package. For the _tar.gz_ file, run the included _uninstall.sh_ script, and delete the app's directory. If you want to delete the app's configuration as well, then delete the _\~/.keyboard-switch_ directory.

@@ -22,13 +22,13 @@ The second checkbox controls whether the service app should switch the layout fo
 
 The third checkbox lets you control whether the service app will start when you log in. On Windows, the default is yes if you installed the app using a Windows installer, and no if you're using the portable version. On Linux, the default is yes if you installed the deb package, or ran the _install.sh_ script bundled with the _tar.gz_ archive, and no otherwise.
 
-The fourth checkbox controls whether the settings app should show a warning about uninstalled layouts. If you install a new layout in the system, you should open the settings app and configure it in the Character Mappings tab. If you uninstall a layout, its configuration will still be saved in the app's settings, but it will essentially be redundant — the layout is not present in the system anymore and hence the service app won't need its configuration. When you uninstall a layout and open the settings app, it will show you a warning and a button to delete the unused configuration. If you want to ignore this warning for whatever reason, then uncheck this checkbox.
+The fourth checkbox controls whether the settings app should show a warning about uninstalled layouts. If you install a new layout in the system, you should open the settings app and configure it in the Character Mappings tab. If you uninstall a layout, its configuration will still be saved in the app's settings, but it will essentially be redundant – the layout is not present in the system anymore and hence the service app won't need its configuration. When you uninstall a layout and open the settings app, it will show you a warning and a button to delete the unused configuration. If you want to ignore this warning for whatever reason, then uncheck this checkbox.
 
 The fifth checkbox controls whether the converter is visible. Since this is a very niche feature, you will likely never need to use it, so it's hidden by default.
 
 ## Switch Settings
 
-You can switch text just by pressing modifier keys. This is similar to switching keyboard layouts in Windows itself — the default key combination to switch layouts in Windows is <kbd>Alt</kbd>+<kbd>Shift</kbd>. You can control which key combination to press to switch text and how many times. The setting contains four fields:
+You can switch text just by pressing modifier keys. This is similar to switching keyboard layouts in Windows itself – the default key combination to switch layouts in Windows is <kbd>Alt</kbd>+<kbd>Shift</kbd>. You can control which key combination to press to switch text and how many times. The setting contains four fields:
 
 * Modifier keys for switching forward
 * Modifier keys for switching backward
