@@ -28,11 +28,11 @@ macOS 10.15+ is required since it's the oldest version still supported by .NET.
 
 The service app uses multiple native macOS frameworks:
 
-* _CoreFoundation_ — for low-level string, array, and pointer manipulation.
-* _CarbonCore_ (part of _CoreFoundation_) — for translating key codes with layout info into Unicode characters.
-* _CoreGraphics_ — for simulating keyboard events.
-* _HIToolbox_ — for working with keyboard layouts.
-* _AppKit_ — for working with the clipboard.
+* _CoreFoundation_ – for low-level string, array, and pointer manipulation.
+* _CarbonCore_ (part of _CoreFoundation_) – for translating key codes with layout info into Unicode characters.
+* _CoreGraphics_ – for simulating keyboard events.
+* _HIToolbox_ – for working with keyboard layouts.
+* _AppKit_ – for working with the clipboard.
 
 ### Linux
 
@@ -40,9 +40,9 @@ At first, I decided to run the app as a _systemd_ service, but it proved not to 
 
 The service app uses X11, especially the X Keyboard Extension, and the X Test Extension. Currently it doesn't work on Wayland, even through XWayland. It calls various native Xlib functions using P/Invoke directly.
 
-The app interacts directly with X11 for clipboard integration — the code for this integration is based on code from Avalonia. It can also use [xsel](https://github.com/kfish/xsel) for clipboard integration instead.
+The app interacts directly with X11 for clipboard integration – the code for this integration is based on code from Avalonia. It can also use [xsel](https://github.com/kfish/xsel) for clipboard integration instead.
 
-If the Linux desktop environment is GNOME, then the app switches layouts a little differently than in other desktop environments. GNOME doesn't let apps switch layouts using X11 directly — it will immediately switch it back. Instead, the settings app adds a small GNOME Shell extension (which is simply called Switch Layout) and the app switches layouts through it. GNOME should be made aware of this extension after installation; hence you should restart it after starting the settings app. If you don't then the app will still work but won't be able to switch layouts until you log out or reboot.
+If the Linux desktop environment is GNOME, then the app switches layouts a little differently than in other desktop environments. GNOME doesn't let apps switch layouts using X11 directly – it will immediately switch it back. Instead, the settings app adds a small GNOME Shell extension (which is simply called Switch Layout) and the app switches layouts through it. GNOME should be made aware of this extension after installation; hence you should restart it after starting the settings app. If you don't then the app will still work but won't be able to switch layouts until you log out or reboot.
 
 ### The Settings App
 
@@ -52,7 +52,7 @@ The core logic of the settings app is implemented using [ReactiveUI](https://www
 
 Keyboard Switch and Keyboard Switch Settings are published as self-contained single-file applications. The size difference between single-file applications and standard applications with shared libraries is negligible since single-file applications can be compressed.
 
-On macOS, the two applications are located in separate directories — this is done because on macOS every application should be contained inside a bundle.
+On macOS, the two applications are located in separate directories – this is done because on macOS every application should be contained inside a bundle.
 
 ## The Global Keyboard Hook
 
@@ -124,40 +124,40 @@ Keyboard Switch uses [NUKE](https://nuke.build) as its build system. It's not re
 
 The following targets are available (the default target is `Compile`):
 
-* `Restore` — runs `dotnet restore` for all projects.
-* `Clean` — runs `dotnet clean` for all projects.
-* `Compile` — runs `dotnet build` for all projects.
-* `Test` — runs `dotnet test` for the test project.
-* `Publish` — runs `dotnet publish` for the _KeyboardSwitch_ and _KeyboardSwitch.Settings_ projects.
-* `CreateZipArchive` — creates a _zip_ archive which contains a portable distribution of Keyboard Switch.
-* `CreateTarArchive` — creates a _tar.gz_ archive which contains a portable distribution of Keyboard Switch.
-* `CreateWindowsInstaller` — creates a Windows installer.
-* `PrepareMacOSPackage` — prepares all files required for a macOS package.
-* `CreateMacOSPackage` — creates a macOS package.
-* `PrepareMacOSUninstallerPackage` — prepares all files required for a macOS uninstaller package.
-* `CreateMacOSUninstallerPackage` — creates a macOS uninstaller package.
-* `PrepareDebianPackage` — prepares all files required for a deb package.
-* `CreateDebianPackage` — creates a deb package.
-* `PrepareRpmPackage` — prepares all files required for an RPM package.
-* `CreateRpmPackage` — creates an RPM package.
+* `Restore` – runs `dotnet restore` for all projects.
+* `Clean` – runs `dotnet clean` for all projects.
+* `Compile` – runs `dotnet build` for all projects.
+* `Test` – runs `dotnet test` for the test project.
+* `Publish` – runs `dotnet publish` for the _KeyboardSwitch_ and _KeyboardSwitch.Settings_ projects.
+* `CreateZipArchive` – creates a _zip_ archive which contains a portable distribution of Keyboard Switch.
+* `CreateTarArchive` – creates a _tar.gz_ archive which contains a portable distribution of Keyboard Switch.
+* `CreateWindowsInstaller` – creates a Windows installer.
+* `PrepareMacOSPackage` – prepares all files required for a macOS package.
+* `CreateMacOSPackage` – creates a macOS package.
+* `PrepareMacOSUninstallerPackage` – prepares all files required for a macOS uninstaller package.
+* `CreateMacOSUninstallerPackage` – creates a macOS uninstaller package.
+* `PrepareDebianPackage` – prepares all files required for a deb package.
+* `CreateDebianPackage` – creates a deb package.
+* `PrepareRpmPackage` – prepares all files required for an RPM package.
+* `CreateRpmPackage` – creates an RPM package.
 
 The Windows installer can be created on any OS. The macOS packages can only be created on macOS and require an Apple Developer account and certificates. The deb and RPM packages can only be created on Linux.
 
 The following parameters are available:
 
-* `Configuration` — `Debug` or `Release`. All targets except `Restore`, `Clean`, `Compile`, and `Test` require `Release` which is the default.
-* `TargetOS` — `Windows`, `macOS`, or `Linux`. The currently running OS is the default. Windows installer requires `Windows`. macOS packages require `macOS`. Linux packages require `Linux`.
-* `Platform` — `x64` or `arm64`. The currently running platform is the default.
-* `PublishSingleFile` — `true` or `false`. All targets after `Publish` require `true`.
-* `OutputFileSuffix` — the suffix to use on output files before the extension. For example, portable Windows distributions use the `win` suffix.
+* `Configuration` – `Debug` or `Release`. All targets except `Restore`, `Clean`, `Compile`, and `Test` require `Release` which is the default.
+* `TargetOS` – `Windows`, `macOS`, or `Linux`. The currently running OS is the default. Windows installer requires `Windows`. macOS packages require `macOS`. Linux packages require `Linux`.
+* `Platform` – `x64` or `arm64`. The currently running platform is the default.
+* `PublishSingleFile` – `true` or `false`. All targets after `Publish` require `true`.
+* `OutputFileSuffix` – the suffix to use on output files before the extension. For example, portable Windows distributions use the `win` suffix.
 
 The following parameters are available for building macOS packages:
 
-* `AppleId` — your Apple developer ID.
-* `AppleTeamId` — your Apple team ID.
-* `AppleApplicationCertificate` — the ID of your Apple application certificate.
-* `AppleInstallerCertificate` — the ID of your Apple installer certificate.
-* `NotaryToolKeychainProfile` — the Keychain profile to be used by `notarytool` when notarizing the package.
+* `AppleId` – your Apple developer ID.
+* `AppleTeamId` – your Apple team ID.
+* `AppleApplicationCertificate` – the ID of your Apple application certificate.
+* `AppleInstallerCertificate` – the ID of your Apple installer certificate.
+* `NotaryToolKeychainProfile` – the Keychain profile to be used by `notarytool` when notarizing the package.
 
 There are more parameters available for macOS, but they are only used when running in GitHub Actions. Certificates must be stored in Keychain for macOS packages to be built.
 

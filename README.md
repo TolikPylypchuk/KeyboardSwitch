@@ -26,7 +26,7 @@ To switch text forward, select the text and press <kbd>Ctrl</kbd>+<kbd>Shift</kb
 
 You can get the latest version of the app from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download the _.pkg_ file and run it to install the app. If your computer runs on an Apple CPU (e.g. M1) then you should get the _arm64_ package. If your computer runs on an Intel CPU then you should get the _x86\_64_ package.
 
-After installing the app, open Keyboard Switch Settings — it should appear in the list of your apps.
+After installing the app, open Keyboard Switch Settings – it should appear in the list of your apps.
 
 Immediately upon opening the app, a dialog window should appear which says that Keyboard Switch would like to control this computer using accessibility features. The app needs this to listen to the magic key combination while running in the background, and without these permissions it won't work.
 
@@ -48,11 +48,11 @@ The app is available as a deb package (for Debian-based distributions, such as U
 If you're using an RPM package, there are a couple things to note before installing the app (which you can find in the [installation](usage-guides/installation.md#installing-the-app) article).
 {% endhint %}
 
-Bear in mind that Keyboard Switch only works on X11 — it won't work on Wayland (even with XWayland).
+Bear in mind that Keyboard Switch only works on X11 – it won't work on Wayland (even with XWayland).
 
 If you use the deb or RPM package, then simply install it either by double-clicking on it, or through the terminal. If you use the _tar.gz_ file, then the set-up is not quite as quick, so you can read about it in the [installation page](usage-guides/installation.md#installing-the-app).
 
-After installing the app, open Keyboard Switch Settings — it should appear in the list of your apps.
+After installing the app, open Keyboard Switch Settings – it should appear in the list of your apps.
 
 {% hint style="warning" %}
 If your desktop environment is GNOME, then you should restart it right after opening Keyboard Switch Settings. If you're not sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu, Debian, Rocky, Fedora and others (but not Linux Mint). Press <kbd>Alt</kbd>+<kbd>F2</kbd>, then type <kbd>r</kbd> and press <kbd>Enter</kbd>. This will restart GNOME.

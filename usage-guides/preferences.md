@@ -22,13 +22,13 @@ The second checkbox controls whether the service app should switch the layout fo
 
 The third checkbox lets you control whether the service app will start when you log in. When you open the settings app for the first time, it configures the service app to run at startup automatically.
 
-The fourth checkbox controls whether the settings app should show a warning about uninstalled layouts. If you install a new layout in the system, you should open the settings app and configure it in the Character Mappings tab. If you uninstall a layout, its configuration will still be saved in the app's settings, but it will essentially be redundant — the layout is not present in the system anymore and hence the service app won't need its configuration. When you uninstall a layout and open the settings app, it will show you a warning and a button to delete the unused configuration. If you want to ignore this warning for whatever reason, then uncheck this checkbox.
+The fourth checkbox controls whether the settings app should show a warning about uninstalled layouts. If you install a new layout in the system, you should open the settings app and configure it in the Character Mappings tab. If you uninstall a layout, its configuration will still be saved in the app's settings, but it will essentially be redundant – the layout is not present in the system anymore and hence the service app won't need its configuration. When you uninstall a layout and open the settings app, it will show you a warning and a button to delete the unused configuration. If you want to ignore this warning for whatever reason, then uncheck this checkbox.
 
 The fifth checkbox (which is only available on Linux) controls whether the clipboard integration is implemented directly through X11, or through xsel. Direct integration is the default, but may not work well on older desktop environments. If it doesn't, then xsel should be used instead. Unlike other options, changing this one requires restarting the service app. xsel must be installed manually for this option to work.
 
 ## Switch Settings
 
-You can switch text just by pressing modifier keys. This is similar to switching keyboard layouts in Windows itself — the default key combination to switch layouts in Windows is <kbd>Alt</kbd>+<kbd>Shift</kbd>. You can control which key combination to press to switch text and how many times. The setting contains four fields:
+You can switch text just by pressing modifier keys. This is similar to switching keyboard layouts in Windows itself – the default key combination to switch layouts in Windows is <kbd>Alt</kbd>+<kbd>Shift</kbd>. You can control which key combination to press to switch text and how many times. The setting contains four fields:
 
 * Modifier keys for switching forward
 * Modifier keys for switching backward
@@ -51,12 +51,12 @@ The way the settings app looks can be configured using the _App theme_ and _Vari
 
 Three themes are supported:
 
-* Fluent — this theme uses Fluent Design v2 and is the default one on Windows. The screenshots in these docs show the Fluent theme.
-* macOS — this theme uses the default macOS look and feel and is the default one on macOS.
-* Simple — this theme uses simple styles and is the default one on Linux.
+* Fluent – this theme uses Fluent Design v2 and is the default one on Windows. The screenshots in these docs show the Fluent theme.
+* macOS – this theme uses the default macOS look and feel and is the default one on macOS.
+* Simple – this theme uses simple styles and is the default one on Linux.
 
 Three variants are supported:
 
 * Light
 * Dark
-* System — light or dark depending on system settings. This variant is the default one.
+* System – light or dark depending on system settings. This variant is the default one.

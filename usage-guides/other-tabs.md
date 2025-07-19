@@ -4,7 +4,7 @@ Other tabs in the settings app include the Sandbox tab and the About tab.
 
 ## Sandbox
 
-Sandbox is absurdly simple — it's just a text box. That's it! Here's how it looks:
+Sandbox is absurdly simple – it's just a text box. That's it! Here's how it looks:
 
 <figure><picture><source srcset="../.gitbook/assets/v4.3-screen-sandbox-dark.png" media="(prefers-color-scheme: dark)"><img src="../.gitbook/assets/v4.3-screen-sandbox.png" alt="The sandbox tab"></picture><figcaption><p>The sandbox tab</p></figcaption></figure>
 
