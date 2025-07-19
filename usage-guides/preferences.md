@@ -23,7 +23,7 @@ The second checkbox controls whether the service app should switch the layout fo
 
 The third checkbox lets you control whether the service app will start when you log in. The default is yes if you installed the app using a Windows installer, and no if you're using the portable version.
 
-The fourth checkbox controls whether the settings app should show a warning about uninstalled layouts. If you install a new layout in the system, you should open the settings app and configure it in the Character Mappings tab. If you uninstall a layout, its configuration will still be saved in the app's settings, but it will essentially be redundant — the layout is not present in the system anymore and hence the service app won't need its configuration. When you uninstall a layout and open the settings app, it will show you a warning and a button to delete the unused configuration. If you want to ignore this warning for whatever reason, then uncheck this checkbox.
+The fourth checkbox controls whether the settings app should show a warning about uninstalled layouts. If you install a new layout in the system, you should open the settings app and configure it in the Character Mappings tab. If you uninstall a layout, its configuration will still be saved in the app's settings, but it will essentially be redundant – the layout is not present in the system anymore and hence the service app won't need its configuration. When you uninstall a layout and open the settings app, it will show you a warning and a button to delete the unused configuration. If you want to ignore this warning for whatever reason, then uncheck this checkbox.
 
 ## Switch Mode
 
@@ -31,7 +31,7 @@ The service app supports two switching modes in relation to the magic key combin
 
 ### Modifier Keys
 
-This is the default and recommended switch mode. With it you can switch text just by pressing modifier keys. This is similar to switching keyboard layouts in Windows itself — the default key combination to switch layouts in Windows is <kbd>Alt</kbd>+<kbd>Shift</kbd>. You can control which key combination to press to switch text and how many times. The setting contains four fields:
+This is the default and recommended switch mode. With it you can switch text just by pressing modifier keys. This is similar to switching keyboard layouts in Windows itself – the default key combination to switch layouts in Windows is <kbd>Alt</kbd>+<kbd>Shift</kbd>. You can control which key combination to press to switch text and how many times. The setting contains four fields:
 
 * Modifier keys for switching forward
 * Modifier keys for switching backward
@@ -58,7 +58,7 @@ The hot key switch mode was carried over from the previous version of the app an
 
 The default modifier keys are <kbd>Ctrl</kbd>+<kbd>Shift</kbd>, and the default keys are <kbd>X</kbd> for forward and <kbd>Z</kbd> for backward. So, to switch forward, you just press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd> and that's it. The fields for keys only allow a limited set of keys (arrow keys or navigation keys are not allowed for example).
 
-This mode is not recommended anymore because it may interfere with the app you're using at the moment — the app itself may do something when you press, say, <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd>. There's no way of knowing that the key combination you selected is never used in any app ever.
+This mode is not recommended anymore because it may interfere with the app you're using at the moment – the app itself may do something when you press, say, <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>X</kbd>. There's no way of knowing that the key combination you selected is never used in any app ever.
 
 {% hint style="info" %}
 You can't change the switch mode if there are unsaved changes in the Preferences tab. Save or cancel the changes if you want to change it.

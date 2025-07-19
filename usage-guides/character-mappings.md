@@ -8,15 +8,15 @@ This section explains _why_ you need to configure character mappings for the app
 
 Working with text and working with keyboard are two wildly different things. You, the user of a computer, usually work with a keyboard (or other input devices, but those don't matter here). This app however works with text (even though its name might suggest differently), and so text transformation during switching will most probably not be perfect.
 
-Ideally you wouldn't have to configure the app at all — it would just know how to transform the text you mistyped into another layout. After all, the OS somehow knows which characters to produce when you press various keys. But going that way would be extremely difficult, if not impossible.
+Ideally you wouldn't have to configure the app at all – it would just know how to transform the text you mistyped into another layout. After all, the OS somehow knows which characters to produce when you press various keys. But going that way would be extremely difficult, if not impossible.
 
-Firstly, pressing keys and entering characters are absolutely not the same thing. Many keys don't have corresponding characters at all, like <kbd>Ctrl</kbd> or <kbd>Page Up</kbd>. The same key press can produce different characters based on the state of other keys. For example, the <kbd>A</kbd> key usually produces **a**, but when <kbd>Shift</kbd> is down, the key produces **A**. And then there are dead keys — key combinations that produce one character by pressing two (or even three) keys. For example, in the US International layout, pressing <kbd>'</kbd> and then <kbd>A</kbd> will produce **á**.
+Firstly, pressing keys and entering characters are absolutely not the same thing. Many keys don't have corresponding characters at all, like <kbd>Ctrl</kbd> or <kbd>Page Up</kbd>. The same key press can produce different characters based on the state of other keys. For example, the <kbd>A</kbd> key usually produces **a**, but when <kbd>Shift</kbd> is down, the key produces **A**. And then there are dead keys – key combinations that produce one character by pressing two (or even three) keys. For example, in the US International layout, pressing <kbd>'</kbd> and then <kbd>A</kbd> will produce **á**.
 
 Secondly, it's impossible to know which keys have been pressed just by looking at text. This is because the same character can be produced using different keys or key combinations (or it can be pasted, so the keyboard wouldn't be used at all).
 
 So, in order to just know how to transform the text you've mistyped, the app would have to keep track of the keys you've pressed and then infer which of those pressed keys actually played a role in producing the mistyped text and then ask the OS which characters would be produced with the same key sequence. You can see how that's unreasonable. First of all, the app would have to track _all_ the keys you press, and that would be quite sketchy. Would you trust an app which logs everything you type? I certainly wouldn't. And ethics aside, there still are technical issues. How many keys should the app track? What happens if the user pastes part of the text instead of typing it? Etc., etc.
 
-And that's why the app uses a much simpler solution — it lets you, the user, figure out how the text should be transformed. The app can auto-configure the mappings using a simple method, but it's still up to you to check whether it's all correct.
+And that's why the app uses a much simpler solution – it lets you, the user, figure out how the text should be transformed. The app can auto-configure the mappings using a simple method, but it's still up to you to check whether it's all correct.
 
 ## How Character Mappings Work
 
