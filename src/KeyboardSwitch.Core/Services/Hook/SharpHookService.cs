@@ -30,6 +30,7 @@ internal sealed class SharpHookService : DisposableService, IKeyboardHookService
     public SharpHookService(
         IReactiveGlobalHook hook,
         IScheduler scheduler,
+        IGlobalHookProvider globalHookProvider,
         IAccessibilityProvider accessibilityProvider,
         ILogger<SharpHookService> logger)
     {
@@ -37,6 +38,7 @@ internal sealed class SharpHookService : DisposableService, IKeyboardHookService
         this.scheduler = scheduler;
         this.logger = logger;
 
+        globalHookProvider.KeyTypedEnabled = false;
         accessibilityProvider.AxPollFrequency = AxPollFrequencySeconds;
 
         this.hook.HookEnabled.Subscribe(e => this.logger.LogInformation("Created a global keyboard hook"));
