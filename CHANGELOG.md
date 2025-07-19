@@ -16,7 +16,7 @@
 - The app now integrates with the clipboard directly on Linux, without xsel, but this may not work well on older desktop
 environments, so integration through xsel is still possible
 - The internal format of the settings was changed, so when updating to version 4.2 from older versions, the settings
-will be reverted to the defaults — you should reconfigure the app if you had custom configuration before
+will be reverted to the defaults – you should reconfigure the app if you had custom configuration before
 - Windows installer doesn't delete all users' configurations when uninstalling the app anymore
 - Purging configuration is now available on Linux for deb packages and the _tar.gz_ file
 - The settings app now does auto-configuration by itself when being opened for the first time
@@ -40,7 +40,7 @@ This is the first minor release which contains new features instead of just bug 
 ## [v4.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.0) (November 28, 2021)
 
 - The app now works on Linux (via X11 only; Wayland is not supported)
-- The legacy hot-key mode was removed — only the modifier keys mode is available
+- The legacy hot-key mode was removed – only the modifier keys mode is available
 - The UI theme is overhauled
 - The converter is hidden by default
 - .NET 6 is used instead of .NET Core 3.1
