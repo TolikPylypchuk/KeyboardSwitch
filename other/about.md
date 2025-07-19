@@ -14,7 +14,7 @@ The UI for the settings app was created using [Avalonia](https://avaloniaui.net)
 * The app now supports Arm64 in addition to x64 (but the support is experimental for Windows and Linux)
 * The app now switches layouts using native methods on Linux, hence layout settings are not needed anymore
 * On Windows switching backward works correctly when there are more than two layouts
-* The settings app will configure the service app to run at login when opened for the first time, instead of installers doing that — this means that the service app will be configured correctly for all users
+* The settings app will configure the service app to run at login when opened for the first time, instead of installers doing that – this means that the service app will be configured correctly for all users
 * Windows Installer can delete all users' configurations when uninstalling the app
 
 This is the first minor release which contains new features instead of just bug fixes, and it's a big one at that.
@@ -22,7 +22,7 @@ This is the first minor release which contains new features instead of just bug 
 ### [v4.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.0) (28 November 2021)
 
 * The app now works on Linux (via X11 only; Wayland is not supported)
-* The legacy hot-key mode was removed — only the modifier keys mode is available
+* The legacy hot-key mode was removed – only the modifier keys mode is available
 * The UI theme is overhauled
 * The converter is hidden by default
 * .NET 6 is used instead of .NET Core 3.1

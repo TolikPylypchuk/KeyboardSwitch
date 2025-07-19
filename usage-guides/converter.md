@@ -3,7 +3,7 @@
 The converter lets you manually convert text between arbitrary layouts, not just those installed in your system. In order to enable it, check the _Show the converter_ checkbox in the Preferences tab.
 
 {% hint style="info" %}
-Converter is a very niche feature. Chances are that you'll never need to use it and never even think of using it, and that's why it's hidden by default. Moreover, it has nothing to do with the main functionality of the app — switching text in the background. Feel free to skip this article if you're not interested.
+Converter is a very niche feature. Chances are that you'll never need to use it and never even think of using it, and that's why it's hidden by default. Moreover, it has nothing to do with the main functionality of the app – switching text in the background. Feel free to skip this article if you're not interested.
 {% endhint %}
 
 ## The Converter Functionality

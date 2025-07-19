@@ -26,13 +26,13 @@ On macOS, the service app runs as a _launchd_ service. _launchd_ provides the ab
 
 The service app uses multiple native macOS frameworks:
 
-* _CoreFoundation_ — for low-level string, array, and pointer manipulation.
-* _CarbonCore_ (part of _CoreFoundation_) — for translating key codes with layout info into Unicode characters.
-* _CoreGraphics_ — for simulating keyboard events.
-* _HIToolbox_ — for working with keyboard layouts.
-* _AppKit_ — for working with the clipboard.
+* _CoreFoundation_ – for low-level string, array, and pointer manipulation.
+* _CarbonCore_ (part of _CoreFoundation_) – for translating key codes with layout info into Unicode characters.
+* _CoreGraphics_ – for simulating keyboard events.
+* _HIToolbox_ – for working with keyboard layouts.
+* _AppKit_ – for working with the clipboard.
 
-It uses functions and constants from these frameworks using P/Invoke directly, except for _AppKit_ — that one is called by the [TextCopy](https://github.com/CopyText/TextCopy) library which the app uses for copying and pasting text.
+It uses functions and constants from these frameworks using P/Invoke directly, except for _AppKit_ – that one is called by the [TextCopy](https://github.com/CopyText/TextCopy) library which the app uses for copying and pasting text.
 
 ### Linux
 
@@ -40,9 +40,9 @@ At first, I decided to run the app as a _systemd_ service, but it proved not to 
 
 The service app uses X11, especially the X Keyboard Extension, and the X Test Extension. Currently it doesn't work on Wayland, even through XWayland. It calls various native Xlib functions using P/Invoke directly.
 
-The app also uses Bash and [xsel](https://github.com/kfish/xsel), but those are not used directly — rather they are used by [TextCopy](https://github.com/CopyText/TextCopy).
+The app also uses Bash and [xsel](https://github.com/kfish/xsel), but those are not used directly – rather they are used by [TextCopy](https://github.com/CopyText/TextCopy).
 
-If the Linux desktop environment is GNOME then the app switches layouts a little differently than in other DEs. GNOME doesn't let apps switch layouts using X11 directly — it will immediately switch it back. Instead, the app installers also add a small GNOME Shell extension (which is simply called Switch Layout) and the app switches layouts through it. GNOME should be made aware of this extension after installation; hence you should restart it after installing the app. If you don't then the app will still work but won't be able to switch layouts until you log out or reboot.
+If the Linux desktop environment is GNOME then the app switches layouts a little differently than in other DEs. GNOME doesn't let apps switch layouts using X11 directly – it will immediately switch it back. Instead, the app installers also add a small GNOME Shell extension (which is simply called Switch Layout) and the app switches layouts through it. GNOME should be made aware of this extension after installation; hence you should restart it after installing the app. If you don't then the app will still work but won't be able to switch layouts until you log out or reboot.
 
 ### The Settings App
 
@@ -50,9 +50,9 @@ The core logic of the settings app is implemented using [ReactiveUI](https://www
 
 ## App Structure
 
-Keyboard Switch's files are located in the same directory on Windows and Linux — and there are a bunch of them since these are two self-contained .NET applications. The apps could be published as single-file applications, but they share quite a bit of libraries, so these libraries would be duplicated for both apps.
+Keyboard Switch's files are located in the same directory on Windows and Linux – and there are a bunch of them since these are two self-contained .NET applications. The apps could be published as single-file applications, but they share quite a bit of libraries, so these libraries would be duplicated for both apps.
 
-On macOS, the two applications are located in separate directories — this is done because on macOS, every application should be contained inside a bundle. The apps are published as single-file apps for that platform as the shared libraries would have to be duplicated either way.
+On macOS, the two applications are located in separate directories – this is done because on macOS, every application should be contained inside a bundle. The apps are published as single-file apps for that platform as the shared libraries would have to be duplicated either way.
 
 ## The Global Keyboard Hook
 
@@ -123,4 +123,4 @@ If you want to properly install the app on Windows, you can build the installer.
 
 Simply run the build, and it will generate the MSI installer in the project's _bin_ folder. Before the build, it calls `dotnet publish` to use its output.
 
-You'll have to build the installer from source if you want to get a Windows installer for Arm64, but there are some changes that you need to make. Firstly, you should get WiX 3.14 — it's still in development as of the time of this writing, so it's not recommended for production. Secondly, edit the _KeyboardSwitch.Windows.Setup.csproj_ file and set the `Arch` property to be `arm64`. Now you can build the installer for Arm64.
+You'll have to build the installer from source if you want to get a Windows installer for Arm64, but there are some changes that you need to make. Firstly, you should get WiX 3.14 – it's still in development as of the time of this writing, so it's not recommended for production. Secondly, edit the _KeyboardSwitch.Windows.Setup.csproj_ file and set the `Arch` property to be `arm64`. Now you can build the installer for Arm64.
