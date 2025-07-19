@@ -11,10 +11,10 @@ That's it!
 
 Keyboard Switch consists of two apps:
 
-- Keyboard Switch Service — this app always runs in the background and does the switching when you press the magic key
+- Keyboard Switch Service – this app always runs in the background and does the switching when you press the magic key
   combination
 
-- Keyboard Switch Settings — this app is used to configure the service app
+- Keyboard Switch Settings – this app is used to configure the service app
 
 ![App screen](/assets/images/app-screen.png)
 
@@ -45,7 +45,7 @@ To switch text forward, select the text, and press <kbd>Ctrl</kbd>+<kbd>Shift</k
 Download the _.pkg_ file to install the app. If your computer runs on an Intel CPU then you should get the _x86_64_
 package. If your computer runs on an Apple CPU (e.g. M1) then you should get the _arm64_ package.
 
-After installing the app, open Keyboard Switch Settings — it should appear in the list of your apps.
+After installing the app, open Keyboard Switch Settings – it should appear in the list of your apps.
 
 Immediately upon opening the app, a dialog window should appear which says that Keyboard Switch would like to control
 this computer using accessibility features. The app needs this to listen to the magic key combination while running in
@@ -69,7 +69,7 @@ To uninstall Keyboard Switch you should run an uninstaller package. You can get 
 The app is available as a deb package (for Debian-based distributions, such as Ubuntu, Mint etc.), an RPM package (for
 RHEL-based distributions, like Rocky Linux or Fedora, as well as SUSE), and a simple _tar.gz_ file.
 
-Note that Keyboard Switch only works on X11 — it won't work on Wayland (even with XWayland).
+Note that Keyboard Switch only works on X11 – it won't work on Wayland (even with XWayland).
 
 If you use the deb or RPM package, then simply install it either by double-clicking on it, or through the terminal. If
 you use the _tar.gz_ file, then the set-up is not quite as quick, so you can read about it in
@@ -78,7 +78,7 @@ you use the _tar.gz_ file, then the set-up is not quite as quick, so you can rea
 Bear in mind that the RPM package may need
 [additional setup](https://docs.keyboardswitch.tolik.io/usage-guides/installation#linux).
 
-After installing the app, open Keyboard Switch Settings — it should appear in the list of your apps (if your desktop
+After installing the app, open Keyboard Switch Settings – it should appear in the list of your apps (if your desktop
 environment groups your apps, then it will most probably appear under the _Utilities_ or _Accessories_ group).
 
 If your desktop environment is GNOME then you should restart it right after opening Keyboard Switch Settings. If you're
