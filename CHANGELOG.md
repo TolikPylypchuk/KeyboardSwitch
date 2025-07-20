@@ -1,5 +1,10 @@
 # Changelog
 
+## [v4.3.1](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.3.1) (July 20, 2025)
+
+- When Keyboard Switch is running on Windows, it doesn't cause some editors to insert random characters when
+<kbd>Alt</kbd>+<kbd>Arrow</kbd> keys are pressed anymore
+
 ## [v4.3.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.3.0) (June 30, 2025)
 
 - The settings app now supports different themes for different OSes

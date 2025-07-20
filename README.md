@@ -115,9 +115,8 @@ be restored.
 
 ## Supported Platforms
 
-Keyboard Switch works on Windows 10/11 (version 1607 or later), macOS 10.15 or later, and Linux via X11. Wayland support
-may come in a future version, but there are
-[several prerequisites](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/54).
+Keyboard Switch works on Windows 10 and 11, macOS 10.15 or later, and Linux via X11. Wayland support may come in a
+future version, but there are [several prerequisites](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/54).
 
 The x64 and Arm64 architectures are both supported.
 
