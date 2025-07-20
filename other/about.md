@@ -1,12 +1,16 @@
 # About
 
-Keyboard Switch. Version 4.3.0. Created by [Tolik Pylypchuk](https://github.com/TolikPylypchuk).
+Keyboard Switch. Version 4.3.1. Created by [Tolik Pylypchuk](https://github.com/TolikPylypchuk).
 
 ## Acknowledgements
 
 The UI for the settings app was created using [Avalonia](https://avaloniaui.net) with [ReactiveUI](https://www.reactiveui.net), [FluentAvalonia](https://github.com/amwx/FluentAvalonia), and the [Devolutions macOS theme](https://github.com/Devolutions/avalonia-extensions). The global keyboard hook is implemented using [libuiohook](https://github.com/kwhat/libuiohook). Windows installer created with [WiX Toolset](https://wixtoolset.org). Docs are built using [GitBook](https://www.gitbook.com). Icon made by [Smashicons](https://smashicons.com) from [www.flaticon.com](https://www.flaticon.com).
 
 ## Changelog
+
+### [v4.3.1](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.3.1) (July 20, 2025)
+
+* When Keyboard Switch is running on Windows, it doesn't cause some editors to insert random characters when <kbd>Alt</kbd>+<kbd>Arrow</kbd> keys are pressed anymore
 
 ### [v4.3.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.3.0) (June 30, 2025)
 
