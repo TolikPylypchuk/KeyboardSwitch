@@ -16,8 +16,8 @@ public abstract class ReactiveForm<TModel, TForm> : ReactiveValidationObject, IR
 
     protected ReactiveForm(ResourceManager? resourceManager = null, IScheduler? scheduler = null)
     {
-        this.ResourceManager = resourceManager ?? GetRequiredService<ResourceManager>();
-        this.Scheduler = scheduler ?? RxApp.MainThreadScheduler;
+        this.ResourceManager = resourceManager ?? AppLocator.Current.GetRequiredService<ResourceManager>();
+        this.Scheduler = scheduler ?? RxSchedulers.MainThreadScheduler;
 
         this.Valid = Observable.CombineLatest(this.validSubject, this.IsValid()).AllTrue();
 

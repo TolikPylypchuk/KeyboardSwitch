@@ -18,9 +18,9 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Options;
 
-global using SharpHook;
 global using SharpHook.Data;
 global using SharpHook.Reactive;
+global using SharpHook.Simulation;
 
 global using static KeyboardSwitch.Core.Constants;
 global using static KeyboardSwitch.Core.Util;

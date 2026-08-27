@@ -4,8 +4,8 @@ using KeyboardSwitch.Core.Services.Settings;
 
 using Microsoft.Extensions.Configuration;
 
-using SharpHook;
 using SharpHook.Data;
+using SharpHook.Simulation;
 
 namespace KeyboardSwitch.Linux;
 

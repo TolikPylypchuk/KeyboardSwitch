@@ -16,7 +16,7 @@ public partial class Build : NukeBuild
     private const string OutputPlaceholder = "$OUTPUT";
 
     [Solution(GenerateProjects = true)]
-    private readonly Solution Solution = new();
+    private readonly Solution Solution = null!;
 
     public static int Main() =>
         Execute<Build>(x => x.Compile);

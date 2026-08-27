@@ -11,8 +11,8 @@ public class MainViewModel : ReactiveObject
         ILayoutService? layoutService = null,
         IStartupService? startupService = null)
     {
-        layoutService ??= GetRequiredService<ILayoutService>();
-        startupService ??= GetRequiredService<IStartupService>();
+        layoutService ??= AppLocator.Current.GetRequiredService<ILayoutService>();
+        startupService ??= AppLocator.Current.GetRequiredService<IStartupService>();
 
         this.MainContentViewModel = new MainContentViewModel(
             this.CreateCharMappingModel(appSettings, layoutService.GetKeyboardLayouts()),

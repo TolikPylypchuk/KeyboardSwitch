@@ -4,8 +4,8 @@ using System.Reactive.Concurrency;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using SharpHook;
 using SharpHook.Data;
+using SharpHook.Simulation;
 
 namespace KeyboardSwitch.Windows;
 

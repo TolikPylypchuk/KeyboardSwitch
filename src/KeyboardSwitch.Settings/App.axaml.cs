@@ -1,4 +1,3 @@
-using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Reflection;
 
@@ -9,35 +8,15 @@ using Avalonia.Themes.Simple;
 using FluentAvalonia.Styling;
 
 using KeyboardSwitch.Core.Exceptions;
-using KeyboardSwitch.Core.Logging;
 using KeyboardSwitch.Settings.Themes;
 
-#if WINDOWS
-using KeyboardSwitch.Windows;
-#elif MACOS
-using KeyboardSwitch.MacOS;
-#elif LINUX
-using KeyboardSwitch.Linux;
-#endif
-
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Json;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
-
-using Serilog;
-
 using Splat;
-using Splat.Microsoft.Extensions.DependencyInjection;
-using Splat.Serilog;
 
 namespace KeyboardSwitch.Settings;
 
 public class App : Application, IEnableLogger
 {
-    private IClassicDesktopStyleApplicationLifetime desktop = null!;
     private Mutex? mutex;
-    private ServiceProvider? serviceProvider;
 
     public override void Initialize() =>
         AvaloniaXamlLoader.Load(this);
@@ -46,45 +25,34 @@ public class App : Application, IEnableLogger
     {
         if (this.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            this.desktop = desktop;
-
-            var mainViewModel = await this.InitializeApp();
+            var mainViewModel = await this.InitializeApp(desktop);
 
             var mainWindow = this.CreateMainWindow(mainViewModel);
-            await this.SetWindowSizeFromState(mainWindow);
+            this.SetWindowSizeFromState(mainWindow);
 
-            this.desktop.MainWindow = mainWindow;
-            this.desktop.MainWindow.Show();
+            desktop.MainWindow = mainWindow;
+            desktop.MainWindow.Show();
 
-            this.desktop.Exit += this.OnExit;
+            desktop.Exit += this.OnExit;
         }
 
         base.OnFrameworkInitializationCompleted();
     }
 
-    private async Task<MainViewModel> InitializeApp()
+    private async Task<MainViewModel> InitializeApp(IClassicDesktopStyleApplicationLifetime desktop)
     {
         TransitioningContentControl.PageTransitionProperty.OverrideDefaultValue(typeof(ViewModelViewHost), null);
 
-        RxApp.DefaultExceptionHandler = Observer.Create<Exception>(e =>
-            this.Log().Error(e, "Unhandled exception in the settings app"));
-
-        var services = new ServiceCollection();
-        this.ConfigureServices(services);
-
-        this.serviceProvider = services.BuildServiceProvider();
-        this.serviceProvider.UseMicrosoftDependencyResolver();
-
-        var openExternally = this.ConfigureSingleInstance(serviceProvider);
-        this.ConfigureSuspensionDriver();
+        var openExternally = this.ConfigureSingleInstance();
+        this.ConfigureSuspensionDriver(desktop);
 
         this.Log().Info("Starting the settings app");
 
-        this.serviceProvider.GetRequiredService<IInitialSetupService>().InitializeKeyboardSwitchSetup();
+        AppLocator.Current.GetRequiredService<IInitialSetupService>().InitializeKeyboardSwitchSetup();
 
         try
         {
-            var appSettings = await this.serviceProvider.GetRequiredService<IAppSettingsService>().GetAppSettings();
+            var appSettings = await AppLocator.Current.GetRequiredService<IAppSettingsService>().GetAppSettings();
 
             var mainViewModel = new MainViewModel(appSettings);
             openExternally.InvokeCommand(mainViewModel.OpenExternally);
@@ -93,14 +61,14 @@ public class App : Application, IEnableLogger
                 .Select(p => p.AppTheme)
                 .StartWith(appSettings.AppTheme)
                 .DistinctUntilChanged()
-                .ObserveOn(RxApp.MainThreadScheduler)
-                .Subscribe(this.SetTheme);
+                .ObserveOn(RxSchedulers.MainThreadScheduler)
+                .Subscribe(theme => this.SetTheme(desktop, theme));
 
             mainViewModel.PreferencesSaved
                 .Select(p => p.AppThemeVariant)
                 .StartWith(appSettings.AppThemeVariant)
                 .DistinctUntilChanged()
-                .ObserveOn(RxApp.MainThreadScheduler)
+                .ObserveOn(RxSchedulers.MainThreadScheduler)
                 .Subscribe(this.SetThemeVariant);
 
             return mainViewModel;
@@ -112,76 +80,20 @@ public class App : Application, IEnableLogger
                 "Delete the settings and let the app recreate a compatible version",
                 e.Version);
 
-            this.desktop.Shutdown((int)ExitCode.IncompatibleSettingsVersion);
+            desktop.Shutdown((int)ExitCode.IncompatibleSettingsVersion);
             return null!;
         }
     }
 
-    private void ConfigureServices(IServiceCollection services)
+    private void ConfigureSuspensionDriver(IClassicDesktopStyleApplicationLifetime desktop)
     {
-        var configDirectory = GetConfigDirectory();
-        var environment = PlatformDependent(windows: () => "windows", macos: () => "macos", linux: () => "linux");
-        var genericProvider = this.JsonProvider(configDirectory, "appsettings.json");
-        var platformSpecificProvider = this.JsonProvider(configDirectory, $"appsettings.{environment}.json");
-        var config = new ConfigurationRoot([genericProvider, platformSpecificProvider]);
+        var autoSuspendHelper = new AutoSuspendHelper(desktop);
 
-        var logger = SerilogLoggerFactory.CreateLogger(config);
-        Log.Logger = logger;
-
-        services
-            .AddOptions()
-            .AddLogging(config => config.AddSerilog(logger))
-            .Configure<GlobalSettings>(config.GetSection("Settings"))
-            .AddSingleton(Messages.ResourceManager)
-            .AddSingleton<IActivationForViewFetcher>(new AvaloniaActivationForViewFetcher())
-            .AddSuspensionDriver()
-            .AddCoreKeyboardSwitchServices()
-            .AddNativeKeyboardSwitchServices(config)
-            .UseMicrosoftDependencyResolver();
-
-        Locator.CurrentMutable.UseSerilogFullLogger(logger);
-        Locator.CurrentMutable.InitializeSplat();
-
-        Locator.CurrentMutable.InitializeReactiveUI(RegistrationNamespace.Avalonia);
-        Locator.CurrentMutable.RegisterConstant(RxApp.TaskpoolScheduler, TaskPoolKey);
-        Locator.CurrentMutable.RegisterConstant<IBindingTypeConverter>(new EventMaskConverter());
-        Locator.CurrentMutable.RegisterConstant<IBindingTypeConverter>(new AppThemeConverter());
-        Locator.CurrentMutable.RegisterConstant<IBindingTypeConverter>(new AppThemeVariantConverter());
-
-        this.RegisterViews();
-
-        RxApp.MainThreadScheduler = AvaloniaScheduler.Instance;
-    }
-
-    private void RegisterViews()
-    {
-        Locator.CurrentMutable.Register<IViewFor<MainViewModel>>(() => new MainWindow());
-
-        Locator.CurrentMutable.Register<IViewFor<AboutViewModel>>(() => new AboutView());
-        Locator.CurrentMutable.Register<IViewFor<CharMappingViewModel>>(() => new CharMappingView());
-        Locator.CurrentMutable.Register<IViewFor<LayoutViewModel>>(() => new LayoutView());
-        Locator.CurrentMutable.Register<IViewFor<MainContentViewModel>>(() => new MainContentView());
-        Locator.CurrentMutable.Register<IViewFor<PreferencesViewModel>>(() => new PreferencesView());
-        Locator.CurrentMutable.Register<IViewFor<ServiceViewModel>>(() => new ServiceView());
-    }
-
-    private void ConfigureSuspensionDriver()
-    {
-        var autoSuspendHelper = new AutoSuspendHelper(this.desktop);
-
-        RxApp.SuspensionHost.CreateNewAppState = () => new AppState();
-        RxApp.SuspensionHost.SetupDefaultSuspendResume();
+        RxSuspension.SuspensionHost.CreateNewAppState = () => new AppState();
+        RxSuspension.SuspensionHost.SetupDefaultSuspendResume();
 
         autoSuspendHelper.OnFrameworkInitializationCompleted();
     }
-
-    private JsonConfigurationProvider JsonProvider(string directory, string fileName) =>
-        new(new JsonConfigurationSource
-        {
-            Path = fileName,
-            FileProvider = new PhysicalFileProvider(directory),
-            Optional = true
-        });
 
     private MainWindow CreateMainWindow(MainViewModel viewModel)
     {
@@ -206,17 +118,15 @@ public class App : Application, IEnableLogger
 
         Observable.Merge(windowStateChanged, windowResized, windowPositionChanged)
             .Throttle(TimeSpan.FromMilliseconds(500))
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(this.SaveAppState);
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
+            .Subscribe(() => this.SaveAppState(window));
 
         return window;
     }
 
-    private async Task SetWindowSizeFromState(MainWindow window)
+    private void SetWindowSizeFromState(MainWindow window)
     {
-        var state = await RxApp.SuspensionHost.ObserveAppState<AppState>().Take(1);
-
-        if (state.IsInitialized)
+        if (RxSuspension.SuspensionHost.AppState is AppState state && state.IsInitialized)
         {
             window.Width = state.WindowWidth;
             window.Height = state.WindowHeight;
@@ -224,7 +134,7 @@ public class App : Application, IEnableLogger
         }
     }
 
-    private void SetTheme(AppTheme appTheme)
+    private void SetTheme(IClassicDesktopStyleApplicationLifetime desktop, AppTheme appTheme)
     {
         this.Styles[0] = appTheme switch
         {
@@ -237,7 +147,7 @@ public class App : Application, IEnableLogger
             }
         };
 
-        if (this.desktop.MainWindow is MainWindow window)
+        if (desktop.MainWindow is MainWindow window)
         {
             var newMainWindow = this.CreateMainWindow(window.ViewModel!);
 
@@ -245,8 +155,8 @@ public class App : Application, IEnableLogger
             newMainWindow.Height = window.Height;
             newMainWindow.WindowState = window.WindowState;
 
-            this.desktop.MainWindow = newMainWindow;
-            this.desktop.MainWindow.Show();
+            desktop.MainWindow = newMainWindow;
+            desktop.MainWindow.Show();
 
             newMainWindow.Position = window.Position;
 
@@ -264,21 +174,16 @@ public class App : Application, IEnableLogger
         };
     }
 
-    private void SaveAppState()
+    private void SaveAppState(Window window)
     {
-        if (this.desktop.MainWindow == null)
-        {
-            return;
-        }
+        var state = RxSuspension.SuspensionHost.GetAppState<AppState>();
 
-        var state = RxApp.SuspensionHost.GetAppState<AppState>();
-
-        state.IsWindowMaximized = this.desktop.MainWindow.WindowState == WindowState.Maximized;
+        state.IsWindowMaximized = window.WindowState == WindowState.Maximized;
 
         if (!state.IsWindowMaximized)
         {
-            state.WindowWidth = this.desktop.MainWindow.Width;
-            state.WindowHeight = this.desktop.MainWindow.Height;
+            state.WindowWidth = window.Width;
+            state.WindowHeight = window.Height;
         }
 
         state.IsInitialized = true;
@@ -288,25 +193,19 @@ public class App : Application, IEnableLogger
     {
         this.Log().Info("Shutting down the settings app");
 
-        try
-        {
-            this.serviceProvider?.Dispose();
-        } finally
-        {
-            this.mutex?.ReleaseMutex();
-            this.mutex?.Dispose();
-        }
+        this.mutex?.ReleaseMutex();
+        this.mutex?.Dispose();
     }
 
-    private Subject<Unit> ConfigureSingleInstance(IServiceProvider services)
+    private Subject<Unit> ConfigureSingleInstance()
     {
         string assemblyName = Assembly.GetExecutingAssembly().GetName()?.Name ?? String.Empty;
 
-        this.mutex = services
+        this.mutex = AppLocator.Current
             .GetRequiredService<ISingleInstanceService>()
             .TryAcquireMutex(assemblyName);
 
-        var namedPipeService = services.GetRequiredService<INamedPipeService>();
+        var namedPipeService = AppLocator.Current.GetRequiredService<INamedPipeService>();
 
         namedPipeService.StartServer(assemblyName);
 

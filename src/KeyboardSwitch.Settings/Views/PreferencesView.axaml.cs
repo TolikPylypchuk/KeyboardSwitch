@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+
 using Convert = KeyboardSwitch.Settings.Converters.Convert;
 
 namespace KeyboardSwitch.Settings.Views;
@@ -66,25 +68,28 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
             .DisposeWith(disposables);
     }
 
+    // Binding converters don't work in ReactiveUI for combo-boxes because they want binders to work for type object
+    // but then they also want the binders to work for type string, so we need to override it explicitly here
+
     private void BindControls(CompositeDisposable disposables)
     {
-        this.Bind(this.ViewModel, vm => vm.ForwardModifierFirst, v => v.ForwardFirstComboBox.SelectedItem)
-            .DisposeWith(disposables);
+        this.BindModifierComboBox(
+            vm => vm.ForwardModifierFirst, v => v.ForwardFirstComboBox.SelectedItem, disposables);
 
-        this.Bind(this.ViewModel, vm => vm.ForwardModifierSecond, v => v.ForwardSecondComboBox.SelectedItem)
-            .DisposeWith(disposables);
+        this.BindModifierComboBox(
+            vm => vm.ForwardModifierSecond, v => v.ForwardSecondComboBox.SelectedItem, disposables);
 
-        this.Bind(this.ViewModel, vm => vm.ForwardModifierThird, v => v.ForwardThirdComboBox.SelectedItem)
-            .DisposeWith(disposables);
+        this.BindModifierComboBox(
+            vm => vm.ForwardModifierThird, v => v.ForwardThirdComboBox.SelectedItem, disposables);
 
-        this.Bind(this.ViewModel, vm => vm.BackwardModifierFirst, v => v.BackwardFirstComboBox.SelectedItem)
-            .DisposeWith(disposables);
+        this.BindModifierComboBox(
+            vm => vm.BackwardModifierFirst, v => v.BackwardFirstComboBox.SelectedItem, disposables);
 
-        this.Bind(this.ViewModel, vm => vm.BackwardModifierSecond, v => v.BackwardSecondComboBox.SelectedItem)
-            .DisposeWith(disposables);
+        this.BindModifierComboBox(
+            vm => vm.BackwardModifierSecond, v => v.BackwardSecondComboBox.SelectedItem, disposables);
 
-        this.Bind(this.ViewModel, vm => vm.BackwardModifierThird, v => v.BackwardThirdComboBox.SelectedItem)
-            .DisposeWith(disposables);
+        this.BindModifierComboBox(
+            vm => vm.BackwardModifierThird, v => v.BackwardThirdComboBox.SelectedItem, disposables);
 
         this.Bind(this.ViewModel, vm => vm.PressCount, v => v.PressCountBox.Value, v => v, v => (int)(v ?? 0M))
             .DisposeWith(disposables);
@@ -93,10 +98,34 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
             this.ViewModel, vm => vm.WaitMilliseconds, v => v.WaitMillisecondsBox.Value, v => v, v => (int)(v ?? 0M))
             .DisposeWith(disposables);
 
-        this.Bind(this.ViewModel, vm => vm.AppTheme, v => v.AppThemeComboBox.SelectedItem)
+        this.Bind(
+            this.ViewModel,
+            vm => vm.AppTheme,
+            v => v.AppThemeComboBox.SelectedItem,
+            Convert.AppThemeToString,
+            item => Convert.StringToAppTheme(item is string str ? str : String.Empty))
             .DisposeWith(disposables);
 
-        this.Bind(this.ViewModel, vm => vm.AppThemeVariant, v => v.AppThemeVariantComboBox.SelectedItem)
+        this.Bind(
+            this.ViewModel,
+            vm => vm.AppThemeVariant,
+            v => v.AppThemeVariantComboBox.SelectedItem,
+            Convert.AppThemeVariantToString,
+            item => Convert.StringToAppThemeVariant(item is string str ? str : String.Empty))
+            .DisposeWith(disposables);
+    }
+
+    private void BindModifierComboBox(
+        Expression<Func<PreferencesViewModel, EventMask>> vmProperty,
+        Expression<Func<PreferencesView, object?>> viewProperty,
+        CompositeDisposable disposables)
+    {
+        this.Bind(
+            this.ViewModel,
+            vmProperty,
+            viewProperty,
+            Convert.ModifierToString,
+            item => Convert.StringToModifier(item is string str ? str : String.Empty))
             .DisposeWith(disposables);
     }
 

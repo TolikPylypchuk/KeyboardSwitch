@@ -1,3 +1,5 @@
+using Avalonia.Metadata;
+
 namespace KeyboardSwitch.Settings.Localization;
 
 public sealed class TranslateExtension(string key) : MarkupExtension

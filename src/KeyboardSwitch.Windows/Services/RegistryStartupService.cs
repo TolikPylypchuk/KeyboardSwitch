@@ -6,7 +6,7 @@ internal class RegistryStartupService(IOptions<GlobalSettings> globalSettings, I
     : IStartupService
 {
     private const string StartupRegistryKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
-    private const string StartupRegistryName = "Keyboard Switch";
+    private const string StartupRegistryName = Constants.ApplicationName;
     private const string ExecutableExtension = ".exe";
 
     public bool IsStartupConfigured()

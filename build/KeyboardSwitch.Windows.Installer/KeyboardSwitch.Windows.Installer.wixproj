@@ -1,18 +1,24 @@
-﻿<Project Sdk="WixToolset.Sdk/6.0.1">
+<Project Sdk="WixToolset.Sdk/7.0.0">
+
   <PropertyGroup>
     <DefineConstants>Version=$(Version)</DefineConstants>
+    <AcceptEula>wix7</AcceptEula>
   </PropertyGroup>
+
   <ItemGroup>
     <BindPath Include="$(SolutionDir)artifacts\publish\" />
   </ItemGroup>
+
   <ItemGroup>
     <Content Include="Resources\Banner.bmp" />
     <Content Include="Resources\Dialog.bmp" />
     <Content Include="Resources\icon.ico" />
     <Content Include="Resources\License.rtf" />
   </ItemGroup>
+
   <ItemGroup>
-    <PackageReference Include="WixToolset.UI.wixext" Version="6.0.1" />
-    <PackageReference Include="WixToolset.Util.wixext" Version="6.0.1" />
+    <PackageReference Include="WixToolset.UI.wixext" Version="7.0.0" />
+    <PackageReference Include="WixToolset.Util.wixext" Version="7.0.0" />
   </ItemGroup>
+
 </Project>

@@ -17,8 +17,8 @@ public sealed class MainContentViewModel : ReactiveObject
     {
         this.removeLayoutsEnabled = new(preferencesModel.ShowUninstalledLayoutsMessage);
 
-        this.appSettingsService = appSettingsService ?? GetRequiredService<IAppSettingsService>();
-        this.startupService = startupService ?? GetRequiredService<IStartupService>();
+        this.appSettingsService = appSettingsService ?? AppLocator.Current.GetRequiredService<IAppSettingsService>();
+        this.startupService = startupService ?? AppLocator.Current.GetRequiredService<IStartupService>();
 
         this.CharMappingViewModel = new(charMappingModel, this.removeLayoutsEnabled);
         this.PreferencesViewModel = new(preferencesModel);

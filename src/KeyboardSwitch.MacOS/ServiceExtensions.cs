@@ -2,8 +2,8 @@ using System.Reactive.Concurrency;
 
 using Microsoft.Extensions.Configuration;
 
-using SharpHook;
 using SharpHook.Data;
+using SharpHook.Simulation;
 
 namespace KeyboardSwitch.MacOS;
 

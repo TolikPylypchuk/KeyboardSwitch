@@ -95,7 +95,7 @@ internal sealed class SharpHookService : DisposableService, IKeyboardHookService
     public async Task StartHook(CancellationToken token)
     {
         token.Register(this.hook.Stop);
-        await this.hook.RunAsync();
+        await this.hook.RunAsync(GlobalHookType.Keyboard);
     }
 
     protected override void Dispose(bool disposing)

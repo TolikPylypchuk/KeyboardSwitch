@@ -1,3 +1,5 @@
+using ReactiveUI.Avalonia.Splat;
+
 using Serilog;
 
 using Constants = Serilog.Core.Constants;
@@ -31,5 +33,8 @@ public static class Program
         AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .LogToTrace()
-            .UseReactiveUI();
+            .UseReactiveUIWithMicrosoftDependencyResolver(
+                services => services.ConfigureServices(),
+                sp => { },
+                reactiveUI => reactiveUI.WithSuspensionHost<AppState>());
 }

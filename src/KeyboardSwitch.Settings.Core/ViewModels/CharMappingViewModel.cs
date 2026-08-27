@@ -25,8 +25,9 @@ public sealed class CharMappingViewModel : ReactiveForm<CharMappingModel, CharMa
     {
         this.CharMappingModel = charMappingModel;
 
-        this.layoutService = layoutService ?? GetRequiredService<ILayoutService>();
-        this.autoConfigurationService = autoConfigurationService ?? GetRequiredService<IAutoConfigurationService>();
+        this.layoutService = layoutService ?? AppLocator.Current.GetRequiredService<ILayoutService>();
+        this.autoConfigurationService = autoConfigurationService
+            ?? AppLocator.Current.GetRequiredService<IAutoConfigurationService>();
 
         this.layoutsSource.Connect()
             .Transform(ch => new LayoutViewModel(ch))

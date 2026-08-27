@@ -29,4 +29,4 @@ global using Splat;
 
 global using static KeyboardSwitch.Core.Constants;
 global using static KeyboardSwitch.Settings.Core.Constants;
-global using static KeyboardSwitch.Settings.Core.ServiceUtil;
+global using static KeyboardSwitch.Settings.Core.ServiceExtensions;
