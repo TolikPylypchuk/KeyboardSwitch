@@ -10,6 +10,7 @@
     <File Path=".gitbook.yaml" />
     <File Path=".gitignore" />
     <File Path="CHANGELOG.md" />
+    <File Path="Directory.Packages.props" />
     <File Path="LICENSE" />
     <File Path="README.md" />
     <File Path="version" />

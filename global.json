@@ -1,4 +1,7 @@
 {
+  "msbuild-sdks": {
+    "WixToolset.Sdk": "7.0.0"
+  },
   "test": {
     "runner": "Microsoft.Testing.Platform"
   }

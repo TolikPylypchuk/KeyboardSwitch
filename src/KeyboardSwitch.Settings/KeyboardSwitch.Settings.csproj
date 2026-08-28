@@ -15,34 +15,34 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="12.1.1" />
-    <PackageReference Include="Avalonia.Desktop" Version="12.1.1" />
-    <PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.3" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="12.1.1" />
-    <PackageReference Include="Devolutions.AvaloniaTheme.MacOS" Version="2026.8.25" />
-    <PackageReference Include="DynamicData" Version="9.4.33" />
-    <PackageReference Include="FluentAvaloniaUI" Version="3.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.11" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.11" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.11" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.11" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.11" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="10.0.11" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.11" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.11" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.11" />
-    <PackageReference Include="ReactiveUI" Version="23.2.28" />
-    <PackageReference Include="ReactiveUI.Avalonia" Version="12.0.3" />
-    <PackageReference Include="ReactiveUI.Avalonia.Microsoft.Extensions.DependencyInjection" Version="12.0.3" />
-    <PackageReference Include="ReactiveUI.Validation" Version="7.1.0" />
-    <PackageReference Include="Serilog.Extensions.Logging" Version="10.0.0" />
-    <PackageReference Include="Splat" Version="19.4.1" />
-    <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="19.4.1" />
-    <PackageReference Include="Splat.Microsoft.Extensions.Logging" Version="19.4.1" />
-    <PackageReference Include="Splat.Serilog" Version="19.4.1" />
-    <PackageReference Include="System.Interactive" Version="7.0.1" />
-    <PackageReference Include="System.Interactive.Async" Version="7.0.1" />
-    <PackageReference Include="System.Reactive" Version="7.0.0" />
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="AvaloniaUI.DiagnosticsSupport" />
+    <PackageReference Include="Avalonia.Themes.Simple" />
+    <PackageReference Include="Devolutions.AvaloniaTheme.MacOS" />
+    <PackageReference Include="DynamicData" />
+    <PackageReference Include="FluentAvaloniaUI" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
+    <PackageReference Include="Microsoft.Extensions.Options" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
+    <PackageReference Include="ReactiveUI" />
+    <PackageReference Include="ReactiveUI.Avalonia" />
+    <PackageReference Include="ReactiveUI.Avalonia.Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="ReactiveUI.Validation" />
+    <PackageReference Include="Serilog.Extensions.Logging" />
+    <PackageReference Include="Splat" />
+    <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Splat.Microsoft.Extensions.Logging" />
+    <PackageReference Include="Splat.Serilog" />
+    <PackageReference Include="System.Interactive" />
+    <PackageReference Include="System.Interactive.Async" />
+    <PackageReference Include="System.Reactive" />
   </ItemGroup>
 
   <ItemGroup>
