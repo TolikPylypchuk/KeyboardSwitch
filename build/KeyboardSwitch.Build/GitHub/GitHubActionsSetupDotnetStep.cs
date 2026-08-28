@@ -20,7 +20,8 @@ public class GitHubActionsSetupDotnetStep : GitHubActionsStep
             writer.WriteLine("with:");
             using (writer.Indent())
             {
-                writer.WriteLine($"dotnet-version: 9.0.x");
+                var version = Environment.Version;
+                writer.WriteLine($"dotnet-version: {version.Major}.{version.Minor}.x");
             }
         }
     }
