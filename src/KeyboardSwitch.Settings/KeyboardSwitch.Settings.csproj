@@ -19,6 +19,7 @@
     <PackageReference Include="Avalonia.Desktop" />
     <PackageReference Include="AvaloniaUI.DiagnosticsSupport" />
     <PackageReference Include="Avalonia.Themes.Simple" />
+    <PackageReference Include="Avalonia.Wayland" Condition="$(TargetOS) == 'Linux'" />
     <PackageReference Include="Devolutions.AvaloniaTheme.MacOS" />
     <PackageReference Include="DynamicData" />
     <PackageReference Include="FluentAvaloniaUI" />

@@ -29,12 +29,21 @@ public static class Program
         }
     }
 
-    public static AppBuilder BuildAvaloniaApp() =>
-        AppBuilder.Configure<App>()
-            .UsePlatformDetect()
-            .LogToTrace()
+    public static AppBuilder BuildAvaloniaApp()
+    {
+        var builder = AppBuilder.Configure<App>().UsePlatformDetect();
+
+#if LINUX
+        if (Environment.GetEnvironmentVariable("WAYLAND_DISPLAY") is { Length: > 0 })
+        {
+            builder = builder.UseWayland();
+        }
+#endif
+
+        return builder.LogToTrace()
             .UseReactiveUIWithMicrosoftDependencyResolver(
                 services => services.ConfigureServices(),
                 sp => { },
                 reactiveUI => reactiveUI.WithSuspensionHost<AppState>());
+    }
 }
