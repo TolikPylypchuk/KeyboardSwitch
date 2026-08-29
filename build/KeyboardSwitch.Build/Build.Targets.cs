@@ -119,6 +119,8 @@ public partial class Build
         {
             Log.Information("Copying additional files to the publish directory");
 
+            LibUioHookXRecordFile.DeleteFile();
+
             this.SourceLinuxInstallFile.CopyToDirectory(PublishOutputDirectory);
             this.SourceLinuxUninstallFile.CopyToDirectory(PublishOutputDirectory);
             SourceLinuxIconFile.CopyToDirectory(PublishOutputDirectory, ExistsPolicy.FileOverwrite);
@@ -389,6 +391,8 @@ public partial class Build
         {
             Log.Information("Preparing files for creating a Debian package containing the published project");
 
+            LibUioHookXRecordFile.DeleteFile();
+
             SourceLinuxIconFile.CopyToDirectory(PublishOutputDirectory, ExistsPolicy.FileOverwrite);
 
             this.DebDirectory.CreateOrCleanDirectory();
@@ -432,6 +436,8 @@ public partial class Build
         .Executes(() =>
         {
             Log.Information("Preparing files for creating an RPM package containing the published project");
+
+            LibUioHookXRecordFile.DeleteFile();
 
             RpmDirectory.CreateOrCleanDirectory();
 

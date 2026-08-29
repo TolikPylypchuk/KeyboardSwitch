@@ -36,7 +36,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var provider = new TestProvider();
 
         using var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, provider, this.logger);
+            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, this.logger);
 
         var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -68,7 +68,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var provider = new TestProvider();
 
         using var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, provider, this.logger);
+            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, this.logger);
 
         var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -105,7 +105,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var provider = new TestProvider();
 
         using var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, provider, this.logger);
+            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, this.logger);
 
         var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -142,7 +142,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var provider = new TestProvider();
 
         using var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, provider, this.logger);
+            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, this.logger);
 
         var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -171,7 +171,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var provider = new TestProvider();
 
         using var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, provider, this.logger);
+            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, this.logger);
 
         var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -204,7 +204,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var provider = new TestProvider();
 
         using var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, provider, this.logger);
+            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, this.logger);
 
         var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -236,7 +236,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var provider = new TestProvider();
 
         using var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, provider, this.logger);
+            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, this.logger);
 
         var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -271,7 +271,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var provider = new TestProvider();
 
         using var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, provider, this.logger);
+            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, this.logger);
 
         var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -301,7 +301,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var provider = new TestProvider();
 
         var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, provider, this.logger);
+            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, this.logger);
 
         var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -326,7 +326,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var provider = new TestProvider();
 
         using var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, provider, this.logger);
+            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, this.logger);
 
         // Act
 
@@ -341,25 +341,6 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         Assert.False(hook.IsRunning);
     }
 
-    [Fact(DisplayName = "SharpHookService should disable KeyTyped events")]
-    public void KeyTypedEvents()
-    {
-        // Arrange
-
-        using var hook = new TestGlobalHook();
-        var scheduler = new TestScheduler();
-        var provider = new TestProvider();
-
-        // Act
-
-        using var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, provider, this.logger);
-
-        // Assert
-
-        Assert.False(((IGlobalHookProvider)provider).KeyTypedEnabled);
-    }
-
     [Fact(DisplayName = "SharpHookService should set the poll frequency for the Accessibility API")]
     public void AccessibilityProvider()
     {
@@ -372,7 +353,7 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         // Act
 
         using var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, provider, this.logger);
+            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, this.logger);
 
         // Assert
 

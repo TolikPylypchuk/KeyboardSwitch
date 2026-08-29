@@ -23,6 +23,9 @@ public partial class Build
     private static AbsolutePath AppSettingsLinux =>
         PublishOutputDirectory / "appsettings.linux.json";
 
+    private static AbsolutePath LibUioHookXRecordFile =>
+        PublishOutputDirectory / "libuiohook-xrecord.so";
+
     private AbsolutePath BuildDirectory =>
         this.Solution.KeyboardSwitch_Build.Directory;
 

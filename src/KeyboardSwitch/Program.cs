@@ -14,6 +14,9 @@ using KeyboardSwitch.Linux;
 
 using Serilog;
 
+using SharpHook.Data;
+using SharpHook.Providers;
+
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace KeyboardSwitch;
@@ -32,6 +35,8 @@ public static partial class Program
     private static ExitCode Run(string[] args)
     {
         Directory.SetCurrentDirectory(Path.GetDirectoryName(AppContext.BaseDirectory) ?? String.Empty);
+
+        UioHookProvider.Instance.SetLinuxMode(LinuxMode.AutoLowLevel);
 
         using var host = Host.CreateDefaultBuilder(args)
             .UseContentRoot(GetConfigDirectory())
