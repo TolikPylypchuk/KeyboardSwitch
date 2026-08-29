@@ -18,7 +18,7 @@ using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace KeyboardSwitch;
 
-public static class Program
+public static partial class Program
 {
     public static int Main(string[] args) =>
         (int)(ParseCommand(args) switch
@@ -58,19 +58,19 @@ public static class Program
             var mainLoopRunner = host.Services.GetRequiredService<IMainLoopRunner>();
             var applicationLifetime = host.Services.GetRequiredService<IHostApplicationLifetime>();
 
-            logger.LogInformation("Keyboard Switch service execution started");
+            LogExecutionStarted(logger);
 
             host.Start();
             mainLoopRunner.RunMainLoop(token: applicationLifetime.ApplicationStopping);
             host.WaitForShutdown();
 
-            logger.LogInformation("Keyboard Switch service execution stopped");
+            LogExecutionStopped(logger);
         } catch (Exception e) when (e is OperationCanceledException or TaskCanceledException)
         {
-            logger.LogInformation("Keyboard Switch service execution cancelled");
+            LogExecutionCancelled(logger);
         } catch (Exception e)
         {
-            logger.LogCritical(e, "Keyboard Switch service has crashed");
+            LogServiceCrashed(logger, e);
         } finally
         {
             mutex.ReleaseMutex();
@@ -111,17 +111,17 @@ public static class Program
 
         namedPipeService.ReceivedString
             .Where(command => command.IsCommand(ExternalCommand.Stop))
-            .Do(_ => logger.LogInformation("Stopping the service by external request"))
+            .Do(_ => LogStoppingService(logger))
             .SubscribeAsync(async _ => await host.StopAsync());
 
         namedPipeService.ReceivedString
             .Where(command => command.IsCommand(ExternalCommand.ReloadSettings))
-            .Do(_ => logger.LogInformation("Invalidating the settings by external request"))
+            .Do(_ => LogInvalidatingSettings(logger))
             .Subscribe(_ => settingsService.InvalidateAppSettings());
 
         namedPipeService.ReceivedString
             .Where(command => command.IsUnknownCommand())
-            .Subscribe(command => logger.LogWarning("External request '{Command}' is not recognized", command));
+            .Subscribe(command => LogExternalCommandNotRecognized(logger, command));
     }
 
     private static ExitCode ShowIfRunning()
@@ -153,4 +153,25 @@ public static class Program
             _ => Command.None
         };
     }
+
+    [LoggerMessage(LogLevel.Information, "Keyboard Switch service execution started")]
+    private static partial void LogExecutionStarted(ILogger logger);
+
+    [LoggerMessage(LogLevel.Information, "Keyboard Switch service execution stopped")]
+    private static partial void LogExecutionStopped(ILogger logger);
+
+    [LoggerMessage(LogLevel.Information, "Keyboard Switch service execution cancelled")]
+    private static partial void LogExecutionCancelled(ILogger logger);
+
+    [LoggerMessage(LogLevel.Critical, "Keyboard Switch service has crashed")]
+    private static partial void LogServiceCrashed(ILogger logger, Exception e);
+
+    [LoggerMessage(LogLevel.Information, "Stopping the service by external request")]
+    private static partial void LogStoppingService(ILogger logger);
+
+    [LoggerMessage(LogLevel.Information, "Invalidating the settings by external request")]
+    private static partial void LogInvalidatingSettings(ILogger logger);
+
+    [LoggerMessage(LogLevel.Warning, "External request '{Command}' is not recognized")]
+    private static partial void LogExternalCommandNotRecognized(ILogger logger, string command);
 }

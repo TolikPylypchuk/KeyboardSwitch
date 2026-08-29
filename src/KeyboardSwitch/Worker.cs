@@ -5,7 +5,7 @@ using SharpHook.Data;
 
 namespace KeyboardSwitch;
 
-public class Worker(
+public sealed partial class Worker(
     IKeyboardHookService keyboardHookService,
     ISwitchService switchService,
     IAppSettingsService settingsService,
@@ -19,44 +19,34 @@ public class Worker(
     {
         try
         {
-            logger.LogDebug("Configuring the Keyboard Switch service");
+            this.LogConfiguringService();
 
             await this.RegisterHotKeysFromSettings();
 
             settingsService.SettingsInvalidated.SubscribeAsync(this.RefreshHotKeys);
 
-            logger.LogDebug("Starting the service execution");
+            this.LogStartingServiceExecution();
 
             await keyboardHookService.StartHook(token);
         } catch (SettingsNotFoundException e)
         {
-            logger.LogCritical(e, "The settings file does not exist - open Keyboard Switch Settings to create it");
+            this.LogSettingsFileDoesNotExist(e);
             await exitService.Exit(ExitCode.SettingsDoNotExist, token);
         } catch (IncompatibleAppVersionException e)
         {
-            logger.LogCritical(
-                e,
-                "Incompatible app version found in settings: {Version}. " +
-                "Delete the settings and let the app recreate a compatible version",
-                e.Version);
-
+            this.LogIncompatibleAppVersion(e, e.Version);
             await exitService.Exit(ExitCode.IncompatibleSettingsVersion, token);
         } catch (HookException e) when (e.Result == UioHookResult.ErrorAxApiDisabled)
         {
-            logger.LogCritical(
-                e, "The Keyboard Switch service cannot start as it doesn't have access to the macOS Accessibility API");
-
+            this.LogAccessibilityApiDisabled(e);
             await exitService.Exit(ExitCode.MacOSAccessibilityDisabled, token);
         } catch (HookException e) when (e.Result == UioHookResult.ErrorAxApiRevoked)
         {
-            logger.LogCritical(
-                e,
-                "The Keyboard Switch service cannot run as its access to the macOS Accessibility API has been revoked");
-
+            this.LogAccessibilityApiRevoked(e);
             await exitService.Exit(ExitCode.MacOSAccessibilityDisabled, token);
         } catch (Exception e)
         {
-            logger.LogCritical(e, "Keyboard Switch service has crashed");
+            this.LogServiceCrashed(e);
             await exitService.Exit(ExitCode.Error, token);
         }
     }
@@ -69,7 +59,7 @@ public class Worker(
 
     private async Task RegisterHotKeysFromSettings()
     {
-        logger.LogDebug("Registering hot keys which initiate switching text");
+        this.LogRegisteringHotKeys();
         var settings = await settingsService.GetAppSettings(strict: true);
         this.RegisterHotKeys(settings.SwitchSettings);
     }
@@ -88,7 +78,7 @@ public class Worker(
 
     private async Task RefreshHotKeys()
     {
-        logger.LogDebug("Refreshing the hot key registrations which initiate switching text");
+        this.LogRefreshingKeyRegistrations();
         keyboardHookService.UnregisterAll();
         this.hookSubscription?.Dispose();
         await this.RegisterHotKeysFromSettings();
@@ -101,7 +91,45 @@ public class Worker(
             await switchService.SwitchText(direction);
         } catch (Exception e)
         {
-            logger.LogError(e, "Error when trying to switch text");
+            this.LogErrorWhenStarting(e);
         }
     }
+
+    [LoggerMessage(LogLevel.Debug, "Configuring the Keyboard Switch service")]
+    private partial void LogConfiguringService();
+
+    [LoggerMessage(LogLevel.Debug, "Starting the service execution")]
+    private partial void LogStartingServiceExecution();
+
+    [LoggerMessage(LogLevel.Critical, "The settings file does not exist - open Keyboard Switch Settings to create it")]
+    private partial void LogSettingsFileDoesNotExist(Exception e);
+
+    [LoggerMessage(
+        LogLevel.Critical,
+        "Incompatible app version found in settings: {Version}. " +
+        "Delete the settings and let the app recreate a compatible version")]
+    private partial void LogIncompatibleAppVersion(Exception e, Version? version);
+
+    [LoggerMessage(
+        LogLevel.Critical,
+        "The Keyboard Switch service cannot start as it doesn't have access to the macOS Accessibility API")]
+    private partial void LogAccessibilityApiDisabled(Exception e);
+
+    [LoggerMessage(
+        LogLevel.Critical,
+        "The Keyboard Switch service cannot run " +
+        "as its access to the macOS Accessibility API has been revoked")]
+    private partial void LogAccessibilityApiRevoked(Exception e);
+
+    [LoggerMessage(LogLevel.Critical, "Keyboard Switch service has crashed")]
+    private partial void LogServiceCrashed(Exception e);
+
+    [LoggerMessage(LogLevel.Debug, "Registering hot keys which initiate switching text")]
+    private partial void LogRegisteringHotKeys();
+
+    [LoggerMessage(LogLevel.Debug, "Refreshing the hot key registrations which initiate switching text")]
+    private partial void LogRefreshingKeyRegistrations();
+
+    [LoggerMessage(LogLevel.Error, "Error when trying to switch text")]
+    private partial void LogErrorWhenStarting(Exception e);
 }

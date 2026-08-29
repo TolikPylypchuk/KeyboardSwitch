@@ -2,7 +2,7 @@ using KeyboardSwitch.Core.Services.Users;
 
 namespace KeyboardSwitch.Core.Services.Infrastructure;
 
-internal sealed class SingleInstanceService(
+internal sealed partial class SingleInstanceService(
     INamedPipeService namedPipeService,
     IUserProvider userProvider,
     ILogger<SingleInstanceService> logger)
@@ -20,12 +20,11 @@ internal sealed class SingleInstanceService(
         bool hasHandle = mutex.WaitOne(5000, false);
         if (!hasHandle)
         {
-            const string message = "Timeout waiting for exclusive access on the mutex";
-            logger.LogError(message);
-            throw new TimeoutException(message);
+            this.LogMutexTimeout();
+            throw new TimeoutException("Timeout waiting for exclusive access on the mutex");
         }
 
-        logger.LogDebug("Acquired the global mutex");
+        this.LogAcquiredGlobalMutex();
 
         return mutex;
     }
@@ -37,10 +36,10 @@ internal sealed class SingleInstanceService(
             string? command = GetCommand();
             namedPipeService.Write(pipeName, command ?? String.Empty);
 
-            logger.LogDebug("Sent the command to the original instance: {Command}", command);
+            this.LogSentCommand(command);
         } catch (Exception e)
         {
-            logger.LogError(e, "Unknown error during sending a command to the original instance");
+            this.LogUnknownError(e);
         } finally
         {
             Environment.Exit(0);
@@ -51,4 +50,16 @@ internal sealed class SingleInstanceService(
         Environment.GetCommandLineArgs().Length <= 1
             ? null
             : StripCommandLineArgument(Environment.GetCommandLineArgs()[1]);
+
+    [LoggerMessage(LogLevel.Error, "Timeout waiting for exclusive access on the mutex")]
+    private partial void LogMutexTimeout();
+
+    [LoggerMessage(LogLevel.Debug, "Acquired the global mutex")]
+    private partial void LogAcquiredGlobalMutex();
+
+    [LoggerMessage(LogLevel.Debug, "Sent the command to the original instance: {Command}")]
+    private partial void LogSentCommand(string? command);
+
+    [LoggerMessage(LogLevel.Error, "Unknown error during sending a command to the original instance")]
+    private partial void LogUnknownError(Exception e);
 }

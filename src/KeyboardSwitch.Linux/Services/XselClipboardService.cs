@@ -2,7 +2,7 @@ using System.Reactive.Concurrency;
 
 namespace KeyboardSwitch.Linux.Services;
 
-internal sealed class XselClipboardService(IScheduler scheduler, ILogger<XselClipboardService> logger)
+internal sealed partial class XselClipboardService(IScheduler scheduler, ILogger<XselClipboardService> logger)
     : ClipboardServiceBase(scheduler)
 {
     private static readonly TimeSpan SmallDelay = TimeSpan.FromMilliseconds(50);
@@ -12,13 +12,13 @@ internal sealed class XselClipboardService(IScheduler scheduler, ILogger<XselCli
     {
         try
         {
-            logger.LogDebug("Using xsel to get text from the clipboard");
+            this.LogUsingXselToGetText();
 
             var xsel = this.StartXsel("-o --clipboard");
 
             if (xsel is null)
             {
-                logger.LogError("Could not start xsel to copy text");
+                this.LogCouldNotStartXselToCopyText();
                 return null;
             }
 
@@ -30,7 +30,7 @@ internal sealed class XselClipboardService(IScheduler scheduler, ILogger<XselCli
             return xsel.ExitCode == 0 && !String.IsNullOrEmpty(text) ? text : null;
         } catch (Exception e)
         {
-            logger.LogError(e, "Exception when copying text through xsel");
+            this.LogExceptionWhenCopyingText(e);
             return null;
         }
     }
@@ -39,13 +39,13 @@ internal sealed class XselClipboardService(IScheduler scheduler, ILogger<XselCli
     {
         try
         {
-            logger.LogDebug("Using xsel to set text into the clipboard");
+            this.LogUsingXselToSetText();
 
             var xsel = this.StartXsel("-i --clipboard");
 
             if (xsel is null)
             {
-                logger.LogError("Could not start xsel to paste text");
+                this.LogCouldNotStartXselToPasteText();
                 return;
             }
 
@@ -56,7 +56,7 @@ internal sealed class XselClipboardService(IScheduler scheduler, ILogger<XselCli
             await Task.Delay(SmallDelay);
         } catch (Exception e)
         {
-            logger.LogError(e, "Exception when pasting text through xsel");
+            this.LogExceptionWhenPastingText(e);
         }
     }
 
@@ -76,4 +76,22 @@ internal sealed class XselClipboardService(IScheduler scheduler, ILogger<XselCli
 
         return tokenSource.Token;
     }
+
+    [LoggerMessage(LogLevel.Debug, "Using xsel to get text from the clipboard")]
+    private partial void LogUsingXselToGetText();
+
+    [LoggerMessage(LogLevel.Error, "Could not start xsel to copy text")]
+    private partial void LogCouldNotStartXselToCopyText();
+
+    [LoggerMessage(LogLevel.Error, "Exception when copying text through xsel")]
+    private partial void LogExceptionWhenCopyingText(Exception e);
+
+    [LoggerMessage(LogLevel.Debug, "Using xsel to set text into the clipboard")]
+    private partial void LogUsingXselToSetText();
+
+    [LoggerMessage(LogLevel.Error, "Could not start xsel to paste text")]
+    private partial void LogCouldNotStartXselToPasteText();
+
+    [LoggerMessage(LogLevel.Error, "Exception when pasting text through xsel")]
+    private partial void LogExceptionWhenPastingText(Exception e);
 }

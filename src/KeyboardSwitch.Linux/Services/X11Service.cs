@@ -1,13 +1,15 @@
 namespace KeyboardSwitch.Linux.Services;
 
-internal sealed class X11Service : DisposableService
+internal sealed partial class X11Service : DisposableService
 {
     public delegate void EventHandler(ref XEvent xEvent);
 
     private readonly Dictionary<IntPtr, EventHandler> eventHandlers = [];
+    private readonly ILogger<X11Service> logger;
 
     public X11Service(ILogger<X11Service> logger)
     {
+        this.logger = logger;
         this.Display = this.OpenXDisplay();
 
         // For some reason without setting the synchronous mode on, switching the current keyboard layout
@@ -28,18 +30,18 @@ internal sealed class X11Service : DisposableService
         this.CustomSaveTargetsAtom = XLib.XInternAtom(
             this.Display, "KEYBOARD_SWITCH_SAVE_TARGETS_PROPERTY_ATOM", false);
 
-        logger.LogDebug("ATOM_PAIR: {Atom}", (ulong)this.AtomPairAtom);
-        logger.LogDebug("CLIPBOARD: {Atom}", (ulong)this.ClipboardAtom);
-        logger.LogDebug("CLIPBOARD_MANAGER: {Atom}", (ulong)this.ClipboardManagerAtom);
-        logger.LogDebug("INCR: {Atom}", (ulong)this.IncrAtom);
-        logger.LogDebug("MULTIPLE: {Atom}", (ulong)this.MultipleAtom);
-        logger.LogDebug("OEM_TEXT: {Atom}", (ulong)this.OemTextAtom);
-        logger.LogDebug("SAVE_TARGETS: {Atom}", (ulong)this.SaveTargetsAtom);
-        logger.LogDebug("STRING: {Atom}", (ulong)Atom.String);
-        logger.LogDebug("TARGETS: {Atom}", (ulong)this.TargetsAtom);
-        logger.LogDebug("UTF8_STRING: {Atom}", (ulong)this.Utf8StringAtom);
-        logger.LogDebug("UTF16_STRING: {Atom}", (ulong)this.Utf16StringAtom);
-        logger.LogDebug("KEYBOARD_SWITCH_SAVE_TARGETS_PROPERTY_ATOM: {Atom}", (ulong)this.CustomSaveTargetsAtom);
+        this.LogAtom("ATOM_PAIR", (ulong)this.AtomPairAtom);
+        this.LogAtom("CLIPBOARD", (ulong)this.AtomPairAtom);
+        this.LogAtom("CLIPBOARD_MANAGER", (ulong)this.AtomPairAtom);
+        this.LogAtom("INCR", (ulong)this.AtomPairAtom);
+        this.LogAtom("MULTIPLE", (ulong)this.AtomPairAtom);
+        this.LogAtom("OEM_TEXT", (ulong)this.AtomPairAtom);
+        this.LogAtom("SAVE_TARGETS", (ulong)this.SaveTargetsAtom);
+        this.LogAtom("STRING", (ulong)Atom.String);
+        this.LogAtom("TARGETS", (ulong)this.TargetsAtom);
+        this.LogAtom("UTF8_STRING", (ulong)this.Utf8StringAtom);
+        this.LogAtom("UTF16_STRING", (ulong)this.Utf16StringAtom);
+        this.LogAtom("KEYBOARD_SWITCH_SAVE_TARGETS_PROPERTY_ATOM", (ulong)this.CustomSaveTargetsAtom);
     }
 
     public XDisplayHandle Display { get; }
@@ -93,4 +95,7 @@ internal sealed class X11Service : DisposableService
                 throw new XException("Bad X11 server version");
         }
     }
+
+    [LoggerMessage(LogLevel.Debug, "{AtomName}: {Atom}")]
+    private partial void LogAtom(string atomName, ulong atom);
 }

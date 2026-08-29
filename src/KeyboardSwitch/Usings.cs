@@ -10,3 +10,5 @@ global using KeyboardSwitch.Core.Services.Switching;
 global using KeyboardSwitch.Core.Settings;
 
 global using static KeyboardSwitch.Core.Util;
+
+global using LogLevel = Microsoft.Extensions.Logging.LogLevel;

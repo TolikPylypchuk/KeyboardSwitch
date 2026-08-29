@@ -1,10 +1,10 @@
 namespace KeyboardSwitch.MacOS.Services;
 
-internal sealed class MacLayoutService(ILogger<MacLayoutService> logger) : CachingLayoutService
+internal sealed partial class MacLayoutService(ILogger<MacLayoutService> logger) : CachingLayoutService
 {
     public override KeyboardLayout GetCurrentKeyboardLayout()
     {
-        logger.LogDebug("Getting current keyboard layout");
+        this.LogGettingCurrentKeyboardLayout();
 
         using var source = HIToolbox.TISCopyCurrentKeyboardInputSource();
         return this.CreateKeyboardLayout(source);
@@ -12,7 +12,7 @@ internal sealed class MacLayoutService(ILogger<MacLayoutService> logger) : Cachi
 
     public override void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
     {
-        logger.LogDebug("Switching the current layout {Direction}", direction.AsString());
+        this.LogSwitchingCurrentLayout(direction);
 
         using var sources = HIToolbox.TISCreateInputSourceList(new CFDictionaryRef(), includeAllInstalled: false);
         long count = CoreFoundation.CFArrayGetCount(sources);
@@ -63,4 +63,10 @@ internal sealed class MacLayoutService(ILogger<MacLayoutService> logger) : Cachi
     private TISInputSourceRef GetFirstKeyboardSource(List<TISInputSourceRef> sources) =>
         sources.FirstOrDefault(IsKeyboardInputSource)
             ?? throw new ArgumentOutOfRangeException(nameof(sources), "No input sources are keyboard sources");
+
+    [LoggerMessage(LogLevel.Debug, "Getting current keyboard layout")]
+    private partial void LogGettingCurrentKeyboardLayout();
+
+    [LoggerMessage(LogLevel.Debug, "Switching the current layout: {Direction}")]
+    private partial void LogSwitchingCurrentLayout(SwitchDirection direction);
 }

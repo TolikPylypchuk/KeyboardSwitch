@@ -2,7 +2,7 @@ using System.IO.Abstractions;
 
 namespace KeyboardSwitch.MacOS.Services;
 
-internal sealed class LaunchdSetupService(
+internal sealed partial class LaunchdSetupService(
     IUserProvider userProvider,
     IFileSystem fileSystem,
     IOptions<GlobalSettings> globalSettings,
@@ -16,8 +16,11 @@ internal sealed class LaunchdSetupService(
     {
         if (firstTime)
         {
-            logger.LogInformation("Bootstrapping the Keyboard Switch service for the current user");
+            this.LogBootstrappingService();
             Process.Start(LaunchCtl, $"bootstrap gui/{currentUser} {serviceDescriptorPath}");
         }
     }
+
+    [LoggerMessage(LogLevel.Information, "Bootstrapping the Keyboard Switch service for the current user")]
+    private partial void LogBootstrappingService();
 }

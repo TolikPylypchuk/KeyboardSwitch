@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace KeyboardSwitch.Windows.Services;
 
-internal sealed class WinLayoutService(ILogger<WinLayoutService> logger) : CachingLayoutService
+internal sealed partial class WinLayoutService(ILogger<WinLayoutService> logger) : CachingLayoutService
 {
     private const string KeyboardLayoutsRegistryKey = @"SYSTEM\CurrentControlSet\Control\Keyboard Layouts";
     private const string KeyboardLayoutNameRegistryKeyFormat = KeyboardLayoutsRegistryKey + @"\{0}";
@@ -17,15 +17,14 @@ internal sealed class WinLayoutService(ILogger<WinLayoutService> logger) : Cachi
 
     public override KeyboardLayout GetCurrentKeyboardLayout()
     {
-        logger.LogDebug("Getting the keyboard layout of the foreground process");
+        this.LogGettingLayoutOfForegroundProcess();
         uint foregroundWindowThreadId = User32.GetWindowThreadProcessId(User32.GetForegroundWindow(), out _);
         return this.GetThreadKeyboardLayout(foregroundWindowThreadId);
     }
 
     public override void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
     {
-        logger.LogDebug(
-            "Switching the keyboard layout of the foregound process {Direction}", direction.AsString());
+        this.LogSwitchingLayoutOfForegroundProcess(direction);
 
         var foregroundWindowHandle = User32.GetForegroundWindow();
         uint foregroundWindowThreadId = User32.GetWindowThreadProcessId(foregroundWindowHandle, out uint _);
@@ -43,16 +42,16 @@ internal sealed class WinLayoutService(ILogger<WinLayoutService> logger) : Cachi
 
         if (success)
         {
-            logger.LogDebug("Posted the input language change message to the foreground window");
+            this.LogPostedMessageToForegroundWindow();
         } else
         {
-            logger.LogError("Failed to post the input language change message to the foreground window");
+            this.LogFailedToPostMessageToForegroundWindow();
         }
     }
 
     protected override List<KeyboardLayout> GetKeyboardLayoutsInternal()
     {
-        logger.LogDebug("Getting the list of installed keyboard layouts");
+        this.LogGettingListOfInstalledLayouts();
 
         int count = User32.GetKeyboardLayoutList(0, null);
         var keyboardLayoutIds = new User32.HKL[count];
@@ -61,7 +60,7 @@ internal sealed class WinLayoutService(ILogger<WinLayoutService> logger) : Cachi
 
         if (result == 0)
         {
-            logger.LogCritical("Could not get the list of installed keyboard layouts");
+            this.LogCouldNotGetListOfInstalledLayouts();
             throw new Win32Exception(result);
         }
 
@@ -115,8 +114,29 @@ internal sealed class WinLayoutService(ILogger<WinLayoutService> logger) : Cachi
             return CultureInfo.GetCultureInfo(lcid);
         } catch (CultureNotFoundException e)
         {
-            logger.LogError(e, "Did not find the culture for layout: {Layout} (LCID {Lcid})", layoutName, lcid);
+            this.LogDidNotFindCultureForLayout(layoutName, lcid, e);
             return CultureInfo.InvariantCulture;
         }
     }
+
+    [LoggerMessage(LogLevel.Debug, "Getting the keyboard layout of the foreground process")]
+    private partial void LogGettingLayoutOfForegroundProcess();
+
+    [LoggerMessage(LogLevel.Debug, "Switching the keyboard layout of the foregound process: {Direction}")]
+    private partial void LogSwitchingLayoutOfForegroundProcess(SwitchDirection direction);
+
+    [LoggerMessage(LogLevel.Debug, "Posted the input language change message to the foreground window")]
+    private partial void LogPostedMessageToForegroundWindow();
+
+    [LoggerMessage(LogLevel.Error, "Failed to post the input language change message to the foreground window")]
+    private partial void LogFailedToPostMessageToForegroundWindow();
+
+    [LoggerMessage(LogLevel.Debug, "Getting the list of installed keyboard layouts")]
+    private partial void LogGettingListOfInstalledLayouts();
+
+    [LoggerMessage(LogLevel.Critical, "Could not get the list of installed keyboard layouts")]
+    private partial void LogCouldNotGetListOfInstalledLayouts();
+
+    [LoggerMessage(LogLevel.Error, "Did not find the culture for layout: {Layout} (LCID {Lcid})")]
+    private partial void LogDidNotFindCultureForLayout(string layout, int lcid, Exception e);
 }

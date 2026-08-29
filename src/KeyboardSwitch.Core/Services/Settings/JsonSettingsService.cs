@@ -8,7 +8,7 @@ using KeyboardSwitch.Core.Services.AutoConfiguration;
 
 namespace KeyboardSwitch.Core.Services.Settings;
 
-internal sealed class JsonSettingsService(
+internal sealed partial class JsonSettingsService(
     ILayoutService layoutService,
     IAutoConfigurationService autoConfigurationService,
     IFileSystem fileSystem,
@@ -30,7 +30,7 @@ internal sealed class JsonSettingsService(
 
     public async Task<AppSettings> GetAppSettings(bool strict = false)
     {
-        logger.LogDebug("Getting the app settings");
+        this.LogGettingAppSettings();
 
         if (this.appSettings is not null)
         {
@@ -47,7 +47,7 @@ internal sealed class JsonSettingsService(
             throw new SettingsNotFoundException("Settings file not found");
         } else
         {
-            logger.LogInformation("App settings not found - creating default settings");
+            this.LogCreatingDefaultSettings();
             await this.SaveAppSettings(this.CreateDefaultAppSettings());
         }
 
@@ -75,7 +75,7 @@ internal sealed class JsonSettingsService(
 
     public async Task SaveAppSettings(AppSettings appSettings)
     {
-        logger.LogInformation("Saving the app settings");
+        this.LogSavingAppSettings();
 
         this.file.Directory?.Create();
         this.file.Truncate();
@@ -88,7 +88,7 @@ internal sealed class JsonSettingsService(
 
     public void InvalidateAppSettings()
     {
-        logger.LogInformation("Invalidating the app settings");
+        this.LogInvalidatingAppSettings();
 
         this.appSettings = null;
         this.settingsInvalidated.OnNext(Unit.Default);
@@ -98,10 +98,7 @@ internal sealed class JsonSettingsService(
     {
         var newVersion = this.GetAppVersion();
 
-        logger.LogInformation(
-            "Migrating settings from version {SourceVersion} to {TargetVersion}",
-            settings.AppVersion,
-            newVersion);
+        this.LogMigratingSettings(settings.AppVersion, newVersion);
 
         var newSettings = settings.AppVersion < VersionWithAppThemes
             ? settings with { AppTheme = this.GetDefaultTheme(), AppThemeVariant = AppThemeVariant.Auto }
@@ -139,7 +136,7 @@ internal sealed class JsonSettingsService(
             return autoConfigurationService.CreateCharMappings(layouts).ToImmutableDictionary();
         } catch (Exception e)
         {
-            logger.LogError(e, "Couldn't get auto-configured character mappings");
+            this.LogCouldNotGetMappings(e);
             return layouts.ToImmutableDictionary(layout => layout.Id, _ => String.Empty);
         }
     }
@@ -151,7 +148,7 @@ internal sealed class JsonSettingsService(
             return layoutService.GetKeyboardLayouts();
         } catch (Exception e)
         {
-            logger.LogError(e, "Couldn't get keyboard layouts");
+            this.LogCouldNotGetKeyboardLayouts(e);
             return [];
         }
     }
@@ -163,4 +160,25 @@ internal sealed class JsonSettingsService(
         OperatingSystem.IsMacOS()
             ? AppTheme.MacOS
             : OperatingSystem.IsLinux() ? AppTheme.Simple : AppTheme.Fluent;
+
+    [LoggerMessage(LogLevel.Debug, "Getting the app settings")]
+    private partial void LogGettingAppSettings();
+
+    [LoggerMessage(LogLevel.Information, "App settings not found - creating default settings")]
+    private partial void LogCreatingDefaultSettings();
+
+    [LoggerMessage(LogLevel.Information, "Saving the app settings")]
+    private partial void LogSavingAppSettings();
+
+    [LoggerMessage(LogLevel.Information, "Invalidating the app settings")]
+    private partial void LogInvalidatingAppSettings();
+
+    [LoggerMessage(LogLevel.Information, "Migrating settings from version {SourceVersion} to {TargetVersion}")]
+    private partial void LogMigratingSettings(Version sourceVersion, Version? targetVersion);
+
+    [LoggerMessage(LogLevel.Error, "Couldn't get auto-configured character mappings")]
+    private partial void LogCouldNotGetMappings(Exception e);
+
+    [LoggerMessage(LogLevel.Error, "Couldn't get keyboard layouts")]
+    private partial void LogCouldNotGetKeyboardLayouts(Exception e);
 }

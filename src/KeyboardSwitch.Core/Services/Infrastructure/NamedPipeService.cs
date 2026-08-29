@@ -6,7 +6,7 @@ using KeyboardSwitch.Core.Services.Users;
 namespace KeyboardSwitch.Core.Services.Infrastructure;
 
 [ExcludeFromCodeCoverage]
-internal sealed class NamedPipeService(
+internal sealed partial class NamedPipeService(
     IUserProvider userProvider,
     ILogger<NamedPipeService> logger)
     : DisposableService, INamedPipeService
@@ -28,13 +28,13 @@ internal sealed class NamedPipeService(
             client.Connect(connectTimeout);
         } catch (Exception e)
         {
-            logger.LogError(e, "Named pipe error");
+            this.LogNamedPipeError(e);
             return false;
         }
 
         if (!client.IsConnected)
         {
-            logger.LogError("The client is not connected");
+            this.LogClientNotConnected();
             return false;
         }
 
@@ -67,4 +67,10 @@ internal sealed class NamedPipeService(
 
     private string ScopePipeName(string pipeName) =>
         $"{userProvider.GetCurrentUser()}-{pipeName}";
+
+    [LoggerMessage(LogLevel.Error, "Named pipe error")]
+    private partial void LogNamedPipeError(Exception e);
+
+    [LoggerMessage(LogLevel.Error, "The client is not connected")]
+    private partial void LogClientNotConnected();
 }

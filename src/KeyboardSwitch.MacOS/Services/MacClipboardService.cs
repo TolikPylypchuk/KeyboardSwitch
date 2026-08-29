@@ -2,7 +2,7 @@ using System.Reactive.Concurrency;
 
 namespace KeyboardSwitch.MacOS.Services;
 
-internal sealed class MacClipboardService(IScheduler scheduler, ILogger<MacClipboardService> logger)
+internal sealed partial class MacClipboardService(IScheduler scheduler, ILogger<MacClipboardService> logger)
     : ClipboardServiceBase(scheduler)
 {
     private static readonly IntPtr NSString = AppKit.GetClass("NSString");
@@ -32,7 +32,7 @@ internal sealed class MacClipboardService(IScheduler scheduler, ILogger<MacClipb
 
     public override Task<string?> GetText()
     {
-        logger.LogDebug("Getting text from the clipboard");
+        this.LogGettingTextFromClipboard();
 
         var ptr = AppKit.SendMessage(GeneralPasteboard, StringForType, NSStringPboardType);
         var charArray = AppKit.SendMessage(ptr, Utf8String);
@@ -43,7 +43,7 @@ internal sealed class MacClipboardService(IScheduler scheduler, ILogger<MacClipb
 
     public override Task SetText(string text)
     {
-        logger.LogDebug("Setting text into the clipboard");
+        this.LogSettingTextIntoClipboard();
 
         IntPtr str = default;
         try
@@ -62,4 +62,10 @@ internal sealed class MacClipboardService(IScheduler scheduler, ILogger<MacClipb
 
         return Task.CompletedTask;
     }
+
+    [LoggerMessage(LogLevel.Debug, "Getting text from the clipboard")]
+    private partial void LogGettingTextFromClipboard();
+
+    [LoggerMessage(LogLevel.Debug, "Setting text into the clipboard")]
+    private partial void LogSettingTextIntoClipboard();
 }

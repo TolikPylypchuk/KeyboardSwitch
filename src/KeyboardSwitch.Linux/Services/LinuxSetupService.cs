@@ -2,7 +2,7 @@ using System.IO.Abstractions;
 
 namespace KeyboardSwitch.Linux.Services;
 
-internal sealed class LinuxSetupService(
+internal sealed partial class LinuxSetupService(
     IStartupService startupService,
     IUserProvider userProvider,
     IFileSystem fileSystem,
@@ -37,7 +37,7 @@ internal sealed class LinuxSetupService(
                 this.InstallGnomeExtensionFiles();
             } catch (Exception e)
             {
-                logger.LogError(e, "Exception when trying to deploy the GNOME extension files");
+                this.LogExceptionWhenDeployingExtensionFiles(e);
             }
         }
     }
@@ -76,4 +76,7 @@ internal sealed class LinuxSetupService(
         this.FileSystem.Directory.CreateDirectory(directory);
         return directory;
     }
+
+    [LoggerMessage(LogLevel.Error, "Exception when trying to deploy the GNOME extension files")]
+    private partial void LogExceptionWhenDeployingExtensionFiles(Exception e);
 }

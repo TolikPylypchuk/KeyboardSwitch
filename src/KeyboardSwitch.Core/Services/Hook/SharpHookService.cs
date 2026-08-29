@@ -4,7 +4,7 @@ using SharpHook.Providers;
 
 namespace KeyboardSwitch.Core.Services.Hook;
 
-internal sealed class SharpHookService : DisposableService, IKeyboardHookService
+internal sealed partial class SharpHookService : DisposableService, IKeyboardHookService
 {
     internal const uint AxPollFrequencySeconds = 5;
 
@@ -41,7 +41,7 @@ internal sealed class SharpHookService : DisposableService, IKeyboardHookService
         globalHookProvider.KeyTypedEnabled = false;
         accessibilityProvider.AxPollFrequency = AxPollFrequencySeconds;
 
-        this.hook.HookEnabled.Subscribe(e => this.logger.LogInformation("Created a global keyboard hook"));
+        this.hook.HookEnabled.Subscribe(e => this.LogCreatedGlobalHook());
 
         this.hookSubscription = this.hook.KeyPressed
             .Merge(this.hook.KeyReleased)
@@ -67,7 +67,7 @@ internal sealed class SharpHookService : DisposableService, IKeyboardHookService
 
         var hotKey = modifiers.ToArray().Merge();
 
-        this.logger.LogDebug("Registering a hot key: {HotKey}", hotKey);
+        this.LogRegisteringHotKey(hotKey);
 
         this.hotKeys.Add(hotKey);
 
@@ -77,19 +77,19 @@ internal sealed class SharpHookService : DisposableService, IKeyboardHookService
 
         this.hotKeyPressedSubscriptions.Add(subscription);
 
-        this.logger.LogDebug("Registered a hot key: {HotKey}", hotKey);
+        this.LogRegisteredHotKey(hotKey);
     }
 
     public void UnregisterAll()
     {
         this.ThrowIfDisposed();
 
-        this.logger.LogDebug("Unregistering all hot keys");
+        this.LogUnregisteringAllHotKeys();
 
         this.hotKeys.Clear();
         this.hotKeyPressedSubscriptions.Clear();
 
-        this.logger.LogDebug("Unregistered all hot keys");
+        this.LogUnregisteredAllHotKeys();
     }
 
     public async Task StartHook(CancellationToken token)
@@ -102,7 +102,7 @@ internal sealed class SharpHookService : DisposableService, IKeyboardHookService
     {
         if (disposing)
         {
-            this.logger.LogDebug("Destroying the global hook");
+            this.LogDestroyingGlobalHook();
 
             this.rawHotKeyPressedSubject.OnCompleted();
             this.hotKeyPressedSubject.OnCompleted();
@@ -140,7 +140,7 @@ internal sealed class SharpHookService : DisposableService, IKeyboardHookService
             return;
         }
 
-        this.logger.LogDebug("Received key down: {KeyCode}", keyCode);
+        this.LogReceivedKeyDown(keyCode);
 
         if (this.scheduler.Now - this.lastKeyPress > KeyPressWaitThreshold)
         {
@@ -159,7 +159,7 @@ internal sealed class SharpHookService : DisposableService, IKeyboardHookService
             return;
         }
 
-        this.logger.LogDebug("Received key up: {KeyCode}", keyCode);
+        this.LogReceivedKeyUp(keyCode);
 
         this.pressedKeys.Remove(keyCode);
         this.releasedKeys.Add(keyCode);
@@ -181,8 +181,35 @@ internal sealed class SharpHookService : DisposableService, IKeyboardHookService
 
         if (this.hotKeys.Any(hotKey => modifiers.IsSubsetKeyOf(hotKey)))
         {
-            this.logger.LogDebug("Hot key activated: {HotKey}", modifiers);
+            this.LogHotKeyActivated(modifiers);
             this.rawHotKeyPressedSubject.OnNext(modifiers);
         }
     }
+
+    [LoggerMessage(LogLevel.Information, "Created a global keyboard hook")]
+    private partial void LogCreatedGlobalHook();
+
+    [LoggerMessage(LogLevel.Debug, "Registering a hot key: {HotKey}")]
+    private partial void LogRegisteringHotKey(EventMask hotKey);
+
+    [LoggerMessage(LogLevel.Debug, "Registered a hot key: {HotKey}")]
+    private partial void LogRegisteredHotKey(EventMask hotKey);
+
+    [LoggerMessage(LogLevel.Debug, "Unregistering all hot keys")]
+    private partial void LogUnregisteringAllHotKeys();
+
+    [LoggerMessage(LogLevel.Debug, "Unregistered all hot keys")]
+    private partial void LogUnregisteredAllHotKeys();
+
+    [LoggerMessage(LogLevel.Debug, "Destroying the global hook")]
+    private partial void LogDestroyingGlobalHook();
+
+    [LoggerMessage(LogLevel.Debug, "Received key down: {KeyCode}")]
+    private partial void LogReceivedKeyDown(KeyCode keyCode);
+
+    [LoggerMessage(LogLevel.Debug, "Received key up: {KeyCode}")]
+    private partial void LogReceivedKeyUp(KeyCode keyCode);
+
+    [LoggerMessage(LogLevel.Debug, "Hot key activated: {HotKey}")]
+    private partial void LogHotKeyActivated(EventMask hotKey);
 }

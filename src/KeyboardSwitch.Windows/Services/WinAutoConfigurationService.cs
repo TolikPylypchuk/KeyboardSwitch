@@ -2,7 +2,7 @@ using System.Collections.Immutable;
 
 namespace KeyboardSwitch.Windows.Services;
 
-internal class WinAutoConfigurationService : AutoConfigurationServiceBase
+internal sealed class WinAutoConfigurationService : AutoConfigurationServiceBase
 {
     private const uint NoKeyboardStateModification = 1 << 2;
     private const int KeyStatePressed = 1 << 7;

@@ -1,6 +1,6 @@
 namespace KeyboardSwitch.Linux.Services;
 
-internal sealed class FreedesktopStartupService(
+internal sealed partial class FreedesktopStartupService(
     IOptions<GlobalSettings> globalSettings,
     IOptions<StartupSettings> startupSettings,
     ILogger<FreedesktopStartupService> logger)
@@ -28,19 +28,18 @@ internal sealed class FreedesktopStartupService(
 
     public bool IsStartupConfigured()
     {
-        logger.LogDebug("Checking if the Keyboard Switch service is configured to run on startup");
+        this.LogCheckingConfigured();
 
         bool isConfigured = File.Exists(this.startupFilePath);
 
-        logger.LogDebug("Keyboard Switch is configured to run on startup: {IsConfigured}", isConfigured);
+        this.LogConfiguedToRunOnStartup(isConfigured);
 
         return isConfigured;
     }
 
     public void ConfigureStartup(bool startup)
     {
-        logger.LogDebug(
-            "Configuring to {Action} running the Keyboard Switch service on startup", startup ? "start" : "stop");
+        this.LogConfiguringStartingOnStartup(startup ? "start" : "stop");
 
         if (startup)
         {
@@ -62,7 +61,18 @@ internal sealed class FreedesktopStartupService(
             File.Delete(this.startupFilePath);
         }
 
-        logger.LogDebug(
-            "Configured to {Action} running the KeyboardSwitch service on startup", startup ? "start" : "stop");
+        this.LogConfiguredStartingOnStartup(startup ? "start" : "stop");
     }
+
+    [LoggerMessage(LogLevel.Debug, "Checking if the Keyboard Switch service is configured to run on startup")]
+    private partial void LogCheckingConfigured();
+
+    [LoggerMessage(LogLevel.Debug, "Keyboard Switch is configured to run on startup: {IsConfigured}")]
+    private partial void LogConfiguedToRunOnStartup(bool isConfigured);
+
+    [LoggerMessage(LogLevel.Debug, "Configuring to {Action} running the Keyboard Switch service on startup")]
+    private partial void LogConfiguringStartingOnStartup(string action);
+
+    [LoggerMessage(LogLevel.Debug, "Configured to {Action} running the KeyboardSwitch service on startup")]
+    private partial void LogConfiguredStartingOnStartup(string action);
 }

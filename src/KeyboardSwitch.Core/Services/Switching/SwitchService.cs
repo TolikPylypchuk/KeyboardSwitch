@@ -1,6 +1,6 @@
 namespace KeyboardSwitch.Core.Services.Switching;
 
-public class SwitchService(
+public sealed partial class SwitchService(
     IClipboardService clipboard,
     ILayoutService layoutService,
     IUserActivitySimulator simulator,
@@ -10,14 +10,14 @@ public class SwitchService(
 {
     public async Task SwitchText(SwitchDirection direction)
     {
-        logger.LogDebug("Switching the text {Direction}", direction.AsString());
+        this.LogSwitchingText(direction);
 
         var settings = await settingsService.GetAppSettings();
         IAsyncDisposable? savedClipboardState = null;
 
         if (settings.InstantSwitching)
         {
-            logger.LogDebug("Saving the clipboard state and simulating copying");
+            this.LogSavingClipboardStateAndCopying();
 
             savedClipboardState = await clipboard.SaveClipboardState();
             await simulator.SimulateCopy();
@@ -33,7 +33,7 @@ public class SwitchService(
 
         if (settings.InstantSwitching)
         {
-            logger.LogDebug("Simulating pasting and restoring the state of the clipboard");
+            this.LogPastingAndRestoringClipboardState();
 
             await simulator.SimulatePaste();
 
@@ -77,4 +77,13 @@ public class SwitchService(
 
         return new String(newText);
     }
+
+    [LoggerMessage(LogLevel.Debug, "Switching the text: {Direction}")]
+    private partial void LogSwitchingText(SwitchDirection direction);
+
+    [LoggerMessage(LogLevel.Debug, "Saving the clipboard state and simulating copying")]
+    private partial void LogSavingClipboardStateAndCopying();
+
+    [LoggerMessage(LogLevel.Debug, "Simulating pasting and restoring the state of the clipboard")]
+    private partial void LogPastingAndRestoringClipboardState();
 }

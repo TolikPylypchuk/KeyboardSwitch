@@ -24,3 +24,5 @@ global using SharpHook.Simulation;
 
 global using static KeyboardSwitch.Core.Constants;
 global using static KeyboardSwitch.Core.Util;
+
+global using LogLevel = Microsoft.Extensions.Logging.LogLevel;

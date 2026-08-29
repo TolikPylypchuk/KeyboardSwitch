@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace KeyboardSwitch.Windows.Services;
 
-internal sealed class WinClipboardService(IScheduler scheduler, ILogger<WinClipboardService> logger)
+internal sealed partial class WinClipboardService(IScheduler scheduler, ILogger<WinClipboardService> logger)
     : ClipboardServiceBase(scheduler)
 {
     private const int RetryCount = 10;
@@ -12,7 +12,7 @@ internal sealed class WinClipboardService(IScheduler scheduler, ILogger<WinClipb
 
     public override async Task<string?> GetText()
     {
-        logger.LogDebug("Getting text from the clipboard");
+        this.LogGettingTextFromClipboard();
 
         using (await this.OpenClipboardAsync())
         {
@@ -36,7 +36,7 @@ internal sealed class WinClipboardService(IScheduler scheduler, ILogger<WinClipb
 
     public override async Task SetText(string text)
     {
-        logger.LogDebug("Setting text into the clipboard");
+        this.LogSettingTextIntoClipboard();
 
         using (await this.OpenClipboardAsync())
         {
@@ -66,4 +66,10 @@ internal sealed class WinClipboardService(IScheduler scheduler, ILogger<WinClipb
 
         return Disposable.Create(() => User32.CloseClipboard());
     }
+
+    [LoggerMessage(LogLevel.Debug, "Getting text from the clipboard")]
+    private partial void LogGettingTextFromClipboard();
+
+    [LoggerMessage(LogLevel.Debug, "Setting text into the clipboard")]
+    private partial void LogSettingTextIntoClipboard();
 }

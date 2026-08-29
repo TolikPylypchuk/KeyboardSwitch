@@ -21,9 +21,6 @@ public static class Extensions
         where T : struct =>
         items.Select(item => (T?)item);
 
-    public static string AsString(this SwitchDirection direction) =>
-        direction == SwitchDirection.Forward ? "forward" : "backward";
-
     public static IEnumerable<IEnumerable<T>> GetPowerSet<T>(this IList<T> list) =>
         from bit in Enumerable.Range(0, 1 << list.Count)
         select

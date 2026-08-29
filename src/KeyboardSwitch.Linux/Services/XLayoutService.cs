@@ -2,13 +2,13 @@ using System.Text;
 
 namespace KeyboardSwitch.Linux.Services;
 
-internal class XLayoutService(X11Service x11, ILogger<XLayoutService> logger) : CachingLayoutService
+internal partial class XLayoutService(X11Service x11, ILogger<XLayoutService> logger) : CachingLayoutService
 {
     private static readonly ImmutableList<string> NonSymbols = ["group", "inet", "pc"];
 
     public override KeyboardLayout GetCurrentKeyboardLayout()
     {
-        logger.LogDebug("Getting current keyboard layout");
+        this.LogGettingCurrentLayout();
 
         var allLayouts = this.GetKeyboardLayouts();
 
@@ -29,7 +29,7 @@ internal class XLayoutService(X11Service x11, ILogger<XLayoutService> logger) : 
 
     public override void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
     {
-        logger.LogDebug("Switching the current layout {Direction}", direction.AsString());
+        this.LogSwitchingCurrentLayout(direction);
 
         var allLayouts = this.GetKeyboardLayouts();
 
@@ -51,7 +51,7 @@ internal class XLayoutService(X11Service x11, ILogger<XLayoutService> logger) : 
 
     protected override unsafe List<KeyboardLayout> GetKeyboardLayoutsInternal()
     {
-        logger.LogDebug("Getting all keyboard layouts");
+        this.LogGettingAllLayouts();
 
         int major = XLib.XkbMajorVersion;
         int minor = XLib.XkbMinorVersion;
@@ -115,7 +115,7 @@ internal class XLayoutService(X11Service x11, ILogger<XLayoutService> logger) : 
 
     private string GetGroupName(Atom group)
     {
-        logger.LogDebug("Getting a group name for atom: {Group}", group);
+        this.LogGettingGroupName(group);
 
         using var atomNameHandle = XLib.XGetAtomName(x11.Display, group);
         var atomNameRawHandle = atomNameHandle.DangerousGetHandle();
@@ -127,7 +127,7 @@ internal class XLayoutService(X11Service x11, ILogger<XLayoutService> logger) : 
 
     private string? GetAllSymbols(Atom symbols)
     {
-        logger.LogDebug("Getting all symbol names");
+        this.LogGettingAllSymbolNames();
 
         using var symbolsHandle = XLib.XGetAtomName(x11.Display, symbols);
         var symbolsRawHandle = symbolsHandle.DangerousGetHandle();
@@ -179,7 +179,7 @@ internal class XLayoutService(X11Service x11, ILogger<XLayoutService> logger) : 
 
     private (List<string> SymbolNames, List<string> VariantNames) ParseSymbols(string symbols)
     {
-        logger.LogDebug("Parsing keyboard layout symbols");
+        this.LogParsingSymbols();
 
         bool inSymbol = false;
         var currentSymbol = new StringBuilder();
@@ -247,7 +247,7 @@ internal class XLayoutService(X11Service x11, ILogger<XLayoutService> logger) : 
 
     private int FindGroup(List<string> groupNames, List<string> symbolNames, int groupNum)
     {
-        logger.LogDebug("Finding group #{GroupNumber}", groupNum);
+        this.LogFindingGroup(groupNum);
 
         string sourceText = groupNames[groupNum];
         int result = groupNum;
@@ -267,7 +267,7 @@ internal class XLayoutService(X11Service x11, ILogger<XLayoutService> logger) : 
 
     private void InitKeyboard(XHandle keyboardHandle)
     {
-        logger.LogDebug("Initializing the keyboard");
+        this.LogInitializingKeyboard();
 
         XLib.XkbGetControls(x11.Display, XControlsDetailMask.XkbAllControlsMask, keyboardHandle);
         XLib.XkbGetNames(x11.Display, XNamesComponentMask.XkbSymbolsNameMask, keyboardHandle);
@@ -276,10 +276,37 @@ internal class XLayoutService(X11Service x11, ILogger<XLayoutService> logger) : 
 
     private void FreeKeyboard(XHandle keyboardHandle)
     {
-        logger.LogDebug("Freeing the keyboard");
+        this.LogFreeingKeyboard();
 
         XLib.XkbFreeControls(keyboardHandle, XControlsDetailMask.XkbAllControlsMask, true);
         XLib.XkbFreeNames(keyboardHandle, XNamesComponentMask.XkbSymbolsNameMask, true);
         XLib.XkbFreeNames(keyboardHandle, XNamesComponentMask.XkbGroupNamesMask, true);
     }
+
+    [LoggerMessage(LogLevel.Debug, "Getting current keyboard layout")]
+    private partial void LogGettingCurrentLayout();
+
+    [LoggerMessage(LogLevel.Debug, "Switching the current layout: {Direction}")]
+    private partial void LogSwitchingCurrentLayout(SwitchDirection direction);
+
+    [LoggerMessage(LogLevel.Debug, "Getting all keyboard layouts")]
+    private partial void LogGettingAllLayouts();
+
+    [LoggerMessage(LogLevel.Debug, "Getting a group name for atom: {Group}")]
+    private partial void LogGettingGroupName(Atom group);
+
+    [LoggerMessage(LogLevel.Debug, "Getting all symbol names")]
+    private partial void LogGettingAllSymbolNames();
+
+    [LoggerMessage(LogLevel.Debug, "Parsing keyboard layout symbols")]
+    private partial void LogParsingSymbols();
+
+    [LoggerMessage(LogLevel.Debug, "Finding group #{GroupNumber}")]
+    private partial void LogFindingGroup(int groupNumber);
+
+    [LoggerMessage(LogLevel.Debug, "Initializing the keyboard")]
+    private partial void LogInitializingKeyboard();
+
+    [LoggerMessage(LogLevel.Debug, "Freeing the keyboard")]
+    private partial void LogFreeingKeyboard();
 }

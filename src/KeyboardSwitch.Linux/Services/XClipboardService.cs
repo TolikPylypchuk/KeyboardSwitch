@@ -3,7 +3,7 @@ using System.Text;
 
 namespace KeyboardSwitch.Linux.Services;
 
-internal sealed class XClipboardService : ClipboardServiceBase
+internal sealed partial class XClipboardService : ClipboardServiceBase
 {
     private readonly X11Service x11;
     private readonly ILogger<XClipboardService> logger;
@@ -42,11 +42,11 @@ internal sealed class XClipboardService : ClipboardServiceBase
 
     public override async Task<string?> GetText()
     {
-        this.logger.LogDebug("Getting the text from the clipboard");
+        this.LogGettingTextFromClipboard();
 
         if (XLib.XGetSelectionOwner(this.x11.Display, this.x11.ClipboardAtom) == IntPtr.Zero)
         {
-            this.logger.LogDebug("Clipboard selection owner is absent, so there's no text to get");
+            this.LogClipbaordSelectionOwnerAbsent();
             return null;
         }
 
@@ -56,7 +56,7 @@ internal sealed class XClipboardService : ClipboardServiceBase
             ? textAtoms.FirstOrDefault(f => response.Contains(f))
             : Atom.None;
 
-        this.logger.LogDebug("Getting text in format {Atom}", (ulong)target);
+        this.LogGettingText((ulong)target);
 
         var data = await this.SendDataRequest(target != Atom.None ? target : this.x11.Utf8StringAtom);
         return data?.ToString();
@@ -64,7 +64,7 @@ internal sealed class XClipboardService : ClipboardServiceBase
 
     public override Task SetText(string text)
     {
-        this.logger.LogDebug("Setting the text into the clipboard");
+        this.LogSettingTextIntoClipboard();
 
         this.storedText = text;
         XLib.XSetSelectionOwner(this.x11.Display, this.x11.ClipboardAtom, this.windowHandle, IntPtr.Zero);
@@ -97,7 +97,7 @@ internal sealed class XClipboardService : ClipboardServiceBase
             this.requestedFormatsSource = new();
         }
 
-        this.logger.LogDebug("Sending a format request to X11");
+        this.LogSendingForwardRequestToX11();
 
         XLib.XConvertSelection(
             this.x11.Display,
@@ -117,7 +117,7 @@ internal sealed class XClipboardService : ClipboardServiceBase
             this.requestedDataSource = new();
         }
 
-        this.logger.LogDebug("Sending a data request to X11");
+        this.LogSendingDataRequestToX11();
 
         XLib.XConvertSelection(
             this.x11.Display, this.x11.ClipboardAtom, format, format, this.windowHandle, IntPtr.Zero);
@@ -143,7 +143,7 @@ internal sealed class XClipboardService : ClipboardServiceBase
             this.storeAtomSource = new();
         }
 
-        this.logger.LogDebug("Storing atoms in the clipboard manager of X11");
+        this.LogStoringAtomsInClipbaordManager();
 
         XLib.XChangeProperty(
             this.x11.Display,
@@ -170,17 +170,17 @@ internal sealed class XClipboardService : ClipboardServiceBase
     {
         if (xEvent.Type == XEventName.SelectionClear)
         {
-            this.logger.LogDebug("Selection clear event received from X11");
+            this.LogSelectionClearEventReceived();
             this.storeAtomSource?.TrySetResult(true);
             return;
         } else if (xEvent.Type == XEventName.SelectionRequest)
         {
-            this.logger.LogDebug("Selection request event received from X11");
+            this.LogSelectionRequestEventReceived();
             this.OnSelectionRequest(xEvent.SelectionRequestEvent);
         } else if (xEvent.Type == XEventName.SelectionNotify &&
             xEvent.SelectionEvent.Selection == this.x11.ClipboardAtom)
         {
-            this.logger.LogDebug("Selection notify event received from X11");
+            this.LogSelectionNotifyEventReceived();
             this.OnClipboardSelectionNotify(xEvent.SelectionEvent);
         }
     }
@@ -216,7 +216,7 @@ internal sealed class XClipboardService : ClipboardServiceBase
     {
         if (sel.Property == Atom.None)
         {
-            this.logger.LogDebug("X11 event doesn't have a property");
+            this.LogX11EventDoesNotHaveProperty();
             requestedFormatsSource?.TrySetResult(null);
             requestedDataSource?.TrySetResult(null);
         }
@@ -237,7 +237,7 @@ internal sealed class XClipboardService : ClipboardServiceBase
 
         if (numItems == 0)
         {
-            this.logger.LogDebug("No text is selected or no formats are available");
+            this.LogTextSelectedOrNoFormatAvailable();
             this.requestedFormatsSource?.TrySetResult(null);
             this.requestedDataSource?.TrySetResult(null);
         } else
@@ -252,23 +252,23 @@ internal sealed class XClipboardService : ClipboardServiceBase
                     var formats = new IntPtr[numItems];
                     Marshal.Copy(prop, formats, 0, formats.Length);
                     this.requestedFormatsSource?.TrySetResult(formats.Select(f => (Atom)f).ToArray());
-                    this.logger.LogDebug("Responded to the formats request");
+                    this.LogRespondedToFormatsRequest();
                 }
             } else if (this.GetStringEncoding(actualTypeAtom) is { } textEncondig)
             {
                 var text = textEncondig.GetString((byte*)prop.ToPointer(), numItems.ToInt32());
                 this.requestedDataSource?.TrySetResult(text);
-                this.logger.LogDebug("Responded to the data request using the data format");
+                this.LogRespondedToDataRequest();
             } else if (actualTypeAtom == this.x11.IncrAtom)
             {
                 this.requestedDataSource?.TrySetResult(null);
-                this.logger.LogDebug("Could not get selected text");
+                this.LogCouldNotGetSelectedText();
             } else
             {
                 var data = new byte[(int)numItems * (actualFormat / 8)];
                 Marshal.Copy(prop, data, 0, data.Length);
                 this.requestedDataSource?.TrySetResult(data);
-                this.logger.LogDebug("Responded to the data request using a fallback");
+                this.LogRespondedToDataRequestFallback();
             }
         }
 
@@ -277,7 +277,7 @@ internal sealed class XClipboardService : ClipboardServiceBase
 
     private unsafe Atom WriteTargetToProperty(Atom target, IntPtr window, Atom property)
     {
-        this.logger.LogDebug("Writing target {Target} to property {Property}", (ulong)target, (ulong)property);
+        this.LogWritingTargetToProperty((ulong)target, (ulong)property);
 
         if (target == this.x11.TargetsAtom)
         {
@@ -370,4 +370,55 @@ internal sealed class XClipboardService : ClipboardServiceBase
             var a when a == this.x11.Utf16StringAtom => Encoding.Unicode,
             _ => null
         };
+
+    [LoggerMessage(LogLevel.Debug, "Getting the text from the clipboard")]
+    private partial void LogGettingTextFromClipboard();
+
+    [LoggerMessage(LogLevel.Debug, "Clipboard selection owner is absent, so there's no text to get")]
+    private partial void LogClipbaordSelectionOwnerAbsent();
+
+    [LoggerMessage(LogLevel.Debug, "Getting text in format {Atom}")]
+    private partial void LogGettingText(ulong atom);
+
+    [LoggerMessage(LogLevel.Debug, "Setting the text into the clipboard")]
+    private partial void LogSettingTextIntoClipboard();
+
+    [LoggerMessage(LogLevel.Debug, "Sending a format request to X11")]
+    private partial void LogSendingForwardRequestToX11();
+
+    [LoggerMessage(LogLevel.Debug, "Sending a data request to X11")]
+    private partial void LogSendingDataRequestToX11();
+
+    [LoggerMessage(LogLevel.Debug, "Storing atoms in the clipboard manager of X11")]
+    private partial void LogStoringAtomsInClipbaordManager();
+
+    [LoggerMessage(LogLevel.Debug, "Selection clear event received from X11")]
+    private partial void LogSelectionClearEventReceived();
+
+    [LoggerMessage(LogLevel.Debug, "Selection request event received from X11")]
+    private partial void LogSelectionRequestEventReceived();
+
+    [LoggerMessage(LogLevel.Debug, "Selection notify event received from X11")]
+    private partial void LogSelectionNotifyEventReceived();
+
+    [LoggerMessage(LogLevel.Debug, "X11 event doesn't have a property")]
+    private partial void LogX11EventDoesNotHaveProperty();
+
+    [LoggerMessage(LogLevel.Debug, "No text is selected or no formats are available")]
+    private partial void LogTextSelectedOrNoFormatAvailable();
+
+    [LoggerMessage(LogLevel.Debug, "Responded to the formats request")]
+    private partial void LogRespondedToFormatsRequest();
+
+    [LoggerMessage(LogLevel.Debug, "Responded to the data request using the data format")]
+    private partial void LogRespondedToDataRequest();
+
+    [LoggerMessage(LogLevel.Debug, "Could not get selected text")]
+    private partial void LogCouldNotGetSelectedText();
+
+    [LoggerMessage(LogLevel.Debug, "Responded to the data request using a fallback")]
+    private partial void LogRespondedToDataRequestFallback();
+
+    [LoggerMessage(LogLevel.Debug, "Writing target {Target} to property {Property}")]
+    private partial void LogWritingTargetToProperty(ulong target, ulong property);
 }

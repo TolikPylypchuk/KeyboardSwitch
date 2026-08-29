@@ -1,6 +1,6 @@
 namespace KeyboardSwitch.Linux.Services;
 
-internal sealed class GnomeLayoutService(X11Service x11, ILogger<GnomeLayoutService> logger)
+internal sealed partial class GnomeLayoutService(X11Service x11, ILogger<GnomeLayoutService> logger)
     : XLayoutService(x11, logger)
 {
     private const string SwitchLayout = "switch-layout@tolik.io";
@@ -25,7 +25,7 @@ internal sealed class GnomeLayoutService(X11Service x11, ILogger<GnomeLayoutServ
 
     private void EnableSwitchLayoutExtension()
     {
-        logger.LogDebug("Enabling the Switch Layout extension for GNOME");
+        this.LogEnablingGnomeExtension();
 
         var command = Process.Start(Bash, $"-c \"command -v {GnomeExtensions}\"");
         command.WaitForExit();
@@ -42,4 +42,7 @@ internal sealed class GnomeLayoutService(X11Service x11, ILogger<GnomeLayoutServ
 
         Thread.Sleep(50);
     }
+
+    [LoggerMessage(LogLevel.Debug, "Enabling the Switch Layout extension for GNOME")]
+    private partial void LogEnablingGnomeExtension();
 }

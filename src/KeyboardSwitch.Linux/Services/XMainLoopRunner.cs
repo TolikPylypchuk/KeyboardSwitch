@@ -2,7 +2,7 @@ using KeyboardSwitch.Core.Services.Settings;
 
 namespace KeyboardSwitch.Linux.Services;
 
-internal unsafe sealed class XMainLoopRunner(
+internal unsafe sealed partial class XMainLoopRunner(
     X11Service x11,
     IAppSettingsService settingsService,
     ILogger<XMainLoopRunner> logger)
@@ -16,13 +16,13 @@ internal unsafe sealed class XMainLoopRunner(
 
         if (settings.UseXsel)
         {
-            logger.LogInformation("Will use xsel for clipboard integration, so no need to run the X11 event loop");
+            this.LogNoNeedForEventLoop();
             return;
         }
 
         var (epoll, sigread) = this.InitializeEPoll();
 
-        logger.LogInformation("Running the main loop to listen for X11 events");
+        this.LogRunningMainLoop();
 
         while (!token.IsCancellationRequested)
         {
@@ -51,7 +51,7 @@ internal unsafe sealed class XMainLoopRunner(
 
     private (int EPoll, int SigRead) InitializeEPoll()
     {
-        logger.LogInformation("Creating an epoll connection to listen for X11 events");
+        this.LogCreatingEpollConnection();
 
         int epoll = LibC.EPollCreate1(0);
 
@@ -115,7 +115,7 @@ internal unsafe sealed class XMainLoopRunner(
             {
                 if (x11.TryGetEventHandler(xEvent.AnyEvent.Window, out var handler))
                 {
-                    logger.LogDebug("Handling an event from X11");
+                    this.LogHandlingEvent();
                     handler(ref xEvent);
                 }
             } finally
@@ -127,4 +127,17 @@ internal unsafe sealed class XMainLoopRunner(
             }
         }
     }
+
+    [LoggerMessage(
+        LogLevel.Information, "Will use xsel for clipboard integration, so no need to run the X11 event loop")]
+    private partial void LogNoNeedForEventLoop();
+
+    [LoggerMessage(LogLevel.Information, "Running the main loop to listen for X11 events")]
+    private partial void LogRunningMainLoop();
+
+    [LoggerMessage(LogLevel.Information, "Creating an epoll connection to listen for X11 events")]
+    private partial void LogCreatingEpollConnection();
+
+    [LoggerMessage(LogLevel.Debug, "Handling an event from X11")]
+    private partial void LogHandlingEvent();
 }

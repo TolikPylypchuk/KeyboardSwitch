@@ -5,7 +5,7 @@ using KeyboardSwitch.Core.Services.Users;
 
 namespace KeyboardSwitch.Core.Services.InitialSetup;
 
-public class StartupSetupService(
+public partial class StartupSetupService(
     IStartupService startupService,
     IUserProvider userProvider,
     IFileSystem fileSystem,
@@ -17,8 +17,11 @@ public class StartupSetupService(
     {
         if (firstTime)
         {
-            logger.LogInformation("Setting the Keyboard Switch service to start at login");
+            this.LogSettingStartAtLogin();
             startupService.ConfigureStartup(startup: true);
         }
     }
+
+    [LoggerMessage(LogLevel.Information, "Setting the Keyboard Switch service to start at login")]
+    private partial void LogSettingStartAtLogin();
 }

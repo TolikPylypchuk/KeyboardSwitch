@@ -1,6 +1,6 @@
 namespace KeyboardSwitch.MacOS.Services;
 
-internal sealed class LaunchdStartupService(
+internal sealed partial class LaunchdStartupService(
     IUserProvider userProvider,
     IOptions<LaunchdSettings> launchdSettings,
     ILogger<LaunchdStartupService> logger)
@@ -10,7 +10,7 @@ internal sealed class LaunchdStartupService(
 
     public bool IsStartupConfigured()
     {
-        logger.LogDebug("Checking if the Keyboard Switch service is configured to run on startup");
+        this.LogCheckingIfServiceConfiguredToRunAtStartup();
 
         string? user = userProvider.GetCurrentUser();
 
@@ -28,9 +28,7 @@ internal sealed class LaunchdStartupService(
             }
         } else
         {
-            logger.LogError(
-                "Could not check whether the Keyboard Switch service is configured to run on startup - " +
-                "couldn't find the current user's ID");
+            this.LogCheckCouldNotFileCurrentUserId();
         }
 
         return false;
@@ -38,8 +36,7 @@ internal sealed class LaunchdStartupService(
 
     public void ConfigureStartup(bool startup)
     {
-        logger.LogDebug(
-            "Configuring to {Action} running the Keyboard Switch service on startup", startup ? "start" : "stop");
+        this.LogConfiguringRunningAtStartup(startup ? "start" : "stop");
 
         string? user = userProvider.GetCurrentUser();
 
@@ -47,14 +44,31 @@ internal sealed class LaunchdStartupService(
         {
             Process.Start(LaunchCtl, $"{(startup ? "enable" : "disable")} gui/{user}/{this.serivceName}");
 
-            logger.LogDebug(
-                "Configured to {Action} running the Keyboard Switch service on startup", startup ? "start" : "stop");
+            this.LogConfiguredRunningAtStartup(startup ? "start" : "stop");
         } else
         {
-            logger.LogError(
-                "Could not configure to {Action} running the Keyboard Switch service on startup - " +
-                "couldn't find the current user's ID",
-                startup ? "start" : "stop");
+            this.LogConfigureCouldNotFileCurrentUserId(startup ? "start" : "stop");
         }
     }
+
+    [LoggerMessage(LogLevel.Debug, "Checking if the Keyboard Switch service is configured to run on startup")]
+    private partial void LogCheckingIfServiceConfiguredToRunAtStartup();
+
+    [LoggerMessage(
+        LogLevel.Error,
+        "Could not check whether the Keyboard Switch service is configured to run on startup - " +
+        "couldn't find the current user's ID")]
+    private partial void LogCheckCouldNotFileCurrentUserId();
+
+    [LoggerMessage(LogLevel.Debug, "Configuring to {Action} running the Keyboard Switch service on startup")]
+    private partial void LogConfiguringRunningAtStartup(string action);
+
+    [LoggerMessage(LogLevel.Debug, "Configured to {Action} running the Keyboard Switch service on startup")]
+    private partial void LogConfiguredRunningAtStartup(string action);
+
+    [LoggerMessage(
+        LogLevel.Error,
+        "Could not configure to {Action} running the Keyboard Switch service on startup - " +
+        "couldn't find the current user's ID")]
+    private partial void LogConfigureCouldNotFileCurrentUserId(string action);
 }

@@ -34,8 +34,4 @@
     <ProjectReference Include="..\..\src\KeyboardSwitch.Core\KeyboardSwitch.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Using Include="Xunit" />
-  </ItemGroup>
-
 </Project>

@@ -6,7 +6,7 @@ using KeyboardSwitch.Core.Services.Users;
 
 namespace KeyboardSwitch.Core.Services.InitialSetup;
 
-public abstract class InitialSetupServiceBase(
+public abstract partial class InitialSetupServiceBase(
     IUserProvider userProvider,
     IFileSystem fileSystem,
     IOptions<GlobalSettings> globalSettings,
@@ -24,7 +24,7 @@ public abstract class InitialSetupServiceBase(
 
         if (String.IsNullOrEmpty(currentUser))
         {
-            logger.LogError("Could not get current user - no initial setup will be done");
+            this.LogCouldNotGetCurrentUser();
             return;
         }
 
@@ -39,7 +39,7 @@ public abstract class InitialSetupServiceBase(
             }
         } catch (Exception e)
         {
-            logger.LogError(e, "Error during initial setup");
+            this.LogInitialSetupError(e);
         }
     }
 
@@ -103,7 +103,16 @@ public abstract class InitialSetupServiceBase(
             this.DoInitialSetup(currentUser, firstTime);
         } catch (Exception e)
         {
-            logger.LogError(e, "Exception when doing the initial setup");
+            this.LogInitialSetupException(e);
         }
     }
+
+    [LoggerMessage(LogLevel.Error, "Could not get current user - no initial setup will be done")]
+    private partial void LogCouldNotGetCurrentUser();
+
+    [LoggerMessage(LogLevel.Error, "Error during initial setup")]
+    private partial void LogInitialSetupError(Exception e);
+
+    [LoggerMessage(LogLevel.Error, "Exception when doing the initial setup")]
+    private partial void LogInitialSetupException(Exception e);
 }

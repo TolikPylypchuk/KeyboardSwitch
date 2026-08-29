@@ -2,7 +2,9 @@ using Microsoft.Extensions.Options;
 
 namespace KeyboardSwitch.Windows.Services;
 
-internal class RegistryStartupService(IOptions<GlobalSettings> globalSettings, ILogger<RegistryStartupService> logger)
+internal sealed partial class RegistryStartupService(
+    IOptions<GlobalSettings> globalSettings,
+    ILogger<RegistryStartupService> logger)
     : IStartupService
 {
     private const string StartupRegistryKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
@@ -11,20 +13,19 @@ internal class RegistryStartupService(IOptions<GlobalSettings> globalSettings, I
 
     public bool IsStartupConfigured()
     {
-        logger.LogDebug("Checking if the Keyboard Switch service is configured to run on startup");
+        this.LogCheckingServiceConfiguredToRunAtStartup();
 
         using var key = Registry.CurrentUser.OpenSubKey(StartupRegistryKey);
         bool isConfigured = key?.GetValue(StartupRegistryName) != null;
 
-        logger.LogDebug("Keyboard Switch is configured to run on startup: {IsConfigured}", isConfigured);
+        this.LogServiceConfiguredToRunAtStartup(isConfigured);
 
         return isConfigured;
     }
 
     public void ConfigureStartup(bool startup)
     {
-        logger.LogDebug(
-            "Configuring to {Action} running the Keyboard Switch service on startup", startup ? "start" : "stop");
+        this.LogConfiguringServiceConfiguredToRunAtStartup(startup ? "start" : "stop");
 
         using var startupKey = Registry.CurrentUser.OpenSubKey(StartupRegistryKey, true);
 
@@ -36,8 +37,7 @@ internal class RegistryStartupService(IOptions<GlobalSettings> globalSettings, I
             startupKey?.DeleteValue(StartupRegistryName);
         }
 
-        logger.LogDebug(
-            "Configured to {Action} running the Keyboard Switch service on startup", startup ? "start" : "stop");
+        this.LogConfiguredServiceConfiguredToRunAtStartup(startup ? "start" : "stop");
     }
 
     private string GetServicePath()
@@ -49,4 +49,16 @@ internal class RegistryStartupService(IOptions<GlobalSettings> globalSettings, I
 
         return $"\"{Path.GetFullPath(path)}\"";
     }
+
+    [LoggerMessage(LogLevel.Debug, "Checking if the Keyboard Switch service is configured to run on startup")]
+    private partial void LogCheckingServiceConfiguredToRunAtStartup();
+
+    [LoggerMessage(LogLevel.Debug, "Keyboard Switch is configured to run on startup: {IsConfigured}")]
+    private partial void LogServiceConfiguredToRunAtStartup(bool isConfigured);
+
+    [LoggerMessage(LogLevel.Debug, "Configuring to {Action} running the Keyboard Switch service on startup")]
+    private partial void LogConfiguringServiceConfiguredToRunAtStartup(string action);
+
+    [LoggerMessage(LogLevel.Debug, "Configured to {Action} running the Keyboard Switch service on startup")]
+    private partial void LogConfiguredServiceConfiguredToRunAtStartup(string action);
 }
