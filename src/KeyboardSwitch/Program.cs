@@ -96,7 +96,9 @@ public static partial class Program
     private static void ConfigureLogging(HostBuilderContext context, ILoggingBuilder logging) =>
         logging
             .ClearProviders()
-            .AddSerilog(SerilogLoggerFactory.CreateLogger(context.Configuration), dispose: true);
+            .AddSerilog(
+                SerilogLoggerFactory.CreateLogger(context.Configuration, addLibUioHookLogging: true),
+                dispose: true);
 
     private static Mutex ConfigureSingleInstance(IServiceProvider services) =>
         services

@@ -2,6 +2,8 @@ using ReactiveUI.Avalonia.Splat;
 
 using Serilog;
 
+using SharpHook.Providers;
+
 using Constants = Serilog.Core.Constants;
 
 namespace KeyboardSwitch.Settings;
@@ -14,6 +16,8 @@ public static class Program
         try
         {
             Directory.SetCurrentDirectory(Path.GetDirectoryName(AppContext.BaseDirectory) ?? String.Empty);
+
+            UioHookProvider.Instance.SetLinuxMode(LinuxMode.AutoLowLevel);
 
             return BuildAvaloniaApp()
                 .StartWithClassicDesktopLifetime(args);
