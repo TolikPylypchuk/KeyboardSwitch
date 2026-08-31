@@ -12,6 +12,12 @@ internal unsafe sealed partial class XMainLoopRunner(
 
     public void RunMainLoop(CancellationToken token)
     {
+        if (LinuxSessionDetector.IsRunningOnWayland)
+        {
+            this.LogWayland();
+            return;
+        }
+
         var settings = settingsService.GetAppSettings().Result;
 
         if (settings.UseXsel)
@@ -128,8 +134,10 @@ internal unsafe sealed partial class XMainLoopRunner(
         }
     }
 
-    [LoggerMessage(
-        LogLevel.Information, "Will use xsel for clipboard integration, so no need to run the X11 event loop")]
+    [LoggerMessage(LogLevel.Debug, "No need to run the X11 event loop since the current session is Wayland")]
+    private partial void LogWayland();
+
+    [LoggerMessage(LogLevel.Debug, "Will use xsel for clipboard integration, so no need to run the X11 event loop")]
     private partial void LogNoNeedForEventLoop();
 
     [LoggerMessage(LogLevel.Information, "Running the main loop to listen for X11 events")]

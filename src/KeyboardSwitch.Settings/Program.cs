@@ -1,3 +1,7 @@
+#if LINUX
+using KeyboardSwitch.Linux;
+#endif
+
 using ReactiveUI.Avalonia.Splat;
 
 using Serilog;
@@ -38,7 +42,7 @@ public static class Program
         var builder = AppBuilder.Configure<App>().UsePlatformDetect();
 
 #if LINUX
-        if (Environment.GetEnvironmentVariable("WAYLAND_DISPLAY") is { Length: > 0 })
+        if (LinuxSessionDetector.IsRunningOnWayland)
         {
             builder = builder.UseWayland();
         }

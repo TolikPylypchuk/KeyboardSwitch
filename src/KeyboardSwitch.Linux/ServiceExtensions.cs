@@ -38,6 +38,11 @@ public static class ServiceExtensions
 
     private static IClipboardService CreateClipboardService(this IServiceProvider sp)
     {
+        if (LinuxSessionDetector.IsRunningOnWayland)
+        {
+            return ActivatorUtilities.CreateInstance<WlClipboardService>(sp);
+        }
+
         var settingsService = sp.GetRequiredService<IAppSettingsService>();
         var settings = settingsService.GetAppSettings().Result;
 

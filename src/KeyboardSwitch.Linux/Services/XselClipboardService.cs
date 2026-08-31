@@ -3,62 +3,31 @@ using System.Reactive.Concurrency;
 namespace KeyboardSwitch.Linux.Services;
 
 internal sealed partial class XselClipboardService(IScheduler scheduler, ILogger<XselClipboardService> logger)
-    : ClipboardServiceBase(scheduler)
+    : ExternalClipboardServiceBase(scheduler)
 {
-    private static readonly TimeSpan SmallDelay = TimeSpan.FromMilliseconds(50);
-    private static readonly TimeSpan OneSecond = TimeSpan.FromSeconds(1);
+    protected override Process? StartCopy() =>
+        this.StartXsel("-o --clipboard");
 
-    public override async Task<string?> GetText()
-    {
-        try
-        {
-            this.LogUsingXselToGetText();
+    protected override Process? StartPaste() =>
+        this.StartXsel("-i --clipboard");
 
-            var xsel = this.StartXsel("-o --clipboard");
+    [LoggerMessage(LogLevel.Debug, "Using xsel to get text from the clipboard")]
+    protected override partial void LogGetText();
 
-            if (xsel is null)
-            {
-                this.LogCouldNotStartXselToCopyText();
-                return null;
-            }
+    [LoggerMessage(LogLevel.Error, "Could not start xsel to copy text")]
+    protected override partial void LogCouldNotCopyText();
 
-            var text = await xsel.StandardOutput.ReadToEndAsync();
+    [LoggerMessage(LogLevel.Error, "Exception when copying text through xsel")]
+    protected override partial void LogExceptionWhenCopyingText(Exception e);
 
-            await xsel.WaitForExitAsync(this.CancelAfter(OneSecond));
-            await Task.Delay(SmallDelay);
+    [LoggerMessage(LogLevel.Debug, "Using xsel to set text into the clipboard")]
+    protected override partial void LogSetText();
 
-            return xsel.ExitCode == 0 && !String.IsNullOrEmpty(text) ? text : null;
-        } catch (Exception e)
-        {
-            this.LogExceptionWhenCopyingText(e);
-            return null;
-        }
-    }
+    [LoggerMessage(LogLevel.Error, "Could not start xsel to paste text")]
+    protected override partial void LogCouldNotPasteText();
 
-    public override async Task SetText(string text)
-    {
-        try
-        {
-            this.LogUsingXselToSetText();
-
-            var xsel = this.StartXsel("-i --clipboard");
-
-            if (xsel is null)
-            {
-                this.LogCouldNotStartXselToPasteText();
-                return;
-            }
-
-            await xsel.StandardInput.WriteAsync(text);
-            xsel.StandardInput.Close();
-
-            await xsel.WaitForExitAsync(this.CancelAfter(OneSecond));
-            await Task.Delay(SmallDelay);
-        } catch (Exception e)
-        {
-            this.LogExceptionWhenPastingText(e);
-        }
-    }
+    [LoggerMessage(LogLevel.Error, "Exception when pasting text through xsel")]
+    protected override partial void LogExceptionWhenPastingText(Exception e);
 
     private Process? StartXsel(string args) =>
         Process.Start(new ProcessStartInfo()
@@ -68,30 +37,4 @@ internal sealed partial class XselClipboardService(IScheduler scheduler, ILogger
             RedirectStandardInput = true,
             RedirectStandardOutput = true
         });
-
-    private CancellationToken CancelAfter(TimeSpan delay)
-    {
-        var tokenSource = new CancellationTokenSource();
-        tokenSource.CancelAfter(delay);
-
-        return tokenSource.Token;
-    }
-
-    [LoggerMessage(LogLevel.Debug, "Using xsel to get text from the clipboard")]
-    private partial void LogUsingXselToGetText();
-
-    [LoggerMessage(LogLevel.Error, "Could not start xsel to copy text")]
-    private partial void LogCouldNotStartXselToCopyText();
-
-    [LoggerMessage(LogLevel.Error, "Exception when copying text through xsel")]
-    private partial void LogExceptionWhenCopyingText(Exception e);
-
-    [LoggerMessage(LogLevel.Debug, "Using xsel to set text into the clipboard")]
-    private partial void LogUsingXselToSetText();
-
-    [LoggerMessage(LogLevel.Error, "Could not start xsel to paste text")]
-    private partial void LogCouldNotStartXselToPasteText();
-
-    [LoggerMessage(LogLevel.Error, "Exception when pasting text through xsel")]
-    private partial void LogExceptionWhenPastingText(Exception e);
 }
