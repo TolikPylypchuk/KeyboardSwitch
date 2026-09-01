@@ -4,7 +4,6 @@ namespace KeyboardSwitch.Linux.Services;
 
 internal abstract class ExternalClipboardServiceBase(IScheduler scheduler) : ClipboardServiceBase(scheduler)
 {
-    private static readonly TimeSpan SmallDelay = TimeSpan.FromMilliseconds(50);
     private static readonly TimeSpan OneSecond = TimeSpan.FromSeconds(1);
 
     public override async Task<string?> GetText()
@@ -12,23 +11,23 @@ internal abstract class ExternalClipboardServiceBase(IScheduler scheduler) : Cli
         try
         {
             this.LogGetText();
-            var copy = this.StartCopy();
+            var copy = this.StartGetText();
 
             if (copy is null)
             {
-                this.LogCouldNotCopyText();
+                this.LogCouldNotGetText();
                 return null;
             }
 
             var text = await copy.StandardOutput.ReadToEndAsync();
 
             await copy.WaitForExitAsync(this.CancelAfter(OneSecond));
-            await Task.Delay(SmallDelay);
+            await this.Scheduler.Sleep(SmallDelay);
 
             return copy.ExitCode == 0 && !String.IsNullOrEmpty(text) ? text : null;
         } catch (Exception e)
         {
-            this.LogExceptionWhenCopyingText(e);
+            this.LogExceptionWhenGettingText(e);
             return null;
         }
     }
@@ -38,11 +37,11 @@ internal abstract class ExternalClipboardServiceBase(IScheduler scheduler) : Cli
         try
         {
             this.LogSetText();
-            var paste = this.StartPaste();
+            var paste = this.StartSetText();
 
             if (paste is null)
             {
-                this.LogCouldNotPasteText();
+                this.LogCouldNotSetText();
                 return;
             }
 
@@ -50,28 +49,28 @@ internal abstract class ExternalClipboardServiceBase(IScheduler scheduler) : Cli
             paste.StandardInput.Close();
 
             await paste.WaitForExitAsync(this.CancelAfter(OneSecond));
-            await Task.Delay(SmallDelay);
+            await this.Scheduler.Sleep(SmallDelay);
         } catch (Exception e)
         {
-            this.LogExceptionWhenPastingText(e);
+            this.LogExceptionWhenSettingText(e);
         }
     }
 
-    protected abstract Process? StartCopy();
+    protected abstract Process? StartGetText();
 
-    protected abstract Process? StartPaste();
+    protected abstract Process? StartSetText();
 
     protected abstract void LogGetText();
 
-    protected abstract void LogCouldNotCopyText();
+    protected abstract void LogCouldNotGetText();
 
-    protected abstract void LogExceptionWhenCopyingText(Exception e);
+    protected abstract void LogExceptionWhenGettingText(Exception e);
 
     protected abstract void LogSetText();
 
-    protected abstract void LogCouldNotPasteText();
+    protected abstract void LogCouldNotSetText();
 
-    protected abstract void LogExceptionWhenPastingText(Exception e);
+    protected abstract void LogExceptionWhenSettingText(Exception e);
 
     private CancellationToken CancelAfter(TimeSpan delay)
     {

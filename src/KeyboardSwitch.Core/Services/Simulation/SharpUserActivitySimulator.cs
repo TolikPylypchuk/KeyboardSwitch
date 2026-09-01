@@ -3,16 +3,16 @@ namespace KeyboardSwitch.Core.Services.Simulation;
 public class SharpUserActivitySimulator(
     IEventSimulator eventSimulator,
     IScheduler scheduler,
-    KeyCode modifierKey) : IUserActivitySimulator
+    SimulationModifierKeyCodeProvider modifierKeyProvider) : IUserActivitySimulator
 {
     private static readonly TimeSpan Delay = TimeSpan.FromMilliseconds(16);
 
     private readonly IEventSimulationSequenceTemplate copyTemplate = eventSimulator.Sequence()
-        .AddKeyStroke(modifierKey, KeyCode.VcC)
+        .AddKeyStroke(modifierKeyProvider.KeyCode, KeyCode.VcC)
         .CreateTemplate();
 
     private readonly IEventSimulationSequenceTemplate pasteTemplate = eventSimulator.Sequence()
-        .AddKeyStroke(modifierKey, KeyCode.VcV)
+        .AddKeyStroke(modifierKeyProvider.KeyCode, KeyCode.VcV)
         .CreateTemplate();
 
     public async Task SimulateCopy()

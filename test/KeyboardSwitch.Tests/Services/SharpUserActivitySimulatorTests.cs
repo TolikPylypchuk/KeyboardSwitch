@@ -7,18 +7,18 @@ public sealed class SharpUserActivitySimulatorTests
     private static readonly TimeSpan Delay = TimeSpan.FromMilliseconds(16);
 
     [Theory(DisplayName = "User activity simulator should simulate copying")]
-    [InlineData(KeyCode.VcLeftControl)]
-    [InlineData(KeyCode.VcRightControl)]
-    [InlineData(KeyCode.VcLeftMeta)]
-    [InlineData(KeyCode.VcRightMeta)]
-    public void SimulateCopy(KeyCode modifier)
+    [InlineData(true)]
+    [InlineData(false)]
+    public void SimulateCopy(bool isControl)
     {
         // Arrange
+
+        var keyCodeProvider = this.GetKeyCodeProvider(isControl);
 
         using var hook = new TestGlobalHook();
         var scheduler = new TestScheduler();
 
-        var simulator = new SharpUserActivitySimulator(hook, scheduler, modifier);
+        var simulator = new SharpUserActivitySimulator(hook, scheduler, keyCodeProvider);
 
         // Act
 
@@ -39,7 +39,7 @@ public sealed class SharpUserActivitySimulatorTests
         var secondRelease = hook.SimulatedEvents[3];
 
         Assert.Equal(EventType.KeyPressed, firstPress.Type);
-        Assert.Equal(modifier, firstPress.Keyboard.KeyCode);
+        Assert.Equal(keyCodeProvider.KeyCode, firstPress.Keyboard.KeyCode);
 
         Assert.Equal(EventType.KeyPressed, secondPress.Type);
         Assert.Equal(KeyCode.VcC, secondPress.Keyboard.KeyCode);
@@ -48,22 +48,22 @@ public sealed class SharpUserActivitySimulatorTests
         Assert.Equal(KeyCode.VcC, firstRelease.Keyboard.KeyCode);
 
         Assert.Equal(EventType.KeyReleased, secondRelease.Type);
-        Assert.Equal(modifier, secondRelease.Keyboard.KeyCode);
+        Assert.Equal(keyCodeProvider.KeyCode, secondRelease.Keyboard.KeyCode);
     }
 
     [Theory(DisplayName = "User activity simulator should simulate pasting")]
-    [InlineData(KeyCode.VcLeftControl)]
-    [InlineData(KeyCode.VcRightControl)]
-    [InlineData(KeyCode.VcLeftMeta)]
-    [InlineData(KeyCode.VcRightMeta)]
-    public void SimulatePaste(KeyCode modifier)
+    [InlineData(true)]
+    [InlineData(false)]
+    public void SimulatePaste(bool isControl)
     {
         // Arrange
+
+        var keyCodeProvider = this.GetKeyCodeProvider(isControl);
 
         using var hook = new TestGlobalHook();
         var scheduler = new TestScheduler();
 
-        var simulator = new SharpUserActivitySimulator(hook, scheduler, modifier);
+        var simulator = new SharpUserActivitySimulator(hook, scheduler, keyCodeProvider);
 
         // Act
 
@@ -84,7 +84,7 @@ public sealed class SharpUserActivitySimulatorTests
         var secondRelease = hook.SimulatedEvents[3];
 
         Assert.Equal(EventType.KeyPressed, firstPress.Type);
-        Assert.Equal(modifier, firstPress.Keyboard.KeyCode);
+        Assert.Equal(keyCodeProvider.KeyCode, firstPress.Keyboard.KeyCode);
 
         Assert.Equal(EventType.KeyPressed, secondPress.Type);
         Assert.Equal(KeyCode.VcV, secondPress.Keyboard.KeyCode);
@@ -93,6 +93,9 @@ public sealed class SharpUserActivitySimulatorTests
         Assert.Equal(KeyCode.VcV, firstRelease.Keyboard.KeyCode);
 
         Assert.Equal(EventType.KeyReleased, secondRelease.Type);
-        Assert.Equal(modifier, secondRelease.Keyboard.KeyCode);
+        Assert.Equal(keyCodeProvider.KeyCode, secondRelease.Keyboard.KeyCode);
     }
+
+    private SimulationModifierKeyCodeProvider GetKeyCodeProvider(bool isControl) =>
+        isControl ? SimulationModifierKeyCodeProvider.Control : SimulationModifierKeyCodeProvider.Command;
 }

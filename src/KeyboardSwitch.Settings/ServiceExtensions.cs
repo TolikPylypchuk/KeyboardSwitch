@@ -23,14 +23,6 @@ namespace KeyboardSwitch.Settings;
 
 public static class ServiceExtensions
 {
-    private static JsonConfigurationProvider JsonProvider(string directory, string fileName) =>
-        new(new JsonConfigurationSource
-        {
-            Path = fileName,
-            FileProvider = new PhysicalFileProvider(directory),
-            Optional = true
-        });
-
     extension(IServiceCollection services)
     {
         public IServiceCollection ConfigureServices()
@@ -86,4 +78,12 @@ public static class ServiceExtensions
                 .AddSingleton<IBindingTypeConverter>(new EventMaskFromConverter())
                 .AddSingleton<IBindingTypeConverter>(new EventMaskToConverter());
     }
+
+    private static JsonConfigurationProvider JsonProvider(string directory, string fileName) =>
+        new(new JsonConfigurationSource
+        {
+            Path = fileName,
+            FileProvider = new PhysicalFileProvider(directory),
+            Optional = true
+        });
 }

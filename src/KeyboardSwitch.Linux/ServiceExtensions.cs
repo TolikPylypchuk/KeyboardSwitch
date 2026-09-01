@@ -1,53 +1,53 @@
-using System.Reactive.Concurrency;
-
 using KeyboardSwitch.Core.Services.Settings;
 
 using Microsoft.Extensions.Configuration;
-
-using SharpHook.Data;
-using SharpHook.Simulation;
 
 namespace KeyboardSwitch.Linux;
 
 public static class ServiceExtensions
 {
-    public static IServiceCollection AddNativeKeyboardSwitchServices(
-        this IServiceCollection services,
-        IConfiguration config) =>
-        services
-            .Configure<StartupSettings>(config.GetSection("Startup"))
-            .AddLayoutService()
-            .AddSingleton<IClipboardService>(CreateClipboardService)
-            .AddSingleton<IStartupService, FreedesktopStartupService>()
-            .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
-            .AddSingleton<IUserActivitySimulator>(
-                sp => new SharpUserActivitySimulator(
-                    sp.GetRequiredService<IEventSimulator>(),
-                    sp.GetRequiredService<IScheduler>(),
-                    KeyCode.VcLeftControl))
-            .AddSingleton<IAutoConfigurationService, XAutoConfigurationService>()
-            .AddSingleton<IInitialSetupService, LinuxSetupService>()
-            .AddSingleton<IUserProvider, PosixUserProvider>()
-            .AddSingleton<IMainLoopRunner, XMainLoopRunner>()
-            .AddSingleton<X11Service>();
-
-    private static IServiceCollection AddLayoutService(this IServiceCollection services) =>
-        GnomeDetector.IsRunningOnGnome()
-            ? services.AddSingleton<ILayoutService, GnomeLayoutService>()
-            : services.AddSingleton<ILayoutService, XLayoutService>();
-
-    private static IClipboardService CreateClipboardService(this IServiceProvider sp)
+    extension(IServiceCollection services)
     {
-        if (LinuxSessionDetector.IsRunningOnWayland)
+        public IServiceCollection AddNativeKeyboardSwitchServices(IConfiguration config)
         {
-            return ActivatorUtilities.CreateInstance<WlClipboardService>(sp);
+            services
+                .Configure<StartupSettings>(config.GetSection("Startup"))
+                .AddSingleton(SimulationModifierKeyCodeProvider.Control)
+                .AddSingleton<IStartupService, FreedesktopStartupService>()
+                .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
+                .AddSingleton<IInitialSetupService, LinuxSetupService>()
+                .AddSingleton<IUserProvider, PosixUserProvider>();
+
+            return LinuxSessionDetector.IsRunningOnWayland
+                ? services.AddWaylandServices()
+                : services.AddX11Services();
         }
 
-        var settingsService = sp.GetRequiredService<IAppSettingsService>();
-        var settings = settingsService.GetAppSettings().Result;
+        private IServiceCollection AddX11Services() =>
+            services
+                .AddSingleton<IMainLoopRunner>(sp => ShouldUseXsel(sp)
+                    ? ActivatorUtilities.CreateInstance<NoOpMainLoopRunner>(sp)
+                    : ActivatorUtilities.CreateInstance<XMainLoopRunner>(sp))
+                .AddSingleton<IClipboardService>(sp => ShouldUseXsel(sp)
+                    ? ActivatorUtilities.CreateInstance<XselClipboardService>(sp)
+                    : ActivatorUtilities.CreateInstance<XClipboardService>(sp))
+                .AddLayoutService()
+                .AddSingleton<IAutoConfigurationService, XAutoConfigurationService>()
+                .AddSingleton<X11Service>();
 
-        return settings.UseXsel
-            ? ActivatorUtilities.CreateInstance<XselClipboardService>(sp)
-            : ActivatorUtilities.CreateInstance<XClipboardService>(sp);
+        private IServiceCollection AddWaylandServices() =>
+            services
+                .AddSingleton<IClipboardService, WlClipboardService>()
+                .AddSingleton<ILayoutService, PlaceholderLayoutService>()
+                .AddSingleton<IMainLoopRunner, NoOpMainLoopRunner>()
+                .AddSingleton<IAutoConfigurationService, WlAutoConfigurationService>();
+
+        private IServiceCollection AddLayoutService() =>
+            GnomeDetector.IsRunningOnGnome()
+                ? services.AddSingleton<ILayoutService, GnomeLayoutService>()
+                : services.AddSingleton<ILayoutService, XLayoutService>();
     }
+
+    private static bool ShouldUseXsel(IServiceProvider sp) =>
+        sp.GetRequiredService<IAppSettingsService>().GetAppSettings().Result.UseXsel;
 }

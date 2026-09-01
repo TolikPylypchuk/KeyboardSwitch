@@ -20,7 +20,12 @@ internal static partial class GnomeDetector
         }
 
         var gnomeShell = Process.Start(
-            new ProcessStartInfo() { FileName = "gnome-shell", Arguments = "--version", RedirectStandardOutput = true });
+            new ProcessStartInfo()
+            {
+                FileName = "gnome-shell",
+                Arguments = "--version",
+                RedirectStandardOutput = true
+            });
 
         if (gnomeShell is null)
         {

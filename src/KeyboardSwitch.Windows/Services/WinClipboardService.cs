@@ -8,7 +8,7 @@ internal sealed partial class WinClipboardService(IScheduler scheduler, ILogger<
     : ClipboardServiceBase(scheduler)
 {
     private const int RetryCount = 10;
-    private const int Delay = 100;
+    private static readonly TimeSpan Delay = TimeSpan.FromMilliseconds(100);
 
     public override async Task<string?> GetText()
     {
@@ -61,7 +61,7 @@ internal sealed partial class WinClipboardService(IScheduler scheduler, ILogger<
                 throw new TimeoutException("Timeout when opening the clipboard");
             }
 
-            await Task.Delay(Delay);
+            await this.Scheduler.Sleep(Delay);
         }
 
         return Disposable.Create(() => User32.CloseClipboard());

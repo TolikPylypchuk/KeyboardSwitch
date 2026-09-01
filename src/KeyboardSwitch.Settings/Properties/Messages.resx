@@ -364,7 +364,7 @@
     <value>Switch settings:</value>
   </data>
   <data name="UseXsel" xml:space="preserve">
-    <value>Use xsel for clipboard integration</value>
+    <value>Use xsel for clipboard integration on X11</value>
   </data>
   <data name="UseXselHint" xml:space="preserve">
     <value>Try this option if the clipboard handling doesn't work well for you. xsel must be installed manually for this option to work. Keyboard Switch must be restarted if this setting is changed.</value>

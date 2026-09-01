@@ -1,31 +1,11 @@
-using KeyboardSwitch.Core.Services.Settings;
-
 namespace KeyboardSwitch.Linux.Services;
 
-internal unsafe sealed partial class XMainLoopRunner(
-    X11Service x11,
-    IAppSettingsService settingsService,
-    ILogger<XMainLoopRunner> logger)
-    : IMainLoopRunner
+internal unsafe sealed partial class XMainLoopRunner(X11Service x11, ILogger<XMainLoopRunner> logger) : IMainLoopRunner
 {
     private const int EPollTimeout = 1000;
 
     public void RunMainLoop(CancellationToken token)
     {
-        if (LinuxSessionDetector.IsRunningOnWayland)
-        {
-            this.LogWayland();
-            return;
-        }
-
-        var settings = settingsService.GetAppSettings().Result;
-
-        if (settings.UseXsel)
-        {
-            this.LogNoNeedForEventLoop();
-            return;
-        }
-
         var (epoll, sigread) = this.InitializeEPoll();
 
         this.LogRunningMainLoop();
@@ -133,12 +113,6 @@ internal unsafe sealed partial class XMainLoopRunner(
             }
         }
     }
-
-    [LoggerMessage(LogLevel.Debug, "No need to run the X11 event loop since the current session is Wayland")]
-    private partial void LogWayland();
-
-    [LoggerMessage(LogLevel.Debug, "Will use xsel for clipboard integration, so no need to run the X11 event loop")]
-    private partial void LogNoNeedForEventLoop();
 
     [LoggerMessage(LogLevel.Information, "Running the main loop to listen for X11 events")]
     private partial void LogRunningMainLoop();
