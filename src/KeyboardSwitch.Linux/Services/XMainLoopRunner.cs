@@ -6,9 +6,15 @@ internal unsafe sealed partial class XMainLoopRunner(X11Service x11, ILogger<XMa
 
     public void RunMainLoop(CancellationToken token)
     {
-        var (epoll, sigread) = this.InitializeEPoll();
+        var (epoll, eventFd) = this.InitializeEPoll();
 
         this.LogRunningMainLoop();
+
+        using var registration = token.Register(() =>
+        {
+            ulong signal = 1;
+            LibC.Write(eventFd, &signal, 8);
+        });
 
         while (!token.IsCancellationRequested)
         {
@@ -20,12 +26,8 @@ internal unsafe sealed partial class XMainLoopRunner(X11Service x11, ILogger<XMa
             {
                 LibC.EPollWait(epoll, &ev, 1, EPollTimeout);
 
-                int buf = 0;
-
-                while (LibC.Read(sigread, &buf, 4) > 0)
-                {
-                    continue;
-                }
+                ulong buf = 0;
+                LibC.Read(eventFd, &buf, 8);
             }
 
             if (!token.IsCancellationRequested)
@@ -33,9 +35,12 @@ internal unsafe sealed partial class XMainLoopRunner(X11Service x11, ILogger<XMa
                 this.HandleX11Events(token);
             }
         }
+
+        LibC.Close(epoll);
+        LibC.Close(eventFd);
     }
 
-    private (int EPoll, int SigRead) InitializeEPoll()
+    private (int EPoll, int EventFd) InitializeEPoll()
     {
         this.LogCreatingEpollConnection();
 
@@ -59,9 +64,12 @@ internal unsafe sealed partial class XMainLoopRunner(X11Service x11, ILogger<XMa
             throw new XException("Unable to attach X11 connection handle to epoll");
         }
 
-        var fds = stackalloc int[2];
-        LibC.Pipe2(fds, LibC.ONonBlock);
-        int sigread = fds[0];
+        int eventFd = LibC.EventFd(0, LibC.EFDNonBlock);
+
+        if (eventFd == -1)
+        {
+            throw new XException("eventfd failed");
+        }
 
         ev = new EPollEvent
         {
@@ -69,15 +77,15 @@ internal unsafe sealed partial class XMainLoopRunner(X11Service x11, ILogger<XMa
             Data = { U32 = (int)EventCode.Signal }
         };
 
-        if (LibC.EPollCtl(epoll, LibC.EPollCtlAdd, sigread, ref ev) == -1)
+        if (LibC.EPollCtl(epoll, LibC.EPollCtlAdd, eventFd, ref ev) == -1)
         {
             throw new XException("Unable to attach signal pipe to epoll");
         }
 
-        return (epoll, sigread);
+        return (epoll, eventFd);
     }
 
-    private unsafe void HandleX11Events(CancellationToken token)
+    private void HandleX11Events(CancellationToken token)
     {
         while (XLib.XPending(x11.Display) != 0)
         {

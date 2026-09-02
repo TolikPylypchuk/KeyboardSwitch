@@ -7,7 +7,7 @@ internal sealed partial class MacMainLoopRunner(ILogger<MacMainLoopRunner> logge
         this.LogRunningMainRunLoop();
 
         var loop = CoreFoundation.CFRunLoopGetCurrent();
-        token.Register(() => CoreFoundation.CFRunLoopStop(loop));
+        using var registration = token.Register(() => CoreFoundation.CFRunLoopStop(loop));
         CoreFoundation.CFRunLoopRun();
     }
 

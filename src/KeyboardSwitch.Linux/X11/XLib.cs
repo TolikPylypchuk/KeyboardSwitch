@@ -14,6 +14,9 @@ internal unsafe static partial class XLib
     private const string X11 = "libX11.so.6";
 
     [LibraryImport(X11)]
+    public static partial XStatus XInitThreads();
+
+    [LibraryImport(X11)]
     public static partial int XChangeProperty(
         XDisplayHandle display,
         IntPtr window,
@@ -61,6 +64,9 @@ internal unsafe static partial class XLib
         int borderWidth,
         IntPtr border,
         IntPtr background);
+
+    [LibraryImport(X11)]
+    public static partial int XDestroyWindow(XDisplayHandle display, IntPtr window);
 
     [LibraryImport(X11)]
     public static partial IntPtr XDefaultRootWindow(XDisplayHandle display);

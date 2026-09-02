@@ -4,6 +4,7 @@ internal static unsafe partial class LibC
 {
     public const int EPollIn = 1;
     public const int EPollCtlAdd = 1;
+    public const int EFDNonBlock = 2048;
     public const int ONonBlock = 2048;
 
     private const string C = "libc";
@@ -17,12 +18,15 @@ internal static unsafe partial class LibC
     [LibraryImport(C, EntryPoint = "epoll_wait")]
     public static partial int EPollWait(int epfd, EPollEvent* events, int maxevents, int timeout);
 
-    [LibraryImport(C, EntryPoint = "pipe2")]
-    public static partial int Pipe2(int* fds, int flags);
+    [LibraryImport(C, EntryPoint = "eventfd")]
+    public static partial int EventFd(uint initval, int flags);
 
     [LibraryImport(C, EntryPoint = "write")]
     public static partial nint Write(int fd, void* buf, nint count);
 
     [LibraryImport(C, EntryPoint = "read")]
     public static partial nint Read(int fd, void* buf, nint count);
+
+    [LibraryImport(C, EntryPoint = "close")]
+    public static partial int Close(int fd);
 }

@@ -1,10 +1,11 @@
 namespace KeyboardSwitch.Linux.Services;
 
+internal delegate void XEventHandler(ref XEvent xEvent);
+
 internal sealed partial class X11Service : DisposableService
 {
-    public delegate void EventHandler(ref XEvent xEvent);
-
-    private readonly Dictionary<IntPtr, EventHandler> eventHandlers = [];
+    private readonly List<IntPtr> windows = [];
+    private readonly Dictionary<IntPtr, XEventHandler> eventHandlers = [];
     private readonly ILogger<X11Service> logger;
 
     public X11Service(ILogger<X11Service> logger)
@@ -17,25 +18,25 @@ internal sealed partial class X11Service : DisposableService
         XLib.XSynchronize(this.Display, true);
 
         this.AtomPairAtom = XLib.XInternAtom(this.Display, "ATOM_PAIR", true);
-        this.ClipboardAtom = XLib.XInternAtom(this.Display, "CLIPBOARD", true);
+        this.ClipboardAtom = XLib.XInternAtom(this.Display, "CLIPBOARD", false);
         this.ClipboardManagerAtom = XLib.XInternAtom(this.Display, "CLIPBOARD_MANAGER", true);
         this.IncrAtom = XLib.XInternAtom(this.Display, "INCR", true);
         this.MultipleAtom = XLib.XInternAtom(this.Display, "MULTIPLE", true);
         this.OemTextAtom = XLib.XInternAtom(this.Display, "OEMTEXT", true);
         this.SaveTargetsAtom = XLib.XInternAtom(this.Display, "SAVE_TARGETS", true);
         this.TargetsAtom = XLib.XInternAtom(this.Display, "TARGETS", true);
-        this.Utf8StringAtom = XLib.XInternAtom(this.Display, "UTF8_STRING", true);
+        this.Utf8StringAtom = XLib.XInternAtom(this.Display, "UTF8_STRING", false);
         this.Utf16StringAtom = XLib.XInternAtom(this.Display, "UTF16_STRING", true);
 
         this.CustomSaveTargetsAtom = XLib.XInternAtom(
             this.Display, "KEYBOARD_SWITCH_SAVE_TARGETS_PROPERTY_ATOM", false);
 
         this.LogAtom("ATOM_PAIR", (ulong)this.AtomPairAtom);
-        this.LogAtom("CLIPBOARD", (ulong)this.AtomPairAtom);
-        this.LogAtom("CLIPBOARD_MANAGER", (ulong)this.AtomPairAtom);
-        this.LogAtom("INCR", (ulong)this.AtomPairAtom);
-        this.LogAtom("MULTIPLE", (ulong)this.AtomPairAtom);
-        this.LogAtom("OEM_TEXT", (ulong)this.AtomPairAtom);
+        this.LogAtom("CLIPBOARD", (ulong)this.ClipboardAtom);
+        this.LogAtom("CLIPBOARD_MANAGER", (ulong)this.ClipboardManagerAtom);
+        this.LogAtom("INCR", (ulong)this.IncrAtom);
+        this.LogAtom("MULTIPLE", (ulong)this.MultipleAtom);
+        this.LogAtom("OEM_TEXT", (ulong)this.OemTextAtom);
         this.LogAtom("SAVE_TARGETS", (ulong)this.SaveTargetsAtom);
         this.LogAtom("STRING", (ulong)Atom.String);
         this.LogAtom("TARGETS", (ulong)this.TargetsAtom);
@@ -59,17 +60,42 @@ internal sealed partial class X11Service : DisposableService
 
     public Atom CustomSaveTargetsAtom { get; }
 
-    public void AddEventHandler(IntPtr window, EventHandler eventHandler) =>
+    public IntPtr CreateWindow()
+    {
+        var win = XLib.XCreateSimpleWindow(
+            this.Display,
+            XLib.XDefaultRootWindow(this.Display),
+            0,
+            0,
+            1,
+            1,
+            0,
+            IntPtr.Zero,
+            IntPtr.Zero);
+
+        this.windows.Add(win);
+        return win;
+    }
+
+    public void AddEventHandler(IntPtr window, XEventHandler eventHandler) =>
         this.eventHandlers.Add(window, eventHandler);
 
-    public bool TryGetEventHandler(IntPtr window, out EventHandler eventHandler) =>
+    public bool TryGetEventHandler(IntPtr window, out XEventHandler eventHandler) =>
         this.eventHandlers.TryGetValue(window, out eventHandler!);
 
-    protected override void Dispose(bool disposing) =>
+    protected override void Dispose(bool disposing)
+    {
+        foreach (var window in this.windows)
+        {
+            XLib.XDestroyWindow(this.Display, window);
+        }
+
         this.Display.Dispose();
+    }
 
     private XDisplayHandle OpenXDisplay()
     {
+        XLib.XInitThreads();
         XLib.XkbIgnoreExtension(false);
 
         int major = XLib.XkbMajorVersion;

@@ -74,17 +74,7 @@ internal sealed partial class XClipboardService : ClipboardServiceBase
 
     private IntPtr CreateEventWindow()
     {
-        var win = XLib.XCreateSimpleWindow(
-            this.x11.Display,
-            XLib.XDefaultRootWindow(this.x11.Display),
-            0,
-            0,
-            1,
-            1,
-            0,
-            IntPtr.Zero,
-            IntPtr.Zero);
-
+        var win = this.x11.CreateWindow();
         this.x11.AddEventHandler(win, this.OnEvent);
 
         return win;
@@ -219,6 +209,7 @@ internal sealed partial class XClipboardService : ClipboardServiceBase
             this.LogX11EventDoesNotHaveProperty();
             requestedFormatsSource?.TrySetResult(null);
             requestedDataSource?.TrySetResult(null);
+            return;
         }
 
         XLib.XGetWindowProperty(
