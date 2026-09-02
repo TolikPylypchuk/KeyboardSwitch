@@ -6,4 +6,6 @@ Description: Switches typed text as if it were typed with another keyboard layou
 Homepage: https://keyboardswitch.tolik.io
 Vcs-Browser: https://github.com/TolikPylypchuk/KeyboardSwitch
 Vcs-Git: https://github.com/TolikPylypchuk/KeyboardSwitch.git
-Depends: libxtst6
+Depends: acl
+Recommends: wl-clipboard
+Suggests: xsel

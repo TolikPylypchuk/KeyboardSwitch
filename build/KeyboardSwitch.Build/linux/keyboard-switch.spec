@@ -8,7 +8,9 @@ Packager: Tolik Pylypchuk <pylypchuk.tolik@gmail.com>
 URL: https://keyboardswitch.tolik.io
 
 ExclusiveArch: $ARCH
-Requires: libXtst
+Requires: acl
+Recommends: wl-clipboard
+Suggests: xsel
 AutoReqProv: no
 
 %description
@@ -35,10 +37,24 @@ rm -rf $RPM_BUILD_ROOT/opt/keyboard-switch
 %post
 
 INSTALL_DIR=/opt/keyboard-switch
+SERVICE_APP=$INSTALL_DIR/KeyboardSwitch
 SETTINGS_APP=$INSTALL_DIR/KeyboardSwitchSettings
 SETTINGS_DESKTOP_FILE=/tmp/keyboard-switch-settings.desktop
 
 GNOME_EXTENSION_DIR=/usr/share/gnome-shell/extensions/switch-layout@tolik.io
+
+GROUP=keyboard-switch
+
+getent group $GROUP &>/dev/null || groupadd --system $GROUP
+
+chown root:$GROUP $SERVICE_APP
+chmod g+s $SERVICE_APP
+
+echo "SUBSYSTEM==\"input\", KERNEL==\"event*\", RUN+=\"/usr/bin/setfacl -m g:$GROUP:rw \$env{DEVNAME}\"
+KERNEL==\"uinput\", RUN+=\"/usr/bin/setfacl -m g:$GROUP:rw \$env{DEVNAME}\"
+" | tee /etc/udev/rules.d/70-keyboard-switch.rules > /dev/null
+
+udevadm control --reload-rules && udevadm trigger
 
 echo "[Desktop Entry]
 Version=1.0
@@ -101,3 +117,11 @@ fi
 %postun
 
 rm -rf /opt/keyboard-switch
+
+if [ "$1" -eq 0 ]
+then
+    rm /etc/udev/rules.d/70-keyboard-switch.rules
+    udevadm control --reload-rules && udevadm trigger
+
+    getent group keyboard-switch &>/dev/null && groupdel keyboard-switch
+fi

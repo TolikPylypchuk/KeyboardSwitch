@@ -1,10 +1,24 @@
 #!/usr/bin/env bash
 
 INSTALL_DIR=/opt/keyboard-switch
+SERVICE_APP=$INSTALL_DIR/KeyboardSwitch
 SETTINGS_APP=$INSTALL_DIR/KeyboardSwitchSettings
 SETTINGS_DESKTOP_FILE=/tmp/keyboard-switch-settings.desktop
 
 GNOME_EXTENSION_DIR=/usr/share/gnome-shell/extensions/switch-layout@tolik.io
+
+GROUP=keyboard-switch
+
+getent group $GROUP &>/dev/null || groupadd --system $GROUP
+
+chown root:$GROUP $SERVICE_APP
+chmod g+s $SERVICE_APP
+
+echo "SUBSYSTEM==\"input\", KERNEL==\"event*\", RUN+=\"/usr/bin/setfacl -m g:$GROUP:rw \$env{DEVNAME}\"
+KERNEL==\"uinput\", RUN+=\"/usr/bin/setfacl -m g:$GROUP:rw \$env{DEVNAME}\"
+" | tee /etc/udev/rules.d/70-keyboard-switch.rules > /dev/null
+
+udevadm control --reload-rules && udevadm trigger
 
 echo "[Desktop Entry]
 Version=1.0

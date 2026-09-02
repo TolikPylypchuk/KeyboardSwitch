@@ -11,4 +11,9 @@ then
             rm -rf "$(eval echo ~$CURRENT_USER)/.config/keyboard-switch"
         fi
     done
+
+    rm /etc/udev/rules.d/70-keyboard-switch.rules
+    udevadm control --reload-rules && udevadm trigger
+
+    getent group keyboard-switch &>/dev/null && groupdel keyboard-switch
 fi
