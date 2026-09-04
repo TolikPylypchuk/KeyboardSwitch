@@ -15,8 +15,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NuGet.Packaging" />
     <PackageReference Include="Nuke.Common" />
+    <PackageReference Include="System.ClientModel" />
+    <PackageReference Include="System.CodeDom" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" />
+    <PackageReference Include="System.Formats.Nrbf" />
     <PackageReference Include="System.Interactive" />
+    <PackageReference Include="System.Memory.Data" />
+    <PackageReference Include="System.Reflection.MetadataLoadContext" />
+    <PackageReference Include="System.Resources.Extensions" />
+    <PackageReference Include="System.Security.Cryptography.Xml" />
   </ItemGroup>
 
 </Project>
