@@ -55,11 +55,8 @@ public sealed partial class PreferencesViewModel : ReactiveForm<PreferencesModel
     private readonly ReadOnlyObservableCollection<EventMask> forwardModifierKeys;
     private readonly ReadOnlyObservableCollection<EventMask> backwardModifierKeys;
 
-    public PreferencesViewModel(
-        PreferencesModel preferencesModel,
-        ResourceManager? resourceManager = null,
-        IScheduler? scheduler = null)
-        : base(resourceManager, scheduler)
+    public PreferencesViewModel(PreferencesModel preferencesModel, ResourceManager? resourceManager = null)
+        : base(resourceManager)
     {
         this.PreferencesModel = preferencesModel;
         this.CopyProperties();
@@ -118,7 +115,7 @@ public sealed partial class PreferencesViewModel : ReactiveForm<PreferencesModel
         base.EnableChangeTracking();
     }
 
-    protected override Task<PreferencesModel> OnSaveAsync()
+    protected override Task<PreferencesModel> Save()
     {
         this.PreferencesModel.InstantSwitching = this.InstantSwitching;
         this.PreferencesModel.SwitchLayout = this.SwitchLayout;

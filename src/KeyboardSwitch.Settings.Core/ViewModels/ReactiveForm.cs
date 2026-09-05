@@ -2,57 +2,46 @@ using System.Linq.Expressions;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels;
 
-public abstract class ReactiveForm<TModel, TForm> : ReactiveValidationObject, IReactiveForm
+public abstract partial class ReactiveForm<TModel, TForm> : ReactiveValidationObject, IReactiveForm
     where TModel : class
     where TForm : ReactiveForm<TModel, TForm>
 {
     private readonly BehaviorSubject<bool> formChangedSubject = new(false);
     private readonly BehaviorSubject<bool> validSubject = new(true);
     private readonly BehaviorSubject<bool> canSaveSubject = new(false);
-    private readonly BehaviorSubject<bool> canDeleteSubject = new(false);
 
     private readonly List<IObservable<bool>> changesToTrack = [];
     private readonly List<IObservable<bool>> validationsToTrack = [];
 
-    protected ReactiveForm(ResourceManager? resourceManager = null, IScheduler? scheduler = null)
+    private readonly IObservable<bool> canSave;
+
+    protected ReactiveForm(ResourceManager? resourceManager = null)
     {
         this.ResourceManager = resourceManager ?? AppLocator.Current.GetRequiredService<ResourceManager>();
-        this.Scheduler = scheduler ?? RxSchedulers.MainThreadScheduler;
 
         this.Valid = Observable.CombineLatest(this.validSubject, this.IsValid()).AllTrue();
 
-        var canSave = Observable.CombineLatest(
+        this.canSave = Observable.CombineLatest(
             Observable.CombineLatest(this.formChangedSubject, this.canSaveSubject).AnyTrue(),
             this.Valid)
             .AllTrue();
-
-        this.Save = ReactiveCommand.CreateFromTask(this.OnSaveAsync, canSave);
-        this.Cancel = ReactiveCommand.Create(this.CopyProperties, this.formChangedSubject);
-        this.Delete = ReactiveCommand.CreateFromTask(this.OnDeleteAsync, this.canDeleteSubject);
     }
 
     public IObservable<bool> FormChanged => this.formChangedSubject.AsObservable();
-    public bool IsFormChanged => this.formChangedSubject.Value;
 
     public IObservable<bool> Valid { get; }
 
     public bool IsNew { get; protected set; } = false;
-    public bool IsDeleted { get; protected set; } = false;
-
-    public ReactiveCommand<Unit, TModel> Save { get; }
-    public ReactiveCommand<Unit, Unit> Cancel { get; }
-    public ReactiveCommand<Unit, TModel?> Delete { get; }
 
     protected ResourceManager ResourceManager { get; }
-    protected IScheduler Scheduler { get; }
 
     protected abstract TForm Self { get; }
 
     protected void TrackChanges(IObservable<bool> changes) =>
         this.changesToTrack.Add(changes
             .StartWith(false)
-            .Merge(this.Save.Select(_ => false))
-            .Merge(this.Cancel.Select(_ => false)));
+            .Merge(this.SaveCommand.Select(_ => false))
+            .Merge(this.CancelCommand.Select(_ => false)));
 
     protected void TrackChanges<T>(Expression<Func<TForm, T?>> property, Func<TForm, T> itemValue)
     {
@@ -62,12 +51,6 @@ public abstract class ReactiveForm<TModel, TForm> : ReactiveValidationObject, IR
             this.Self.WhenAnyValue(property)
                 .Select(value => !Equals(value, itemValue(this.Self))));
     }
-
-    protected void TrackValidation(IObservable<bool> validation) =>
-        this.validationsToTrack.Add(validation.StartWith(true));
-
-    protected void TrackValidationStrict(IObservable<bool> validation) =>
-        this.validationsToTrack.Add(validation.StartWith(false));
 
     protected IObservable<bool> IsCollectionChanged<TOtherForm, TOtherModel>(
         Func<TForm, ReadOnlyObservableCollection<TOtherForm>> property,
@@ -80,9 +63,9 @@ public abstract class ReactiveForm<TModel, TForm> : ReactiveValidationObject, IR
             .ToCollection()
             .Select(vms =>
                 vms.Count != itemCollection(this.Self).Count ||
-                vms.Any(vm => vm.IsFormChanged || !this.IsNew && vm.IsNew))
-            .Merge(this.Save.Select(_ => false))
-            .Merge(this.Cancel.Select(_ => false));
+                vms.Any(vm => vm.formChangedSubject.Value || !this.IsNew && vm.IsNew))
+            .Merge(this.SaveCommand.Select(_ => false))
+            .Merge(this.CancelCommand.Select(_ => false));
 
     protected IObservable<bool> IsCollectionChangedSimple<TItem>(
         Func<TForm, ReadOnlyObservableCollection<TItem>> property,
@@ -92,16 +75,8 @@ public abstract class ReactiveForm<TModel, TForm> : ReactiveValidationObject, IR
             .ToObservableChangeSet()
             .ToCollection()
             .Select(items => !Enumerable.SequenceEqual(items, itemCollection(this.Self)))
-            .Merge(this.Save.Select(_ => false))
-            .Merge(this.Cancel.Select(_ => false));
-
-    protected IObservable<bool> IsCollectionValid<TOtherForm>(ReadOnlyObservableCollection<TOtherForm> viewModels)
-        where TOtherForm : IReactiveForm =>
-        viewModels.ToObservableChangeSet()
-            .AutoRefreshOnObservable(vm => vm.Valid)
-            .ToCollection()
-            .Select(vms => vms.Select(vm => vm.Valid).CombineLatest().AllTrue())
-            .Switch();
+            .Merge(this.SaveCommand.Select(_ => false))
+            .Merge(this.CancelCommand.Select(_ => false));
 
     protected ValidationHelper LocalizedValidationRule<T>(
         Expression<Func<TForm, T?>> property,
@@ -115,22 +90,10 @@ public abstract class ReactiveForm<TModel, TForm> : ReactiveValidationObject, IR
     protected ValidationHelper LocalizedValidationRule(IObservable<bool> validation, string errorMessage) =>
         this.Self.ValidationRule(validation, this.ResourceManager.GetString(errorMessage) ?? String.Empty);
 
-    protected void CanDeleteWhen(IObservable<bool> canDelete) =>
-        canDelete.Subscribe(this.canDeleteSubject);
-
-    protected void CanDeleteWhenNotChanged() =>
-        this.CanDeleteWhen(Observable.Return(!this.IsNew).Merge(this.FormChanged.Invert()));
-
-    protected void CanAlwaysDelete() =>
-        this.CanDeleteWhen(Observable.Return(true));
-
-    protected void CanNeverDelete() =>
-        this.CanDeleteWhen(Observable.Return(false));
-
     protected virtual void EnableChangeTracking()
     {
-        var falseWhenSave = this.Save.Select(_ => false);
-        var falseWhenCancel = this.Cancel.Select(_ => false);
+        var falseWhenSave = this.SaveCommand.Select(_ => false);
+        var falseWhenCancel = this.CancelCommand.Select(_ => false);
 
         this.changesToTrack
             .CombineLatest()
@@ -149,10 +112,12 @@ public abstract class ReactiveForm<TModel, TForm> : ReactiveValidationObject, IR
             .Subscribe(this.validSubject);
     }
 
-    protected abstract Task<TModel> OnSaveAsync();
-
-    protected virtual Task<TModel?> OnDeleteAsync() =>
-        Task.FromResult<TModel?>(null);
+    [ReactiveCommand(CanExecute = nameof(canSave))]
+    protected abstract Task<TModel> Save();
 
     protected abstract void CopyProperties();
+
+    [ReactiveCommand(CanExecute = nameof(FormChanged))]
+    private void Cancel() =>
+        this.CopyProperties();
 }

@@ -20,11 +20,8 @@ public sealed partial class LayoutViewModel : ReactiveForm<LayoutModel, LayoutVi
     [Reactive]
     private int currentCharIndex = NoIndex;
 
-    public LayoutViewModel(
-        LayoutModel layoutModel,
-        ResourceManager? resourceManager = null,
-        IScheduler? scheduler = null)
-        : base(resourceManager, scheduler)
+    public LayoutViewModel(LayoutModel layoutModel, ResourceManager? resourceManager = null)
+        : base(resourceManager)
     {
         this.LayoutModel = layoutModel;
 
@@ -63,7 +60,7 @@ public sealed partial class LayoutViewModel : ReactiveForm<LayoutModel, LayoutVi
         base.EnableChangeTracking();
     }
 
-    protected override Task<LayoutModel> OnSaveAsync()
+    protected override Task<LayoutModel> Save()
     {
         this.LayoutModel.LanguageName = this.LanguageName;
         this.LayoutModel.KeyboardName = this.KeyboardName;

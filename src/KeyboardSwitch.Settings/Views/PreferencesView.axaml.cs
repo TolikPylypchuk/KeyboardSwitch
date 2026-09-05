@@ -166,13 +166,13 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
 
     private void BindCommands(CompositeDisposable disposables)
     {
-        this.BindCommand(this.ViewModel, vm => vm.Save, v => v.SaveButton)
+        this.BindCommand(this.ViewModel, vm => vm.SaveCommand, v => v.SaveButton)
             .DisposeWith(disposables);
 
-        this.BindCommand(this.ViewModel, vm => vm.Cancel, v => v.CancelButton)
+        this.BindCommand(this.ViewModel, vm => vm.CancelCommand, v => v.CancelButton)
             .DisposeWith(disposables);
 
-        this.ViewModel!.Cancel.CanExecute
+        this.ViewModel!.CancelCommand.CanExecute
             .BindTo(this, v => v.ActionPanel.IsVisible)
             .DisposeWith(disposables);
     }

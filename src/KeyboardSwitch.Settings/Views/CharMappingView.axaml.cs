@@ -28,13 +28,13 @@ public partial class CharMappingView : ReactiveUserControl<CharMappingViewModel>
         this.BindCommand(this.ViewModel, vm => vm.RemoveLayoutsCommand, v => v.RemoveLayoutsButton)
             .DisposeWith(disposables);
 
-        this.BindCommand(this.ViewModel, vm => vm.Save, v => v.SaveButton)
+        this.BindCommand(this.ViewModel, vm => vm.SaveCommand, v => v.SaveButton)
             .DisposeWith(disposables);
 
-        this.BindCommand(this.ViewModel, vm => vm.Cancel, v => v.CancelButton)
+        this.BindCommand(this.ViewModel, vm => vm.CancelCommand, v => v.CancelButton)
             .DisposeWith(disposables);
 
-        Observable.CombineLatest(this.ViewModel.Save.CanExecute, this.ViewModel.Cancel.CanExecute)
+        Observable.CombineLatest(this.ViewModel.SaveCommand.CanExecute, this.ViewModel.CancelCommand.CanExecute)
             .AnyTrue()
             .BindTo(this, v => v.ActionPanel.IsVisible)
             .DisposeWith(disposables);

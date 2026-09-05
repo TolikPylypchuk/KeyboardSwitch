@@ -24,10 +24,10 @@ public sealed partial class MainContentViewModel : ReactiveObject
         this.PreferencesViewModel = new(preferencesModel);
         this.AboutViewModel = new();
 
-        this.CharMappingViewModel.Save.InvokeCommand(this.SaveCharMappingSettingsCommand);
-        this.PreferencesViewModel.Save.InvokeCommand(this.SavePreferencesCommand);
+        this.CharMappingViewModel.SaveCommand.InvokeCommand(this.SaveCharMappingSettingsCommand);
+        this.PreferencesViewModel.SaveCommand.InvokeCommand(this.SavePreferencesCommand);
 
-        this.PreferencesViewModel.Save
+        this.PreferencesViewModel.SaveCommand
             .Select(model => model.ShowUninstalledLayoutsMessage)
             .Subscribe(this.removeLayoutsEnabled);
     }

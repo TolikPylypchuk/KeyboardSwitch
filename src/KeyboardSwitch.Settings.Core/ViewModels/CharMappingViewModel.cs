@@ -24,9 +24,8 @@ public sealed partial class CharMappingViewModel : ReactiveForm<CharMappingModel
         IObservable<bool> removeLayoutsEnabled,
         ILayoutService? layoutService = null,
         IAutoConfigurationService? autoConfigurationService = null,
-        ResourceManager? resourceManager = null,
-        IScheduler? scheduler = null)
-        : base(resourceManager, scheduler)
+        ResourceManager? resourceManager = null)
+        : base(resourceManager)
     {
         this.CharMappingModel = charMappingModel;
 
@@ -68,11 +67,11 @@ public sealed partial class CharMappingViewModel : ReactiveForm<CharMappingModel
         base.EnableChangeTracking();
     }
 
-    protected override async Task<CharMappingModel> OnSaveAsync()
+    protected override async Task<CharMappingModel> Save()
     {
         foreach (var layout in this.Layouts)
         {
-            await layout.Save.Execute();
+            await layout.SaveCommand.Execute();
         }
 
         this.CharMappingModel.Layouts.Clear();
@@ -124,7 +123,7 @@ public sealed partial class CharMappingViewModel : ReactiveForm<CharMappingModel
             .AutoRefresh()
             .ToCollection()
             .Select(layouts => layouts.Any(layout => layout.IsNew))
-            .Merge(this.Save.Select(_ => false))
+            .Merge(this.SaveCommand.Select(_ => false))
             .ToProperty(this, vm => vm.HasNewLayouts, initialValue: false);
 
     private ObservableAsPropertyHelper<bool> ConfigureCanRemoveLayouts(IObservable<bool> removeLayoutsEnabled) =>
@@ -137,7 +136,7 @@ public sealed partial class CharMappingViewModel : ReactiveForm<CharMappingModel
 
     private ObservableAsPropertyHelper<bool> ConfigureShouldRemoveLayouts() =>
         this.RemoveLayoutsCommand.Select(_ => true)
-            .Merge(this.Save.Select(_ => false))
-            .Merge(this.Cancel.Select(_ => false))
+            .Merge(this.SaveCommand.Select(_ => false))
+            .Merge(this.CancelCommand.Select(_ => false))
             .ToProperty(this, vm => vm.ShouldRemoveLayouts, initialValue: false);
 }
