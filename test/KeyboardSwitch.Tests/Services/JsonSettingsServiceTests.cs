@@ -185,7 +185,7 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
         Assert.Equal(this.GetExpectedDefaultTheme(), settings.AppTheme);
         Assert.Equal(AppThemeVariant.Auto, settings.AppThemeVariant);
 
-        layoutService.Received().GetKeyboardLayouts();
+        await layoutService.Received().GetKeyboardLayouts();
         autoConfigService.Received().CreateCharMappings(
             Arg.Is<IEnumerable<KeyboardLayout>>(l => layouts.SequenceEqual(l)));
     }
@@ -334,7 +334,7 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
         // Arrange
 
         var layoutService = Substitute.For<ILayoutService>();
-        layoutService.GetKeyboardLayouts().Throws<InvalidOperationException>();
+        layoutService.GetKeyboardLayouts().ThrowsAsync<InvalidOperationException>();
 
         var autoConfigService = Substitute.For<IAutoConfigurationService>();
         autoConfigService.CreateCharMappings(Arg.Is<IEnumerable<KeyboardLayout>>(l => l.IsEmpty()))
@@ -375,7 +375,7 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
         Assert.True(settings.ShowUninstalledLayoutsMessage);
         Assert.Equal(Version, settings.AppVersion);
 
-        layoutService.Received().GetKeyboardLayouts();
+        await layoutService.Received().GetKeyboardLayouts();
         autoConfigService.Received().CreateCharMappings(
             Arg.Is<IEnumerable<KeyboardLayout>>(l => l.IsEmpty()));
     }
@@ -435,7 +435,7 @@ public sealed class JsonSettingsServiceTests(ITestOutputHelper output)
         Assert.True(settings.ShowUninstalledLayoutsMessage);
         Assert.Equal(Version, settings.AppVersion);
 
-        layoutService.Received().GetKeyboardLayouts();
+        await layoutService.Received().GetKeyboardLayouts();
         autoConfigService.Received().CreateCharMappings(
             Arg.Is<IEnumerable<KeyboardLayout>>(l => layouts.SequenceEqual(l)));
     }

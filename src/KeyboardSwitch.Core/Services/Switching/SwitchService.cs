@@ -27,7 +27,7 @@ public sealed partial class SwitchService(
 
         if (!String.IsNullOrEmpty(textToSwitch))
         {
-            var newText = this.MapText(textToSwitch, direction, settings);
+            var newText = await this.MapText(textToSwitch, direction, settings);
             await clipboard.SetText(newText);
         }
 
@@ -45,20 +45,20 @@ public sealed partial class SwitchService(
 
         if (settings.SwitchLayout)
         {
-            layoutService.SwitchCurrentLayout(direction, settings.SwitchSettings);
+            await layoutService.SwitchCurrentLayout(direction, settings.SwitchSettings);
         }
     }
 
-    private string MapText(string text, SwitchDirection direction, AppSettings settings)
+    private async Task<string> MapText(string text, SwitchDirection direction, AppSettings settings)
     {
-        var allLayouts = layoutService.GetKeyboardLayouts();
+        var allLayouts = await layoutService.GetKeyboardLayouts();
 
         if (direction == SwitchDirection.Backward)
         {
             allLayouts = Enumerable.Reverse(allLayouts).ToList();
         }
 
-        var currentLayout = layoutService.GetCurrentKeyboardLayout();
+        var currentLayout = await layoutService.GetCurrentKeyboardLayout();
 
         var newLayout = allLayouts
             .SkipWhile(layout => layout.Id != currentLayout.Id)

@@ -4,7 +4,7 @@ public interface ILayoutService
 {
     IObserver<Unit> SettingsInvalidated { get; }
 
-    KeyboardLayout GetCurrentKeyboardLayout();
-    void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings);
-    IReadOnlyList<KeyboardLayout> GetKeyboardLayouts();
+    Task<KeyboardLayout> GetCurrentKeyboardLayout();
+    Task SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings);
+    Task<IReadOnlyList<KeyboardLayout>> GetKeyboardLayouts();
 }

@@ -104,9 +104,9 @@ public sealed partial class CharMappingViewModel : ReactiveForm<CharMappingModel
     }
 
     [ReactiveCommand(CanExecute = nameof(canAutoConfigure))]
-    private void AutoConfigure()
+    private async Task AutoConfigure()
     {
-        var layouts = this.layoutService.GetKeyboardLayouts();
+        var layouts = await this.layoutService.GetKeyboardLayouts();
         var charsByLayoutId = this.autoConfigurationService.CreateCharMappings(layouts);
 
         foreach (var layoutAndChars in charsByLayoutId)

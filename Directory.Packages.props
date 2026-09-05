@@ -8,7 +8,7 @@
     <PackageVersion Include="Avalonia.Desktop" Version="12.1.2" />
     <PackageVersion Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.3" />
     <PackageVersion Include="Avalonia.Themes.Simple" Version="12.1.2" />
-    <PackageVersion Include="Avalonia.Wayland" Version="12.1.1" />
+    <PackageVersion Include="Avalonia.Wayland" Version="12.1.2" />
     <PackageVersion Include="Devolutions.AvaloniaTheme.MacOS" Version="2026.9.3" />
     <PackageVersion Include="DynamicData" Version="9.4.33" />
     <PackageVersion Include="FluentAvaloniaUI" Version="3.1.0" />
@@ -55,6 +55,7 @@
     <PackageVersion Include="System.Security.Cryptography.Xml" Version="10.0.11" />
     <PackageVersion Include="TestableIO.System.IO.Abstractions.Extensions" Version="22.0.4" />
     <PackageVersion Include="TestableIO.System.IO.Abstractions.Wrappers" Version="22.2.0" />
+    <PackageVersion Include="Tmds.DBus.Protocol" Version="0.94.1" />
     <PackageVersion Include="Vanara.Core" Version="5.0.7" />
     <PackageVersion Include="Vanara.PInvoke.Kernel32" Version="5.0.7" />
     <PackageVersion Include="Vanara.PInvoke.User32" Version="5.0.7" />

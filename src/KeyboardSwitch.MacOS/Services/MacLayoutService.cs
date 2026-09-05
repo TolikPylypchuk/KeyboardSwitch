@@ -2,15 +2,15 @@ namespace KeyboardSwitch.MacOS.Services;
 
 internal sealed partial class MacLayoutService(ILogger<MacLayoutService> logger) : CachingLayoutService
 {
-    public override KeyboardLayout GetCurrentKeyboardLayout()
+    public override Task<KeyboardLayout> GetCurrentKeyboardLayout()
     {
         this.LogGettingCurrentKeyboardLayout();
 
         using var source = HIToolbox.TISCopyCurrentKeyboardInputSource();
-        return this.CreateKeyboardLayout(source);
+        return Task.FromResult(this.CreateKeyboardLayout(source));
     }
 
-    public override void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
+    public override Task SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
     {
         this.LogSwitchingCurrentLayout(direction);
 
@@ -37,19 +37,21 @@ internal sealed partial class MacLayoutService(ILogger<MacLayoutService> logger)
             ?? this.GetFirstKeyboardSource(sourcesList);
 
         HIToolbox.TISSelectInputSource(sourceToSet);
+
+        return Task.CompletedTask;
     }
 
-    protected override List<KeyboardLayout> GetKeyboardLayoutsInternal()
+    protected override Task<List<KeyboardLayout>> GetKeyboardLayoutsInternal()
     {
         using var properties = new CFDictionaryRef();
         using var sources = HIToolbox.TISCreateInputSourceList(properties, includeAllInstalled: false);
         long count = CoreFoundation.CFArrayGetCount(sources);
 
-        return Enumerable.Range(0, (int)count)
+        return Task.FromResult(Enumerable.Range(0, (int)count)
             .Select(i => new TISInputSourceRef(CoreFoundation.CFArrayGetValueAtIndex(sources, i), shouldRelease: false))
             .Where(IsKeyboardInputSource)
             .Select(this.CreateKeyboardLayout)
-            .ToList();
+            .ToList());
     }
 
     private KeyboardLayout CreateKeyboardLayout(TISInputSourceRef source)

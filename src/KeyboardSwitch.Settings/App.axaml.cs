@@ -59,8 +59,9 @@ public class App : Application, IEnableLogger
         try
         {
             var appSettings = await AppLocator.Current.GetRequiredService<IAppSettingsService>().GetAppSettings();
+            var layouts = await AppLocator.Current.GetRequiredService<ILayoutService>().GetKeyboardLayouts();
 
-            var mainViewModel = new MainViewModel(appSettings);
+            var mainViewModel = new MainViewModel(appSettings, layouts);
             openExternally.InvokeCommand(mainViewModel.OpenExternallyCommand);
 
             mainViewModel.PreferencesSaved

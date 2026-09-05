@@ -48,7 +48,7 @@ internal sealed partial class JsonSettingsService(
         } else
         {
             this.LogCreatingDefaultSettings();
-            await this.SaveAppSettings(this.CreateDefaultAppSettings());
+            await this.SaveAppSettings(await this.CreateDefaultAppSettings());
         }
 
         if (this.appSettings is null)
@@ -107,7 +107,7 @@ internal sealed partial class JsonSettingsService(
         await this.SaveAppSettings(newSettings with { AppVersion = newVersion });
     }
 
-    private AppSettings CreateDefaultAppSettings() =>
+    private async Task<AppSettings> CreateDefaultAppSettings() =>
         new()
         {
             SwitchSettings = new SwitchSettings
@@ -117,7 +117,7 @@ internal sealed partial class JsonSettingsService(
                 PressCount = 2,
                 WaitMilliseconds = 400
             },
-            CharsByKeyboardLayoutId = this.GetAutoConfiguredCharMappings(),
+            CharsByKeyboardLayoutId = await this.GetAutoConfiguredCharMappings(),
             InstantSwitching = true,
             SwitchLayout = true,
             ShowUninstalledLayoutsMessage = true,
@@ -127,9 +127,9 @@ internal sealed partial class JsonSettingsService(
             AppThemeVariant = AppThemeVariant.Auto
         };
 
-    private ImmutableDictionary<string, string> GetAutoConfiguredCharMappings()
+    private async Task<ImmutableDictionary<string, string>> GetAutoConfiguredCharMappings()
     {
-        var layouts = this.GetKeyboardLayouts();
+        var layouts = await this.GetKeyboardLayouts();
 
         try
         {
@@ -141,11 +141,11 @@ internal sealed partial class JsonSettingsService(
         }
     }
 
-    private IReadOnlyList<KeyboardLayout> GetKeyboardLayouts()
+    private async Task<IReadOnlyList<KeyboardLayout>> GetKeyboardLayouts()
     {
         try
         {
-            return layoutService.GetKeyboardLayouts();
+            return await layoutService.GetKeyboardLayouts();
         } catch (Exception e)
         {
             this.LogCouldNotGetKeyboardLayouts(e);

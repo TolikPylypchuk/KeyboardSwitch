@@ -32,7 +32,7 @@ public sealed class SwitchServiceTests(ITestOutputHelper output)
 
         var layoutService = Substitute.For<ILayoutService>();
         layoutService.GetKeyboardLayouts().Returns(layouts);
-        layoutService.GetCurrentKeyboardLayout().Returns(layouts.Find(layout => layout.Tag.Equals(English)));
+        layoutService.GetCurrentKeyboardLayout().Returns(layouts.First(layout => layout.Tag.Equals(English)));
 
         var simulator = Substitute.For<IUserActivitySimulator>();
 
@@ -65,7 +65,7 @@ public sealed class SwitchServiceTests(ITestOutputHelper output)
 
         var layoutService = Substitute.For<ILayoutService>();
         layoutService.GetKeyboardLayouts().Returns(layouts);
-        layoutService.GetCurrentKeyboardLayout().Returns(layouts.Find(layout => layout.Tag.Equals(English)));
+        layoutService.GetCurrentKeyboardLayout().Returns(layouts.First(layout => layout.Tag.Equals(English)));
 
         var simulator = Substitute.For<IUserActivitySimulator>();
 
@@ -82,10 +82,10 @@ public sealed class SwitchServiceTests(ITestOutputHelper output)
 
         if (switchLayout)
         {
-            layoutService.Received().SwitchCurrentLayout(direction, settings.SwitchSettings);
+            await layoutService.Received().SwitchCurrentLayout(direction, settings.SwitchSettings);
         } else
         {
-            layoutService.DidNotReceive().SwitchCurrentLayout(direction, settings.SwitchSettings);
+            await layoutService.DidNotReceive().SwitchCurrentLayout(direction, settings.SwitchSettings);
         }
     }
 
@@ -109,7 +109,7 @@ public sealed class SwitchServiceTests(ITestOutputHelper output)
 
         var layoutService = Substitute.For<ILayoutService>();
         layoutService.GetKeyboardLayouts().Returns(layouts);
-        layoutService.GetCurrentKeyboardLayout().Returns(layouts.Find(layout => layout.Tag.Equals(English)));
+        layoutService.GetCurrentKeyboardLayout().Returns(layouts.First(layout => layout.Tag.Equals(English)));
 
         var simulator = Substitute.For<IUserActivitySimulator>();
 
@@ -146,7 +146,7 @@ public sealed class SwitchServiceTests(ITestOutputHelper output)
 
         var layoutService = Substitute.For<ILayoutService>();
         layoutService.GetKeyboardLayouts().Returns(layouts);
-        layoutService.GetCurrentKeyboardLayout().Returns(layouts.Find(layout => layout.Tag.Equals(English)));
+        layoutService.GetCurrentKeyboardLayout().Returns(layouts.First(layout => layout.Tag.Equals(English)));
 
         var simulator = Substitute.For<IUserActivitySimulator>();
 

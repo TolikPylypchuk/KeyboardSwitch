@@ -8,14 +8,13 @@ public sealed partial class MainViewModel : ReactiveObject
 
     public MainViewModel(
         AppSettings appSettings,
-        ILayoutService? layoutService = null,
+        IReadOnlyList<KeyboardLayout> layouts,
         IStartupService? startupService = null)
     {
-        layoutService ??= AppLocator.Current.GetRequiredService<ILayoutService>();
         startupService ??= AppLocator.Current.GetRequiredService<IStartupService>();
 
         this.MainContentViewModel = new MainContentViewModel(
-            this.CreateCharMappingModel(appSettings, layoutService.GetKeyboardLayouts()),
+            this.CreateCharMappingModel(appSettings, layouts),
             new PreferencesModel(appSettings, startupService.IsStartupConfigured()));
 
         this.ServiceViewModel = new ServiceViewModel();

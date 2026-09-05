@@ -6,11 +6,11 @@ internal partial class XLayoutService(X11Service x11, ILogger<XLayoutService> lo
 {
     private static readonly ImmutableList<string> NonSymbols = ["group", "inet", "pc"];
 
-    public override KeyboardLayout GetCurrentKeyboardLayout()
+    public override async Task<KeyboardLayout> GetCurrentKeyboardLayout()
     {
         this.LogGettingCurrentLayout();
 
-        var allLayouts = this.GetKeyboardLayouts();
+        var allLayouts = await this.GetKeyboardLayouts();
 
         XLib.XkbSelectEventDetails(
             x11.Display,
@@ -27,11 +27,11 @@ internal partial class XLayoutService(X11Service x11, ILogger<XLayoutService> lo
             : throw new XException("Current input group is invalid");
     }
 
-    public override void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
+    public override async Task SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
     {
         this.LogSwitchingCurrentLayout(direction);
 
-        var allLayouts = this.GetKeyboardLayouts();
+        var allLayouts = await this.GetKeyboardLayouts();
 
         XLib.XkbSelectEventDetails(
             x11.Display,
@@ -49,7 +49,7 @@ internal partial class XLayoutService(X11Service x11, ILogger<XLayoutService> lo
         this.SetLayout((uint)newGroup);
     }
 
-    protected override unsafe List<KeyboardLayout> GetKeyboardLayoutsInternal()
+    protected override unsafe Task<List<KeyboardLayout>> GetKeyboardLayoutsInternal()
     {
         this.LogGettingAllLayouts();
 
@@ -94,13 +94,13 @@ internal partial class XLayoutService(X11Service x11, ILogger<XLayoutService> lo
 
         this.FreeKeyboard(keyboardHandle);
 
-        return Enumerable.Zip(groupNames, symbolNames, variantNames)
+        return Task.FromResult(Enumerable.Zip(groupNames, symbolNames, variantNames)
             .Select(items => CreateKeyboardLayout(items.First, items.Second, items.Third))
             .Distinct()
-            .ToList();
+            .ToList());
     }
 
-    private protected virtual void SetLayout(uint group) =>
+    private void SetLayout(uint group) =>
         XLib.XkbLockGroup(x11.Display, XkbKeyboardSpec.XkbUseCoreKbd, group);
 
     private static KeyboardLayout CreateKeyboardLayout(string group, string symbol, string variant) =>

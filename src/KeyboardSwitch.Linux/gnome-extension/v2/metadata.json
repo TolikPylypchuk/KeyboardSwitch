@@ -2,7 +2,7 @@
   "name": "Switch Layout",
   "description": "Switches keyboard layouts, used by Keyboard Switch",
   "uuid": "switch-layout@tolik.io",
-  "version": 2,
+  "version": 3,
   "url": "https://keyboardswitch.tolik.io",
   "shell-version": [
     "45",
@@ -10,6 +10,7 @@
     "47",
     "48",
     "49",
+    "50",
     "51",
     "52",
     "53",

@@ -8,12 +8,12 @@ internal sealed class PlaceholderLayoutService : ILayoutService
 
     public IObserver<Unit> SettingsInvalidated { get; } = Observer.Create<Unit>(_ => { });
 
-    public KeyboardLayout GetCurrentKeyboardLayout() =>
-        placeholderLayout;
+    public Task<KeyboardLayout> GetCurrentKeyboardLayout() =>
+        Task.FromResult(placeholderLayout);
 
-    public IReadOnlyList<KeyboardLayout> GetKeyboardLayouts() =>
-        [placeholderLayout];
+    public Task<IReadOnlyList<KeyboardLayout>> GetKeyboardLayouts() =>
+        Task.FromResult<IReadOnlyList<KeyboardLayout>>([placeholderLayout]);
 
-    public void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
-    { }
+    public Task SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings) =>
+        Task.CompletedTask;
 }

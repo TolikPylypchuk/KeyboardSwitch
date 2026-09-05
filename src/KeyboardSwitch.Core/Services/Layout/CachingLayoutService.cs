@@ -2,30 +2,44 @@ namespace KeyboardSwitch.Core.Services.Layout;
 
 public abstract class CachingLayoutService : ILayoutService
 {
-    private List<KeyboardLayout>? systemLayouts;
+    private Task<List<KeyboardLayout>>? systemLayouts;
     private readonly Subject<Unit> settingsInvalidated = new();
 
     public CachingLayoutService() =>
-        this.settingsInvalidated.Subscribe(_ => this.systemLayouts = null);
+        this.settingsInvalidated.Subscribe(_ =>
+        {
+            this.systemLayouts = null;
+            this.OnSettingsInvalidated();
+        });
 
     public IObserver<Unit> SettingsInvalidated =>
         this.settingsInvalidated.AsObserver();
 
-    public abstract KeyboardLayout GetCurrentKeyboardLayout();
+    public abstract Task<KeyboardLayout> GetCurrentKeyboardLayout();
 
-    public abstract void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings);
+    public abstract Task SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings);
 
-    public IReadOnlyList<KeyboardLayout> GetKeyboardLayouts()
+    public async Task<IReadOnlyList<KeyboardLayout>> GetKeyboardLayouts()
     {
-        if (this.systemLayouts != null)
+        // The task itself is cached, so that concurrent callers share a single lookup
+        var layouts = this.systemLayouts ??= this.GetKeyboardLayoutsInternal();
+
+        try
         {
-            return this.systemLayouts.AsReadOnly();
+            return (await layouts).AsReadOnly();
+        } catch
+        {
+            if (this.systemLayouts == layouts)
+            {
+                this.systemLayouts = null;
+            }
+
+            throw;
         }
-
-        this.systemLayouts = this.GetKeyboardLayoutsInternal();
-
-        return this.systemLayouts.AsReadOnly();
     }
 
-    protected abstract List<KeyboardLayout> GetKeyboardLayoutsInternal();
+    protected abstract Task<List<KeyboardLayout>> GetKeyboardLayoutsInternal();
+
+    protected virtual void OnSettingsInvalidated()
+    { }
 }

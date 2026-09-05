@@ -15,14 +15,14 @@ internal sealed partial class WinLayoutService(ILogger<WinLayoutService> logger)
 
     public bool IsLoadingLayoutsSupported => true;
 
-    public override KeyboardLayout GetCurrentKeyboardLayout()
+    public override Task<KeyboardLayout> GetCurrentKeyboardLayout()
     {
         this.LogGettingLayoutOfForegroundProcess();
         uint foregroundWindowThreadId = User32.GetWindowThreadProcessId(User32.GetForegroundWindow(), out _);
-        return this.GetThreadKeyboardLayout(foregroundWindowThreadId);
+        return Task.FromResult(this.GetThreadKeyboardLayout(foregroundWindowThreadId));
     }
 
-    public override void SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
+    public override Task SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings)
     {
         this.LogSwitchingLayoutOfForegroundProcess(direction);
 
@@ -47,9 +47,11 @@ internal sealed partial class WinLayoutService(ILogger<WinLayoutService> logger)
         {
             this.LogFailedToPostMessageToForegroundWindow();
         }
+
+        return Task.CompletedTask;
     }
 
-    protected override List<KeyboardLayout> GetKeyboardLayoutsInternal()
+    protected override Task<List<KeyboardLayout>> GetKeyboardLayoutsInternal()
     {
         this.LogGettingListOfInstalledLayouts();
 
@@ -64,9 +66,9 @@ internal sealed partial class WinLayoutService(ILogger<WinLayoutService> logger)
             throw new Win32Exception(result);
         }
 
-        return keyboardLayoutIds
+        return Task.FromResult(keyboardLayoutIds
             .Select(this.CreateKeyboardLayout)
-            .ToList();
+            .ToList());
     }
 
     private KeyboardLayout GetThreadKeyboardLayout(uint threadId) =>

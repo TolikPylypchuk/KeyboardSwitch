@@ -2,6 +2,8 @@ using KeyboardSwitch.Core.Services.Settings;
 
 using Microsoft.Extensions.Configuration;
 
+using Tmds.DBus.Protocol;
+
 namespace KeyboardSwitch.Linux;
 
 public static class ServiceExtensions
@@ -31,23 +33,42 @@ public static class ServiceExtensions
                 .AddSingleton<IClipboardService>(sp => ShouldUseXsel(sp)
                     ? ActivatorUtilities.CreateInstance<XselClipboardService>(sp)
                     : ActivatorUtilities.CreateInstance<XClipboardService>(sp))
-                .AddLayoutService()
+                .AddX11LayoutService()
                 .AddSingleton<IAutoConfigurationService, XAutoConfigurationService>()
                 .AddSingleton<X11Service>();
 
         private IServiceCollection AddWaylandServices() =>
             services
                 .AddSingleton<IClipboardService, WlClipboardService>()
-                .AddSingleton<ILayoutService, PlaceholderLayoutService>()
+                .AddWaylandLayoutService()
                 .AddSingleton<IMainLoopRunner, NoOpMainLoopRunner>()
                 .AddSingleton<IAutoConfigurationService, WlAutoConfigurationService>();
 
-        private IServiceCollection AddLayoutService() =>
+        private IServiceCollection AddX11LayoutService() =>
             GnomeDetector.IsRunningOnGnome()
-                ? services.AddSingleton<ILayoutService, GnomeLayoutService>()
+                ? services
+                    .AddSingleton(DBusConnection.Session)
+                    .AddSingleton<GnomeShellExtensionClient>()
+                    .AddSingleton<XLayoutService>()
+                    .AddSingleton<ILayoutService>(sp =>
+                        CreateGnomeLayoutService(sp, sp.GetRequiredService<XLayoutService>()))
                 : services.AddSingleton<ILayoutService, XLayoutService>();
+
+        private IServiceCollection AddWaylandLayoutService() =>
+            GnomeDetector.IsRunningOnGnome()
+                ? services
+                    .AddSingleton(DBusConnection.Session)
+                    .AddSingleton<GnomeShellExtensionClient>()
+                    .AddSingleton<ILayoutService>(sp => CreateGnomeLayoutService(sp, null))
+                : services.AddSingleton<ILayoutService, PlaceholderLayoutService>();
     }
 
     private static bool ShouldUseXsel(IServiceProvider sp) =>
         sp.GetRequiredService<IAppSettingsService>().GetAppSettings().Result.UseXsel;
+
+    private static GnomeLayoutService CreateGnomeLayoutService(IServiceProvider sp, ILayoutService? fallback) =>
+        new(
+            sp.GetRequiredService<GnomeShellExtensionClient>(),
+            fallback,
+            sp.GetRequiredService<ILogger<GnomeLayoutService>>());
 }
