@@ -18,8 +18,14 @@ public class App : Application, IEnableLogger
 {
     private Mutex? mutex;
 
-    public override void Initialize() =>
+    public override void Initialize()
+    {
         AvaloniaXamlLoader.Load(this);
+
+#if DEBUG
+        this.AttachDeveloperTools();
+#endif
+    }
 
     public override async void OnFrameworkInitializationCompleted()
     {

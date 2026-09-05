@@ -19,6 +19,8 @@ public sealed partial class CharMappingViewModel : ReactiveForm<CharMappingModel
     [ObservableAsProperty]
     public bool shouldRemoveLayouts;
 
+    private readonly IObservable<bool> canAutoConfigure;
+
     public CharMappingViewModel(
         CharMappingModel charMappingModel,
         IObservable<bool> removeLayoutsEnabled,
@@ -38,7 +40,7 @@ public sealed partial class CharMappingViewModel : ReactiveForm<CharMappingModel
             .SortAndBind(out this.layouts, SortExpressionComparer<LayoutViewModel>.Ascending(vm => vm.Index))
             .Subscribe();
 
-        var canAutoConfigure = this.Layouts
+        this.canAutoConfigure = this.Layouts
             .ToObservableChangeSet()
             .AutoRefreshOnObservable(layout => layout.Changed)
             .ToCollection()
@@ -101,7 +103,7 @@ public sealed partial class CharMappingViewModel : ReactiveForm<CharMappingModel
         });
     }
 
-    [ReactiveCommand]
+    [ReactiveCommand(CanExecute = nameof(canAutoConfigure))]
     private void AutoConfigure()
     {
         var layouts = this.layoutService.GetKeyboardLayouts();
