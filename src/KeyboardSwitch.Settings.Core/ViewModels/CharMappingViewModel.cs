@@ -1,6 +1,6 @@
 namespace KeyboardSwitch.Settings.Core.ViewModels;
 
-public sealed class CharMappingViewModel : ReactiveForm<CharMappingModel, CharMappingViewModel>
+public sealed partial class CharMappingViewModel : ReactiveForm<CharMappingModel, CharMappingViewModel>
 {
     private readonly ILayoutService layoutService;
     private readonly IAutoConfigurationService autoConfigurationService;
@@ -10,9 +10,14 @@ public sealed class CharMappingViewModel : ReactiveForm<CharMappingModel, CharMa
 
     private readonly ReadOnlyObservableCollection<LayoutViewModel> layouts;
 
-    private readonly ObservableAsPropertyHelper<bool> hasNewLayouts;
-    private readonly ObservableAsPropertyHelper<bool> canRemoveLayouts;
-    private readonly ObservableAsPropertyHelper<bool> shouldRemoveLayouts;
+    [ObservableAsProperty]
+    public bool hasNewLayouts;
+
+    [ObservableAsProperty]
+    public bool canRemoveLayouts;
+
+    [ObservableAsProperty]
+    public bool shouldRemoveLayouts;
 
     public CharMappingViewModel(
         CharMappingModel charMappingModel,
@@ -40,12 +45,9 @@ public sealed class CharMappingViewModel : ReactiveForm<CharMappingModel, CharMa
             .ToCollection()
             .Select(layouts => layouts.All(layout => String.IsNullOrEmpty(layout.Chars)));
 
-        this.AutoConfigure = ReactiveCommand.Create(this.OnAutoConfigure, canAutoConfigure);
-        this.RemoveLayouts = ReactiveCommand.Create(() => { });
-
-        this.hasNewLayouts = this.ConfigureHasNewLayouts();
-        this.canRemoveLayouts = this.ConfigureCanRemoveLayouts(removeLayoutsEnabled);
-        this.shouldRemoveLayouts = this.ConfigureShouldRemoveLayouts();
+        this.hasNewLayoutsHelper = this.ConfigureHasNewLayouts();
+        this.canRemoveLayoutsHelper = this.ConfigureCanRemoveLayouts(removeLayoutsEnabled);
+        this.shouldRemoveLayoutsHelper = this.ConfigureShouldRemoveLayouts();
 
         this.CopyProperties();
         this.EnableChangeTracking();
@@ -54,13 +56,6 @@ public sealed class CharMappingViewModel : ReactiveForm<CharMappingModel, CharMa
     public CharMappingModel CharMappingModel { get; }
 
     public ReadOnlyObservableCollection<LayoutViewModel> Layouts => this.layouts;
-
-    public bool HasNewLayouts => this.hasNewLayouts.Value;
-    public bool CanRemoveLayouts => this.canRemoveLayouts.Value;
-    public bool ShouldRemoveLayouts => this.shouldRemoveLayouts.Value;
-
-    public ReactiveCommand<Unit, Unit> AutoConfigure { get; }
-    public ReactiveCommand<Unit, Unit> RemoveLayouts { get; }
 
     protected override CharMappingViewModel Self => this;
 
@@ -107,6 +102,23 @@ public sealed class CharMappingViewModel : ReactiveForm<CharMappingModel, CharMa
         });
     }
 
+    [ReactiveCommand]
+    private void AutoConfigure()
+    {
+        var layouts = this.layoutService.GetKeyboardLayouts();
+        var charsByLayoutId = this.autoConfigurationService.CreateCharMappings(layouts);
+
+        foreach (var layoutAndChars in charsByLayoutId)
+        {
+            var layoutViewModel = this.Layouts.First(layout => layout.Id == layoutAndChars.Key);
+            layoutViewModel.Chars = layoutAndChars.Value;
+        }
+    }
+
+    [ReactiveCommand]
+    private void RemoveLayouts()
+    { }
+
     private ObservableAsPropertyHelper<bool> ConfigureHasNewLayouts() =>
         this.Layouts.ToObservableChangeSet()
             .AutoRefresh()
@@ -119,25 +131,13 @@ public sealed class CharMappingViewModel : ReactiveForm<CharMappingModel, CharMa
         this.removableLayoutIdsSource.Connect()
             .Count()
             .Select(count => count > 0)
-            .Merge(this.RemoveLayouts.Select(_ => false))
+            .Merge(this.RemoveLayoutsCommand.Select(_ => false))
             .CombineLatest(removeLayoutsEnabled, (a, b) => a && b)
             .ToProperty(this, vm => vm.CanRemoveLayouts, initialValue: false);
 
     private ObservableAsPropertyHelper<bool> ConfigureShouldRemoveLayouts() =>
-        this.RemoveLayouts.Select(_ => true)
+        this.RemoveLayoutsCommand.Select(_ => true)
             .Merge(this.Save.Select(_ => false))
             .Merge(this.Cancel.Select(_ => false))
             .ToProperty(this, vm => vm.ShouldRemoveLayouts, initialValue: false);
-
-    private void OnAutoConfigure()
-    {
-        var layouts = this.layoutService.GetKeyboardLayouts();
-        var charsByLayoutId = this.autoConfigurationService.CreateCharMappings(layouts);
-
-        foreach (var layoutAndChars in charsByLayoutId)
-        {
-            var layoutViewModel = this.Layouts.First(layout => layout.Id == layoutAndChars.Key);
-            layoutViewModel.Chars = layoutAndChars.Value;
-        }
-    }
 }

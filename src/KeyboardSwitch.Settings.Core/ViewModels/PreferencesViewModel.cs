@@ -2,22 +2,51 @@ using SharpHook.Data;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels;
 
-public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, PreferencesViewModel>
+public sealed partial class PreferencesViewModel : ReactiveForm<PreferencesModel, PreferencesViewModel>
 {
+    [Reactive]
     private bool instantSwitching;
+
+    [Reactive]
     private bool switchLayout;
+
+    [Reactive]
     private bool startup;
+
+    [Reactive]
     private bool showUninstalledLayoutsMessage;
+
+    [Reactive]
     private bool useXsel;
+
+    [Reactive]
     private EventMask forwardModifierFirst;
+
+    [Reactive]
     private EventMask forwardModifierSecond;
+
+    [Reactive]
     private EventMask forwardModifierThird;
+
+    [Reactive]
     private EventMask backwardModifierFirst;
+
+    [Reactive]
     private EventMask backwardModifierSecond;
+
+    [Reactive]
     private EventMask backwardModifierThird;
+
+    [Reactive]
     private int pressCount;
+
+    [Reactive]
     private int waitMilliseconds;
+
+    [Reactive]
     private AppTheme appTheme;
+
+    [Reactive]
     private AppThemeVariant appThemeVariant;
 
     private readonly SourceList<EventMask> forwardModifierKeysSource = new();
@@ -55,96 +84,6 @@ public sealed class PreferencesViewModel : ReactiveForm<PreferencesModel, Prefer
     }
 
     public PreferencesModel PreferencesModel { get; }
-
-    public bool InstantSwitching
-    {
-        get => this.instantSwitching;
-        set => this.RaiseAndSetIfChanged(ref this.instantSwitching, value);
-    }
-
-    public bool SwitchLayout
-    {
-        get => this.switchLayout;
-        set => this.RaiseAndSetIfChanged(ref this.switchLayout, value);
-    }
-
-    public bool Startup
-    {
-        get => this.startup;
-        set => this.RaiseAndSetIfChanged(ref this.startup, value);
-    }
-
-    public bool ShowUninstalledLayoutsMessage
-    {
-        get => this.showUninstalledLayoutsMessage;
-        set => this.RaiseAndSetIfChanged(ref this.showUninstalledLayoutsMessage, value);
-    }
-
-    public bool UseXsel
-    {
-        get => this.useXsel;
-        set => this.RaiseAndSetIfChanged(ref this.useXsel, value);
-    }
-
-    public EventMask ForwardModifierFirst
-    {
-        get => this.forwardModifierFirst;
-        set => this.RaiseAndSetIfChanged(ref this.forwardModifierFirst, value);
-    }
-
-    public EventMask ForwardModifierSecond
-    {
-        get => this.forwardModifierSecond;
-        set => this.RaiseAndSetIfChanged(ref this.forwardModifierSecond, value);
-    }
-
-    public EventMask ForwardModifierThird
-    {
-        get => this.forwardModifierThird;
-        set => this.RaiseAndSetIfChanged(ref this.forwardModifierThird, value);
-    }
-
-    public EventMask BackwardModifierFirst
-    {
-        get => this.backwardModifierFirst;
-        set => this.RaiseAndSetIfChanged(ref this.backwardModifierFirst, value);
-    }
-
-    public EventMask BackwardModifierSecond
-    {
-        get => this.backwardModifierSecond;
-        set => this.RaiseAndSetIfChanged(ref this.backwardModifierSecond, value);
-    }
-
-    public EventMask BackwardModifierThird
-    {
-        get => this.backwardModifierThird;
-        set => this.RaiseAndSetIfChanged(ref this.backwardModifierThird, value);
-    }
-
-    public int PressCount
-    {
-        get => this.pressCount;
-        set => this.RaiseAndSetIfChanged(ref this.pressCount, value);
-    }
-
-    public int WaitMilliseconds
-    {
-        get => this.waitMilliseconds;
-        set => this.RaiseAndSetIfChanged(ref this.waitMilliseconds, value);
-    }
-
-    public AppTheme AppTheme
-    {
-        get => this.appTheme;
-        set => this.RaiseAndSetIfChanged(ref this.appTheme, value);
-    }
-
-    public AppThemeVariant AppThemeVariant
-    {
-        get => this.appThemeVariant;
-        set => this.RaiseAndSetIfChanged(ref this.appThemeVariant, value);
-    }
 
     public ValidationHelper ModifierKeysAreDifferentRule { get; }
     public ValidationHelper SwitchMethodsAreDifferentRule { get; }

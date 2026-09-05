@@ -17,7 +17,7 @@ public partial class MainContentView : ReactiveUserControl<MainContentViewModel>
             this.OneWayBind(this.ViewModel, vm => vm.AboutViewModel, v => v.AboutTabItem.Content)
                 .DisposeWith(disposables);
 
-            this.ViewModel!.OpenAboutTab
+            this.ViewModel!.OpenAboutTabCommand
                 .Subscribe(_ => this.AboutTabItem.IsSelected = true)
                 .DisposeWith(disposables);
         });

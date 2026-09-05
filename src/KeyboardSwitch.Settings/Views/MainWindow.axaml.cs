@@ -14,7 +14,7 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
             this.OneWayBind(this.ViewModel, vm => vm.ServiceViewModel, v => v.ServiceViewContent.Content)
                 .DisposeWith(disposables);
 
-            this.ViewModel!.OpenExternally
+            this.ViewModel!.OpenExternallyCommand
                 .Subscribe(this.BringToForeground)
                 .DisposeWith(disposables);
 
@@ -22,7 +22,7 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
                 .Select(e => e.Key)
                 .Where(key => key == Key.F1)
                 .Discard()
-                .InvokeCommand(this.ViewModel.OpenAboutTab)
+                .InvokeCommand(this.ViewModel.OpenAboutTabCommand)
                 .DisposeWith(disposables);
         });
     }

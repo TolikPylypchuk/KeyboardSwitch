@@ -2,7 +2,7 @@ using System.Collections.Immutable;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels;
 
-public sealed class MainContentViewModel : ReactiveObject
+public sealed partial class MainContentViewModel : ReactiveObject
 {
     private readonly IAppSettingsService appSettingsService;
     private readonly IStartupService startupService;
@@ -24,14 +24,8 @@ public sealed class MainContentViewModel : ReactiveObject
         this.PreferencesViewModel = new(preferencesModel);
         this.AboutViewModel = new();
 
-        this.SaveCharMappingSettings = ReactiveCommand.CreateFromTask<CharMappingModel>(
-            this.SaveCharMappingSettingsAsync);
-        this.SavePreferences = ReactiveCommand.CreateFromTask<PreferencesModel, PreferencesModel>(
-            this.SavePreferencesAsync);
-        this.OpenAboutTab = ReactiveCommand.Create(() => { });
-
-        this.CharMappingViewModel.Save.InvokeCommand(this.SaveCharMappingSettings);
-        this.PreferencesViewModel.Save.InvokeCommand(this.SavePreferences);
+        this.CharMappingViewModel.Save.InvokeCommand(this.SaveCharMappingSettingsCommand);
+        this.PreferencesViewModel.Save.InvokeCommand(this.SavePreferencesCommand);
 
         this.PreferencesViewModel.Save
             .Select(model => model.ShowUninstalledLayoutsMessage)
@@ -42,11 +36,8 @@ public sealed class MainContentViewModel : ReactiveObject
     public PreferencesViewModel PreferencesViewModel { get; }
     public AboutViewModel AboutViewModel { get; }
 
-    public ReactiveCommand<CharMappingModel, Unit> SaveCharMappingSettings { get; }
-    public ReactiveCommand<PreferencesModel, PreferencesModel> SavePreferences { get; }
-    public ReactiveCommand<Unit, Unit> OpenAboutTab { get; }
-
-    private async Task SaveCharMappingSettingsAsync(CharMappingModel charMappingModel)
+    [ReactiveCommand]
+    private async Task SaveCharMappingSettings(CharMappingModel charMappingModel)
     {
         var settings = await this.appSettingsService.GetAppSettings();
 
@@ -70,7 +61,8 @@ public sealed class MainContentViewModel : ReactiveObject
         await this.appSettingsService.SaveAppSettings(newSettings);
     }
 
-    private async Task<PreferencesModel> SavePreferencesAsync(PreferencesModel preferencesModel)
+    [ReactiveCommand]
+    private async Task<PreferencesModel> SavePreferences(PreferencesModel preferencesModel)
     {
         var settings = await this.appSettingsService.GetAppSettings();
 
@@ -94,4 +86,8 @@ public sealed class MainContentViewModel : ReactiveObject
 
         return preferencesModel;
     }
+
+    [ReactiveCommand]
+    private void OpenAboutTab()
+    { }
 }

@@ -2,7 +2,7 @@ using KeyboardSwitch.Core.Keyboard;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels;
 
-public class MainViewModel : ReactiveObject
+public sealed partial class MainViewModel : ReactiveObject
 {
     private readonly Subject<PreferencesModel> preferencesSaved = new();
 
@@ -20,26 +20,20 @@ public class MainViewModel : ReactiveObject
 
         this.ServiceViewModel = new ServiceViewModel();
 
-        this.OpenExternally = ReactiveCommand.Create(() => { });
-        this.OpenAboutTab = ReactiveCommand.Create(() => { });
-
-        this.MainContentViewModel.SaveCharMappingSettings
+        this.MainContentViewModel.SaveCharMappingSettingsCommand
             .Discard()
-            .Merge(this.MainContentViewModel.SavePreferences.Discard())
-            .InvokeCommand(this.ServiceViewModel.ReloadSettings);
+            .Merge(this.MainContentViewModel.SavePreferencesCommand.Discard())
+            .InvokeCommand(this.ServiceViewModel.ReloadSettingsCommand);
 
-        this.MainContentViewModel.SavePreferences.Subscribe(this.preferencesSaved);
+        this.MainContentViewModel.SavePreferencesCommand.Subscribe(this.preferencesSaved);
 
-        this.OpenAboutTab.InvokeCommand(this.MainContentViewModel.OpenAboutTab);
+        this.OpenAboutTabCommand.InvokeCommand(this.MainContentViewModel.OpenAboutTabCommand);
 
         this.PreferencesSaved = this.preferencesSaved.AsObservable();
     }
 
     public MainContentViewModel MainContentViewModel { get; }
     public ServiceViewModel ServiceViewModel { get; }
-
-    public ReactiveCommand<Unit, Unit> OpenExternally { get; }
-    public ReactiveCommand<Unit, Unit> OpenAboutTab { get; }
 
     public IObservable<PreferencesModel> PreferencesSaved { get; }
 
@@ -65,4 +59,12 @@ public class MainViewModel : ReactiveObject
 
         return new() { Layouts = layoutModels, RemovableLayoutIds = missingLayoutIds };
     }
+
+    [ReactiveCommand]
+    private void OpenExternally()
+    { }
+
+    [ReactiveCommand]
+    private void OpenAboutTab()
+    { }
 }

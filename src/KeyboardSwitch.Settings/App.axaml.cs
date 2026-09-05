@@ -55,7 +55,7 @@ public class App : Application, IEnableLogger
             var appSettings = await AppLocator.Current.GetRequiredService<IAppSettingsService>().GetAppSettings();
 
             var mainViewModel = new MainViewModel(appSettings);
-            openExternally.InvokeCommand(mainViewModel.OpenExternally);
+            openExternally.InvokeCommand(mainViewModel.OpenExternallyCommand);
 
             mainViewModel.PreferencesSaved
                 .Select(p => p.AppTheme)

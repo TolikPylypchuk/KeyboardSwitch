@@ -18,14 +18,14 @@ public partial class CharMappingView : ReactiveUserControl<CharMappingViewModel>
 
     private void BindCommands(CompositeDisposable disposables)
     {
-        this.BindCommand(this.ViewModel, vm => vm.AutoConfigure, v => v.AutoConfigureButton)
+        this.BindCommand(this.ViewModel, vm => vm.AutoConfigureCommand, v => v.AutoConfigureButton)
             .DisposeWith(disposables);
 
-        this.ViewModel!.AutoConfigure.CanExecute
+        this.ViewModel!.AutoConfigureCommand.CanExecute
             .BindTo(this, v => v.AutoConfigureButton.IsVisible)
             .DisposeWith(disposables);
 
-        this.BindCommand(this.ViewModel, vm => vm.RemoveLayouts, v => v.RemoveLayoutsButton)
+        this.BindCommand(this.ViewModel, vm => vm.RemoveLayoutsCommand, v => v.RemoveLayoutsButton)
             .DisposeWith(disposables);
 
         this.BindCommand(this.ViewModel, vm => vm.Save, v => v.SaveButton)

@@ -13,13 +13,13 @@ public partial class AboutView : ReactiveUserControl<AboutViewModel>
                 Messages.VersionFormat,
                 this.FormatVersion(this.ViewModel!.AppVersion));
 
-            this.BindCommand(this.ViewModel, vm => vm.CheckForUpdates, v => v.CheckForUpdatesButton)
+            this.BindCommand(this.ViewModel, vm => vm.CheckForUpdatesCommand, v => v.CheckForUpdatesButton)
                 .DisposeWith(disposables);
 
-            this.BindCommand(this.ViewModel, vm => vm.OpenDocs, v => v.ViewDocsButton)
+            this.BindCommand(this.ViewModel, vm => vm.OpenDocsCommand, v => v.ViewDocsButton)
                 .DisposeWith(disposables);
 
-            this.BindCommand(this.ViewModel, vm => vm.GetNewVersion, v => v.GetNewVersionButton)
+            this.BindCommand(this.ViewModel, vm => vm.GetNewVersionCommand, v => v.GetNewVersionButton)
                 .DisposeWith(disposables);
 
             this.WhenAnyValue(v => v.ViewModel!.LatestVersion)
@@ -42,7 +42,7 @@ public partial class AboutView : ReactiveUserControl<AboutViewModel>
             .BindTo(this, v => v.CheckForUpdatesButton.IsVisible)
             .DisposeWith(disposables);
 
-        this.ViewModel!.CheckForUpdates
+        this.ViewModel!.CheckForUpdatesCommand
             .Select(latestVersion => latestVersion <= this.ViewModel.AppVersion)
             .BindTo(this, v => v.NoNewVersionsTextBlock.IsVisible)
             .DisposeWith(disposables);

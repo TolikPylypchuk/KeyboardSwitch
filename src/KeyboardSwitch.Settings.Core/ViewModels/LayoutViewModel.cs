@@ -1,12 +1,23 @@
 namespace KeyboardSwitch.Settings.Core.ViewModels;
 
-public sealed class LayoutViewModel : ReactiveForm<LayoutModel, LayoutViewModel>
+public sealed partial class LayoutViewModel : ReactiveForm<LayoutModel, LayoutViewModel>
 {
+    [Reactive]
     private string languageName = String.Empty;
+
+    [Reactive]
     private string keyboardName = String.Empty;
+
+    [Reactive]
     private string id = String.Empty;
+
+    [Reactive]
     private int index;
+
+    [Reactive]
     private string chars = String.Empty;
+
+    [Reactive]
     private int currentCharIndex = NoIndex;
 
     public LayoutViewModel(
@@ -38,42 +49,6 @@ public sealed class LayoutViewModel : ReactiveForm<LayoutModel, LayoutViewModel>
     }
 
     public LayoutModel LayoutModel { get; }
-
-    public string LanguageName
-    {
-        get => this.languageName;
-        set => this.RaiseAndSetIfChanged(ref this.languageName, value);
-    }
-
-    public string KeyboardName
-    {
-        get => this.keyboardName;
-        set => this.RaiseAndSetIfChanged(ref this.keyboardName, value);
-    }
-
-    public string Id
-    {
-        get => this.id;
-        set => this.RaiseAndSetIfChanged(ref this.id, value);
-    }
-
-    public int Index
-    {
-        get => this.index;
-        set => this.RaiseAndSetIfChanged(ref this.index, value);
-    }
-
-    public string Chars
-    {
-        get => this.chars;
-        set => this.RaiseAndSetIfChanged(ref this.chars, value);
-    }
-
-    public int CurrentCharIndex
-    {
-        get => this.currentCharIndex;
-        set => this.RaiseAndSetIfChanged(ref this.currentCharIndex, value);
-    }
 
     protected override LayoutViewModel Self => this;
 

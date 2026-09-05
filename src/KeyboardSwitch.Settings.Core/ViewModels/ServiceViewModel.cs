@@ -2,11 +2,12 @@ namespace KeyboardSwitch.Settings.Core.ViewModels;
 
 public enum ServiceStatus { Running, Stopped, ShuttingDown }
 
-public sealed class ServiceViewModel : ReactiveObject
+public sealed partial class ServiceViewModel : ReactiveObject
 {
     private readonly IServiceCommunicator serviceCommunicator;
 
-    private readonly ObservableAsPropertyHelper<ServiceStatus> serviceStatus;
+    [ObservableAsProperty]
+    private ServiceStatus serviceStatus;
 
     private bool isShutdownRequested = false;
 
@@ -18,32 +19,20 @@ public sealed class ServiceViewModel : ReactiveObject
 
         var serviceStatus = new Subject<ServiceStatus>();
 
-        this.serviceStatus = serviceStatus.ToProperty(this, vm => vm.ServiceStatus);
+        this.serviceStatusHelper = serviceStatus.ToProperty(this, vm => vm.ServiceStatus);
 
         var canStartService = serviceStatus.Select(status => status == ServiceStatus.Stopped);
         var canStopService = serviceStatus.Select(status => status == ServiceStatus.Running);
         var canKillService = serviceStatus.Select(status => status == ServiceStatus.ShuttingDown);
 
-        this.StartService = ReactiveCommand.Create(this.OnStartService, canStartService);
-        this.StopService = ReactiveCommand.Create(this.OnStopService, canStopService);
-        this.KillService = ReactiveCommand.Create(this.OnKillService, canKillService);
-        this.ReloadSettings = ReactiveCommand.Create(this.OnReloadSettings);
-
         Observable.Interval(TimeSpan.FromSeconds(1), scheduler)
             .Select(_ => this.CheckServiceStatus())
-            .Merge(this.StartService.Select(_ => ServiceStatus.Running))
-            .Merge(this.StopService.Select(_ => ServiceStatus.ShuttingDown))
-            .Merge(this.KillService.Select(_ => ServiceStatus.Stopped))
+            .Merge(this.StartServiceCommand.Select(_ => ServiceStatus.Running))
+            .Merge(this.StopServiceCommand.Select(_ => ServiceStatus.ShuttingDown))
+            .Merge(this.KillServiceCommand.Select(_ => ServiceStatus.Stopped))
             .DistinctUntilChanged()
             .Subscribe(serviceStatus);
     }
-
-    public ServiceStatus ServiceStatus => this.serviceStatus.Value;
-
-    public ReactiveCommand<Unit, Unit> StartService { get; }
-    public ReactiveCommand<Unit, Unit> StopService { get; }
-    public ReactiveCommand<Unit, Unit> KillService { get; }
-    public ReactiveCommand<Unit, Unit> ReloadSettings { get; }
 
     private ServiceStatus CheckServiceStatus()
     {
@@ -59,19 +48,23 @@ public sealed class ServiceViewModel : ReactiveObject
             : ServiceStatus.Stopped;
     }
 
-    private void OnStartService() =>
+    [ReactiveCommand]
+    private void StartService() =>
         this.serviceCommunicator.StartService();
 
-    private void OnStopService()
+    [ReactiveCommand]
+    private void StopService()
     {
         this.serviceCommunicator.StopService(kill: false);
         this.isShutdownRequested = true;
     }
 
-    private void OnKillService() =>
+    [ReactiveCommand]
+    private void KillService() =>
         this.serviceCommunicator.StopService(kill: true);
 
-    private void OnReloadSettings()
+    [ReactiveCommand]
+    private void ReloadSettings()
     {
         if (this.ServiceStatus == ServiceStatus.Running)
         {

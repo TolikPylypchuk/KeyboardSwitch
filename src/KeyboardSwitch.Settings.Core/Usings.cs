@@ -22,6 +22,7 @@ global using KeyboardSwitch.Settings.Core.Models;
 global using Microsoft.Extensions.Logging;
 
 global using ReactiveUI;
+global using ReactiveUI.SourceGenerators;
 global using ReactiveUI.Validation.Extensions;
 global using ReactiveUI.Validation.Helpers;
 
@@ -29,4 +30,3 @@ global using Splat;
 
 global using static KeyboardSwitch.Core.Constants;
 global using static KeyboardSwitch.Settings.Core.Constants;
-global using static KeyboardSwitch.Settings.Core.ServiceExtensions;

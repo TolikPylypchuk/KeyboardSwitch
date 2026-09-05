@@ -2,29 +2,23 @@ using System.Reflection;
 
 namespace KeyboardSwitch.Settings.Core.ViewModels;
 
-public class AboutViewModel : ReactiveObject
+public sealed partial class AboutViewModel : ReactiveObject
 {
-    private readonly ObservableAsPropertyHelper<Version> latestVersion;
+    [ObservableAsProperty]
+    private Version latestVersion;
 
     public AboutViewModel()
     {
-        this.AppVersion = Assembly.GetExecutingAssembly().GetName().Version!;
-        this.CheckForUpdates = ReactiveCommand.CreateFromTask(this.OnCheckForUpdates);
-        this.GetNewVersion = ReactiveCommand.Create(this.OnGetNewVersion);
-        this.OpenDocs = ReactiveCommand.Create(this.OnOpenDocs);
+        this.AppVersion = latestVersion = Assembly.GetExecutingAssembly().GetName().Version!;
 
-        this.latestVersion = this.CheckForUpdates
+        this.latestVersionHelper = this.CheckForUpdatesCommand
             .ToProperty(this, vm => vm.LatestVersion, initialValue: this.AppVersion);
     }
 
     public Version AppVersion { get; }
-    public Version LatestVersion => this.latestVersion.Value;
 
-    public ReactiveCommand<Unit, Version> CheckForUpdates { get; }
-    public ReactiveCommand<Unit, Unit> GetNewVersion { get; }
-    public ReactiveCommand<Unit, Unit> OpenDocs { get; }
-
-    public async Task<Version> OnCheckForUpdates()
+    [ReactiveCommand]
+    private async Task<Version> CheckForUpdates()
     {
         try
         {
@@ -38,9 +32,11 @@ public class AboutViewModel : ReactiveObject
         }
     }
 
-    public void OnGetNewVersion() =>
+    [ReactiveCommand]
+    private void GetNewVersion() =>
         new Uri(AppReleasesLocation).OpenInBrowser();
 
-    public void OnOpenDocs() =>
+    [ReactiveCommand]
+    private void OpenDocs() =>
         new Uri(DocsLocation).OpenInBrowser();
 }
