@@ -12,6 +12,26 @@
     MinHeight="400"
 >
     <DockPanel>
+        <Border x:Name="LayoutServiceWarningBorder" DockPanel.Dock="Top" Padding="10,10,10,0" IsVisible="False">
+            <Panel>
+                <TextBlock
+                    x:Name="CannotSwitchLayoutsTextBlock"
+                    Text="{l:Translate CannotSwitchLayouts}"
+                    FontWeight="SemiBold"
+                    TextWrapping="Wrap"
+                    IsVisible="False"
+                />
+
+                <TextBlock
+                    x:Name="LayoutsUnavailableTextBlock"
+                    Text="{l:Translate LayoutsUnavailable}"
+                    FontWeight="SemiBold"
+                    TextWrapping="Wrap"
+                    IsVisible="False"
+                />
+            </Panel>
+        </Border>
+
         <ContentControl x:Name="ServiceViewContent" DockPanel.Dock="Bottom" />
         <ContentControl x:Name="MainContent" />
     </DockPanel>

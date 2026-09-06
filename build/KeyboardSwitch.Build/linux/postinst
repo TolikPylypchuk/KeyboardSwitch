@@ -6,6 +6,8 @@ SETTINGS_APP=$INSTALL_DIR/KeyboardSwitchSettings
 SETTINGS_DESKTOP_FILE=/tmp/keyboard-switch-settings.desktop
 
 GNOME_EXTENSION_DIR=/usr/share/gnome-shell/extensions/switch-layout@tolik.io
+GNOME_EXTENSION_SOURCE_DIR=$INSTALL_DIR/gnome-extension
+GNOME_EXTENSION_LOCAL_DIR=.local/share/gnome-shell/extensions/switch-layout@tolik.io
 
 GROUP=keyboard-switch
 
@@ -35,10 +37,31 @@ Categories=Utility
 desktop-file-install --dir=/usr/share/applications $SETTINGS_DESKTOP_FILE
 rm $SETTINGS_DESKTOP_FILE
 
-command -v gnome-shell &> /dev/null
-
-if [ "$?" = 0 ]
+if command -v gnome-shell &> /dev/null
 then
-    mkdir -p $GNOME_EXTENSION_DIR
-    chmod -R 777 $GNOME_EXTENSION_DIR
+    GNOME_VERSION=$(gnome-shell --version | grep -oE '[0-9]+' | head -1)
+
+    if [ -n "$GNOME_VERSION" ] && [ "$GNOME_VERSION" -ge 45 ]
+    then
+        GNOME_EXTENSION_VERSION_DIR=v2
+    else
+        GNOME_EXTENSION_VERSION_DIR=v1
+    fi
+
+    if [ -d "$GNOME_EXTENSION_SOURCE_DIR/$GNOME_EXTENSION_VERSION_DIR" ]
+    then
+        mkdir -p $GNOME_EXTENSION_DIR
+        chmod 755 $GNOME_EXTENSION_DIR
+
+        install -m 644 $GNOME_EXTENSION_SOURCE_DIR/$GNOME_EXTENSION_VERSION_DIR/extension.js $GNOME_EXTENSION_DIR
+        install -m 644 $GNOME_EXTENSION_SOURCE_DIR/$GNOME_EXTENSION_VERSION_DIR/metadata.json $GNOME_EXTENSION_DIR
+    fi
+
+    awk -F: '($3 >= 1000) && ($3 < 60000) && ($1 != "nobody") { print $1 }' /etc/passwd | while read -r CURRENT_USER
+    do
+        if [ -d "$(eval echo ~$CURRENT_USER)/$GNOME_EXTENSION_LOCAL_DIR" ]
+        then
+            rm -rf "$(eval echo ~$CURRENT_USER)/$GNOME_EXTENSION_LOCAL_DIR"
+        fi
+    done
 fi

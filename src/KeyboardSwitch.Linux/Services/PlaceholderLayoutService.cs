@@ -8,6 +8,9 @@ internal sealed class PlaceholderLayoutService : ILayoutService
 
     public IObserver<Unit> SettingsInvalidated { get; } = Observer.Create<Unit>(_ => { });
 
+    public LayoutServiceStatus Status =>
+        LayoutServiceStatus.Unavailable;
+
     public Task<KeyboardLayout> GetCurrentKeyboardLayout() =>
         Task.FromResult(placeholderLayout);
 

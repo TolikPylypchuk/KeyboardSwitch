@@ -66,8 +66,8 @@ public sealed partial class SwitchService(
             .FirstOrDefault()
             ?? allLayouts[0];
 
-        string currentChars = settings.CharsByKeyboardLayoutId[currentLayout.Id];
-        string newChars = settings.CharsByKeyboardLayoutId[newLayout.Id];
+        string currentChars = settings.CharsByKeyboardLayoutId.GetValueOrDefault(currentLayout.Id, String.Empty);
+        string newChars = settings.CharsByKeyboardLayoutId.GetValueOrDefault(newLayout.Id, String.Empty);
 
         var mapping = currentChars.Zip(newChars).ToDictionary(chars => chars.First, chars => chars.Second);
 

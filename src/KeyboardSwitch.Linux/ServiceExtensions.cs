@@ -17,7 +17,7 @@ public static class ServiceExtensions
                 .AddSingleton(SimulationModifierKeyCodeProvider.Control)
                 .AddSingleton<IStartupService, FreedesktopStartupService>()
                 .AddSingleton<IServiceCommunicator, DirectServiceCommunicator>()
-                .AddSingleton<IInitialSetupService, LinuxSetupService>()
+                .AddSingleton<IInitialSetupService, StartupSetupService>()
                 .AddSingleton<IUserProvider, PosixUserProvider>();
 
             return LinuxSessionDetector.IsRunningOnWayland

@@ -14,7 +14,14 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
             this.OneWayBind(this.ViewModel, vm => vm.ServiceViewModel, v => v.ServiceViewContent.Content)
                 .DisposeWith(disposables);
 
-            this.ViewModel!.OpenExternallyCommand
+            var layoutServiceStatus = this.ViewModel!.LayoutServiceStatus;
+
+            this.LayoutServiceWarningBorder.IsVisible = layoutServiceStatus != LayoutServiceStatus.Ok;
+            this.CannotSwitchLayoutsTextBlock.IsVisible =
+                layoutServiceStatus == LayoutServiceStatus.CannotSwitchLayouts;
+            this.LayoutsUnavailableTextBlock.IsVisible = layoutServiceStatus == LayoutServiceStatus.Unavailable;
+
+            this.ViewModel.OpenExternallyCommand
                 .Subscribe(this.BringToForeground)
                 .DisposeWith(disposables);
 

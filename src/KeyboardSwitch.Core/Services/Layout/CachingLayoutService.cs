@@ -15,13 +15,15 @@ public abstract class CachingLayoutService : ILayoutService
     public IObserver<Unit> SettingsInvalidated =>
         this.settingsInvalidated.AsObserver();
 
+    public virtual LayoutServiceStatus Status =>
+        LayoutServiceStatus.Ok;
+
     public abstract Task<KeyboardLayout> GetCurrentKeyboardLayout();
 
     public abstract Task SwitchCurrentLayout(SwitchDirection direction, SwitchSettings settings);
 
     public async Task<IReadOnlyList<KeyboardLayout>> GetKeyboardLayouts()
     {
-        // The task itself is cached, so that concurrent callers share a single lookup
         var layouts = this.systemLayouts ??= this.GetKeyboardLayoutsInternal();
 
         try

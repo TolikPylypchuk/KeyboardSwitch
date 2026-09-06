@@ -159,6 +159,9 @@
   <data name="BackwardRequired" xml:space="preserve">
     <value>Backward key is required</value>
   </data>
+  <data name="CannotSwitchLayouts" xml:space="preserve">
+    <value>The GNOME extension is not active, so keyboard layouts cannot be switched. Log out and log back in or restart GNOME Shell to let GNOME Shell load the extension.</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -224,6 +227,9 @@
   </data>
   <data name="Kill" xml:space="preserve">
     <value>Kill</value>
+  </data>
+  <data name="LayoutsUnavailable" xml:space="preserve">
+    <value>The GNOME extension is not active, so Keyboard Switch cannot manage keyboard layouts. Log out and log back in to let GNOME Shell load the extension.</value>
   </data>
   <data name="LayoutBackwardKeysEmpty" xml:space="preserve">
     <value>No keys for switching layouts backward specified</value>

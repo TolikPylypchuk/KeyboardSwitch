@@ -9,9 +9,12 @@ public sealed partial class MainViewModel : ReactiveObject
     public MainViewModel(
         AppSettings appSettings,
         IReadOnlyList<KeyboardLayout> layouts,
+        LayoutServiceStatus layoutServiceStatus = LayoutServiceStatus.Ok,
         IStartupService? startupService = null)
     {
         startupService ??= AppLocator.Current.GetRequiredService<IStartupService>();
+
+        this.LayoutServiceStatus = layoutServiceStatus;
 
         this.MainContentViewModel = new MainContentViewModel(
             this.CreateCharMappingModel(appSettings, layouts),
@@ -33,6 +36,8 @@ public sealed partial class MainViewModel : ReactiveObject
 
     public MainContentViewModel MainContentViewModel { get; }
     public ServiceViewModel ServiceViewModel { get; }
+
+    public LayoutServiceStatus LayoutServiceStatus { get; }
 
     public IObservable<PreferencesModel> PreferencesSaved { get; }
 

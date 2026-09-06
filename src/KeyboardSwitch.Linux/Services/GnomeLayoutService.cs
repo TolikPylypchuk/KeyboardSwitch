@@ -22,6 +22,13 @@ internal sealed partial class GnomeLayoutService(
     private Dictionary<string, uint>? shellIndexesByLayoutId;
     private bool isExtensionUnusable;
 
+    public override LayoutServiceStatus Status =>
+        !this.isExtensionUnusable
+            ? LayoutServiceStatus.Ok
+            : this.fallback is not null
+                ? LayoutServiceStatus.CannotSwitchLayouts
+                : LayoutServiceStatus.Unavailable;
+
     public override async Task<KeyboardLayout> GetCurrentKeyboardLayout()
     {
         if (this.isExtensionUnusable)

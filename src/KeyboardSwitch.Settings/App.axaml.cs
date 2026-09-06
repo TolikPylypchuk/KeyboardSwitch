@@ -59,9 +59,11 @@ public class App : Application, IEnableLogger
         try
         {
             var appSettings = await AppLocator.Current.GetRequiredService<IAppSettingsService>().GetAppSettings();
-            var layouts = await AppLocator.Current.GetRequiredService<ILayoutService>().GetKeyboardLayouts();
 
-            var mainViewModel = new MainViewModel(appSettings, layouts);
+            var layoutService = AppLocator.Current.GetRequiredService<ILayoutService>();
+            var layouts = await this.GetKeyboardLayouts(layoutService);
+
+            var mainViewModel = new MainViewModel(appSettings, layouts, layoutService.Status);
             openExternally.InvokeCommand(mainViewModel.OpenExternallyCommand);
 
             mainViewModel.PreferencesSaved
@@ -89,6 +91,18 @@ public class App : Application, IEnableLogger
 
             desktop.Shutdown((int)ExitCode.IncompatibleSettingsVersion);
             return null!;
+        }
+    }
+
+    private async Task<IReadOnlyList<KeyboardLayout>> GetKeyboardLayouts(ILayoutService layoutService)
+    {
+        try
+        {
+            return await layoutService.GetKeyboardLayouts();
+        } catch (Exception e)
+        {
+            this.Log().Error(e, "Could not get keyboard layouts");
+            return [];
         }
     }
 

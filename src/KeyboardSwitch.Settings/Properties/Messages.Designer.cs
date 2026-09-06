@@ -196,6 +196,15 @@ namespace KeyboardSwitch.Settings.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The GNOME extension is not active, so keyboard layouts cannot be switched. Log out and log back in or restart GNOME Shell to let GNOME Shell load the extension..
+        /// </summary>
+        internal static string CannotSwitchLayouts {
+            get {
+                return ResourceManager.GetString("CannotSwitchLayouts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Characters.
         /// </summary>
         internal static string Characters {
@@ -408,6 +417,15 @@ namespace KeyboardSwitch.Settings.Properties {
         internal static string LayoutKeysAreSame {
             get {
                 return ResourceManager.GetString("LayoutKeysAreSame", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The GNOME extension is not active, so Keyboard Switch cannot manage keyboard layouts. Log out and log back in to let GNOME Shell load the extension..
+        /// </summary>
+        internal static string LayoutsUnavailable {
+            get {
+                return ResourceManager.GetString("LayoutsUnavailable", resourceCulture);
             }
         }
         

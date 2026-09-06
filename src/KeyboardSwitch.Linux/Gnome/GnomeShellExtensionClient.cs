@@ -41,8 +41,7 @@ internal sealed partial class GnomeShellExtensionClient(
     {
         this.LogGettingLayouts();
 
-        var connection = DBusConnection.Session;
-        return connection
+        return this.connection
             .CallMethodAsync(
                 this.CreateCall(SwitchLayoutPath, SwitchLayoutInterface, "GetLayouts"),
                 this.ReadInputSources,
@@ -54,8 +53,7 @@ internal sealed partial class GnomeShellExtensionClient(
     {
         this.LogSettingCurrentLayout(index);
 
-        var connection = DBusConnection.Session;
-        return connection
+        return this.connection
             .CallMethodAsync(this.CreateSetCurrentLayoutCall(index))
             .WaitAsync(CallTimeout);
     }
@@ -64,8 +62,7 @@ internal sealed partial class GnomeShellExtensionClient(
     {
         this.LogGettingExtensionInfo();
 
-        var connection = DBusConnection.Session;
-        return connection
+        return this.connection
             .CallMethodAsync(this.CreateExtensionCall("GetExtensionInfo"), this.ReadExtensionInfo, null)
             .WaitAsync(CallTimeout);
     }
@@ -74,16 +71,14 @@ internal sealed partial class GnomeShellExtensionClient(
     {
         this.LogEnablingExtension();
 
-        var connection = DBusConnection.Session;
-        return connection
+        return this.connection
             .CallMethodAsync(this.CreateExtensionCall("EnableExtension"), this.ReadBoolean, null)
             .WaitAsync(CallTimeout);
     }
 
     public Task<string[]> GetExtensionErrors()
     {
-        var connection = DBusConnection.Session;
-        return connection
+        return this.connection
             .CallMethodAsync(this.CreateExtensionCall("GetExtensionErrors"), this.ReadStrings, null)
             .WaitAsync(CallTimeout);
     }

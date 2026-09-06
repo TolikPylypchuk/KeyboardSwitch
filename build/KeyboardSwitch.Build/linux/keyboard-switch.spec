@@ -42,6 +42,8 @@ SETTINGS_APP=$INSTALL_DIR/KeyboardSwitchSettings
 SETTINGS_DESKTOP_FILE=/tmp/keyboard-switch-settings.desktop
 
 GNOME_EXTENSION_DIR=/usr/share/gnome-shell/extensions/switch-layout@tolik.io
+GNOME_EXTENSION_SOURCE_DIR=$INSTALL_DIR/gnome-extension
+GNOME_EXTENSION_LOCAL_DIR=.local/share/gnome-shell/extensions/switch-layout@tolik.io
 
 GROUP=keyboard-switch
 
@@ -71,12 +73,33 @@ Categories=Utility
 desktop-file-install --dir=/usr/share/applications $SETTINGS_DESKTOP_FILE
 rm $SETTINGS_DESKTOP_FILE
 
-command -v gnome-shell &> /dev/null
-
-if [ "$?" = 0 ]
+if command -v gnome-shell &> /dev/null
 then
-    mkdir -p $GNOME_EXTENSION_DIR
-    chmod -R 777 $GNOME_EXTENSION_DIR
+    GNOME_VERSION=$(gnome-shell --version | grep -oE '[0-9]+' | head -1)
+
+    if [ -n "$GNOME_VERSION" ] && [ "$GNOME_VERSION" -ge 45 ]
+    then
+        GNOME_EXTENSION_VERSION_DIR=v2
+    else
+        GNOME_EXTENSION_VERSION_DIR=v1
+    fi
+
+    if [ -d "$GNOME_EXTENSION_SOURCE_DIR/$GNOME_EXTENSION_VERSION_DIR" ]
+    then
+        mkdir -p $GNOME_EXTENSION_DIR
+        chmod 755 $GNOME_EXTENSION_DIR
+
+        install -m 644 $GNOME_EXTENSION_SOURCE_DIR/$GNOME_EXTENSION_VERSION_DIR/extension.js $GNOME_EXTENSION_DIR
+        install -m 644 $GNOME_EXTENSION_SOURCE_DIR/$GNOME_EXTENSION_VERSION_DIR/metadata.json $GNOME_EXTENSION_DIR
+    fi
+
+    awk -F: '($3 >= 1000) && ($3 < 60000) && ($1 != "nobody") { print $1 }' /etc/passwd | while read -r CURRENT_USER
+    do
+        if [ -d "$(eval echo ~$CURRENT_USER)/$GNOME_EXTENSION_LOCAL_DIR" ]
+        then
+            rm -rf "$(eval echo ~$CURRENT_USER)/$GNOME_EXTENSION_LOCAL_DIR"
+        fi
+    done
 fi
 
 %preun
@@ -90,36 +113,39 @@ GNOME_EXTENSION_DIR=/usr/share/gnome-shell/extensions/switch-layout@tolik.io
 
 $INSTALL_DIR/KeyboardSwitch --stop
 
-awk -F: '($3 >= 1000) && ($3 < 60000) && ($1 != "nobody") { print $1 }' /etc/passwd | while read -r CURRENT_USER
-do
-    if [ -f "$(eval echo ~$CURRENT_USER)/.config/keyboard-switch/.setup-configured" ]
+if [ "$1" -eq 0 ]
+then
+    awk -F: '($3 >= 1000) && ($3 < 60000) && ($1 != "nobody") { print $1 }' /etc/passwd | while read -r CURRENT_USER
+    do
+        if [ -f "$(eval echo ~$CURRENT_USER)/.config/keyboard-switch/.setup-configured" ]
+        then
+            rm "$(eval echo ~$CURRENT_USER)/.config/keyboard-switch/.setup-configured"
+        fi
+
+        if [ -f "$(eval echo ~$CURRENT_USER)/$SERVICE_DESKTOP_FILE" ]
+        then
+            rm "$(eval echo ~$CURRENT_USER)/$SERVICE_DESKTOP_FILE"
+        fi
+    done
+
+    if [ -f "$SETTINGS_DESKTOP_FILE" ]
     then
-        rm "$(eval echo ~$CURRENT_USER)/.config/keyboard-switch/.setup-configured"
+        rm "$SETTINGS_DESKTOP_FILE"
+        update-desktop-database
     fi
 
-    if [ -f "$(eval echo ~$CURRENT_USER)/$SERVICE_DESKTOP_FILE" ]
+    if [ -d $GNOME_EXTENSION_DIR ]
     then
-        rm "$(eval echo ~$CURRENT_USER)/$SERVICE_DESKTOP_FILE"
+        rm -rf $GNOME_EXTENSION_DIR
     fi
-done
-
-if [ -f "$SETTINGS_DESKTOP_FILE" ]
-then
-    rm "$SETTINGS_DESKTOP_FILE"
-    update-desktop-database
-fi
-
-if [ -d $GNOME_EXTENSION_DIR ]
-then
-    rm -rf $GNOME_EXTENSION_DIR
 fi
 
 %postun
 
-rm -rf /opt/keyboard-switch
-
 if [ "$1" -eq 0 ]
 then
+    rm -rf /opt/keyboard-switch
+
     rm /etc/udev/rules.d/70-keyboard-switch.rules
     udevadm control --reload-rules && udevadm trigger
 

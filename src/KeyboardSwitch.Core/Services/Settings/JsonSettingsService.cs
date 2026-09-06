@@ -70,6 +70,11 @@ internal sealed partial class JsonSettingsService(
             await this.MigrateSettingsToLatestVersion(this.appSettings);
         }
 
+        if (this.appSettings.CharsByKeyboardLayoutId.Count == 0)
+        {
+            await this.ConfigureMissingLayouts(this.appSettings);
+        }
+
         return this.appSettings;
     }
 
@@ -127,6 +132,18 @@ internal sealed partial class JsonSettingsService(
             AppThemeVariant = AppThemeVariant.Auto
         };
 
+    private async Task ConfigureMissingLayouts(AppSettings settings)
+    {
+        this.LogConfiguringMissingLayouts();
+
+        var charsByKeyboardLayoutId = await this.GetAutoConfiguredCharMappings();
+
+        if (charsByKeyboardLayoutId.Count != 0)
+        {
+            await this.SaveAppSettings(settings with { CharsByKeyboardLayoutId = charsByKeyboardLayoutId });
+        }
+    }
+
     private async Task<ImmutableDictionary<string, string>> GetAutoConfiguredCharMappings()
     {
         var layouts = await this.GetKeyboardLayouts();
@@ -175,6 +192,9 @@ internal sealed partial class JsonSettingsService(
 
     [LoggerMessage(LogLevel.Information, "Migrating settings from version {SourceVersion} to {TargetVersion}")]
     private partial void LogMigratingSettings(Version sourceVersion, Version? targetVersion);
+
+    [LoggerMessage(LogLevel.Information, "The app settings contain no keyboard layouts - configuring them")]
+    private partial void LogConfiguringMissingLayouts();
 
     [LoggerMessage(LogLevel.Error, "Couldn't get auto-configured character mappings")]
     private partial void LogCouldNotGetMappings(Exception e);
