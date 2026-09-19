@@ -4,9 +4,9 @@ using Nuke.Common.Utilities;
 namespace KeyboardSwitch.Build.GitHub;
 
 /// <summary>
-/// Based on <see cref="GitHubActionsCacheStep" />, but uses version 4 of the actions/cache action.
+/// Based on <see cref="GitHubActionsCacheStep" />, but uses version 6 of the actions/cache action.
 /// </summary>
-public class GitHubActionsCache4Step : GitHubActionsStep
+public class GitHubActionsCache6Step : GitHubActionsStep
 {
     public string[] IncludePatterns { get; set; } = [];
     public string[] ExcludePatterns { get; set; } = [];
@@ -17,7 +17,7 @@ public class GitHubActionsCache4Step : GitHubActionsStep
         writer.WriteLine("- name: " + $"Cache: {IncludePatterns.JoinCommaSpace()}".SingleQuote());
         using (writer.Indent())
         {
-            writer.WriteLine("uses: actions/cache@v4");
+            writer.WriteLine("uses: actions/cache@v6");
             writer.WriteLine("with:");
             using (writer.Indent())
             {

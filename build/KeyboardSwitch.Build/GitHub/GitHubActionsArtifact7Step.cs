@@ -4,9 +4,9 @@ using Nuke.Common.Utilities;
 namespace KeyboardSwitch.Build.GitHub;
 
 /// <summary>
-/// Based on <see cref="GitHubActionsArtifactStep" />, but uses version 4 of the actions/upload-artifact action.
+/// Based on <see cref="GitHubActionsArtifactStep" />, but uses version 7 of the actions/upload-artifact action.
 /// </summary>
-public class GitHubActionsArtifact4Step : GitHubActionsStep
+public class GitHubActionsArtifact7Step : GitHubActionsStep
 {
     public string SimpleName { get; set; } = String.Empty;
     public string Name { get; set; } = String.Empty;
@@ -16,7 +16,7 @@ public class GitHubActionsArtifact4Step : GitHubActionsStep
     public override void Write(CustomFileWriter writer)
     {
         writer.WriteLine("- name: " + $"Publish: {this.SimpleName}".SingleQuote());
-        writer.WriteLine("  uses: actions/upload-artifact@v4");
+        writer.WriteLine("  uses: actions/upload-artifact@v7");
 
         using (writer.Indent())
         {

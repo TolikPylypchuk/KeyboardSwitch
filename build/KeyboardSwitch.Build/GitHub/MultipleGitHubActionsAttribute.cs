@@ -36,7 +36,7 @@ public sealed class MultipleGitHubActionsAttribute(string fileName, string name,
         this.Build.RootDirectory / ".github" / "workflows" / $"{this.fileName}.yml";
 
     public override IEnumerable<AbsolutePath> GeneratedFiles =>
-        new[] { this.ConfigurationFile };
+        [this.ConfigurationFile];
 
     public override IEnumerable<string> RelevantTargetNames =>
         this.actions.SelectMany(a => a.InvokedTargets).Distinct();
@@ -130,7 +130,7 @@ public sealed class MultipleGitHubActionsAttribute(string fileName, string name,
         GitHubActionAttribute action,
         IReadOnlyCollection<ExecutableTarget> relevantTargets)
     {
-        yield return new GitHubActionsCheckout4Step
+        yield return new GitHubActionsCheckout7Step
         {
             Submodules = this.submodules,
             Lfs = this.lfs,
@@ -141,7 +141,7 @@ public sealed class MultipleGitHubActionsAttribute(string fileName, string name,
 
         if (this.CacheKeyFiles.Length != 0)
         {
-            yield return new GitHubActionsCache4Step
+            yield return new GitHubActionsCache6Step
             {
                 IncludePatterns = this.CacheIncludePatterns,
                 ExcludePatterns = this.CacheExcludePatterns,
@@ -172,7 +172,7 @@ public sealed class MultipleGitHubActionsAttribute(string fileName, string name,
                     .TrimStart('/', '\\')
                     .TrimStart("*.");
 
-                yield return new GitHubActionsArtifact4Step
+                yield return new GitHubActionsArtifact7Step
                 {
                     SimpleName = artifactName,
                     Name = action.ArtifactSuffix.IsNullOrEmpty()

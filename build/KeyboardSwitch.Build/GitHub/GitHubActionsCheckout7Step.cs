@@ -5,9 +5,9 @@ using Nuke.Common.Utilities;
 namespace KeyboardSwitch.Build.GitHub;
 
 /// <summary>
-/// Based on <see cref="GitHubActionsCheckoutStep" />, but uses version 4 of the actions/checkout action.
+/// Based on <see cref="GitHubActionsCheckoutStep" />, but uses version 7 of the actions/checkout action.
 /// </summary>
-public class GitHubActionsCheckout4Step : GitHubActionsStep
+public class GitHubActionsCheckout7Step : GitHubActionsStep
 {
     public GitHubActionsSubmodules? Submodules { get; set; }
     public bool? Lfs { get; set; }
@@ -15,7 +15,7 @@ public class GitHubActionsCheckout4Step : GitHubActionsStep
 
     public override void Write(CustomFileWriter writer)
     {
-        writer.WriteLine("- uses: actions/checkout@v4");
+        writer.WriteLine("- uses: actions/checkout@v7");
 
         if (this.Submodules.HasValue || this.Lfs.HasValue || this.FetchDepth.HasValue)
         {

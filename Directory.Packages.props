@@ -9,7 +9,7 @@
     <PackageVersion Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.3" />
     <PackageVersion Include="Avalonia.Themes.Simple" Version="12.1.2" />
     <PackageVersion Include="Avalonia.Wayland" Version="12.1.2" />
-    <PackageVersion Include="Devolutions.AvaloniaTheme.MacOS" Version="2026.9.10" />
+    <PackageVersion Include="Devolutions.AvaloniaTheme.MacOS" Version="2026.9.14" />
     <PackageVersion Include="DynamicData" Version="9.4.33" />
     <PackageVersion Include="FluentAvaloniaUI" Version="3.1.0" />
     <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.12" />
@@ -42,7 +42,7 @@
     <PackageVersion Include="Splat.Microsoft.Extensions.DependencyInjection" Version="19.4.1" />
     <PackageVersion Include="Splat.Microsoft.Extensions.Logging" Version="19.4.1" />
     <PackageVersion Include="Splat.Serilog" Version="19.4.1" />
-    <PackageVersion Include="System.ClientModel" Version="1.15.0" />
+    <PackageVersion Include="System.ClientModel" Version="1.16.0" />
     <PackageVersion Include="System.CodeDom" Version="10.0.12" />
     <PackageVersion Include="System.Configuration.ConfigurationManager" Version="10.0.12" />
     <PackageVersion Include="System.Formats.Nrbf" Version="10.0.12" />
@@ -64,13 +64,13 @@
     <PackageVersion Include="coverlet.collector" Version="10.0.1" />
     <PackageVersion Include="FsCheck" Version="3.4.0" />
     <PackageVersion Include="FsCheck.Xunit.v3" Version="3.4.0" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
     <PackageVersion Include="Microsoft.Reactive.Testing" Version="7.0.0" />
     <PackageVersion Include="NSubstitute" Version="6.2.0" />
     <PackageVersion Include="NSubstitute.Analyzers.CSharp" Version="1.0.17" />
     <PackageVersion Include="SharpHook.Testing" Version="8.0.0" />
     <PackageVersion Include="TestableIO.System.IO.Abstractions.TestingHelpers" Version="22.2.0" />
-    <PackageVersion Include="xunit.v3.mtp-v2" Version="4.0.0" />
+    <PackageVersion Include="xunit.v3.mtp-v2" Version="4.0.1" />
   </ItemGroup>
   <ItemGroup>
     <PackageVersion Include="WixToolset.UI.wixext" Version="7.0.0" />

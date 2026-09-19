@@ -13,7 +13,7 @@ public class GitHubActionsSetupDotnetStep : GitHubActionsStep
     public override void Write(CustomFileWriter writer)
     {
         writer.WriteLine("- name: Set up .NET");
-        writer.WriteLine("  uses: actions/setup-dotnet@v4");
+        writer.WriteLine("  uses: actions/setup-dotnet@v6");
 
         using (writer.Indent())
         {

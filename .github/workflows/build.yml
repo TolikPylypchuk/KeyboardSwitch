@@ -32,13 +32,13 @@ jobs:
       matrix:
         platform: [ x64, arm64 ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Set up .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 10.0.x
       - name: 'Cache: .nuke/temp, ~/.nuget/packages'
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             .nuke/temp
@@ -50,7 +50,7 @@ jobs:
           NukePlatform: ${{ matrix.platform }}
           OutputFileSuffix: win
       - name: 'Publish: zip'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: zip-${{ matrix.platform }}
           path: artifacts/*.zip
@@ -63,13 +63,13 @@ jobs:
       matrix:
         platform: [ x64, arm64 ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Set up .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 10.0.x
       - name: 'Cache: .nuke/temp, ~/.nuget/packages'
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             .nuke/temp
@@ -81,7 +81,7 @@ jobs:
           NukePlatform: ${{ matrix.platform }}
           OutputFileSuffix: win
       - name: 'Publish: msi'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: msi-${{ matrix.platform }}
           path: artifacts/*.msi
@@ -94,13 +94,13 @@ jobs:
       matrix:
         platform: [ x64, arm64 ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Set up .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 10.0.x
       - name: 'Cache: .nuke/temp, ~/.nuget/packages'
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             .nuke/temp
@@ -121,7 +121,7 @@ jobs:
           KeychainPassword: ${{ secrets.KEYCHAIN_PASSWORD }}
           NotarizationPassword: ${{ secrets.NOTARIZATION_PASSWORD }}
       - name: 'Publish: pkg'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: pkg-${{ matrix.platform }}
           path: artifacts/*.pkg
@@ -130,13 +130,13 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Set up .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 10.0.x
       - name: 'Cache: .nuke/temp, ~/.nuget/packages'
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             .nuke/temp
@@ -156,7 +156,7 @@ jobs:
           KeychainPassword: ${{ secrets.KEYCHAIN_PASSWORD }}
           NotarizationPassword: ${{ secrets.NOTARIZATION_PASSWORD }}
       - name: 'Publish: pkg'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: pkg-uninstaller
           path: artifacts/*.pkg
@@ -169,13 +169,13 @@ jobs:
       matrix:
         platform: [ x64, arm64 ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Set up .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 10.0.x
       - name: 'Cache: .nuke/temp, ~/.nuget/packages'
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             .nuke/temp
@@ -186,7 +186,7 @@ jobs:
         env:
           NukePlatform: ${{ matrix.platform }}
       - name: 'Publish: tar.gz'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: tar.gz-${{ matrix.platform }}
           path: artifacts/*.tar.gz
@@ -199,13 +199,13 @@ jobs:
       matrix:
         platform: [ x64, arm64 ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Set up .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 10.0.x
       - name: 'Cache: .nuke/temp, ~/.nuget/packages'
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             .nuke/temp
@@ -216,7 +216,7 @@ jobs:
         env:
           NukePlatform: ${{ matrix.platform }}
       - name: 'Publish: deb'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: deb-${{ matrix.platform }}
           path: artifacts/*.deb
@@ -229,13 +229,13 @@ jobs:
       matrix:
         platform: [ x64, arm64 ]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Set up .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: 10.0.x
       - name: 'Cache: .nuke/temp, ~/.nuget/packages'
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             .nuke/temp
@@ -246,7 +246,7 @@ jobs:
         env:
           NukePlatform: ${{ matrix.platform }}
       - name: 'Publish: rpm'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: rpm-${{ matrix.platform }}
           path: artifacts/*.rpm
