@@ -10,6 +10,8 @@ GNOME_EXTENSION_DIR=$HOME/.local/share/gnome-shell/extensions/switch-layout@toli
 GNOME_EXTENSION_SOURCE_DIR=$INSTALL_DIR/gnome-extension
 
 GROUP=keyboard-switch
+UDEV_RULES_FILE=/etc/udev/rules.d/99-keyboard-switch.rules
+MODULES_LOAD_FILE=/etc/modules-load.d/keyboard-switch.conf
 
 getent group $GROUP &>/dev/null || sudo groupadd --system $GROUP
 
@@ -17,10 +19,18 @@ sudo chown root:$GROUP $SERVICE_APP
 sudo chmod g+s $SERVICE_APP
 
 echo "SUBSYSTEM==\"input\", KERNEL==\"event*\", RUN+=\"/usr/bin/setfacl -m g:$GROUP:rw \$env{DEVNAME}\"
-KERNEL==\"uinput\", RUN+=\"/usr/bin/setfacl -m g:$GROUP:rw \$env{DEVNAME}\"
-" | sudo tee /etc/udev/rules.d/70-keyboard-switch.rules > /dev/null
+SUBSYSTEM==\"misc\", KERNEL==\"uinput\", RUN+=\"/usr/bin/setfacl -m g:$GROUP:rw \$env{DEVNAME}\"
+" | sudo tee $UDEV_RULES_FILE > /dev/null
 
-sudo udevadm control --reload-rules && sudo udevadm trigger
+sudo udevadm control --reload-rules
+
+echo "uinput" | sudo tee $MODULES_LOAD_FILE > /dev/null
+
+sudo modprobe uinput ||
+    echo "Failed to load the uinput kernel module - Keyboard Switch won't be able to simulate key presses"
+
+sudo udevadm trigger --subsystem-match=input --subsystem-match=misc
+sudo udevadm settle
 
 echo "[Desktop Entry]
 Version=1.0

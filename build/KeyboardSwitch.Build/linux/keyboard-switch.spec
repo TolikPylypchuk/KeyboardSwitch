@@ -46,6 +46,8 @@ GNOME_EXTENSION_SOURCE_DIR=$INSTALL_DIR/gnome-extension
 GNOME_EXTENSION_LOCAL_DIR=.local/share/gnome-shell/extensions/switch-layout@tolik.io
 
 GROUP=keyboard-switch
+UDEV_RULES_FILE=/etc/udev/rules.d/99-keyboard-switch.rules
+MODULES_LOAD_FILE=/etc/modules-load.d/keyboard-switch.conf
 
 getent group $GROUP &>/dev/null || groupadd --system $GROUP
 
@@ -53,10 +55,18 @@ chown root:$GROUP $SERVICE_APP
 chmod g+s $SERVICE_APP
 
 echo "SUBSYSTEM==\"input\", KERNEL==\"event*\", RUN+=\"/usr/bin/setfacl -m g:$GROUP:rw \$env{DEVNAME}\"
-KERNEL==\"uinput\", RUN+=\"/usr/bin/setfacl -m g:$GROUP:rw \$env{DEVNAME}\"
-" | tee /etc/udev/rules.d/70-keyboard-switch.rules > /dev/null
+SUBSYSTEM==\"misc\", KERNEL==\"uinput\", RUN+=\"/usr/bin/setfacl -m g:$GROUP:rw \$env{DEVNAME}\"
+" | tee $UDEV_RULES_FILE > /dev/null
 
-udevadm control --reload-rules && udevadm trigger
+udevadm control --reload-rules
+
+echo "uinput" | tee $MODULES_LOAD_FILE > /dev/null
+
+modprobe uinput ||
+    echo "Failed to load the uinput kernel module - Keyboard Switch won't be able to simulate key presses"
+
+udevadm trigger --subsystem-match=input --subsystem-match=misc
+udevadm settle
 
 echo "[Desktop Entry]
 Version=1.0
@@ -146,8 +156,9 @@ if [ "$1" -eq 0 ]
 then
     rm -rf /opt/keyboard-switch
 
-    rm /etc/udev/rules.d/70-keyboard-switch.rules
-    udevadm control --reload-rules && udevadm trigger
+    rm -f /etc/udev/rules.d/99-keyboard-switch.rules /etc/modules-load.d/keyboard-switch.conf
+    udevadm control --reload-rules
+    udevadm trigger --subsystem-match=input --subsystem-match=misc
 
     getent group keyboard-switch &>/dev/null && groupdel keyboard-switch
 fi

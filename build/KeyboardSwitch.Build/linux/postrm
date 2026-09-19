@@ -12,8 +12,9 @@ then
         fi
     done
 
-    rm /etc/udev/rules.d/70-keyboard-switch.rules
-    udevadm control --reload-rules && udevadm trigger
+    rm -f /etc/udev/rules.d/99-keyboard-switch.rules /etc/modules-load.d/keyboard-switch.conf
+    udevadm control --reload-rules
+    udevadm trigger --subsystem-match=input --subsystem-match=misc
 
     getent group keyboard-switch &>/dev/null && groupdel keyboard-switch
 fi
