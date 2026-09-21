@@ -20,7 +20,7 @@ public static class ServiceExtensions
                 .AddSingleton<IInitialSetupService, StartupSetupService>()
                 .AddSingleton<IUserProvider, PosixUserProvider>();
 
-            return LinuxSessionDetector.IsRunningOnWayland
+            return SessionDetector.IsRunningOnWayland
                 ? services.AddWaylandServices()
                 : services.AddX11Services();
         }
@@ -45,22 +45,34 @@ public static class ServiceExtensions
                 .AddSingleton<IAutoConfigurationService, WlAutoConfigurationService>();
 
         private IServiceCollection AddX11LayoutService() =>
-            GnomeDetector.IsRunningOnGnome()
-                ? services
+            SessionDetector.CurrentDesktopEnvironment switch
+            {
+                DesktopEnvironment.Gnome => services
                     .AddSingleton(DBusConnection.Session)
                     .AddSingleton<GnomeShellExtensionClient>()
                     .AddSingleton<XLayoutService>()
                     .AddSingleton<ILayoutService>(sp =>
-                        CreateGnomeLayoutService(sp, sp.GetRequiredService<XLayoutService>()))
-                : services.AddSingleton<ILayoutService, XLayoutService>();
+                        CreateGnomeLayoutService(sp, sp.GetRequiredService<XLayoutService>())),
+
+                _ => services.AddSingleton<ILayoutService, XLayoutService>()
+            };
 
         private IServiceCollection AddWaylandLayoutService() =>
-            GnomeDetector.IsRunningOnGnome()
-                ? services
+            SessionDetector.CurrentDesktopEnvironment switch
+            {
+                DesktopEnvironment.Gnome => services
                     .AddSingleton(DBusConnection.Session)
                     .AddSingleton<GnomeShellExtensionClient>()
-                    .AddSingleton<ILayoutService>(sp => CreateGnomeLayoutService(sp, null))
-                : services.AddSingleton<ILayoutService, PlaceholderLayoutService>();
+                    .AddSingleton<ILayoutService>(sp => CreateGnomeLayoutService(sp, null)),
+
+                DesktopEnvironment.Kde => services
+                    .AddSingleton(DBusConnection.Session)
+                    .AddSingleton<KdeKeyboardLayoutsClient>()
+                    .AddSingleton<KxkbConfigReader>()
+                    .AddSingleton<ILayoutService, KdeLayoutService>(),
+
+                _ => services.AddSingleton<ILayoutService, PlaceholderLayoutService>()
+            };
     }
 
     private static bool ShouldUseXsel(IServiceProvider sp) =>

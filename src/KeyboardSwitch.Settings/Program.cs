@@ -42,7 +42,7 @@ public static class Program
         var builder = AppBuilder.Configure<App>().UsePlatformDetect();
 
 #if LINUX
-        if (LinuxSessionDetector.IsRunningOnWayland)
+        if (SessionDetector.IsRunningOnWayland)
         {
             builder = builder.UseWayland();
         }

@@ -1,20 +1,12 @@
 using System.Text.RegularExpressions;
 
-namespace KeyboardSwitch.Linux;
+namespace KeyboardSwitch.Linux.Gnome;
 
-internal static partial class GnomeDetector
+internal static partial class GnomeShell
 {
-    public static bool IsRunningOnGnome()
+    public static Version? TryGetVersion()
     {
-        var currentDesktopEnvironment = Environment.GetEnvironmentVariable("XDG_CURRENT_DESKTOP");
-        return currentDesktopEnvironment != null &&
-            (currentDesktopEnvironment.Contains("gnome", StringComparison.CurrentCultureIgnoreCase) ||
-            currentDesktopEnvironment.Contains("unity", StringComparison.CurrentCultureIgnoreCase));
-    }
-
-    public static Version? TryGetGnomeVersion()
-    {
-        if (!IsRunningOnGnome())
+        if (SessionDetector.CurrentDesktopEnvironment != DesktopEnvironment.Gnome)
         {
             return null;
         }

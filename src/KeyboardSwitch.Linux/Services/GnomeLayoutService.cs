@@ -155,7 +155,7 @@ internal sealed partial class GnomeLayoutService(
                 break;
 
             case GnomeExtensionState.OutOfDate:
-                this.LogExtensionIncompatibleWithShell(GnomeDetector.TryGetGnomeVersion());
+                this.LogExtensionIncompatibleWithShell(GnomeShell.TryGetVersion());
                 break;
 
             case GnomeExtensionState.Inactive:
