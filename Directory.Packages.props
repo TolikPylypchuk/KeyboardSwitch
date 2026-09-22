@@ -4,10 +4,10 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Avalonia" Version="12.1.2" />
-    <PackageVersion Include="Avalonia.Desktop" Version="12.1.2" />
+    <PackageVersion Include="Avalonia" Version="12.1.3" />
+    <PackageVersion Include="Avalonia.Desktop" Version="12.1.3" />
     <PackageVersion Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.3" />
-    <PackageVersion Include="Avalonia.Themes.Simple" Version="12.1.2" />
+    <PackageVersion Include="Avalonia.Themes.Simple" Version="12.1.3" />
     <PackageVersion Include="Avalonia.Wayland" Version="12.1.2" />
     <PackageVersion Include="Devolutions.AvaloniaTheme.MacOS" Version="2026.9.14" />
     <PackageVersion Include="DynamicData" Version="9.4.33" />
