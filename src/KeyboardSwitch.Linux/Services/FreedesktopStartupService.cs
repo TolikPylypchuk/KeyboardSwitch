@@ -24,7 +24,7 @@ internal sealed partial class FreedesktopStartupService(
     private const string AppDirectoryPlaceholder = "$DIRECTORY";
 
     private readonly string startupFilePath =
-        Environment.ExpandEnvironmentVariables(startupSettings.Value.StartupFilePath);
+        EnvironmentVariableProcessor.Process(startupSettings.Value.StartupFilePath);
 
     public bool IsStartupConfigured()
     {

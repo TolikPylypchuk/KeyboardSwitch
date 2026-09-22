@@ -34,7 +34,7 @@ public static class SerilogLoggerFactory
             .WriteTo.Console(outputTemplate: settings.OutputTemplate)
             .WriteTo.Logger(config => config
                 .WriteTo.Async(writeTo => writeTo.File(
-                    Environment.ExpandEnvironmentVariables(settings.LogFilePath),
+                    EnvironmentVariableProcessor.Process(settings.LogFilePath),
                     outputTemplate: settings.OutputTemplate,
                     fileSizeLimitBytes: settings.MaxFileSize,
                     rollOnFileSizeLimit: true,

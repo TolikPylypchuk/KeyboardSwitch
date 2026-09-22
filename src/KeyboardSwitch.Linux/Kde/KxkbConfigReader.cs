@@ -5,8 +5,6 @@ namespace KeyboardSwitch.Linux.Kde;
 internal sealed partial class KxkbConfigReader(IFileSystem fileSystem, ILogger<KxkbConfigReader> logger)
 {
     private const string ConfigFileName = "kxkbrc";
-    private const string ConfigDirectoryVariable = "XDG_CONFIG_HOME";
-    private const string DefaultConfigDirectory = ".config";
 
     private const string LayoutGroup = "[Layout]";
     private const string LayoutListKey = "LayoutList";
@@ -42,15 +40,8 @@ internal sealed partial class KxkbConfigReader(IFileSystem fileSystem, ILogger<K
         }
     }
 
-    private string GetConfigFilePath()
-    {
-        string configDirectory = Environment.GetEnvironmentVariable(ConfigDirectoryVariable) is { Length: > 0 } dir
-            ? dir
-            : Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), DefaultConfigDirectory);
-
-        return Path.Combine(configDirectory, ConfigFileName);
-    }
+    private string GetConfigFilePath() =>
+        Path.Combine(EnvironmentVariableProcessor.GetConfigDirectory(), ConfigFileName);
 
     private List<string> SplitList(string? value) =>
         String.IsNullOrEmpty(value) ? [] : [.. value.Split(',').Select(item => item.Trim())];

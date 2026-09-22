@@ -19,7 +19,7 @@ internal sealed partial class JsonSettingsService(
     private static readonly Version VersionWithAppThemes = new(4, 3, 0);
 
     private readonly IFileInfo file = fileSystem.FileInfo.New(
-        Environment.ExpandEnvironmentVariables(globalSettings.Value.SettingsFilePath));
+        EnvironmentVariableProcessor.Process(globalSettings.Value.SettingsFilePath));
 
     private readonly Subject<Unit> settingsInvalidated = new();
 

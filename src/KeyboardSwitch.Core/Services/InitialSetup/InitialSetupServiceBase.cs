@@ -14,7 +14,7 @@ public abstract partial class InitialSetupServiceBase(
     : IInitialSetupService
 {
     private readonly IFileInfo initialSetupFile =
-        fileSystem.FileInfo.New(Environment.ExpandEnvironmentVariables(globalSettings.Value.InitialSetupFilePath));
+        fileSystem.FileInfo.New(EnvironmentVariableProcessor.Process(globalSettings.Value.InitialSetupFilePath));
 
     protected readonly IFileSystem FileSystem = fileSystem;
 

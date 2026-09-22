@@ -7,7 +7,7 @@ namespace KeyboardSwitch.Settings.State;
 
 internal sealed class JsonSuspensionDriver(IOptions<GlobalSettings> settings) : ISuspensionDriver
 {
-    private readonly FileInfo file = new(Environment.ExpandEnvironmentVariables(settings.Value.StateFilePath));
+    private readonly FileInfo file = new(EnvironmentVariableProcessor.Process(settings.Value.StateFilePath));
 
     public IObservable<T> LoadState<T>(JsonTypeInfo<T> info)
     {
