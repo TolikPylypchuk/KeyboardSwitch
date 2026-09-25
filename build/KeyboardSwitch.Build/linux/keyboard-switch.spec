@@ -9,6 +9,7 @@ URL: https://keyboardswitch.tolik.io
 
 ExclusiveArch: $ARCH
 Requires: acl
+Requires: libxkbcommon.so.0()(64bit)
 Recommends: wl-clipboard
 Suggests: xsel
 AutoReqProv: no

@@ -9,7 +9,7 @@ public sealed class XException : Exception
     : base(message)
     { }
 
-    public XException(string message, Exception inner)
-        : base(message, inner)
+    public XException(string message, Exception innerException)
+        : base(message, innerException)
     { }
 }

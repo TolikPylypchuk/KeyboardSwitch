@@ -18,6 +18,7 @@ global using KeyboardSwitch.Linux.Kde;
 global using KeyboardSwitch.Linux.Native;
 global using KeyboardSwitch.Linux.Services;
 global using KeyboardSwitch.Linux.X11;
+global using KeyboardSwitch.Linux.Xkb;
 
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;

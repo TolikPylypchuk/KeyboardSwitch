@@ -38,7 +38,7 @@ internal sealed class XAutoConfigurationService(X11Service x11) : AutoConfigurat
         layoutIds.Select((id, index) =>
         {
             var keysym = XLib.XkbKeycodeToKeysym(x11.Display, keyCode, index, level);
-            char ch = keysym != XKeySym.NoSymbol ? keysym.ToChar() : '\0';
+            char ch = keysym != XKeySym.NoSymbol ? XkbKeysym.ToChar((uint)keysym) : '\0';
             return ch != '\0' ? KeyToCharResult.Success(ch, id) : KeyToCharResult.Failure();
         })
         .ToList();

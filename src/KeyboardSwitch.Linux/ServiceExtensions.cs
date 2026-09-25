@@ -42,7 +42,7 @@ public static class ServiceExtensions
                 .AddSingleton<IClipboardService, WlClipboardService>()
                 .AddWaylandLayoutService()
                 .AddSingleton<IMainLoopRunner, NoOpMainLoopRunner>()
-                .AddSingleton<IAutoConfigurationService, WlAutoConfigurationService>();
+                .AddSingleton<IAutoConfigurationService, XkbAutoConfigurationService>();
 
         private IServiceCollection AddX11LayoutService() =>
             SessionDetector.CurrentDesktopEnvironment switch

@@ -9,7 +9,7 @@ public sealed class GnomeShellException : Exception
         : base(message)
     { }
 
-    public GnomeShellException(string message, Exception inner)
-        : base(message, inner)
+    public GnomeShellException(string message, Exception innerException)
+        : base(message, innerException)
     { }
 }
