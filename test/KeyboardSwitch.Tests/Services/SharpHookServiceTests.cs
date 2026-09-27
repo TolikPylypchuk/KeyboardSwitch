@@ -1,3 +1,5 @@
+using System.Reactive.Subjects;
+
 using SharpHook.Providers;
 using SharpHook.Reactive;
 using SharpHook.Testing;
@@ -36,7 +38,11 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var provider = new TestProvider();
 
         using var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, this.logger);
+            new ReactiveGlobalHookAdapter(hook, scheduler),
+            new NoOpLockStateProvider(),
+            scheduler,
+            provider,
+            this.logger);
 
         var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -68,7 +74,11 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var provider = new TestProvider();
 
         using var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, this.logger);
+            new ReactiveGlobalHookAdapter(hook, scheduler),
+            new NoOpLockStateProvider(),
+            scheduler,
+            provider,
+            this.logger);
 
         var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -105,7 +115,11 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var provider = new TestProvider();
 
         using var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, this.logger);
+            new ReactiveGlobalHookAdapter(hook, scheduler),
+            new NoOpLockStateProvider(),
+            scheduler,
+            provider,
+            this.logger);
 
         var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -142,7 +156,11 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var provider = new TestProvider();
 
         using var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, this.logger);
+            new ReactiveGlobalHookAdapter(hook, scheduler),
+            new NoOpLockStateProvider(),
+            scheduler,
+            provider,
+            this.logger);
 
         var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -171,7 +189,11 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var provider = new TestProvider();
 
         using var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, this.logger);
+            new ReactiveGlobalHookAdapter(hook, scheduler),
+            new NoOpLockStateProvider(),
+            scheduler,
+            provider,
+            this.logger);
 
         var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -204,7 +226,11 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var provider = new TestProvider();
 
         using var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, this.logger);
+            new ReactiveGlobalHookAdapter(hook, scheduler),
+            new NoOpLockStateProvider(),
+            scheduler,
+            provider,
+            this.logger);
 
         var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -236,7 +262,11 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var provider = new TestProvider();
 
         using var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, this.logger);
+            new ReactiveGlobalHookAdapter(hook, scheduler),
+            new NoOpLockStateProvider(),
+            scheduler,
+            provider,
+            this.logger);
 
         var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -271,7 +301,11 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var provider = new TestProvider();
 
         using var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, this.logger);
+            new ReactiveGlobalHookAdapter(hook, scheduler),
+            new NoOpLockStateProvider(),
+            scheduler,
+            provider,
+            this.logger);
 
         var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -301,7 +335,11 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var provider = new TestProvider();
 
         var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, this.logger);
+            new ReactiveGlobalHookAdapter(hook, scheduler),
+            new NoOpLockStateProvider(),
+            scheduler,
+            provider,
+            this.logger);
 
         var observer = scheduler.CreateObserver<EventMask>();
         service.HotKeyPressed.Subscribe(observer);
@@ -326,7 +364,11 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         var provider = new TestProvider();
 
         using var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, this.logger);
+            new ReactiveGlobalHookAdapter(hook, scheduler),
+            new NoOpLockStateProvider(),
+            scheduler,
+            provider,
+            this.logger);
 
         // Act
 
@@ -338,6 +380,132 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
 
         // Assert
 
+        Assert.False(hook.IsRunning);
+    }
+
+    [Fact(DisplayName = "Locking the screen should stop the global hook")]
+    public async Task LockScreen()
+    {
+        // Arrange
+
+        using var hook = new TestGlobalHook();
+        var scheduler = new TestScheduler();
+        var provider = new TestProvider();
+        var lockStateProvider = new TestLockStateProvider();
+
+        using var service = new SharpHookService(
+            new ReactiveGlobalHookAdapter(hook, scheduler), lockStateProvider, scheduler, provider, this.logger);
+
+        // Act
+
+        var hookTask = service.StartHook(CancellationToken.None);
+        this.WaitToStart(hook);
+
+        lockStateProvider.IsScreenLockedSubject.OnNext(true);
+        await this.WaitToStop(hook);
+
+        // Assert
+
+        Assert.False(hook.IsRunning);
+        Assert.False(hookTask.IsCompleted);
+    }
+
+    [Property(DisplayName = "Unlocking the screen should restart the global hook")]
+    public void UnlockScreen(List<SingleModifier> modifiers, WaitTime waitTime)
+    {
+        // Arrange
+
+        using var hook = new TestGlobalHook();
+        var scheduler = new TestScheduler();
+        var provider = new TestProvider();
+        var lockStateProvider = new TestLockStateProvider();
+
+        using var service = new SharpHookService(
+            new ReactiveGlobalHookAdapter(hook, scheduler), lockStateProvider, scheduler, provider, this.logger);
+
+        var observer = scheduler.CreateObserver<EventMask>();
+        service.HotKeyPressed.Subscribe(observer);
+
+        var expectedEventMask = modifiers.Select(modifier => modifier.Mask).ToArray();
+
+        // Act
+
+        service.Register(expectedEventMask, 1, waitTime.Value);
+
+        _ = service.StartHook(CancellationToken.None);
+        this.WaitToStart(hook);
+
+        lockStateProvider.IsScreenLockedSubject.OnNext(true);
+        this.WaitToStop(hook).Wait();
+
+        lockStateProvider.IsScreenLockedSubject.OnNext(false);
+        this.WaitToStart(hook);
+
+        this.SimulateKeyEvents(hook, scheduler, modifiers.Select(modifier => modifier.KeyCode));
+
+        // Assert
+
+        Assert.Equal(1, observer.Messages.Count);
+        Assert.Equal(expectedEventMask.Merge(), observer.Messages[0].Value.Value);
+    }
+
+    [Fact(DisplayName = "The global hook should be stopped if it starts while the screen is locked")]
+    public async Task StartWhileLocked()
+    {
+        // Arrange
+
+        using var hook = new TestGlobalHook();
+        var scheduler = new TestScheduler();
+        var provider = new TestProvider();
+        var lockStateProvider = new TestLockStateProvider();
+
+        lockStateProvider.IsScreenLockedSubject.OnNext(true);
+
+        using var service = new SharpHookService(
+            new ReactiveGlobalHookAdapter(hook, scheduler), lockStateProvider, scheduler, provider, this.logger);
+
+        // Act
+
+        var hookTask = service.StartHook(CancellationToken.None);
+        this.WaitToStart(hook);
+
+        scheduler.AdvanceBy(SmallDelay.Ticks);
+        await this.WaitToStop(hook);
+
+        // Assert
+
+        Assert.False(hook.IsRunning);
+        Assert.False(hookTask.IsCompleted);
+    }
+
+    [Fact(DisplayName = "Cancelling the global hook while the screen is locked should complete it")]
+    public async Task CancelWhileLocked()
+    {
+        // Arrange
+
+        using var hook = new TestGlobalHook();
+        var scheduler = new TestScheduler();
+        var provider = new TestProvider();
+        var lockStateProvider = new TestLockStateProvider();
+
+        using var service = new SharpHookService(
+            new ReactiveGlobalHookAdapter(hook, scheduler), lockStateProvider, scheduler, provider, this.logger);
+
+        var tokenSource = new CancellationTokenSource();
+
+        // Act
+
+        var hookTask = service.StartHook(tokenSource.Token);
+        this.WaitToStart(hook);
+
+        lockStateProvider.IsScreenLockedSubject.OnNext(true);
+        await this.WaitToStop(hook);
+
+        tokenSource.Cancel();
+
+        // Assert
+
+        await hookTask.WaitAsync(TimeSpan.FromSeconds(5), TestContext.Current.CancellationToken);
         Assert.False(hook.IsRunning);
     }
 
@@ -353,7 +521,11 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         // Act
 
         using var service = new SharpHookService(
-            new ReactiveGlobalHookAdapter(hook, scheduler), scheduler, provider, this.logger);
+            new ReactiveGlobalHookAdapter(hook, scheduler),
+            new NoOpLockStateProvider(),
+            scheduler,
+            provider,
+            this.logger);
 
         // Assert
 
@@ -387,5 +559,23 @@ public sealed class SharpHookServiceTests(ITestOutputHelper output)
         {
             Thread.Sleep(SmallDelay);
         }
+    }
+
+    private async Task WaitToStop(TestGlobalHook hook)
+    {
+        using var tokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+
+        while (hook.IsRunning)
+        {
+            await Task.Delay(SmallDelay, tokenSource.Token);
+        }
+    }
+
+    private sealed class TestLockStateProvider : ILockStateProvider
+    {
+        public BehaviorSubject<bool> IsScreenLockedSubject { get; } = new(false);
+
+        public IObservable<bool> IsScreenLocked =>
+            this.IsScreenLockedSubject;
     }
 }

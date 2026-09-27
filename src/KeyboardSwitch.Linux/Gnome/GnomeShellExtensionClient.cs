@@ -3,8 +3,9 @@ using Tmds.DBus.Protocol;
 namespace KeyboardSwitch.Linux.Gnome;
 
 internal sealed partial class GnomeShellExtensionClient(
-    DBusConnection connection,
+    DBusConnectionProvider connectionProvider,
     ILogger<GnomeShellExtensionClient> logger)
+    : DisposableService
 {
     public const string ExtensionUuid = "switch-layout@tolik.io";
 
@@ -23,76 +24,96 @@ internal sealed partial class GnomeShellExtensionClient(
 
     private static readonly TimeSpan CallTimeout = TimeSpan.FromSeconds(5);
 
-    private readonly DBusConnection connection = connection;
+    private readonly DedicatedDBusConnection connection = connectionProvider.CreateConnection(DBusAddress.Session);
 
-    public Task<GnomeInputSource> GetCurrentLayout()
+    public async Task<GnomeInputSource> GetCurrentLayout()
     {
+        var connection = await this.connection.Get();
+
         this.LogGettingCurrentLayout();
 
-        return this.connection
+        return await connection
             .CallMethodAsync(
-                this.CreateCall(SwitchLayoutPath, SwitchLayoutInterface, "GetCurrentLayout"),
+                this.CreateCall(connection, SwitchLayoutPath, SwitchLayoutInterface, "GetCurrentLayout"),
                 this.ReadInputSource,
                 null)
             .WaitAsync(CallTimeout);
     }
 
-    public Task<List<GnomeInputSource>> GetLayouts()
+    public async Task<List<GnomeInputSource>> GetLayouts()
     {
+        var connection = await this.connection.Get();
+
         this.LogGettingLayouts();
 
-        return this.connection
+        return await connection
             .CallMethodAsync(
-                this.CreateCall(SwitchLayoutPath, SwitchLayoutInterface, "GetLayouts"),
+                this.CreateCall(connection, SwitchLayoutPath, SwitchLayoutInterface, "GetLayouts"),
                 this.ReadInputSources,
                 null)
             .WaitAsync(CallTimeout);
     }
 
-    public Task SetCurrentLayout(uint index)
+    public async Task SetCurrentLayout(uint index)
     {
+        var connection = await this.connection.Get();
+
         this.LogSettingCurrentLayout(index);
 
-        return this.connection
-            .CallMethodAsync(this.CreateSetCurrentLayoutCall(index))
+        await connection
+            .CallMethodAsync(this.CreateSetCurrentLayoutCall(connection, index))
             .WaitAsync(CallTimeout);
     }
 
-    public Task<GnomeExtensionInfo> GetExtensionInfo()
+    public async Task<GnomeExtensionInfo> GetExtensionInfo()
     {
+        var connection = await this.connection.Get();
+
         this.LogGettingExtensionInfo();
 
-        return this.connection
-            .CallMethodAsync(this.CreateExtensionCall("GetExtensionInfo"), this.ReadExtensionInfo, null)
+        return await connection
+            .CallMethodAsync(this.CreateExtensionCall(connection, "GetExtensionInfo"), this.ReadExtensionInfo, null)
             .WaitAsync(CallTimeout);
     }
 
-    public Task<bool> EnableExtension()
+    public async Task<bool> EnableExtension()
     {
+        var connection = await this.connection.Get();
+
         this.LogEnablingExtension();
 
-        return this.connection
-            .CallMethodAsync(this.CreateExtensionCall("EnableExtension"), this.ReadBoolean, null)
+        return await connection
+            .CallMethodAsync(this.CreateExtensionCall(connection, "EnableExtension"), this.ReadBoolean, null)
             .WaitAsync(CallTimeout);
     }
 
-    public Task<string[]> GetExtensionErrors()
+    public async Task<string[]> GetExtensionErrors()
     {
-        return this.connection
-            .CallMethodAsync(this.CreateExtensionCall("GetExtensionErrors"), this.ReadStrings, null)
+        var connection = await this.connection.Get();
+
+        return await connection
+            .CallMethodAsync(this.CreateExtensionCall(connection, "GetExtensionErrors"), this.ReadStrings, null)
             .WaitAsync(CallTimeout);
     }
 
-    private MessageBuffer CreateCall(string path, string @interface, string member)
+    protected override void Dispose(bool disposing)
     {
-        using var writer = this.connection.GetMessageWriter();
+        if (disposing)
+        {
+            this.connection.Dispose();
+        }
+    }
+
+    private MessageBuffer CreateCall(DBusConnection connection, string path, string @interface, string member)
+    {
+        using var writer = connection.GetMessageWriter();
         writer.WriteMethodCallHeader(ShellService, path, @interface, member, null, MessageFlags.None);
         return writer.CreateMessage();
     }
 
-    private MessageBuffer CreateSetCurrentLayoutCall(uint index)
+    private MessageBuffer CreateSetCurrentLayoutCall(DBusConnection connection, uint index)
     {
-        using var writer = this.connection.GetMessageWriter();
+        using var writer = connection.GetMessageWriter();
 
         writer.WriteMethodCallHeader(
             ShellService, SwitchLayoutPath, SwitchLayoutInterface, "SetCurrentLayout", "u", MessageFlags.None);
@@ -102,9 +123,9 @@ internal sealed partial class GnomeShellExtensionClient(
         return writer.CreateMessage();
     }
 
-    private MessageBuffer CreateExtensionCall(string member)
+    private MessageBuffer CreateExtensionCall(DBusConnection connection, string member)
     {
-        using var writer = this.connection.GetMessageWriter();
+        using var writer = connection.GetMessageWriter();
 
         writer.WriteMethodCallHeader(
             ShellService, ShellPath, ExtensionsInterface, member, "s", MessageFlags.None);

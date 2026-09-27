@@ -23,6 +23,7 @@ public static class SerivceExtensions
                 .AddSingleton<IAutoConfigurationService, WinAutoConfigurationService>()
                 .AddSingleton<IInitialSetupService, StartupSetupService>()
                 .AddSingleton<IUserProvider, WinUserProvider>()
-                .AddSingleton<IMainLoopRunner, NoOpMainLoopRunner>();
+                .AddSingleton<IMainLoopRunner, NoOpMainLoopRunner>()
+                .AddSingleton<ILockStateProvider, NoOpLockStateProvider>();
     }
 }

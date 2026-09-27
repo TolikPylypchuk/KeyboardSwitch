@@ -1,5 +1,7 @@
 using System.Reactive.Disposables;
+using System.Reactive.Threading.Tasks;
 
+using SharpHook;
 using SharpHook.Providers;
 
 namespace KeyboardSwitch.Core.Services.Hook;
@@ -13,6 +15,7 @@ internal sealed partial class SharpHookService : DisposableService, IKeyboardHoo
     private DateTimeOffset lastKeyPress = DateTimeOffset.MinValue;
 
     private readonly IReactiveGlobalHook hook;
+    private readonly ILockStateProvider lockStateProvider;
     private readonly IScheduler scheduler;
     private readonly ILogger<SharpHookService> logger;
 
@@ -25,15 +28,20 @@ internal sealed partial class SharpHookService : DisposableService, IKeyboardHoo
     private readonly HashSet<KeyCode> pressedKeys = [];
     private readonly HashSet<KeyCode> releasedKeys = [];
 
+    private readonly BehaviorSubject<bool> isScreenLocked = new(false);
+    private volatile bool isHookStoppedOnLock;
+
     private readonly IDisposable hookSubscription;
 
     public SharpHookService(
         IReactiveGlobalHook hook,
+        ILockStateProvider lockStateProvider,
         IScheduler scheduler,
         IAccessibilityProvider accessibilityProvider,
         ILogger<SharpHookService> logger)
     {
         this.hook = hook;
+        this.lockStateProvider = lockStateProvider;
         this.scheduler = scheduler;
         this.logger = logger;
 
@@ -92,8 +100,25 @@ internal sealed partial class SharpHookService : DisposableService, IKeyboardHoo
 
     public async Task StartHook(CancellationToken token)
     {
-        token.Register(this.hook.Stop);
-        await this.hook.RunAsync(GlobalHookType.Keyboard);
+        using var lockStateSubscription = this.lockStateProvider.IsScreenLocked
+            .Subscribe(this.OnScreenLockStateChanged, this.LogCannotTrackScreenLockState);
+
+        using var hookEnabledSubscription = this.hook.HookEnabled
+            .ObserveOn(this.scheduler)
+            .Where(_ => this.isScreenLocked.Value || token.IsCancellationRequested)
+            .Subscribe(_ => this.StopHook(onLock: !token.IsCancellationRequested));
+
+        using var cancellationRegistration = token.Register(() => this.StopHook(onLock: false));
+
+        bool isCancelled = token.IsCancellationRequested;
+
+        while (!isCancelled)
+        {
+            this.isHookStoppedOnLock = false;
+            await this.hook.RunAsync(GlobalHookType.Keyboard);
+
+            isCancelled = !this.isHookStoppedOnLock || !await this.WaitForScreenUnlock(token);
+        }
     }
 
     protected override void Dispose(bool disposing)
@@ -109,6 +134,54 @@ internal sealed partial class SharpHookService : DisposableService, IKeyboardHoo
             this.rawHotKeyPressedSubject.Dispose();
             this.hotKeyPressedSubject.Dispose();
             this.hotKeyPressedSubscriptions.Dispose();
+            this.isScreenLocked.Dispose();
+        }
+    }
+
+    private void OnScreenLockStateChanged(bool isLocked)
+    {
+        if (isLocked == this.isScreenLocked.Value)
+        {
+            return;
+        }
+
+        this.isScreenLocked.OnNext(isLocked);
+
+        if (isLocked)
+        {
+            this.LogScreenLocked();
+            this.StopHook(onLock: true);
+        } else
+        {
+            this.LogScreenUnlocked();
+        }
+    }
+
+    private async Task<bool> WaitForScreenUnlock(CancellationToken token)
+    {
+        try
+        {
+            await this.isScreenLocked.FirstAsync(isLocked => !isLocked).ToTask(token);
+            return !token.IsCancellationRequested;
+        } catch (OperationCanceledException)
+        {
+            return false;
+        }
+    }
+
+    private void StopHook(bool onLock)
+    {
+        if (onLock)
+        {
+            this.isHookStoppedOnLock = true;
+        }
+
+        try
+        {
+            this.hook.Stop();
+        } catch (HookException e)
+        {
+            this.LogCannotStopGlobalHook(e);
         }
     }
 
@@ -186,6 +259,18 @@ internal sealed partial class SharpHookService : DisposableService, IKeyboardHoo
 
     [LoggerMessage(LogLevel.Information, "Created a global keyboard hook")]
     private partial void LogCreatedGlobalHook();
+
+    [LoggerMessage(LogLevel.Debug, "The screen is locked - stopping the global keyboard hook")]
+    private partial void LogScreenLocked();
+
+    [LoggerMessage(LogLevel.Debug, "The screen is unlocked - restarting the global keyboard hook")]
+    private partial void LogScreenUnlocked();
+
+    [LoggerMessage(LogLevel.Warning, "Cannot track whether the screen is locked")]
+    private partial void LogCannotTrackScreenLockState(Exception e);
+
+    [LoggerMessage(LogLevel.Warning, "Cannot stop the global keyboard hook")]
+    private partial void LogCannotStopGlobalHook(Exception e);
 
     [LoggerMessage(LogLevel.Debug, "Registering a hot key: {HotKey}")]
     private partial void LogRegisteringHotKey(EventMask hotKey);

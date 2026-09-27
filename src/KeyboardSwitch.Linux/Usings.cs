@@ -9,14 +9,17 @@ global using KeyboardSwitch.Core.Services.Clipboard;
 global using KeyboardSwitch.Core.Services.Infrastructure;
 global using KeyboardSwitch.Core.Services.InitialSetup;
 global using KeyboardSwitch.Core.Services.Layout;
+global using KeyboardSwitch.Core.Services.Session;
 global using KeyboardSwitch.Core.Services.Simulation;
 global using KeyboardSwitch.Core.Services.Startup;
 global using KeyboardSwitch.Core.Services.Users;
 global using KeyboardSwitch.Core.Settings;
+global using KeyboardSwitch.Linux.DBus;
 global using KeyboardSwitch.Linux.Gnome;
 global using KeyboardSwitch.Linux.Kde;
 global using KeyboardSwitch.Linux.Native;
 global using KeyboardSwitch.Linux.Services;
+global using KeyboardSwitch.Linux.Session;
 global using KeyboardSwitch.Linux.X11;
 global using KeyboardSwitch.Linux.Xkb;
 

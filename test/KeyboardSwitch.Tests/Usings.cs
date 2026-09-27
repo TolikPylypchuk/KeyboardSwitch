@@ -12,6 +12,7 @@ global using KeyboardSwitch.Core.Services.AutoConfiguration;
 global using KeyboardSwitch.Core.Services.Clipboard;
 global using KeyboardSwitch.Core.Services.Hook;
 global using KeyboardSwitch.Core.Services.Layout;
+global using KeyboardSwitch.Core.Services.Session;
 global using KeyboardSwitch.Core.Services.Settings;
 global using KeyboardSwitch.Core.Services.Simulation;
 global using KeyboardSwitch.Core.Services.Switching;

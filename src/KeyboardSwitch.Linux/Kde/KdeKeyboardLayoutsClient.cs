@@ -3,8 +3,9 @@ using Tmds.DBus.Protocol;
 namespace KeyboardSwitch.Linux.Kde;
 
 internal sealed partial class KdeKeyboardLayoutsClient(
-    DBusConnection connection,
+    DBusConnectionProvider connectionProvider,
     ILogger<KdeKeyboardLayoutsClient> logger)
+    : DisposableService
 {
     private const string KeyboardService = "org.kde.keyboard";
 
@@ -13,38 +14,52 @@ internal sealed partial class KdeKeyboardLayoutsClient(
 
     private static readonly TimeSpan CallTimeout = TimeSpan.FromSeconds(5);
 
-    private readonly DBusConnection connection = connection;
+    private readonly DedicatedDBusConnection connection = connectionProvider.CreateConnection(DBusAddress.Session);
 
-    public Task<uint> GetLayout()
+    public async Task<uint> GetLayout()
     {
+        var connection = await this.connection.Get();
+
         this.LogGettingCurrentLayout();
 
-        return this.connection
-            .CallMethodAsync(this.CreateCall("getLayout"), this.ReadUInt32, null)
+        return await connection
+            .CallMethodAsync(this.CreateCall(connection, "getLayout"), this.ReadUInt32, null)
             .WaitAsync(CallTimeout);
     }
 
-    public Task<List<KdeLayout>> GetLayoutsList()
+    public async Task<List<KdeLayout>> GetLayoutsList()
     {
+        var connection = await this.connection.Get();
+
         this.LogGettingLayouts();
 
-        return this.connection
-            .CallMethodAsync(this.CreateCall("getLayoutsList"), this.ReadLayouts, null)
+        return await connection
+            .CallMethodAsync(this.CreateCall(connection, "getLayoutsList"), this.ReadLayouts, null)
             .WaitAsync(CallTimeout);
     }
 
-    public Task<bool> SetLayout(uint index)
+    public async Task<bool> SetLayout(uint index)
     {
+        var connection = await this.connection.Get();
+
         this.LogSettingCurrentLayout(index);
 
-        return this.connection
-            .CallMethodAsync(this.CreateSetLayoutCall(index), this.ReadBoolean, null)
+        return await connection
+            .CallMethodAsync(this.CreateSetLayoutCall(connection, index), this.ReadBoolean, null)
             .WaitAsync(CallTimeout);
     }
 
-    private MessageBuffer CreateCall(string member)
+    protected override void Dispose(bool disposing)
     {
-        using var writer = this.connection.GetMessageWriter();
+        if (disposing)
+        {
+            this.connection.Dispose();
+        }
+    }
+
+    private MessageBuffer CreateCall(DBusConnection connection, string member)
+    {
+        using var writer = connection.GetMessageWriter();
 
         writer.WriteMethodCallHeader(
             KeyboardService, LayoutsPath, KeyboardLayoutsInterface, member, null, MessageFlags.None);
@@ -52,9 +67,9 @@ internal sealed partial class KdeKeyboardLayoutsClient(
         return writer.CreateMessage();
     }
 
-    private MessageBuffer CreateSetLayoutCall(uint index)
+    private MessageBuffer CreateSetLayoutCall(DBusConnection connection, uint index)
     {
-        using var writer = this.connection.GetMessageWriter();
+        using var writer = connection.GetMessageWriter();
 
         writer.WriteMethodCallHeader(
             KeyboardService, LayoutsPath, KeyboardLayoutsInterface, "setLayout", "u", MessageFlags.None);

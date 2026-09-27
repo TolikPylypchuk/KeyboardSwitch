@@ -17,6 +17,7 @@ public static class ServiceExtensions
                 .AddSingleton<IAutoConfigurationService, MacAutoConfigurationService>()
                 .AddSingleton<IInitialSetupService, LaunchdSetupService>()
                 .AddSingleton<IUserProvider, PosixUserProvider>()
-                .AddSingleton<IMainLoopRunner, MacMainLoopRunner>();
+                .AddSingleton<IMainLoopRunner, MacMainLoopRunner>()
+                .AddSingleton<ILockStateProvider, NoOpLockStateProvider>();
     }
 }
