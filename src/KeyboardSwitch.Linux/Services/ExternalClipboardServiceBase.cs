@@ -32,7 +32,7 @@ internal abstract class ExternalClipboardServiceBase(IScheduler scheduler) : Cli
         }
     }
 
-    public override async Task SetText(string text)
+    public override async Task SetText(string text, bool excludeFromHistory)
     {
         try
         {

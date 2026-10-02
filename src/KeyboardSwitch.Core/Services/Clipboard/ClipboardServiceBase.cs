@@ -8,7 +8,7 @@ public abstract class ClipboardServiceBase(IScheduler scheduler) : IClipboardSer
 
     public abstract Task<string?> GetText();
 
-    public abstract Task SetText(string text);
+    public abstract Task SetText(string text, bool excludeFromHistory);
 
     public async Task<IAsyncDisposable> SaveClipboardState()
     {
@@ -20,7 +20,7 @@ public abstract class ClipboardServiceBase(IScheduler scheduler) : IClipboardSer
             if (!String.IsNullOrEmpty(savedText) && this.Scheduler.Now - saveTime < MaxClipboardRestoreDuration)
             {
                 await this.Scheduler.Sleep(SmallDelay);
-                await this.SetText(savedText);
+                await this.SetText(savedText, excludeFromHistory: true);
             }
         });
     }

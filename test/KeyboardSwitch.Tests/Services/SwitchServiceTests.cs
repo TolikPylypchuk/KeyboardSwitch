@@ -47,7 +47,8 @@ public sealed class SwitchServiceTests(ITestOutputHelper output)
 
         // Assert
 
-        await clipboard.Received().SetText(direction == SwitchDirection.Forward ? UkrainianText : FrenchText);
+        await clipboard.Received().SetText(
+            direction == SwitchDirection.Forward ? UkrainianText : FrenchText, excludeFromHistory: instantSwitching);
     }
 
     [Property(DisplayName = "SwitchText should switch layout if it's is enabled")]
@@ -161,7 +162,7 @@ public sealed class SwitchServiceTests(ITestOutputHelper output)
 
         // Assert
 
-        await clipboard.Received().SetText(NonConfiguredText);
+        await clipboard.Received().SetText(NonConfiguredText, excludeFromHistory: instantSwitching);
     }
 
     private AppSettings CreateSettings(bool switchLayout, bool instantSwitching) =>

@@ -28,7 +28,7 @@ public sealed partial class SwitchService(
         if (!String.IsNullOrEmpty(textToSwitch))
         {
             var newText = await this.MapText(textToSwitch, direction, settings);
-            await clipboard.SetText(newText);
+            await clipboard.SetText(newText, excludeFromHistory: settings.InstantSwitching);
         }
 
         if (settings.InstantSwitching)

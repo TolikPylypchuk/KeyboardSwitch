@@ -23,6 +23,7 @@ internal sealed partial class X11Service : DisposableService
         this.IncrAtom = XLib.XInternAtom(this.Display, "INCR", true);
         this.MultipleAtom = XLib.XInternAtom(this.Display, "MULTIPLE", true);
         this.OemTextAtom = XLib.XInternAtom(this.Display, "OEMTEXT", true);
+        this.PasswordManagerHintAtom = XLib.XInternAtom(this.Display, "x-kde-passwordManagerHint", false);
         this.SaveTargetsAtom = XLib.XInternAtom(this.Display, "SAVE_TARGETS", true);
         this.TargetsAtom = XLib.XInternAtom(this.Display, "TARGETS", true);
         this.Utf8StringAtom = XLib.XInternAtom(this.Display, "UTF8_STRING", false);
@@ -37,6 +38,7 @@ internal sealed partial class X11Service : DisposableService
         this.LogAtom("INCR", (ulong)this.IncrAtom);
         this.LogAtom("MULTIPLE", (ulong)this.MultipleAtom);
         this.LogAtom("OEM_TEXT", (ulong)this.OemTextAtom);
+        this.LogAtom("x-kde-passwordManagerHint", (ulong)this.PasswordManagerHintAtom);
         this.LogAtom("SAVE_TARGETS", (ulong)this.SaveTargetsAtom);
         this.LogAtom("STRING", (ulong)Atom.String);
         this.LogAtom("TARGETS", (ulong)this.TargetsAtom);
@@ -53,6 +55,7 @@ internal sealed partial class X11Service : DisposableService
     public Atom IncrAtom { get; }
     public Atom MultipleAtom { get; }
     public Atom OemTextAtom { get; }
+    public Atom PasswordManagerHintAtom { get; }
     public Atom SaveTargetsAtom { get; }
     public Atom TargetsAtom { get; }
     public Atom Utf8StringAtom { get; }

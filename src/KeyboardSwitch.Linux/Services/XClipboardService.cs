@@ -5,14 +5,18 @@ namespace KeyboardSwitch.Linux.Services;
 
 internal sealed partial class XClipboardService : ClipboardServiceBase
 {
+    private static readonly byte[] PasswordManagerHintSecret = Encoding.ASCII.GetBytes("secret");
+
     private readonly X11Service x11;
     private readonly ILogger<XClipboardService> logger;
 
     private readonly IntPtr windowHandle;
     private readonly Atom[] atoms;
+    private readonly Atom[] atomsExcludedFromHistory;
     private readonly Atom[] textAtoms;
 
     private string? storedText;
+    private bool isStoredTextExcludedFromHistory;
 
     private TaskCompletionSource<bool>? storeAtomSource;
     private TaskCompletionSource<Atom[]?>? requestedFormatsSource;
@@ -34,6 +38,10 @@ internal sealed partial class XClipboardService : ClipboardServiceBase
             this.x11.Utf8StringAtom,
             this.x11.Utf16StringAtom
         }.Where(atom => atom != Atom.None).ToArray();
+
+        this.atomsExcludedFromHistory = this.x11.PasswordManagerHintAtom != Atom.None
+            ? [.. this.atoms, this.x11.PasswordManagerHintAtom]
+            : this.atoms;
 
         this.textAtoms = new[] { this.x11.Utf16StringAtom, this.x11.Utf8StringAtom, this.x11.OemTextAtom, Atom.String }
             .Where(f => f != Atom.None)
@@ -62,12 +70,19 @@ internal sealed partial class XClipboardService : ClipboardServiceBase
         return data?.ToString();
     }
 
-    public override Task SetText(string text)
+    public override Task SetText(string text, bool excludeFromHistory)
     {
         this.LogSettingTextIntoClipboard();
 
         this.storedText = text;
+        this.isStoredTextExcludedFromHistory = excludeFromHistory;
         XLib.XSetSelectionOwner(this.x11.Display, this.x11.ClipboardAtom, this.windowHandle, IntPtr.Zero);
+
+        if (excludeFromHistory)
+        {
+            this.LogExcludingFromClipboardHistory();
+            return Task.CompletedTask;
+        }
 
         return this.StoreAtomsInClipboardManager();
     }
@@ -272,6 +287,8 @@ internal sealed partial class XClipboardService : ClipboardServiceBase
 
         if (target == this.x11.TargetsAtom)
         {
+            var targets = this.isStoredTextExcludedFromHistory ? this.atomsExcludedFromHistory : this.atoms;
+
             XLib.XChangeProperty(
                 this.x11.Display,
                 window,
@@ -279,8 +296,24 @@ internal sealed partial class XClipboardService : ClipboardServiceBase
                 Atom.Atom,
                 32,
                 XPropertyMode.Replace,
-                this.atoms,
-                this.atoms.Length);
+                targets,
+                targets.Length);
+
+            return property;
+        } else if (target == this.x11.PasswordManagerHintAtom && this.isStoredTextExcludedFromHistory)
+        {
+            fixed (void* pdata = PasswordManagerHintSecret)
+            {
+                XLib.XChangeProperty(
+                    this.x11.Display,
+                    window,
+                    property,
+                    target,
+                    8,
+                    XPropertyMode.Replace,
+                    pdata,
+                    PasswordManagerHintSecret.Length);
+            }
 
             return property;
         } else if (target == this.x11.SaveTargetsAtom && this.x11.SaveTargetsAtom != Atom.None)
@@ -373,6 +406,9 @@ internal sealed partial class XClipboardService : ClipboardServiceBase
 
     [LoggerMessage(LogLevel.Debug, "Setting the text into the clipboard")]
     private partial void LogSettingTextIntoClipboard();
+
+    [LoggerMessage(LogLevel.Debug, "Excluding the text from the clipboard history")]
+    private partial void LogExcludingFromClipboardHistory();
 
     [LoggerMessage(LogLevel.Debug, "Sending a format request to X11")]
     private partial void LogSendingForwardRequestToX11();

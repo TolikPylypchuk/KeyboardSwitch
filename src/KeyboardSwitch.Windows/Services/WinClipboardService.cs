@@ -10,6 +10,15 @@ internal sealed partial class WinClipboardService(IScheduler scheduler, ILogger<
     private const int RetryCount = 10;
     private static readonly TimeSpan Delay = TimeSpan.FromMilliseconds(100);
 
+    private static readonly uint ExcludeFromMonitorProcessingFormat =
+        User32.RegisterClipboardFormat("ExcludeClipboardContentFromMonitorProcessing");
+
+    private static readonly uint CanIncludeInClipboardHistoryFormat =
+        User32.RegisterClipboardFormat("CanIncludeInClipboardHistory");
+
+    private static readonly uint CanUploadToCloudClipboardFormat =
+        User32.RegisterClipboardFormat("CanUploadToCloudClipboard");
+
     public override async Task<string?> GetText()
     {
         this.LogGettingTextFromClipboard();
@@ -34,7 +43,7 @@ internal sealed partial class WinClipboardService(IScheduler scheduler, ILogger<
         }
     }
 
-    public override async Task SetText(string text)
+    public override async Task SetText(string text, bool excludeFromHistory)
     {
         this.LogSettingTextIntoClipboard();
 
@@ -46,6 +55,15 @@ internal sealed partial class WinClipboardService(IScheduler scheduler, ILogger<
             {
                 var hGlobal = Marshal.StringToHGlobalUni(text);
                 User32.SetClipboardData(CLIPFORMAT.CF_UNICODETEXT, hGlobal);
+            }
+
+            if (excludeFromHistory)
+            {
+                this.LogExcludingFromClipboardHistory();
+
+                SetClipboardFormat(ExcludeFromMonitorProcessingFormat);
+                SetClipboardFormat(CanIncludeInClipboardHistoryFormat);
+                SetClipboardFormat(CanUploadToCloudClipboardFormat);
             }
         }
     }
@@ -67,9 +85,41 @@ internal sealed partial class WinClipboardService(IScheduler scheduler, ILogger<
         return Disposable.Create(() => User32.CloseClipboard());
     }
 
+    private static void SetClipboardFormat(uint format)
+    {
+        if (format == 0)
+        {
+            return;
+        }
+
+        var hGlobal = Kernel32.GlobalAlloc(Kernel32.GMEM.GMEM_MOVEABLE, sizeof(int));
+        if (hGlobal.IsNull)
+        {
+            return;
+        }
+
+        var pValue = Kernel32.GlobalLock(hGlobal);
+        if (pValue == IntPtr.Zero)
+        {
+            Kernel32.GlobalFree(hGlobal);
+            return;
+        }
+
+        Marshal.WriteInt32(pValue, 0);
+        Kernel32.GlobalUnlock(hGlobal);
+
+        if (User32.SetClipboardData(format, hGlobal.DangerousGetHandle()) == IntPtr.Zero)
+        {
+            Kernel32.GlobalFree(hGlobal);
+        }
+    }
+
     [LoggerMessage(LogLevel.Debug, "Getting text from the clipboard")]
     private partial void LogGettingTextFromClipboard();
 
     [LoggerMessage(LogLevel.Debug, "Setting text into the clipboard")]
     private partial void LogSettingTextIntoClipboard();
+
+    [LoggerMessage(LogLevel.Debug, "Excluding the text from the clipboard history")]
+    private partial void LogExcludingFromClipboardHistory();
 }
