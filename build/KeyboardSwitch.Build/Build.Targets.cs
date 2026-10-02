@@ -270,6 +270,7 @@ public partial class Build
             LibAvaloniaNativeFile.CopyToDirectory(KeyboardSwitchSettingsAppMacOSDirectory);
             LibHarfBuzzSharpFile.CopyToDirectory(KeyboardSwitchSettingsAppMacOSDirectory);
             LibSkiaSharpFile.CopyToDirectory(KeyboardSwitchSettingsAppMacOSDirectory);
+            LibUioHookFile.CopyToDirectory(KeyboardSwitchSettingsAppMacOSDirectory);
 
             KeyboardSwitchSettingsAppResourcesDirectory.CreateOrCleanDirectory();
 
@@ -303,6 +304,7 @@ public partial class Build
             this.Sign(KeyboardSwitchSettingsAppLibAvaloniaNativeFile);
             this.Sign(KeyboardSwitchSettingsAppLibHarfBuzzSharpFile);
             this.Sign(KeyboardSwitchSettingsAppLibSkiaSharpFile);
+            this.Sign(KeyboardSwitchSettingsAppLibUioHookFile);
             this.Sign(KeyboardSwitchSettingsAppExecutableFile, hardenedRuntime: true);
 
             this.PkgBuild(
