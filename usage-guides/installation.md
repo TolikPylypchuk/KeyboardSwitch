@@ -22,7 +22,7 @@ The uninstaller will also not delete the registry entry which says that your app
 
 ### Using the Portable Version
 
-If you don't want to install the app (or can't), you can use the portable version of the app. It's literally the same as the installable version; there are no differences. Again, go to the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases) and download _KeyboardSwitch-4.3.0-x64-win.zip_ or _KeyboardSwitch-4.3.0-arm64-win.zip_. If you're not sure which one you should download, then it's most probably _x64_. Extract the archive to anywhere you want and start _KeyboardSwitchSettings.exe_. It will configure the app to run when you log in just like the installed version. The configuration for the portable version is also stored under your local app data folder.
+If you don't want to install the app (or can't), you can use the portable version of the app. It's literally the same as the installable version; there are no differences. Again, go to the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases) and download _KeyboardSwitch-4.4.0-x64-win.zip_ or _KeyboardSwitch-4.4.0-arm64-win.zip_. If you're not sure which one you should download, then it's most probably _x64_. Extract the archive to anywhere you want and start _KeyboardSwitchSettings.exe_. It will configure the app to run when you log in just like the installed version. The configuration for the portable version is also stored under your local app data folder.
 
 ## macOS
 
@@ -32,9 +32,9 @@ You can get the latest version of the app from the [releases page on GitHub](htt
 
 The installer will install multiple things:
 
-* The Keyboard Switch Service app will be put into the _/Library/Application Support_ folder – you shouldn't run or interact with this app directly
-* The Keyboard Switch Settings app will be put into the _/Applications_ folder
-* The descriptor file for running the service app when you log in will be put into the _/Library/LaunchAgents_ folder
+* The Keyboard Switch Service app will be put into the _/Library/Application Support_ folder – you shouldn't run or interact with this app directly.
+* The Keyboard Switch Settings app will be put into the _/Applications_ folder.
+* The descriptor file for running the service app when you log in will be put into the _/Library/LaunchAgents_ folder.
 
 After installing the app, open Keyboard Switch Settings – it should appear in the list of your apps.
 
@@ -50,7 +50,7 @@ You can configure the character mappings (you can read more about it in the next
 
 Many apps on macOS can be uninstalled just by deleting the app bundle from the _/Applications_ folder. This is not the case with Keyboard Switch. Multiple things should be done to remove it from the system. You shouldn't concern yourself with those things though – you should just run an uninstaller package, and it will remove Keyboard Switch.
 
-As with the installer package, you can also get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download and run the _KeyboardSwitchUninstaller-4.3.0.pkg_ file, and Keyboard Switch will be removed.
+As with the installer package, you can also get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download and run the _KeyboardSwitchUninstaller-4.4.0.pkg_ file, and Keyboard Switch will be removed.
 
 If you want to delete the app's configuration as well, then delete the _\[home]/Library/Application Support/Keyboard Switch_ folder. You can also delete the app's log files by deleting the _\[home]/Library/Logs/Keyboard Switch_ folder.
 
@@ -62,31 +62,34 @@ If you want to delete the app's configuration as well, then delete the _\[home]/
 
 There are several prerequisites for running the app on Linux:
 
-* X11
-* X Keyboard Extension (XKB) which is enabled by default
-* X Test Extension – used to simulate pressing keys like <kbd>Ctrl</kbd>+<kbd>C</kbd> and <kbd>Ctrl</kbd>+<kbd>V</kbd> for you
-* [xsel](https://github.com/kfish/xsel) (optional) – used to copy and paste text if the&#x20;
-* Freedesktop conventions – used to make the service app start when you log in, and to make the settings app appear in the list of your installed apps (not required for the app itself though)
-
-Keyboard Switch doesn't support Wayland (even with XWayland).
+* X11 or Wayland though the latter is supported only on GNOME and KDE Plasma.
+* X Keyboard Extension (XKB) which is available by default on both X11 and Wayland.
+* libxkbcommon which is usually installed by default.
+* The `acl` package which is usually installed by default.
+* [wl-clipboard](https://github.com/bugaevc/wl-clipboard) (Wayand only) – used to copy and paste text on Wayland.
+* [xsel](https://github.com/kfish/xsel) (X11 only, optional) – used to copy and paste text on X11 if the corresponding setting is enabled.
+* Freedesktop conventions – used to make the service app start when you log in, and to make the settings app appear in the list of your installed apps (not required for the app itself though).
 
 The most popular desktop systems (at least GNOME, KDE Plasma, Cinnamon, LXQt, and Xfce) all adhere to the Freedesktop protocols, so the last prerequisite is automatically available, unless you're running a very unusual setup.
 
-Starting with version 4.2, Keyboard Switch uses native clipboard integration by default. This works well on newer desktop environments but doesn't work well on older versions. If you notice that Keyboard Switch doesn't work well on your system, then you can switch to using xsel instead. xsel must be installed manually though, and the service app must be restarted when this setting is changed.
+Starting with version 4.2, Keyboard Switch uses native clipboard integration on X11 by default. This works well on newer desktop environments but doesn't work well on older versions. If you notice that Keyboard Switch doesn't work well on your system, then you can switch to using xsel instead. xsel must be installed manually though, and the service app must be restarted when this setting is changed. On Wayland, there is no native clipboard integration, the application always uses wl-clipboard.
 
 [Click here](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/105) to see the list of Linux distributions on which the app was tested.
 
 {% hint style="warning" %}
-If your desktop environment is GNOME, then you should restart it right after opening the settings app for the first time. If you're not sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu, Debian, CentOS, Fedora and others (but not Linux Mint). Press <kbd>Alt</kbd>+<kbd>F2</kbd>, then type <kbd>r</kbd> and press <kbd>Enter</kbd>. This will restart GNOME.
-
-This is not required though, but if you don't restart GNOME, then Keyboard Switch won't be able to switch your keyboard layout until you re-login or reboot your system.
+If your desktop environment is GNOME, then you should restart it before opening Keyboard Switch Settings. If you're not sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu, Debian, Rocky, Fedora and others (but not Linux Mint). If you're using X11, Press <kbd>Alt</kbd>+<kbd>F2</kbd>, then type <kbd>r</kbd> and press <kbd>Enter</kbd> – this will restart GNOME. If you're using Wayland (which is most probably the case on newer versions of GNOME), then you're have to log out and log back in.
 {% endhint %}
 
 #### Using a Deb Package
 
 If you're running a Debian-based distribution (e.g., Ubuntu or Mint), then you can install Keyboard Switch using a deb package. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases).
 
-The package takes care of the X Test extension, so you don't need to install it yourself.
+The package has the following dependencies:
+
+* `acl`
+* `libxkbcommon0`
+* `wl-clipboard` (as a recommended dependency, installed by default)
+* `xsel` (as an optional dependency, not installed by default)
 
 After installation, the settings app will be available in the list of installed apps, and the service app will be configured to run at login.
 
@@ -96,15 +99,12 @@ Both the _amd64_ and _arm64_ versions are available.
 
 If you're running a RHEL-based distribution (e.g., Rocky Linux or Fedora), or SUSE, then you can install Keyboard Switch using an RPM package. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases).
 
-The package takes care of the X Test extension, so you don't need to install it yourself.
+The package has the following dependencies:
 
-{% hint style="info" %}
-If you're using RHEL or Rocky Linux, then make sure that the EPEL repository is installed before installing Keyboard Switch. Otherwise, it won't be able to install xsel.
-{% endhint %}
-
-{% hint style="info" %}
-SUSE may complain that it cannot find libXtst when installing the app using the RPM package. This is because the package is targeted for RHEL and derivatives. You can ignore this warning and proceed with installation, but make sure that libXtst6 is installed before starting the app.
-{% endhint %}
+* `acl`&#x20;
+* `libxkbcommon.so.0()(64bit)` (libxkbcommon is provided by different packages on RHEL-based distros and SUSE, so this form takes care of both package names)
+* `wl-clipboard` (as a recommended dependency, installed by default)
+* `xsel` (as a suggested dependency, not installed by default)
 
 After installation, the settings app will be available in the list of installed apps, and the service app will be configured to run at login.
 
@@ -112,7 +112,19 @@ Both the _x86\_64_ and _aarch64_ versions are available.
 
 #### Using a Tar Archive
 
-Keyboard Switch is also available as a _tar.gz_ file. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). You can then extract it to anywhere you like (e.g., into the _/opt_ directory). The deployed app includes two scripts – _install.sh_ and _uninstall.sh_. _install.sh_ adds the settings app to the list of installed apps. _uninstall.sh_ deletes this configuration. These scripts will make changes only for the current user.
+Keyboard Switch is also available as a _tar.gz_ file. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). You can then extract it to anywhere you like (e.g., into the _/opt_ directory). The deployed app includes two scripts – _install.sh_ and _uninstall.sh_.
+
+_install.sh_ does the following:
+
+* creates the `keyboard-switch` system group and grants it access to the input system if the group doesn't exist;
+* sets the Keyboard Switch executable to belong to that group so that it has access the input system;
+* adds the settings app to the list of installed apps.
+
+The first two items require a one-time root access. Do not run _install.sh_ with `sudo` - it will run the needed commands with `sudo` itself which will only require that you enter a password.
+
+_uninstall.sh_ removes the app from the list of installed apps.
+
+Apart from the one-time setup of the input system access for Keyboard Switch, these scripts make changes only for the current user.
 
 Both the _x64_ and _arm64_ versions are available.
 
@@ -120,40 +132,47 @@ The following scripts assume that the _/opt_ directory is writable. Substitute _
 
 Here are the steps required for installing the app on Debian, Ubuntu, Linux Mint, etc.:
 
-```
+```bash
 sudo apt update
-sudo apt install libxtst6  # Install the X Test Extension
-tar -xzf keyboard-switch-4.3.0-x64.tar.gz -C /opt
+sudo apt install wl-clipboard # Install wl-clipboard which is required on Wayland
+sudo apt install xsel # Optional, install only if you plan to use the xsel setting on X11
+tar -xzf keyboard-switch-4.4.0-x64.tar.gz -C /opt
 cd /opt/keyboard-switch
 ./install.sh
+# Enter your password when the sudo prompt appears
 ```
 
 Here are the steps required for installing the app on RHEL, Fedora, or Rocky Linux:
 
-```
-sudo dnf install epel-release  # Add the EPEL repository (not needed for Fedora)
-sudo dnf install libXtst       # Install the X Test Extension
-tar -xzf keyboard-switch-4.3.0-x64.tar.gz -C /opt
+```bash
+sudo dnf install wl-clipboard # Install wl-clipboard which is required on Wayland
+sudo dnf install xsel # Optional, install only if you plan to use the xsel setting on X11
+tar -xzf keyboard-switch-4.4.0-x64.tar.gz -C /opt
 cd /opt/keyboard-switch
 ./install.sh
+# Enter your password when the sudo prompt appears
 ```
 
-Here are the steps required for installing the app on SUSE (you may need to add the X11:XOrg repository to install libXtst6):
+Here are the steps required for installing the app on SUSE:
 
-```
-sudo zypper install libXtst6  # Install the X Test Extension
-tar -xzf keyboard-switch-4.3.0-x64.tar.gz -C /opt
+```bash
+sudo zypper install wl-clipboard # Install wl-clipboard which is required on Wayland
+sudo zypper install xsel # Optional, install only if you plan to use the xsel setting on X11
+tar -xzf keyboard-switch-4.4.0-x64.tar.gz -C /opt
 cd /opt/keyboard-switch
 ./install.sh
+# Enter your password when the sudo prompt appears
 ```
 
 Here are the steps required for installing the app on Arch Linux:
 
-```
-sudo pacman -S libxtst  # Install the X Test Extension
-tar -xzf keyboard-switch-4.3.0-x64.tar.gz -C /opt
+```bash
+sudo pacman -S wl-clipboard # Install wl-clipboard which is required on Wayland
+sudo pacman -S xsel # Optional, install only if you plan to use the xsel setting on X11
+tar -xzf keyboard-switch-4.4.0-x64.tar.gz -C /opt
 cd /opt/keyboard-switch
 ./install.sh
+# Enter your password when the sudo prompt appears
 ```
 
 ### Uninstalling the App
@@ -167,3 +186,11 @@ If you want to delete the app's configuration as well, then there are several wa
 * You can delete the _\~/.config/keyboard-switch_ directory manually.
 
 There is no way to delete the app configuration automatically for RPM packages.
+
+The `keyboard-switch` group is not removed automatically. If you want to remove this group and its accesses as well, run the following commands:
+
+```bash
+sudo rm /etc/udev/rules.d/99-keyboard-switch.rules
+udevadm control --reload-rules
+sudo groupdel keyboard-switch
+```
