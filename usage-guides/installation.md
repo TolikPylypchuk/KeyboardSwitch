@@ -22,7 +22,7 @@ The uninstaller will also not delete the registry entry which says that your app
 
 ### Using the Portable Version
 
-If you don't want to install the app (or can't), you can use the portable version of the app. It's literally the same as the installable version; there are no differences. Again, go to the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases) and download _KeyboardSwitch-4.3.0-x64-win.zip_ or _KeyboardSwitch-4.3.0-arm64-win.zip_. If you're not sure which one you should download, then it's most probably _x64_. Extract the archive to anywhere you want and start _KeyboardSwitchSettings.exe_. It will configure the app to run when you log in just like the installed version. The configuration for the portable version is also stored under your local app data folder.
+If you don't want to install the app (or can't), you can use the portable version of the app. It's literally the same as the installable version; there are no differences. Again, go to the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases) and download _KeyboardSwitch-4.3.1-x64-win.zip_ or _KeyboardSwitch-4.3.1-arm64-win.zip_. If you're not sure which one you should download, then it's most probably _x64_. Extract the archive to anywhere you want and start _KeyboardSwitchSettings.exe_. It will configure the app to run when you log in just like the installed version. The configuration for the portable version is also stored under your local app data folder.
 
 ## macOS
 
@@ -50,7 +50,7 @@ You can configure the character mappings (you can read more about it in the next
 
 Many apps on macOS can be uninstalled just by deleting the app bundle from the _/Applications_ folder. This is not the case with Keyboard Switch. Multiple things should be done to remove it from the system. You shouldn't concern yourself with those things though – you should just run an uninstaller package, and it will remove Keyboard Switch.
 
-As with the installer package, you can also get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download and run the _KeyboardSwitchUninstaller-4.3.0.pkg_ file, and Keyboard Switch will be removed.
+As with the installer package, you can also get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). Download and run the _KeyboardSwitchUninstaller-4.3.1.pkg_ file, and Keyboard Switch will be removed.
 
 If you want to delete the app's configuration as well, then delete the _\[home]/Library/Application Support/Keyboard Switch_ folder. You can also delete the app's log files by deleting the _\[home]/Library/Logs/Keyboard Switch_ folder.
 
@@ -63,10 +63,10 @@ If you want to delete the app's configuration as well, then delete the _\[home]/
 There are several prerequisites for running the app on Linux:
 
 * X11
-* X Keyboard Extension (XKB) which is enabled by default
-* X Test Extension – used to simulate pressing keys like <kbd>Ctrl</kbd>+<kbd>C</kbd> and <kbd>Ctrl</kbd>+<kbd>V</kbd> for you
-* [xsel](https://github.com/kfish/xsel) (optional) – used to copy and paste text if the&#x20;
-* Freedesktop conventions – used to make the service app start when you log in, and to make the settings app appear in the list of your installed apps (not required for the app itself though)
+* X Keyboard Extension (XKB) which is enabled by default.
+* X Test Extension – used to simulate pressing keys like <kbd>Ctrl</kbd>+<kbd>C</kbd> and <kbd>Ctrl</kbd>+<kbd>V</kbd> for you.
+* [xsel](https://github.com/kfish/xsel) (optional) – used to copy and paste text if the corresponding setting is enabled.
+* Freedesktop conventions – used to make the service app start when you log in, and to make the settings app appear in the list of your installed apps (not required for the app itself though).
 
 Keyboard Switch doesn't support Wayland (even with XWayland).
 
@@ -99,10 +99,6 @@ If you're running a RHEL-based distribution (e.g., Rocky Linux or Fedora), or SU
 The package takes care of the X Test extension, so you don't need to install it yourself.
 
 {% hint style="info" %}
-If you're using RHEL or Rocky Linux, then make sure that the EPEL repository is installed before installing Keyboard Switch. Otherwise, it won't be able to install xsel.
-{% endhint %}
-
-{% hint style="info" %}
 SUSE may complain that it cannot find libXtst when installing the app using the RPM package. This is because the package is targeted for RHEL and derivatives. You can ignore this warning and proceed with installation, but make sure that libXtst6 is installed before starting the app.
 {% endhint %}
 
@@ -120,38 +116,38 @@ The following scripts assume that the _/opt_ directory is writable. Substitute _
 
 Here are the steps required for installing the app on Debian, Ubuntu, Linux Mint, etc.:
 
-```
+```bash
 sudo apt update
 sudo apt install libxtst6  # Install the X Test Extension
-tar -xzf keyboard-switch-4.3.0-x64.tar.gz -C /opt
+tar -xzf keyboard-switch-4.3.1-x64.tar.gz -C /opt
 cd /opt/keyboard-switch
 ./install.sh
 ```
 
 Here are the steps required for installing the app on RHEL, Fedora, or Rocky Linux:
 
-```
+```bash
 sudo dnf install epel-release  # Add the EPEL repository (not needed for Fedora)
 sudo dnf install libXtst       # Install the X Test Extension
-tar -xzf keyboard-switch-4.3.0-x64.tar.gz -C /opt
+tar -xzf keyboard-switch-4.3.1-x64.tar.gz -C /opt
 cd /opt/keyboard-switch
 ./install.sh
 ```
 
 Here are the steps required for installing the app on SUSE (you may need to add the X11:XOrg repository to install libXtst6):
 
-```
+```bash
 sudo zypper install libXtst6  # Install the X Test Extension
-tar -xzf keyboard-switch-4.3.0-x64.tar.gz -C /opt
+tar -xzf keyboard-switch-4.3.1-x64.tar.gz -C /opt
 cd /opt/keyboard-switch
 ./install.sh
 ```
 
 Here are the steps required for installing the app on Arch Linux:
 
-```
+```bash
 sudo pacman -S libxtst  # Install the X Test Extension
-tar -xzf keyboard-switch-4.3.0-x64.tar.gz -C /opt
+tar -xzf keyboard-switch-4.3.1-x64.tar.gz -C /opt
 cd /opt/keyboard-switch
 ./install.sh
 ```
