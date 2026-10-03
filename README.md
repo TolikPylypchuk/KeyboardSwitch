@@ -38,24 +38,20 @@ That's it! You're ready to use Keyboard Switch in its basic configuration. There
 
 To switch text forward, select the text and press <kbd>Ctrl</kbd>+<kbd>Shift</kbd> twice. To switch it backward, press <kbd>Ctrl</kbd>+<kbd>Option</kbd>+<kbd>Shift</kbd> twice instead.
 
-To uninstall Keyboard Switch you should run an uninstaller package. You can also get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases).
+To uninstall Keyboard Switch, you should run an uninstaller package. You can also get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases).
 
 ### Linux
 
 The app is available as a deb package (for Debian-based distributions, such as Ubuntu, Mint etc.), an RPM package (for RHEL-based distributions, like Rocky Linux or Fedora, as well as SUSE), and a simple _tar.gz_ file. You can get these files from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases).
 
-{% hint style="info" %}
-If you're using an RPM package, there are a couple things to note before installing the app (which you can find in the [installation](usage-guides/installation.md#installing-the-app) article).
-{% endhint %}
+Keyboard Switch supports X11 and Wayland (the latter is currently supported only on GNOME and KDE Plasma).
 
-Bear in mind that Keyboard Switch only works on X11 – it won't work on Wayland (even with XWayland).
-
-If you use the deb or RPM package, then simply install it either by double-clicking on it, or through the terminal. If you use the _tar.gz_ file, then the set-up is not quite as quick, so you can read about it in the [installation page](usage-guides/installation.md#installing-the-app).
+If you use the deb or RPM package, then simply install it either by double-clicking on it, or through the terminal. If you use the _tar.gz_ file, the you can read about it in the [installation page](usage-guides/installation.md#installing-the-app).
 
 After installing the app, open Keyboard Switch Settings – it should appear in the list of your apps.
 
 {% hint style="warning" %}
-If your desktop environment is GNOME, then you should restart it right after opening Keyboard Switch Settings. If you're not sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu, Debian, Rocky, Fedora and others (but not Linux Mint). Press <kbd>Alt</kbd>+<kbd>F2</kbd>, then type <kbd>r</kbd> and press <kbd>Enter</kbd>. This will restart GNOME.
+If your desktop environment is GNOME, then you should restart it before opening Keyboard Switch Settings. If you're not sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu, Debian, Rocky, Fedora and others (but not Linux Mint). If you're using X11, Press <kbd>Alt</kbd>+<kbd>F2</kbd>, then type <kbd>r</kbd> and press <kbd>Enter</kbd> – this will restart GNOME. If you're using Wayland (which is most probably the case on newer versions of GNOME), then you're have to log out and log back in.
 {% endhint %}
 
 In the opened app, press _Start_.
@@ -86,6 +82,20 @@ The app uses the clipboard to get the text to transform and then puts the transf
 
 ## Supported Platforms
 
-Keyboard Switch currently works on Windows 10/11 (version 1607 or later), macOS 10.15 or later, and Linux via X11. As for Linux, it needs several prerequisites to run (more on that on [the installation page](usage-guides/installation.md#linux)).
+### Windows
+
+Keyboard Switch is supported on Windows 11. It most probably works on earlier versions as well, but they are not officially supported, and issues that only appear on older versions will not be fixed.
+
+The x64 and Arm64 architectures are both supported.
+
+### macOS
+
+Keyboard Switch requires macOS 10.15 or later, though it is supported only on macOS versions that are currently supported by Apple (as of October 2026, it's macOS 15, 26, and 27). It can run on unsupported versions as well, but issues that only appear on older versions will not be fixed.
+
+The Arm64 architecture is supported. The x64 version is also available, but issues that only appear on the x64 version will not be fixed. It may be completely dropped in a future release, but for now, it stays.
+
+### Linux
+
+Keyboard switch is supported on Linux. X11 is supported, and Wayland is currently supported only on GNOME and KDE Plasma. [Click here](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/105) to see the list of Linux distributions on which the app was tested.
 
 The x64 and Arm64 architectures are both supported.
