@@ -10,55 +10,55 @@ internal sealed class WinAutoConfigurationService : AutoConfigurationServiceBase
     private const int ResultSuccess = 1;
     private const int ResultDeadKey = -1;
 
-    private static readonly ImmutableList<User32.VK> KeyCodesToMap =
+    private static readonly ImmutableList<VIRTUAL_KEY> KeyCodesToMap =
     [
-        User32.VK.VK_Q,
-        User32.VK.VK_W,
-        User32.VK.VK_E,
-        User32.VK.VK_R,
-        User32.VK.VK_T,
-        User32.VK.VK_Y,
-        User32.VK.VK_U,
-        User32.VK.VK_I,
-        User32.VK.VK_O,
-        User32.VK.VK_P,
-        User32.VK.VK_OEM_4,
-        User32.VK.VK_OEM_6,
-        User32.VK.VK_A,
-        User32.VK.VK_S,
-        User32.VK.VK_D,
-        User32.VK.VK_F,
-        User32.VK.VK_G,
-        User32.VK.VK_H,
-        User32.VK.VK_J,
-        User32.VK.VK_K,
-        User32.VK.VK_L,
-        User32.VK.VK_OEM_1,
-        User32.VK.VK_OEM_7,
-        User32.VK.VK_Z,
-        User32.VK.VK_X,
-        User32.VK.VK_C,
-        User32.VK.VK_V,
-        User32.VK.VK_B,
-        User32.VK.VK_N,
-        User32.VK.VK_M,
-        User32.VK.VK_OEM_COMMA,
-        User32.VK.VK_OEM_PERIOD,
-        User32.VK.VK_OEM_2,
-        User32.VK.VK_OEM_5,
-        User32.VK.VK_OEM_3,
-        User32.VK.VK_1,
-        User32.VK.VK_2,
-        User32.VK.VK_3,
-        User32.VK.VK_4,
-        User32.VK.VK_5,
-        User32.VK.VK_6,
-        User32.VK.VK_7,
-        User32.VK.VK_8,
-        User32.VK.VK_9,
-        User32.VK.VK_0,
-        User32.VK.VK_OEM_MINUS,
-        User32.VK.VK_OEM_PLUS
+        VIRTUAL_KEY.VK_Q,
+        VIRTUAL_KEY.VK_W,
+        VIRTUAL_KEY.VK_E,
+        VIRTUAL_KEY.VK_R,
+        VIRTUAL_KEY.VK_T,
+        VIRTUAL_KEY.VK_Y,
+        VIRTUAL_KEY.VK_U,
+        VIRTUAL_KEY.VK_I,
+        VIRTUAL_KEY.VK_O,
+        VIRTUAL_KEY.VK_P,
+        VIRTUAL_KEY.VK_OEM_4,
+        VIRTUAL_KEY.VK_OEM_6,
+        VIRTUAL_KEY.VK_A,
+        VIRTUAL_KEY.VK_S,
+        VIRTUAL_KEY.VK_D,
+        VIRTUAL_KEY.VK_F,
+        VIRTUAL_KEY.VK_G,
+        VIRTUAL_KEY.VK_H,
+        VIRTUAL_KEY.VK_J,
+        VIRTUAL_KEY.VK_K,
+        VIRTUAL_KEY.VK_L,
+        VIRTUAL_KEY.VK_OEM_1,
+        VIRTUAL_KEY.VK_OEM_7,
+        VIRTUAL_KEY.VK_Z,
+        VIRTUAL_KEY.VK_X,
+        VIRTUAL_KEY.VK_C,
+        VIRTUAL_KEY.VK_V,
+        VIRTUAL_KEY.VK_B,
+        VIRTUAL_KEY.VK_N,
+        VIRTUAL_KEY.VK_M,
+        VIRTUAL_KEY.VK_OEM_COMMA,
+        VIRTUAL_KEY.VK_OEM_PERIOD,
+        VIRTUAL_KEY.VK_OEM_2,
+        VIRTUAL_KEY.VK_OEM_5,
+        VIRTUAL_KEY.VK_OEM_3,
+        VIRTUAL_KEY.VK_1,
+        VIRTUAL_KEY.VK_2,
+        VIRTUAL_KEY.VK_3,
+        VIRTUAL_KEY.VK_4,
+        VIRTUAL_KEY.VK_5,
+        VIRTUAL_KEY.VK_6,
+        VIRTUAL_KEY.VK_7,
+        VIRTUAL_KEY.VK_8,
+        VIRTUAL_KEY.VK_9,
+        VIRTUAL_KEY.VK_0,
+        VIRTUAL_KEY.VK_OEM_MINUS,
+        VIRTUAL_KEY.VK_OEM_PLUS
     ];
 
     protected override IEnumerable<List<KeyToCharResult>> GetChars(List<string> layoutIds) =>
@@ -71,53 +71,56 @@ internal sealed class WinAutoConfigurationService : AutoConfigurationServiceBase
             .Concat(KeyCodesToMap.Select(keyCode =>
                 this.GetCharsFromKey(keyCode, shift: true, altGr: true, layoutIds)));
 
-    private List<KeyToCharResult> GetCharsFromKey(User32.VK keyCode, bool shift, bool altGr, List<string> layoutIds) =>
+    private List<KeyToCharResult> GetCharsFromKey(
+        VIRTUAL_KEY keyCode,
+        bool shift,
+        bool altGr,
+        List<string> layoutIds) =>
         layoutIds
             .Select(layoutId => this.GetCharFromKey(keyCode, shift, altGr, layoutId))
             .ToList();
 
-    private KeyToCharResult GetCharFromKey(User32.VK keyCode, bool shift, bool altGr, string layoutId)
+    private KeyToCharResult GetCharFromKey(VIRTUAL_KEY keyCode, bool shift, bool altGr, string layoutId)
     {
         const int bufferSize = 256;
 
-        var buffer = new StringBuilder(bufferSize);
-        var keyboardState = new byte[bufferSize];
+        Span<char> buffer = stackalloc char[bufferSize];
+        Span<byte> keyboardState = stackalloc byte[bufferSize];
 
         if (shift)
         {
-            keyboardState[(int)User32.VK.VK_SHIFT] = KeyStatePressed;
+            keyboardState[(int)VIRTUAL_KEY.VK_SHIFT] = KeyStatePressed;
         }
 
         if (altGr)
         {
-            keyboardState[(int)User32.VK.VK_CONTROL] = KeyStatePressed;
-            keyboardState[(int)User32.VK.VK_MENU] = KeyStatePressed;
+            keyboardState[(int)VIRTUAL_KEY.VK_CONTROL] = KeyStatePressed;
+            keyboardState[(int)VIRTUAL_KEY.VK_MENU] = KeyStatePressed;
         }
 
         uint scanCode = MapToScanCode(keyCode);
-        var hkl = (User32.HKL)Int32.Parse(layoutId);
-        int result = User32.ToUnicodeEx(
-            (uint)keyCode, scanCode, keyboardState, buffer, bufferSize, NoKeyboardStateModification, hkl);
+        var hkl = (HKL)Int32.Parse(layoutId);
+        int result = PInvoke.ToUnicodeEx(
+            (uint)keyCode, scanCode, keyboardState, buffer, NoKeyboardStateModification, hkl);
 
         if (result == ResultDeadKey)
         {
-            result = User32.ToUnicodeEx(
-                (uint)User32.VK.VK_SPACE,
-                MapToScanCode(User32.VK.VK_SPACE),
+            result = PInvoke.ToUnicodeEx(
+                (uint)VIRTUAL_KEY.VK_SPACE,
+                MapToScanCode(VIRTUAL_KEY.VK_SPACE),
                 keyboardState,
                 buffer,
-                bufferSize,
                 NoKeyboardStateModification,
                 hkl);
         }
 
         return result switch
         {
-            ResultSuccess => KeyToCharResult.Success(buffer.ToString()[0], layoutId),
+            ResultSuccess => KeyToCharResult.Success(buffer[0], layoutId),
             _ => KeyToCharResult.Failure()
         };
     }
 
-    private uint MapToScanCode(User32.VK keyCode) =>
-        User32.MapVirtualKey((uint)keyCode, User32.MAPVK.MAPVK_VK_TO_VSC_EX);
+    private uint MapToScanCode(VIRTUAL_KEY keyCode) =>
+        PInvoke.MapVirtualKey((uint)keyCode, MAP_VIRTUAL_KEY_TYPE.MAPVK_VK_TO_VSC_EX);
 }

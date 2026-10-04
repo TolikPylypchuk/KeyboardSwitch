@@ -1,5 +1,4 @@
 global using System.Reactive.Linq;
-global using System.Text;
 
 global using KeyboardSwitch.Core;
 global using KeyboardSwitch.Core.Keyboard;
@@ -18,4 +17,8 @@ global using KeyboardSwitch.Windows.Services;
 global using Microsoft.Extensions.Logging;
 global using Microsoft.Win32;
 
-global using Vanara.PInvoke;
+global using Windows.Win32;
+global using Windows.Win32.Foundation;
+global using Windows.Win32.System.Memory;
+global using Windows.Win32.System.Ole;
+global using Windows.Win32.UI.Input.KeyboardAndMouse;

@@ -9,8 +9,8 @@ internal sealed partial class WinLayoutService(ILogger<WinLayoutService> logger)
     private const string KeyboardLayoutNameRegistryKeyFormat = KeyboardLayoutsRegistryKey + @"\{0}";
     private const string LayoutText = "Layout Text";
 
-    private static readonly IntPtr HklNext = 1;
-    private static readonly IntPtr HklPrev = 0;
+    private static readonly HKL HklNext = (HKL)(nint)1;
+    private static readonly HKL HklPrev = (HKL)(nint)0;
     public const int KlNameLength = 9;
 
     public bool IsLoadingLayoutsSupported => true;
@@ -18,7 +18,7 @@ internal sealed partial class WinLayoutService(ILogger<WinLayoutService> logger)
     public override Task<KeyboardLayout> GetCurrentKeyboardLayout()
     {
         this.LogGettingLayoutOfForegroundProcess();
-        uint foregroundWindowThreadId = User32.GetWindowThreadProcessId(User32.GetForegroundWindow(), out _);
+        uint foregroundWindowThreadId = PInvoke.GetWindowThreadProcessId(PInvoke.GetForegroundWindow(), out _);
         return Task.FromResult(this.GetThreadKeyboardLayout(foregroundWindowThreadId));
     }
 
@@ -26,19 +26,19 @@ internal sealed partial class WinLayoutService(ILogger<WinLayoutService> logger)
     {
         this.LogSwitchingLayoutOfForegroundProcess(direction);
 
-        var foregroundWindowHandle = User32.GetForegroundWindow();
-        uint foregroundWindowThreadId = User32.GetWindowThreadProcessId(foregroundWindowHandle, out uint _);
+        var foregroundWindowHandle = PInvoke.GetForegroundWindow();
+        uint foregroundWindowThreadId = PInvoke.GetWindowThreadProcessId(foregroundWindowHandle, out uint _);
 
-        var keyboardLayoutId = User32.GetKeyboardLayout(foregroundWindowThreadId);
+        var keyboardLayoutId = PInvoke.GetKeyboardLayout(foregroundWindowThreadId);
 
         SetThreadKeyboardLayout(keyboardLayoutId);
         SetThreadKeyboardLayout(direction == SwitchDirection.Forward ? HklNext : HklPrev);
 
-        bool success = User32.PostMessage(
+        bool success = PInvoke.PostMessage(
             foregroundWindowHandle,
-            (uint)User32.WindowMessage.WM_INPUTLANGCHANGEREQUEST,
-            IntPtr.Zero,
-            User32.GetKeyboardLayout(0).DangerousGetHandle());
+            PInvoke.WM_INPUTLANGCHANGEREQUEST,
+            default,
+            (nint)PInvoke.GetKeyboardLayout(0));
 
         if (success)
         {
@@ -55,10 +55,10 @@ internal sealed partial class WinLayoutService(ILogger<WinLayoutService> logger)
     {
         this.LogGettingListOfInstalledLayouts();
 
-        int count = User32.GetKeyboardLayoutList(0, null);
-        var keyboardLayoutIds = new User32.HKL[count];
+        int count = PInvoke.GetKeyboardLayoutList([]);
+        var keyboardLayoutIds = new HKL[count];
 
-        int result = User32.GetKeyboardLayoutList(keyboardLayoutIds.Length, keyboardLayoutIds);
+        int result = PInvoke.GetKeyboardLayoutList(keyboardLayoutIds);
 
         if (result == 0)
         {
@@ -72,22 +72,22 @@ internal sealed partial class WinLayoutService(ILogger<WinLayoutService> logger)
     }
 
     private KeyboardLayout GetThreadKeyboardLayout(uint threadId) =>
-        this.CreateKeyboardLayout(User32.GetKeyboardLayout(threadId));
+        this.CreateKeyboardLayout(PInvoke.GetKeyboardLayout(threadId));
 
-    private void SetThreadKeyboardLayout(User32.HKL keyboardLayoutId) =>
-        User32.ActivateKeyboardLayout(keyboardLayoutId, 0);
+    private void SetThreadKeyboardLayout(HKL keyboardLayoutId) =>
+        PInvoke.ActivateKeyboardLayout(keyboardLayoutId, 0);
 
-    private KeyboardLayout CreateKeyboardLayout(User32.HKL keyboardLayoutId)
+    private KeyboardLayout CreateKeyboardLayout(HKL keyboardLayoutId)
     {
-        int id = (int)keyboardLayoutId.DangerousGetHandle();
+        int id = (int)(nint)keyboardLayoutId;
         var (name, tag) = this.GetLayoutDisplayNameAndTag(keyboardLayoutId);
 
         return new(id.ToString(), this.GetCultureInfo(id, name).EnglishName, name, tag);
     }
 
-    private (string DisplayName, string Tag) GetLayoutDisplayNameAndTag(User32.HKL keyboardLayoutId)
+    private (string DisplayName, string Tag) GetLayoutDisplayNameAndTag(HKL keyboardLayoutId)
     {
-        var currentLayout = User32.GetKeyboardLayout(0);
+        var currentLayout = PInvoke.GetKeyboardLayout(0);
 
         SetThreadKeyboardLayout(keyboardLayoutId);
         string name = this.GetCurrentLayoutName();
@@ -102,9 +102,9 @@ internal sealed partial class WinLayoutService(ILogger<WinLayoutService> logger)
 
     private string GetCurrentLayoutName()
     {
-        var name = new StringBuilder(KlNameLength);
-        User32.GetKeyboardLayoutName(name);
-        return name.ToString();
+        Span<char> name = stackalloc char[KlNameLength];
+        PInvoke.GetKeyboardLayoutName(name);
+        return name.TrimEnd('\0').ToString();
     }
 
     private CultureInfo GetCultureInfo(int keyboardLayoutId, string layoutName)
