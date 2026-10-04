@@ -10,6 +10,8 @@ using FluentAvalonia.Styling;
 using KeyboardSwitch.Core.Exceptions;
 using KeyboardSwitch.Settings.Themes;
 
+using ReactiveUI.Reactive.Interfaces;
+
 using Splat;
 
 namespace KeyboardSwitch.Settings;
@@ -110,8 +112,11 @@ public class App : Application, IEnableLogger
     {
         var autoSuspendHelper = new AutoSuspendHelper(desktop);
 
-        RxSuspension.SuspensionHost.CreateNewAppState = () => new AppState();
-        RxSuspension.SuspensionHost.SetupDefaultSuspendResume();
+        if (RxSuspension.SuspensionHost is ISuspensionHost<AppState> suspensionHost)
+        {
+            suspensionHost.CreateNewAppStateTyped = () => new AppState();
+            suspensionHost.SetupDefaultSuspendResume(AppStateContext.Default.AppState);
+        }
 
         autoSuspendHelper.OnFrameworkInitializationCompleted();
     }
@@ -197,7 +202,12 @@ public class App : Application, IEnableLogger
 
     private void SaveAppState(Window window)
     {
-        var state = RxSuspension.SuspensionHost.GetAppState<AppState>();
+        if (RxSuspension.SuspensionHost is not ISuspensionHost<AppState> suspensionHost)
+        {
+            return;
+        }
+
+        var state = suspensionHost.GetAppState<AppState>();
 
         state.IsWindowMaximized = window.WindowState == WindowState.Maximized;
 

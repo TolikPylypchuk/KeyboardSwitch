@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 
@@ -46,6 +47,12 @@ internal sealed class JsonSuspensionDriver(IOptions<GlobalSettings> settings) : 
         return Observable.Return(Unit.Default);
     }
 
+    [RequiresUnreferencedCode(
+        "Implementations commonly use reflection-based serialization. " +
+        "Prefer SaveState<T>(T, JsonTypeInfo<T>) for trimming or AOT scenarios.")]
+    [RequiresDynamicCode(
+        "Implementations commonly use reflection-based serialization. " +
+        "Prefer SaveState<T>(T, JsonTypeInfo<T>) for trimming or AOT scenarios.")]
     IObservable<Unit> ISuspensionDriver.SaveState<T>(T state)
     {
         if (state is AppState appState)
@@ -56,6 +63,12 @@ internal sealed class JsonSuspensionDriver(IOptions<GlobalSettings> settings) : 
         throw new InvalidOperationException($"{nameof(JsonSuspensionDriver)} can only save {nameof(AppState)}");
     }
 
+    [RequiresUnreferencedCode(
+        "Implementations commonly use reflection-based serialization. " +
+        "Prefer LoadState<T>(JsonTypeInfo<T>) for trimming or AOT scenarios.")]
+    [RequiresDynamicCode(
+        "Implementations commonly use reflection-based serialization. " +
+        "Prefer LoadState<T>(JsonTypeInfo<T>) for trimming or AOT scenarios.")]
     IObservable<object> ISuspensionDriver.LoadState()
     {
         if (!this.file.Exists)

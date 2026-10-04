@@ -52,9 +52,9 @@
   <PropertyGroup>
     <SelfContained>true</SelfContained>
     <PublishSingleFile>true</PublishSingleFile>
+    <IsAotCompatible>true</IsAotCompatible>
     <PublishTrimmed>true</PublishTrimmed>
-    <TrimMode>partial</TrimMode>
-    <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
+    <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
     <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
     <EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
     <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
@@ -69,4 +69,10 @@
   <ItemGroup>
     <InternalsVisibleTo Include="KeyboardSwitch.Tests" />
   </ItemGroup>
+
+  <Target Name="RemoveNativePdbsFromPublish" AfterTargets="ComputeResolvedFilesToPublishList">
+    <ItemGroup>
+      <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.pdb' And '%(ResolvedFileToPublish.AssetType)' == 'native'" />
+    </ItemGroup>
+  </Target>
 </Project>

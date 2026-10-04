@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -8,6 +8,9 @@
 
   <PropertyGroup>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <IsAotCompatible>false</IsAotCompatible>
+    <TrimMode>partial</TrimMode>
+    <SuppressTrimAnalysisWarnings>true</SuppressTrimAnalysisWarnings>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +20,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Desktop" />
-    <PackageReference Include="AvaloniaUI.DiagnosticsSupport" />
+    <PackageReference Include="AvaloniaUI.DiagnosticsSupport" Condition="$(Configuration) == 'Debug'" />
     <PackageReference Include="Avalonia.Themes.Simple" />
     <PackageReference Include="Avalonia.Wayland" Condition="$(TargetOS) == 'Linux'" />
     <PackageReference Include="Devolutions.AvaloniaTheme.MacOS" />
@@ -68,9 +71,5 @@
     <ProjectReference Include="..\KeyboardSwitch.Windows\KeyboardSwitch.Windows.csproj" Condition="$(TargetOS) == 'Windows'" />
     <ProjectReference Include="..\KeyboardSwitch.MacOS\KeyboardSwitch.MacOS.csproj" Condition="$(TargetOS) == 'macOS'" />
     <ProjectReference Include="..\KeyboardSwitch.Linux\KeyboardSwitch.Linux.csproj" Condition="$(TargetOS) == 'Linux'" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <TrimmerRootDescriptor Include="TrimmerRoots.xml" />
   </ItemGroup>
 </Project>
