@@ -91,14 +91,15 @@ public sealed partial class PreferencesViewModel : ReactiveForm<PreferencesModel
 
     protected override void EnableChangeTracking()
     {
-        this.TrackChanges(vm => vm.InstantSwitching, vm => vm.PreferencesModel.InstantSwitching);
-        this.TrackChanges(vm => vm.SwitchLayout, vm => vm.PreferencesModel.SwitchLayout);
-        this.TrackChanges(vm => vm.Startup, vm => vm.PreferencesModel.Startup);
+        this.TrackChanges(this.WhenAnyValue(vm => vm.InstantSwitching), vm => vm.PreferencesModel.InstantSwitching);
+        this.TrackChanges(this.WhenAnyValue(vm => vm.SwitchLayout), vm => vm.PreferencesModel.SwitchLayout);
+        this.TrackChanges(this.WhenAnyValue(vm => vm.Startup), vm => vm.PreferencesModel.Startup);
 
         this.TrackChanges(
-            vm => vm.ShowUninstalledLayoutsMessage, vm => vm.PreferencesModel.ShowUninstalledLayoutsMessage);
+            this.WhenAnyValue(vm => vm.ShowUninstalledLayoutsMessage),
+            vm => vm.PreferencesModel.ShowUninstalledLayoutsMessage);
 
-        this.TrackChanges(vm => vm.UseXsel, vm => vm.PreferencesModel.UseXsel);
+        this.TrackChanges(this.WhenAnyValue(vm => vm.UseXsel), vm => vm.PreferencesModel.UseXsel);
 
         this.TrackChanges(this.IsCollectionChangedSimple(
             vm => vm.forwardModifierKeys, vm => vm.PreferencesModel.SwitchSettings.ForwardModifiers));
@@ -106,11 +107,14 @@ public sealed partial class PreferencesViewModel : ReactiveForm<PreferencesModel
         this.TrackChanges(this.IsCollectionChangedSimple(
             vm => vm.backwardModifierKeys, vm => vm.PreferencesModel.SwitchSettings.BackwardModifiers));
 
-        this.TrackChanges(vm => vm.PressCount, vm => vm.PreferencesModel.SwitchSettings.PressCount);
-        this.TrackChanges(vm => vm.WaitMilliseconds, vm => vm.PreferencesModel.SwitchSettings.WaitMilliseconds);
+        this.TrackChanges(
+            this.WhenAnyValue(vm => vm.PressCount), vm => vm.PreferencesModel.SwitchSettings.PressCount);
 
-        this.TrackChanges(vm => vm.AppTheme, vm => vm.PreferencesModel.AppTheme);
-        this.TrackChanges(vm => vm.AppThemeVariant, vm => vm.PreferencesModel.AppThemeVariant);
+        this.TrackChanges(
+            this.WhenAnyValue(vm => vm.WaitMilliseconds), vm => vm.PreferencesModel.SwitchSettings.WaitMilliseconds);
+
+        this.TrackChanges(this.WhenAnyValue(vm => vm.AppTheme), vm => vm.PreferencesModel.AppTheme);
+        this.TrackChanges(this.WhenAnyValue(vm => vm.AppThemeVariant), vm => vm.PreferencesModel.AppThemeVariant);
 
         base.EnableChangeTracking();
     }
@@ -192,9 +196,9 @@ public sealed partial class PreferencesViewModel : ReactiveForm<PreferencesModel
                 this.forwardModifierKeysSource.Edit(list =>
                 {
                     list.Clear();
-                    list.Add(keys.Item1);
-                    list.Add(keys.Item2);
-                    list.Add(keys.Item3);
+                    list.Add(keys.Property1);
+                    list.Add(keys.Property2);
+                    list.Add(keys.Property3);
                 }));
 
         this.WhenAnyValue(
@@ -205,9 +209,9 @@ public sealed partial class PreferencesViewModel : ReactiveForm<PreferencesModel
                 this.backwardModifierKeysSource.Edit(list =>
                 {
                     list.Clear();
-                    list.Add(keys.Item1);
-                    list.Add(keys.Item2);
-                    list.Add(keys.Item3);
+                    list.Add(keys.Property1);
+                    list.Add(keys.Property2);
+                    list.Add(keys.Property3);
                 }));
     }
 

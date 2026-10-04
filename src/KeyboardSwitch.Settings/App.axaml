@@ -8,7 +8,7 @@
     x:Class="KeyboardSwitch.Settings.App"
 >
     <Application.DataTemplates>
-        <local:ViewLocator />
+        <local:ViewLocatorDataTemplate />
     </Application.DataTemplates>
 
     <Application.Styles>

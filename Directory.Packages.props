@@ -26,11 +26,10 @@
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.12" />
     <PackageVersion Include="NuGet.Packaging" Version="7.9.0" />
     <PackageVersion Include="Nuke.Common" Version="10.1.0" />
-    <PackageVersion Include="ReactiveUI" Version="23.2.28" />
-    <PackageVersion Include="ReactiveUI.Avalonia" Version="12.0.3" />
-    <PackageVersion Include="ReactiveUI.Avalonia.Microsoft.Extensions.DependencyInjection" Version="12.0.3" />
-    <PackageVersion Include="ReactiveUI.SourceGenerators" Version="3.2.0" />
-    <PackageVersion Include="ReactiveUI.Validation" Version="7.1.0" />
+    <PackageVersion Include="ReactiveUI.Avalonia.Reactive" Version="12.1.6" />
+    <PackageVersion Include="ReactiveUI.Avalonia.Microsoft.Extensions.DependencyInjection.Reactive" Version="12.1.6" />
+    <PackageVersion Include="ReactiveUI.Reactive" Version="26.0.1" />
+    <PackageVersion Include="ReactiveUI.Validation.Reactive" Version="8.1.0" />
     <PackageVersion Include="Serilog" Version="4.4.0" />
     <PackageVersion Include="Serilog.Extensions.Logging" Version="10.0.0" />
     <PackageVersion Include="Serilog.Sinks.Async" Version="2.1.0" />
@@ -39,10 +38,10 @@
     <PackageVersion Include="Serilog.Sinks.File" Version="7.0.0" />
     <PackageVersion Include="SharpHook" Version="8.0.0" />
     <PackageVersion Include="SharpHook.Reactive" Version="8.0.0" />
-    <PackageVersion Include="Splat" Version="19.4.1" />
-    <PackageVersion Include="Splat.Microsoft.Extensions.DependencyInjection" Version="19.4.1" />
-    <PackageVersion Include="Splat.Microsoft.Extensions.Logging" Version="19.4.1" />
-    <PackageVersion Include="Splat.Serilog" Version="19.4.1" />
+    <PackageVersion Include="Splat" Version="21.0.0" />
+    <PackageVersion Include="Splat.Microsoft.Extensions.DependencyInjection" Version="21.0.0" />
+    <PackageVersion Include="Splat.Microsoft.Extensions.Logging" Version="21.0.0" />
+    <PackageVersion Include="Splat.Serilog" Version="21.0.0" />
     <PackageVersion Include="System.ClientModel" Version="1.16.0" />
     <PackageVersion Include="System.CodeDom" Version="10.0.12" />
     <PackageVersion Include="System.Configuration.ConfigurationManager" Version="10.0.12" />
@@ -56,7 +55,7 @@
     <PackageVersion Include="System.Security.Cryptography.Xml" Version="10.0.12" />
     <PackageVersion Include="TestableIO.System.IO.Abstractions.Extensions" Version="22.0.4" />
     <PackageVersion Include="TestableIO.System.IO.Abstractions.Wrappers" Version="22.3.0" />
-    <PackageVersion Include="Tmds.DBus.Protocol" Version="0.94.1" />
+    <PackageVersion Include="Tmds.DBus.Protocol" Version="0.95.1" />
     <PackageVersion Include="Vanara.Core" Version="5.0.7" />
     <PackageVersion Include="Vanara.PInvoke.Kernel32" Version="5.0.7" />
     <PackageVersion Include="Vanara.PInvoke.User32" Version="5.0.7" />

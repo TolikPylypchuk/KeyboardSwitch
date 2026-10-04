@@ -73,23 +73,53 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
 
     private void BindControls(CompositeDisposable disposables)
     {
-        this.BindModifierComboBox(
-            vm => vm.ForwardModifierFirst, v => v.ForwardFirstComboBox.SelectedItem, disposables);
+        this.Bind(
+            this.ViewModel,
+            vm => vm.ForwardModifierFirst,
+            v => v.ForwardFirstComboBox.SelectedItem,
+            this.ConvertModifierToString,
+            this.ConvertStringToModifier)
+            .DisposeWith(disposables);
 
-        this.BindModifierComboBox(
-            vm => vm.ForwardModifierSecond, v => v.ForwardSecondComboBox.SelectedItem, disposables);
+        this.Bind(
+            this.ViewModel,
+            vm => vm.ForwardModifierSecond,
+            v => v.ForwardSecondComboBox.SelectedItem,
+            this.ConvertModifierToString,
+            this.ConvertStringToModifier)
+            .DisposeWith(disposables);
 
-        this.BindModifierComboBox(
-            vm => vm.ForwardModifierThird, v => v.ForwardThirdComboBox.SelectedItem, disposables);
+        this.Bind(
+            this.ViewModel,
+            vm => vm.ForwardModifierThird,
+            v => v.ForwardThirdComboBox.SelectedItem,
+            this.ConvertModifierToString,
+            this.ConvertStringToModifier)
+            .DisposeWith(disposables);
 
-        this.BindModifierComboBox(
-            vm => vm.BackwardModifierFirst, v => v.BackwardFirstComboBox.SelectedItem, disposables);
+        this.Bind(
+            this.ViewModel,
+            vm => vm.BackwardModifierFirst,
+            v => v.BackwardFirstComboBox.SelectedItem,
+            this.ConvertModifierToString,
+            this.ConvertStringToModifier)
+            .DisposeWith(disposables);
 
-        this.BindModifierComboBox(
-            vm => vm.BackwardModifierSecond, v => v.BackwardSecondComboBox.SelectedItem, disposables);
+        this.Bind(
+            this.ViewModel,
+            vm => vm.BackwardModifierSecond,
+            v => v.BackwardSecondComboBox.SelectedItem,
+            this.ConvertModifierToString,
+            this.ConvertStringToModifier)
+            .DisposeWith(disposables);
 
-        this.BindModifierComboBox(
-            vm => vm.BackwardModifierThird, v => v.BackwardThirdComboBox.SelectedItem, disposables);
+        this.Bind(
+            this.ViewModel,
+            vm => vm.BackwardModifierThird,
+            v => v.BackwardThirdComboBox.SelectedItem,
+            this.ConvertModifierToString,
+            this.ConvertStringToModifier)
+            .DisposeWith(disposables);
 
         this.Bind(this.ViewModel, vm => vm.PressCount, v => v.PressCountBox.Value, v => v, v => (int)(v ?? 0M))
             .DisposeWith(disposables);
@@ -112,20 +142,6 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
             v => v.AppThemeVariantComboBox.SelectedItem,
             Convert.AppThemeVariantToString,
             item => Convert.StringToAppThemeVariant(item is string str ? str : String.Empty))
-            .DisposeWith(disposables);
-    }
-
-    private void BindModifierComboBox(
-        Expression<Func<PreferencesViewModel, EventMask>> vmProperty,
-        Expression<Func<PreferencesView, object?>> viewProperty,
-        CompositeDisposable disposables)
-    {
-        this.Bind(
-            this.ViewModel,
-            vmProperty,
-            viewProperty,
-            Convert.ModifierToString,
-            item => Convert.StringToModifier(item is string str ? str : String.Empty))
             .DisposeWith(disposables);
     }
 
@@ -176,6 +192,12 @@ public partial class PreferencesView : ReactiveUserControl<PreferencesViewModel>
             .BindTo(this, v => v.ActionPanel.IsVisible)
             .DisposeWith(disposables);
     }
+
+    private string ConvertModifierToString(EventMask modifier) =>
+        Convert.ModifierToString(modifier);
+
+    private EventMask ConvertStringToModifier(object? item) =>
+        Convert.StringToModifier(item is string str ? str : String.Empty);
 
     private List<EventMask> Modifiers() =>
         [

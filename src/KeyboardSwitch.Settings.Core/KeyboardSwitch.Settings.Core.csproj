@@ -2,12 +2,8 @@
 
   <ItemGroup>
     <PackageReference Include="DynamicData" />
-    <PackageReference Include="ReactiveUI" />
-    <PackageReference Include="ReactiveUI.SourceGenerators">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="ReactiveUI.Validation" />
+    <PackageReference Include="ReactiveUI.Reactive" />
+    <PackageReference Include="ReactiveUI.Validation.Reactive" />
     <PackageReference Include="Splat" />
     <PackageReference Include="System.Interactive" />
     <PackageReference Include="System.Interactive.Async" />

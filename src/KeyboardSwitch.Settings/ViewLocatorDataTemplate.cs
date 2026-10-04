@@ -1,10 +1,8 @@
 using Avalonia.Controls.Templates;
 
-using Splat;
-
 namespace KeyboardSwitch.Settings;
 
-public sealed class ViewLocator : IDataTemplate
+public sealed class ViewLocatorDataTemplate : IDataTemplate
 {
     public bool SupportsRecycling => false;
 
@@ -15,7 +13,7 @@ public sealed class ViewLocator : IDataTemplate
             return null;
         }
 
-        var view = Locator.Current.GetService(typeof(IViewFor<>).MakeGenericType(data.GetType()));
+        var view = ViewLocator.GetCurrent().ResolveView(data, null);
 
         return view is Control control
             ? control

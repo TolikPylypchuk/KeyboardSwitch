@@ -6,9 +6,6 @@ public sealed partial class ServiceViewModel : ReactiveObject
 {
     private readonly IServiceCommunicator serviceCommunicator;
 
-    [ObservableAsProperty]
-    private ServiceStatus serviceStatus;
-
     private bool isShutdownRequested = false;
 
     public ServiceViewModel(IServiceCommunicator? serviceCommunicator = null, IScheduler? scheduler = null)
@@ -19,11 +16,11 @@ public sealed partial class ServiceViewModel : ReactiveObject
 
         var serviceStatus = new Subject<ServiceStatus>();
 
-        this.serviceStatusHelper = serviceStatus.ToProperty(this, vm => vm.ServiceStatus);
+        this._serviceStatusHelper = serviceStatus.ToProperty(this, vm => vm.ServiceStatus);
 
-        var canStartService = serviceStatus.Select(status => status == ServiceStatus.Stopped);
-        var canStopService = serviceStatus.Select(status => status == ServiceStatus.Running);
-        var canKillService = serviceStatus.Select(status => status == ServiceStatus.ShuttingDown);
+        this.CanStartService = serviceStatus.Select(status => status == ServiceStatus.Stopped);
+        this.CanStopService = serviceStatus.Select(status => status == ServiceStatus.Running);
+        this.CanKillService = serviceStatus.Select(status => status == ServiceStatus.ShuttingDown);
 
         Observable.Interval(TimeSpan.FromSeconds(1), scheduler)
             .Select(_ => this.CheckServiceStatus())
@@ -33,6 +30,13 @@ public sealed partial class ServiceViewModel : ReactiveObject
             .DistinctUntilChanged()
             .Subscribe(serviceStatus);
     }
+
+    [ObservableAsProperty]
+    public partial ServiceStatus ServiceStatus { get; }
+
+    private IObservable<bool> CanStartService { get; }
+    private IObservable<bool> CanStopService { get; }
+    private IObservable<bool> CanKillService { get; }
 
     private ServiceStatus CheckServiceStatus()
     {
@@ -48,18 +52,18 @@ public sealed partial class ServiceViewModel : ReactiveObject
             : ServiceStatus.Stopped;
     }
 
-    [ReactiveCommand]
+    [ReactiveCommand(CanExecute = nameof(CanStartService))]
     private void StartService() =>
         this.serviceCommunicator.StartService();
 
-    [ReactiveCommand]
+    [ReactiveCommand(CanExecute = nameof(CanStopService))]
     private void StopService()
     {
         this.serviceCommunicator.StopService(kill: false);
         this.isShutdownRequested = true;
     }
 
-    [ReactiveCommand]
+    [ReactiveCommand(CanExecute = nameof(CanKillService))]
     private void KillService() =>
         this.serviceCommunicator.StopService(kill: true);
 

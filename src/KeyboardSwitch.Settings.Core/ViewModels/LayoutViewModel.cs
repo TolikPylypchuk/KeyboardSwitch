@@ -51,11 +51,11 @@ public sealed partial class LayoutViewModel : ReactiveForm<LayoutModel, LayoutVi
 
     protected override void EnableChangeTracking()
     {
-        this.TrackChanges(vm => vm.LanguageName, vm => vm.LayoutModel.LanguageName);
-        this.TrackChanges(vm => vm.KeyboardName, vm => vm.LayoutModel.KeyboardName);
-        this.TrackChanges(vm => vm.Id, vm => vm.LayoutModel.Id);
-        this.TrackChanges(vm => vm.Index, vm => vm.LayoutModel.Index);
-        this.TrackChanges(vm => vm.Chars, vm => vm.LayoutModel.Chars);
+        this.TrackChanges(this.WhenAnyValue(vm => vm.LanguageName), vm => vm.LayoutModel.LanguageName);
+        this.TrackChanges(this.WhenAnyValue(vm => vm.KeyboardName), vm => vm.LayoutModel.KeyboardName);
+        this.TrackChanges(this.WhenAnyValue(vm => vm.Id), vm => vm.LayoutModel.Id);
+        this.TrackChanges(this.WhenAnyValue(vm => vm.Index), vm => vm.LayoutModel.Index);
+        this.TrackChanges(this.WhenAnyValue(vm => vm.Chars), vm => vm.LayoutModel.Chars);
 
         base.EnableChangeTracking();
     }

@@ -32,10 +32,10 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
     <PackageReference Include="Microsoft.Extensions.Options" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" />
-    <PackageReference Include="ReactiveUI" />
-    <PackageReference Include="ReactiveUI.Avalonia" />
-    <PackageReference Include="ReactiveUI.Avalonia.Microsoft.Extensions.DependencyInjection" />
-    <PackageReference Include="ReactiveUI.Validation" />
+    <PackageReference Include="ReactiveUI.Avalonia.Reactive" />
+    <PackageReference Include="ReactiveUI.Avalonia.Microsoft.Extensions.DependencyInjection.Reactive" />
+    <PackageReference Include="ReactiveUI.Reactive" />
+    <PackageReference Include="ReactiveUI.Validation.Reactive" />
     <PackageReference Include="Serilog.Extensions.Logging" />
     <PackageReference Include="Splat" />
     <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" />

@@ -10,15 +10,6 @@ public sealed partial class CharMappingViewModel : ReactiveForm<CharMappingModel
 
     private readonly ReadOnlyObservableCollection<LayoutViewModel> layouts;
 
-    [ObservableAsProperty]
-    public bool hasNewLayouts;
-
-    [ObservableAsProperty]
-    public bool canRemoveLayouts;
-
-    [ObservableAsProperty]
-    public bool shouldRemoveLayouts;
-
     private readonly IObservable<bool> canAutoConfigure;
 
     public CharMappingViewModel(
@@ -46,13 +37,22 @@ public sealed partial class CharMappingViewModel : ReactiveForm<CharMappingModel
             .ToCollection()
             .Select(layouts => layouts.All(layout => String.IsNullOrEmpty(layout.Chars)));
 
-        this.hasNewLayoutsHelper = this.ConfigureHasNewLayouts();
-        this.canRemoveLayoutsHelper = this.ConfigureCanRemoveLayouts(removeLayoutsEnabled);
-        this.shouldRemoveLayoutsHelper = this.ConfigureShouldRemoveLayouts();
+        this._hasNewLayoutsHelper = this.ConfigureHasNewLayouts();
+        this._canRemoveLayoutsHelper = this.ConfigureCanRemoveLayouts(removeLayoutsEnabled);
+        this._shouldRemoveLayoutsHelper = this.ConfigureShouldRemoveLayouts();
 
         this.CopyProperties();
         this.EnableChangeTracking();
     }
+
+    [ObservableAsProperty]
+    public partial bool HasNewLayouts { get; }
+
+    [ObservableAsProperty]
+    public partial bool CanRemoveLayouts { get; }
+
+    [ObservableAsProperty]
+    public partial bool ShouldRemoveLayouts { get; }
 
     public CharMappingModel CharMappingModel { get; }
 

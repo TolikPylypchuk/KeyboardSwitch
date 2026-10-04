@@ -43,14 +43,8 @@ public abstract partial class ReactiveForm<TModel, TForm> : ReactiveValidationOb
             .Merge(this.SaveCommand.Select(_ => false))
             .Merge(this.CancelCommand.Select(_ => false)));
 
-    protected void TrackChanges<T>(Expression<Func<TForm, T?>> property, Func<TForm, T> itemValue)
-    {
-        string propertyName = property.GetMemberName();
-
-        this.TrackChanges(
-            this.Self.WhenAnyValue(property)
-                .Select(value => !Equals(value, itemValue(this.Self))));
-    }
+    protected void TrackChanges<T>(IObservable<T?> property, Func<TForm, T> itemValue) =>
+        this.TrackChanges(property.Select(value => !Equals(value, itemValue(this.Self))));
 
     protected IObservable<bool> IsCollectionChanged<TOtherForm, TOtherModel>(
         Func<TForm, ReadOnlyObservableCollection<TOtherForm>> property,

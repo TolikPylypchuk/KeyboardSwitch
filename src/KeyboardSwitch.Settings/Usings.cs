@@ -28,9 +28,9 @@ global using KeyboardSwitch.Settings.Properties;
 global using KeyboardSwitch.Settings.State;
 global using KeyboardSwitch.Settings.Views;
 
-global using ReactiveUI;
-global using ReactiveUI.Avalonia;
-global using ReactiveUI.Validation.Extensions;
+global using ReactiveUI.Avalonia.Reactive;
+global using ReactiveUI.Reactive;
+global using ReactiveUI.Validation.Reactive.Extensions;
 
 global using SharpHook.Data;
 

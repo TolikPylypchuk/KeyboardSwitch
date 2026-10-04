@@ -2,7 +2,7 @@
 using KeyboardSwitch.Linux;
 #endif
 
-using ReactiveUI.Avalonia.Splat;
+using ReactiveUI.Avalonia.Reactive.Splat;
 
 using Serilog;
 

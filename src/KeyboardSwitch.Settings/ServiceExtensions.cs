@@ -1,5 +1,3 @@
-using Avalonia.Controls.Templates;
-
 using KeyboardSwitch.Core.Logging;
 
 #if WINDOWS
@@ -41,7 +39,6 @@ public static class ServiceExtensions
                 .Configure<GlobalSettings>(config.GetSection("Settings"))
                 .AddCoreKeyboardSwitchServices()
                 .AddNativeKeyboardSwitchServices(config)
-                .AddViews()
                 .AddConverters()
                 .AddSingleton(Messages.ResourceManager)
                 .AddSingleton<ISuspensionDriver, JsonSuspensionDriver>();
@@ -57,17 +54,6 @@ public static class ServiceExtensions
                 .AddSingleton<ILogManager>(sp =>
                     new FuncLogManager(type => new SerilogFullLogger(logger.ForContext(type))));
         }
-
-        private IServiceCollection AddViews() =>
-            services
-                .AddSingleton<IDataTemplate, ViewLocator>()
-                .AddSingleton<IViewFor<MainViewModel>>(sp => new MainWindow())
-                .AddTransient<IViewFor<AboutViewModel>>(sp => new AboutView())
-                .AddTransient<IViewFor<CharMappingViewModel>>(sp => new CharMappingView())
-                .AddTransient<IViewFor<LayoutViewModel>>(sp => new LayoutView())
-                .AddTransient<IViewFor<MainContentViewModel>>(sp => new MainContentView())
-                .AddTransient<IViewFor<PreferencesViewModel>>(sp => new PreferencesView())
-                .AddTransient<IViewFor<ServiceViewModel>>(sp => new ServiceView());
 
         private IServiceCollection AddConverters() =>
             services

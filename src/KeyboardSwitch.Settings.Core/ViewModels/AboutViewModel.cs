@@ -4,18 +4,18 @@ namespace KeyboardSwitch.Settings.Core.ViewModels;
 
 public sealed partial class AboutViewModel : ReactiveObject
 {
-    [ObservableAsProperty]
-    private Version latestVersion;
-
     public AboutViewModel()
     {
-        this.AppVersion = latestVersion = Assembly.GetExecutingAssembly().GetName().Version!;
+        this.AppVersion = Assembly.GetExecutingAssembly().GetName().Version!;
 
-        this.latestVersionHelper = this.CheckForUpdatesCommand
+        this._latestVersionHelper = this.CheckForUpdatesCommand
             .ToProperty(this, vm => vm.LatestVersion, initialValue: this.AppVersion);
     }
 
     public Version AppVersion { get; }
+
+    [ObservableAsProperty]
+    public partial Version LatestVersion { get; }
 
     [ReactiveCommand]
     private async Task<Version> CheckForUpdates()
