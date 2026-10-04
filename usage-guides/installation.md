@@ -14,11 +14,9 @@ When the settings app starts up you can configure the character mappings (you ca
 
 You can uninstall the app using Windows settings just like you would uninstall any other app.
 
-{% hint style="warning" %}
 The uninstaller will not delete the app's configuration. If you want to delete it, then go to your local app data folder, and delete the _KeyboardSwitch_ folder.
 
 The uninstaller will also not delete the registry entry which says that your app should start when you log in. If you want to keep your registry clean, you have to disable it in the settings app before uninstalling it.
-{% endhint %}
 
 ### Using the Portable Version
 
@@ -74,10 +72,10 @@ The most popular desktop systems (at least GNOME, KDE Plasma, Cinnamon, LXQt, an
 
 Starting with version 4.2, Keyboard Switch uses native clipboard integration on X11 by default. This works well on newer desktop environments but doesn't work well on older versions. If you notice that Keyboard Switch doesn't work well on your system, then you can switch to using xsel instead. xsel must be installed manually though, and the service app must be restarted when this setting is changed. On Wayland, there is no native clipboard integration, the application always uses wl-clipboard.
 
-[Click here](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/105) to see the list of Linux distributions on which the app was tested.
+[Click here](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/129) to see the list of Linux distributions on which the app was tested.
 
 {% hint style="warning" %}
-If your desktop environment is GNOME, then you should restart it before opening Keyboard Switch Settings. If you're not sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu, Debian, Rocky, Fedora and others (but not Linux Mint). If you're using X11, Press <kbd>Alt</kbd>+<kbd>F2</kbd>, then type <kbd>r</kbd> and press <kbd>Enter</kbd> – this will restart GNOME. If you're using Wayland (which is most probably the case on newer versions of GNOME), then you're have to log out and log back in.
+If your desktop environment is GNOME, then you should restart it before opening Keyboard Switch Settings. If you're not sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu, Debian, Rocky, Fedora and others (but not Linux Mint). If you're using X11, Press <kbd>Alt</kbd>+<kbd>F2</kbd>, then type <kbd>r</kbd> and press <kbd>Enter</kbd> – this will restart GNOME. If you're using Wayland (which is most probably the case on newer versions of GNOME), then you'll have to log out and log back in.
 {% endhint %}
 
 #### Using a Deb Package
