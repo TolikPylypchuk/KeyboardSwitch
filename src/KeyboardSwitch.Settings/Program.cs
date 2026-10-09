@@ -42,10 +42,11 @@ public static class Program
         var builder = AppBuilder.Configure<App>().UsePlatformDetect();
 
 #if LINUX
-        if (SessionDetector.IsRunningOnWayland)
-        {
-            builder = builder.UseWayland();
-        }
+        const string appId = "keyboard-switch-settings";
+
+        builder = SessionDetector.IsRunningOnWayland
+            ? builder.UseWayland().With(new WaylandPlatformOptions { AppId = appId })
+            : builder.With(new X11PlatformOptions { WmClass = appId });
 #endif
 
         return builder.LogToTrace()

@@ -4,11 +4,11 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Avalonia" Version="12.1.3" />
-    <PackageVersion Include="Avalonia.Desktop" Version="12.1.3" />
+    <PackageVersion Include="Avalonia" Version="12.1.4" />
+    <PackageVersion Include="Avalonia.Desktop" Version="12.1.4" />
     <PackageVersion Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.3" />
-    <PackageVersion Include="Avalonia.Themes.Simple" Version="12.1.3" />
-    <PackageVersion Include="Avalonia.Wayland" Version="12.1.2" />
+    <PackageVersion Include="Avalonia.Themes.Simple" Version="12.1.4" />
+    <PackageVersion Include="Avalonia.Wayland" Version="12.1.4" />
     <PackageVersion Include="coverlet.MTP" Version="10.1.0" />
     <PackageVersion Include="Devolutions.AvaloniaTheme.MacOS" Version="2026.9.23" />
     <PackageVersion Include="DynamicData" Version="9.4.33" />
@@ -24,7 +24,7 @@
     <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="10.0.12" />
     <PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.12" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.12" />
-    <PackageVersion Include="Microsoft.Windows.CsWin32" Version="0.3.346" />
+    <PackageVersion Include="Microsoft.Windows.CsWin32" Version="0.3.360" />
     <PackageVersion Include="NuGet.Packaging" Version="7.9.0" />
     <PackageVersion Include="Nuke.Common" Version="10.1.0" />
     <PackageVersion Include="ReactiveUI.Avalonia.Reactive" Version="12.1.6" />
@@ -68,7 +68,7 @@
     <PackageVersion Include="NSubstitute.Analyzers.CSharp" Version="1.0.17" />
     <PackageVersion Include="SharpHook.Testing" Version="8.0.0" />
     <PackageVersion Include="TestableIO.System.IO.Abstractions.TestingHelpers" Version="22.3.0" />
-    <PackageVersion Include="xunit.v3.mtp-v2" Version="4.0.1" />
+    <PackageVersion Include="xunit.v3.mtp-v2" Version="4.0.2" />
   </ItemGroup>
   <ItemGroup>
     <PackageVersion Include="WixToolset.UI.wixext" Version="7.0.0" />
