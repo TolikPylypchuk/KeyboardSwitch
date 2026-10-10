@@ -72,6 +72,8 @@ The most popular desktop systems (at least GNOME, KDE Plasma, Cinnamon, LXQt, an
 
 Starting with version 4.2, Keyboard Switch uses native clipboard integration on X11 by default. This works well on newer desktop environments but doesn't work well on older versions. If you notice that Keyboard Switch doesn't work well on your system, then you can switch to using xsel instead. xsel must be installed manually though, and the service app must be restarted when this setting is changed. On Wayland, there is no native clipboard integration, the application always uses wl-clipboard.
 
+Keyboard Switch requires access to the input system of Linux. To avoid running it as `root` or giving this access to all applications of the current user, Keyboard Switch creates a separate system group - `keyboard-switch` - during installation. It also installs a udev rule to give access to the input system to this group. The Keyboard Switch executable runs under this group to have this access.
+
 [Click here](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/129) to see the list of Linux distributions on which the app was tested.
 
 {% hint style="warning" %}
@@ -114,7 +116,7 @@ Keyboard Switch is also available as a _tar.gz_ file. You can get it from the [r
 
 _install.sh_ does the following:
 
-* creates the `keyboard-switch` system group and grants it access to the input system if the group doesn't exist;
+* creates the `keyboard-switch` system group and grants it access to the input system via a udev rule if the group doesn't exist;
 * sets the Keyboard Switch executable to belong to that group so that it has access the input system;
 * adds the settings app to the list of installed apps.
 
