@@ -14,9 +14,9 @@ Ideally you wouldn't have to configure the app at all – it would just know how
 
 Firstly, pressing keys and entering characters are absolutely not the same thing. Many keys don't have corresponding characters at all, like <kbd>Ctrl</kbd> or <kbd>Page Up</kbd>. The same key press can produce different characters based on the state of other keys. For example, the <kbd>A</kbd> key usually produces **a**, but when <kbd>Shift</kbd> is down, the key produces **A**. And then there are dead keys – key combinations that produce one character by pressing two (or even three) keys. For example, in the US International layout, pressing <kbd>'</kbd> and then <kbd>A</kbd> will produce **á**.
 
-Secondly, it's impossible to know which keys have been pressed just by looking at text. This is because the same character can be produced using different keys or key combinations (or it can be pasted, so the keyboard wouldn't be used at all).
+Secondly, it's impossible to know which keys have been pressed just by looking at text. This is because the same character can be produced using different keys or key combinations (or it can be pasted, so the keyboard wouldn't have been used at all).
 
-So, in order to just know how to transform the text you've mistyped, the app would have to keep track of the keys you've pressed and then infer which of those pressed keys actually played a role in producing the mistyped text and then ask the OS which characters would be produced with the same key sequence. You can see how that's unreasonable. First of all, the app would have to track _all_ the keys you press, and that would be quite sketchy. Would you trust an app which logs everything you type? I certainly wouldn't. And ethics aside, there still are technical issues. How many keys should the app track? What happens if the user pastes part of the text instead of typing it? Etc., etc.
+So, in order to just know how to transform the text you've mistyped, the app would have to keep track of the keys you've pressed, and then infer which of those pressed keys actually played a role in producing the mistyped text, and then ask the OS which characters would be produced with the same key sequence. You can see how that's unreasonable. First of all, the app would have to track _all_ the keys you press, and that would be quite sketchy. Would you trust an app which logs everything you type? And ethics aside, there still are technical issues. How many keys should the app track? What happens if the user pastes part of the text instead of typing it? Etc., etc.
 
 And that's why the app uses a much simpler solution – it lets you, the user, figure out how the text should be transformed. The app can auto-configure the mappings using a simple method, but it's still up to you to check whether it's all correct.
 
@@ -38,7 +38,7 @@ This app is "Western-oriented". I developed it specifically to handle switching 
 
 ## Auto-Configuration
 
-Even though you have to do it only once, configuring character mappings is still cumbersome and error prone. That's why the app includes the auto-configuration feature. It's available only when all text fields are empty. The auto-configuration is quite simple (naïve even), and it shouldn't be 100% trusted, so you still have to check its output and fix mistakes or add other characters manually. But usually auto-configuration should be good enough.
+Even though you have to do it only once, configuring character mappings is still cumbersome and error prone. That's why the app includes the auto-configuration feature. The auto-configuration is quite simple (naïve even), and it shouldn't be 100% trusted, so you should still check its output and fix mistakes or add other characters manually. But usually auto-configuration should be good enough.
 
 Auto-configuration is available only when the character mapping configuration is completely empty.
 
@@ -65,7 +65,7 @@ Not all of those key combinations actually produce characters for all layouts. S
 
 ### Linux
 
-Unlike Windows and macOS, there's actually a way to ask the OS (though X11) which characters are produced by all possible key presses. What the app will do is ask about characters produced by all key codes on all shift levels (there are 64 of them!). As with Windows, it will keep only those combinations which are defined for all layouts.
+Unlike Windows and macOS, there's actually a way to ask the OS (though libxkbcommon) which characters are produced by all possible key presses. What the app will do is ask about characters produced by all key codes on all shift levels (there are 64 of them!). As with Windows and macOS, it will keep only those combinations which are defined for all layouts.
 
 ## Limitations
 
