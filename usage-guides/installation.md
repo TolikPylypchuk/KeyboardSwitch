@@ -77,14 +77,14 @@ Whatever installation method you choose, it will do the following apart from add
 * create the `keyboard-switch` system group and grant it access to the input system via a udev rule if the group doesn't exist;
 * set the Keyboard Switch executable to belong to that group so that it has access the input system;
 * add the settings app to the list of installed apps;
-* if the current desktop environment is GNOME, add a GNOME extension to manage keyboard layouts.
+* if the current desktop environment is GNOME, add a GNOME Shell extension to manage keyboard layouts.
 
 [Click here](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/129) to see the list of Linux distributions on which the app was tested.
 
 {% hint style="warning" %}
 If your desktop environment is GNOME, then you should restart it before opening Keyboard Switch Settings. If you're not sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu, Debian, Rocky, Fedora and others (but not Linux Mint). If you're using X11, Press <kbd>Alt</kbd>+<kbd>F2</kbd>, then type <kbd>r</kbd> and press <kbd>Enter</kbd> – this will restart GNOME. If you're using Wayland (which is most probably the case on newer versions of GNOME), then you'll have to log out and log back in.
 
-This is needed because on GNOME, Keyboard Switch also installs a GNOME extension through which it manages keyboard layouts.
+This is needed because on GNOME, Keyboard Switch also installs a GNOME Shell extension through which it manages keyboard layouts.
 {% endhint %}
 
 #### Using a Deb Package
@@ -178,7 +178,7 @@ cd /opt/keyboard-switch
 
 For the deb and RPM packages, it's simple – just uninstall the package. For the _tar.gz_ file, run the included _uninstall.sh_ script, and delete the app's directory.
 
-When uninstalling the application, it will be removed from the list of the installed apps. The GNOME extension will be removed as well if it was installed.
+When uninstalling the application, it will be removed from the list of the installed apps. The GNOME Shell extension will be removed as well if it was installed.
 
 If you want to delete the app's configuration as well, then there are several ways to do that:
 
