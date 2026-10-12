@@ -98,7 +98,7 @@ The deb and RPM installers for Linux are also created using the default CLI tool
 
 ## Building from Source
 
-You can build Keyboard Switch from source if you like. All projects require .NET 8.
+You can build Keyboard Switch from source if you like. All projects require .NET 9.
 
 ### The Projects
 
