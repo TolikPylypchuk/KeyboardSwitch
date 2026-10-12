@@ -17,4 +17,6 @@ At the bottom there's a strip with the status of the Keyboard Switch service. If
 If you change anything in the settings app, you can save it or cancel it. When you save it, the settings app sends a notification to the service app (if it's running) about changes in configuration, so you don't have to restart the service after saving.
 {% endhint %}
 
+On Linux, the settings app will also warn you if you haven't reloaded GNOME after installing Keyboard Switch. On X11, this means that it won't be able to switch the current layout. On Wayland, it won't work at all until you reload GNOME. After reloading GNOME, you will need to open the settings app again so that it can do initial setup.
+
 The following articles describe each tab of the settings app in more detail.

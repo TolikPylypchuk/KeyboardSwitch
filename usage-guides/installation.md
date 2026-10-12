@@ -72,12 +72,19 @@ The most popular desktop systems (at least GNOME, KDE Plasma, Cinnamon, LXQt, an
 
 Starting with version 4.2, Keyboard Switch uses native clipboard integration on X11 by default. This works well on newer desktop environments but doesn't work well on older versions. If you notice that Keyboard Switch doesn't work well on your system, then you can switch to using xsel instead. xsel must be installed manually though, and the service app must be restarted when this setting is changed. On Wayland, there is no native clipboard integration, the application always uses wl-clipboard.
 
-Keyboard Switch requires access to the input system of Linux. To avoid running it as `root` or giving this access to all applications of the current user, Keyboard Switch creates a separate system group - `keyboard-switch` - during installation. It also installs a udev rule to give access to the input system to this group. The Keyboard Switch executable runs under this group to have this access.
+Whatever installation method you choose, it will do the following apart from adding the application ifself:
+
+* create the `keyboard-switch` system group and grant it access to the input system via a udev rule if the group doesn't exist;
+* set the Keyboard Switch executable to belong to that group so that it has access the input system;
+* add the settings app to the list of installed apps;
+* if the current desktop environment is GNOME, add a GNOME extension to manage keyboard layouts.
 
 [Click here](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/129) to see the list of Linux distributions on which the app was tested.
 
 {% hint style="warning" %}
 If your desktop environment is GNOME, then you should restart it before opening Keyboard Switch Settings. If you're not sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu, Debian, Rocky, Fedora and others (but not Linux Mint). If you're using X11, Press <kbd>Alt</kbd>+<kbd>F2</kbd>, then type <kbd>r</kbd> and press <kbd>Enter</kbd> – this will restart GNOME. If you're using Wayland (which is most probably the case on newer versions of GNOME), then you'll have to log out and log back in.
+
+This is needed because on GNOME, Keyboard Switch also installs a GNOME extension through which it manages keyboard layouts.
 {% endhint %}
 
 #### Using a Deb Package
@@ -114,15 +121,7 @@ Both the _x86\_64_ and _aarch64_ versions are available.
 
 Keyboard Switch is also available as a _tar.gz_ file. You can get it from the [releases page on GitHub](https://github.com/TolikPylypchuk/KeyboardSwitch/releases). You can then extract it to anywhere you like (e.g., into the _/opt_ directory). The deployed app includes two scripts – _install.sh_ and _uninstall.sh_.
 
-_install.sh_ does the following:
-
-* creates the `keyboard-switch` system group and grants it access to the input system via a udev rule if the group doesn't exist;
-* sets the Keyboard Switch executable to belong to that group so that it has access the input system;
-* adds the settings app to the list of installed apps.
-
-The first two items require a one-time root access. Do not run _install.sh_ with `sudo` - it will run the needed commands with `sudo` itself which will only require that you enter a password.
-
-_uninstall.sh_ removes the app from the list of installed apps.
+Some commands in _install.sh_ require a one-time root access. Do not run _install.sh_ with `sudo` - it will run the needed commands with `sudo` itself which will only require that you enter a password.
 
 Apart from the one-time setup of the input system access for Keyboard Switch, these scripts make changes only for the current user.
 
@@ -178,6 +177,8 @@ cd /opt/keyboard-switch
 ### Uninstalling the App
 
 For the deb and RPM packages, it's simple – just uninstall the package. For the _tar.gz_ file, run the included _uninstall.sh_ script, and delete the app's directory.
+
+When uninstalling the application, it will be removed from the list of the installed apps. The GNOME extension will be removed as well if it was installed.
 
 If you want to delete the app's configuration as well, then there are several ways to do that:
 
