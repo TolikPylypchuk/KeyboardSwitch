@@ -46,7 +46,7 @@ public static class ServiceExtensions
 
         private IServiceCollection AddLogging(IConfiguration config)
         {
-            var logger = SerilogLoggerFactory.CreateLogger(config, addLibUioHookLogging: false);
+            var logger = SerilogLoggerFactory.CreateLogger(config);
             Log.Logger = logger;
 
             return services

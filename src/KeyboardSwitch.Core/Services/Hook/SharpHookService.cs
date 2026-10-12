@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Reactive.Disposables;
 using System.Reactive.Threading.Tasks;
 
@@ -287,9 +288,11 @@ internal sealed partial class SharpHookService : DisposableService, IKeyboardHoo
     [LoggerMessage(LogLevel.Debug, "Destroying the global hook")]
     private partial void LogDestroyingGlobalHook();
 
+    [Conditional("DEBUG")]
     [LoggerMessage(LogLevel.Debug, "Received key down: {KeyCode}")]
     private partial void LogReceivedKeyDown(KeyCode keyCode);
 
+    [Conditional("DEBUG")]
     [LoggerMessage(LogLevel.Debug, "Received key up: {KeyCode}")]
     private partial void LogReceivedKeyUp(KeyCode keyCode);
 
