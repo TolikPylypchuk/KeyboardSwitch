@@ -1,6 +1,6 @@
 # Technical Stuff
 
-Keyboard Switch is written using [C#](https://github.com/dotnet/csharplang) and [.NET 9](https://dotnet.microsoft.com/en-us/download/dotnet/8.0). Following is the list of technologies used in this app and some other technical aspects.
+Keyboard Switch is written using [C#](https://github.com/dotnet/csharplang) and [.NET 9](https://dotnet.microsoft.com/en-us/download/dotnet/9.0). Following is the list of technologies used in this app and some other technical aspects.
 
 ## UI
 
