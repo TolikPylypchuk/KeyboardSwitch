@@ -82,7 +82,7 @@ Whatever installation method you choose, it will do the following apart from add
 [Click here](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/129) to see the list of Linux distributions on which the app was tested.
 
 {% hint style="warning" %}
-If your desktop environment is GNOME, then you should restart it before opening Keyboard Switch Settings. If you're not sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu, Debian, Rocky, Fedora and others (but not Linux Mint). If you're using X11, Press <kbd>Alt</kbd>+<kbd>F2</kbd>, then type <kbd>r</kbd> and press <kbd>Enter</kbd> – this will restart GNOME. If you're using Wayland (which is most probably the case on newer versions of GNOME), then you'll have to log out and log back in.
+If your desktop environment is GNOME, then you should restart it before opening Keyboard Switch Settings. If you're not sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu, Debian, Rocky, Fedora and others (but not Linux Mint). If you're using X11, press <kbd>Alt</kbd>+<kbd>F2</kbd>, then type <kbd>r</kbd> and press <kbd>Enter</kbd> – this will restart GNOME. If you're using Wayland (which is most probably the case on newer versions of GNOME), then you'll have to log out and log back in.
 
 This is needed because on GNOME, Keyboard Switch also installs a GNOME Shell extension through which it manages keyboard layouts.
 {% endhint %}

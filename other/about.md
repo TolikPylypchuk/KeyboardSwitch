@@ -1,12 +1,20 @@
 # About
 
-Keyboard Switch. Version 4.3.1. Created by [Tolik Pylypchuk](https://github.com/TolikPylypchuk).
+Keyboard Switch. Version 4.4.0. Created by [Tolik Pylypchuk](https://github.com/TolikPylypchuk).
 
 ## Acknowledgements
 
 The UI for the settings app was created using [Avalonia](https://avaloniaui.net) with [ReactiveUI](https://www.reactiveui.net), [FluentAvalonia](https://github.com/amwx/FluentAvalonia), and the [Devolutions macOS theme](https://github.com/Devolutions/avalonia-extensions). The global keyboard hook is implemented using [libuiohook](https://github.com/kwhat/libuiohook). Windows installer created with [WiX Toolset](https://wixtoolset.org). Docs are built using [GitBook](https://www.gitbook.com). Icon made by [Smashicons](https://smashicons.com) from [www.flaticon.com](https://www.flaticon.com).
 
 ## Changelog
+
+### v4.4.0 (TBD)
+
+* Wayland support was added on Linux, but only on GNOME and KDE Plasma
+* The app now marks the text it puts into the clipboard as hidden so that it's not shown in clipboard managers
+* The app now respects the value of `XDG_CONFIG_HOME` on Linux and places its config in _$XDG\_CONFIG\_HOME/keyboard-switch_ instead of _\~/.config/keyboard-switch_ if this environment variable is set
+* The GNOME Shell extension is now installed during installation instead of when opening the settings app for the first time, so GNOME should be restarted right after installation instead of after opening the settings app
+* The application has been upgraded to .NET 10 and Avalonia 12
 
 ### [v4.3.1](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.3.1) (July 20, 2025)
 
@@ -19,6 +27,7 @@ The UI for the settings app was created using [Avalonia](https://avaloniaui.net)
 * The preferences tab is now the default tab in the settings app
 * The application now works correctly when multiple users are logged in at the same time
 * The application doesn't interfere with Alt codes on Windows anymore
+* The application has been upgraded to .NET 9
 
 ### [v4.2.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.2.0) (August 14, 2024)
 
