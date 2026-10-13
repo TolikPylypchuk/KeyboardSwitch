@@ -1,9 +1,19 @@
 # Changelog
 
+## v4.4.0 (TBD)
+
+- Wayland support was added on Linux, but only on GNOME and KDE Plasma
+- The app now marks the text it puts into the clipboard as hidden so that it's not shown in clipboard managers
+- The app now respects the value of `XDG_CONFIG_HOME` on Linux and places its config in
+  _$XDG_CONFIG_HOME/keyboard-switch_ instead of ~/.config/keyboard-switch if this environment variable is set
+- The GNOME Shell extension is now installed during installation instead of when opening the settings app for the first
+  time, so GNOME should be restarted right after installation instead of after opening the settings app
+- The application has been upgraded to .NET 10 and Avalonia 12
+
 ## [v4.3.1](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.3.1) (July 20, 2025)
 
 - When Keyboard Switch is running on Windows, it doesn't cause some editors to insert random characters when
-<kbd>Alt</kbd>+<kbd>Arrow</kbd> keys are pressed anymore
+  <kbd>Alt</kbd>+<kbd>Arrow</kbd> keys are pressed anymore
 
 ## [v4.3.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.3.0) (June 30, 2025)
 
@@ -19,9 +29,9 @@
 - The converter has been removed
 - A single modifier key can now be configured as the magic key for Keyboard Switch
 - The app now integrates with the clipboard directly on Linux, without xsel, but this may not work well on older desktop
-environments, so integration through xsel is still possible
+  environments, so integration through xsel is still possible
 - The internal format of the settings was changed, so when updating to version 4.2 from older versions, the settings
-will be reverted to the defaults – you should reconfigure the app if you had custom configuration before
+  will be reverted to the defaults – you should reconfigure the app if you had custom configuration before
 - Windows installer doesn't delete all users' configurations when uninstalling the app anymore
 - Purging configuration is now available on Linux for deb packages and the _tar.gz_ file
 - The settings app now does auto-configuration by itself when being opened for the first time
@@ -36,7 +46,7 @@ will be reverted to the defaults – you should reconfigure the app if you had c
 - The app now works on macOS
 - The app now supports Arm64 in addition to x64 (but the support is experimental for Windows and Linux)
 - The app now switches layouts using native methods on Linux, hence layout settings are not needed anymore
-- On Windows switching backward works correctly when there are more than two layouts
+- On Windows, switching backward works correctly when there are more than two layouts
 - The settings app will configure the service app to run at login when opened for the first time, instead of installers
 - Windows installer can delete all users' configurations when uninstalling the app
 
@@ -58,7 +68,7 @@ foreseeable future.
 ## [v3.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v3.0) (August 4, 2020)
 
 - A completely rewritten app based on .NET Core and working as a truly UI-less app instead of an app with a hidden
-window
+  window
 - The settings are now a separate app written with Avalonia instead of WPF
 - Tray icon was removed
 - Added the ability to switch between multiple layouts of the same language (e.g. QWERTY and Dvorak for English)

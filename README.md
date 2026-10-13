@@ -63,22 +63,20 @@ To uninstall Keyboard Switch you should run an uninstaller package. You can get 
 The app is available as a deb package (for Debian-based distributions, such as Ubuntu, Mint etc.), an RPM package (for
 RHEL-based distributions, like Rocky Linux or Fedora, as well as SUSE), and a simple _tar.gz_ file.
 
-Note that Keyboard Switch only works on X11 – it won't work on Wayland (even with XWayland).
+Keyboard Switch works on X11 and Wayland, though the latter is supported only on GNOME and KDE Plasma.
 
 If you use the deb or RPM package, then simply install it either by double-clicking on it, or through the terminal. If
 you use the _tar.gz_ file, then the set-up is not quite as quick, so you can read about it in
 [the installation page](https://docs.keyboardswitch.tolik.io/usage-guides/installation#linux).
 
-Bear in mind that the RPM package may need
-[additional setup](https://docs.keyboardswitch.tolik.io/usage-guides/installation#linux).
+If your desktop environment is GNOME then you should restart it right after installing Keyboard Switch. If you're not
+sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu, Debian,
+Rocky Linux, Fedora and others (but not Linux Mint). If you're using X11, press <kbd>Alt</kbd>+<kbd>F2</kbd>, then type
+<kbd>r</kbd> and press <kbd>Enter</kbd> – this will restart GNOME. If you're using Wayland (which is most probably the
+case on newer versions of GNOME), then you'll have to log out and log back in.
 
 After installing the app, open Keyboard Switch Settings – it should appear in the list of your apps (if your desktop
 environment groups your apps, then it will most probably appear under the _Utilities_ or _Accessories_ group).
-
-If your desktop environment is GNOME then you should restart it right after opening Keyboard Switch Settings. If you're
-not sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu,
-Debian, Rocky Linux, Fedora and others (but not Linux Mint). Press <kbd>Alt</kbd>+<kbd>F2</kbd>, then type <kbd>r</kbd>
-and press <kbd>Enter</kbd>. This will restart GNOME.
 
 In the opened settings app, press _Start_.
 
@@ -115,8 +113,8 @@ be restored.
 
 ## Supported Platforms
 
-Keyboard Switch works on Windows 10 and 11, macOS 10.15 or later, and Linux via X11. Wayland support may come in a
-future version, but there are [several prerequisites](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/54).
+Keyboard Switch works on Windows 11, supported versions of macOS, and Linux (Wayland is supported only on GNOME and KDE
+Plasma).
 
 The x64 and Arm64 architectures are both supported.
 
@@ -127,7 +125,7 @@ If you want to know more about the Keyboard Switch app and how to use it, check 
 
 ## Changelog
 
-See the [changlog file](https://github.com/TolikPylypchuk/KeyboardSwitch/blob/main/CHANGELOG.md) for the detailed list
+See the [changelog file](https://github.com/TolikPylypchuk/KeyboardSwitch/blob/main/CHANGELOG.md) for the detailed list
 of changes across versions.
 
 ## Icon
