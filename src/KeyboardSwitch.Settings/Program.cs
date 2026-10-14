@@ -6,7 +6,9 @@ using ReactiveUI.Avalonia.Reactive.Splat;
 
 using Serilog;
 
+#if LINUX
 using SharpHook.Providers;
+#endif
 
 using Constants = Serilog.Core.Constants;
 
@@ -21,7 +23,9 @@ public static class Program
         {
             Directory.SetCurrentDirectory(Path.GetDirectoryName(AppContext.BaseDirectory) ?? String.Empty);
 
+#if LINUX
             UioHookProvider.Instance.SetLinuxMode(LinuxMode.AutoLowLevel);
+#endif
 
             return BuildAvaloniaApp()
                 .StartWithClassicDesktopLifetime(args);

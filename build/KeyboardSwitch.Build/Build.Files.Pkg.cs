@@ -80,9 +80,6 @@ public partial class Build
     private static AbsolutePath KeyboardSwitchSettingsAppLibSkiaSharpFile =>
         KeyboardSwitchSettingsAppMacOSDirectory / LibSkiaSharp;
 
-    private static AbsolutePath KeyboardSwitchSettingsAppLibUioHookFile =>
-        KeyboardSwitchSettingsAppMacOSDirectory / LibUioHook;
-
     private static AbsolutePath KeyboardSwitchPkgFile =>
         ArtifactsDirectory / $"{KeyboardSwitch}.pkg";
 
