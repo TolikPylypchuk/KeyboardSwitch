@@ -2,7 +2,7 @@
 
 In order for the Keyboard Switch service to know how to map characters, ideally, you have to configure the character mappings yourself. The app reads the list of installed layouts in the system, so it knows which layouts you use and in what order. What it doesn't (and can't) know is the physical layout of your keyboard, so it doesn't know what happens if you press certain keys on your keyboard. Although it can auto-configure the mappings, and it will usually work well, there may be cases when it doesn't work well.
 
-<figure><picture><source srcset="../.gitbook/assets/v4.3-screen-char-mappings-dark.png" media="(prefers-color-scheme: dark)"><img src="../.gitbook/assets/v4.3-screen-char-mappings.png" alt="The character mappings tab"></picture><figcaption><p>The character mappings tab</p></figcaption></figure>
+<figure><picture><source srcset="../.gitbook/assets/v4.4-screen-char-mappings-dark.png" media="(prefers-color-scheme: dark)"><img src="../.gitbook/assets/v4.4-screen-char-mappings.png" alt="The character mappings tab"></picture><figcaption><p>The character mappings tab</p></figcaption></figure>
 
 ## Text vs Keyboard
 
@@ -24,7 +24,7 @@ And that's why the app uses a much simpler solution – it lets you, the user, f
 
 Here's how the tab looks if the configuration is empty:
 
-<figure><picture><source srcset="../.gitbook/assets/v4.3-screen-char-mappings-empty-dark.png" media="(prefers-color-scheme: dark)"><img src="../.gitbook/assets/v4.3-screen-char-mappings-empty.png" alt="The character mapping tab when the configuration is empty"></picture><figcaption><p>The character mappings tab when the configuration is empty</p></figcaption></figure>
+<figure><picture><source srcset="../.gitbook/assets/v4.4-screen-char-mappings-empty-dark.png" media="(prefers-color-scheme: dark)"><img src="../.gitbook/assets/v4.4-screen-char-mappings-empty.png" alt="The character mapping tab when the configuration is empty"></picture><figcaption><p>The character mappings tab when the configuration is empty</p></figcaption></figure>
 
 You have to enter every character you can think of (which can be entered using your keyboard) into the text fields which correspond to layouts. For example, press the <kbd>Q</kbd> key, then press the <kbd>W</kbd> key, and so on. Then press <kbd>Shift</kbd>+<kbd>Q</kbd>, then <kbd>Shift</kbd>+<kbd>W</kbd> etc. to add uppercase letters.
 
@@ -48,7 +48,7 @@ The character mappings are auto-configured automatically when the settings app i
 
 Here's how the tab looks after running auto-configuration:
 
-<figure><picture><source srcset="../.gitbook/assets/v4.3-screen-auto-configuration-dark.png" media="(prefers-color-scheme: dark)"><img src="../.gitbook/assets/v4.3-screen-auto-configuration.png" alt="The character mapping tab after auto-configuration"></picture><figcaption><p>The character mappings tab after auto-configuration</p></figcaption></figure>
+<figure><picture><source srcset="../.gitbook/assets/v4.4-screen-auto-configuration-dark.png" media="(prefers-color-scheme: dark)"><img src="../.gitbook/assets/v4.4-screen-auto-configuration.png" alt="The character mapping tab after auto-configuration"></picture><figcaption><p>The character mappings tab after auto-configuration</p></figcaption></figure>
 
 ### Windows and macOS
 

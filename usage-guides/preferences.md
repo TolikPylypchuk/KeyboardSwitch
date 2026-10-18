@@ -2,7 +2,7 @@
 
 The Preferences tab contains other settings which control the behavior of the Keyboard Switch service. Here's how it looks:
 
-<figure><picture><source srcset="../.gitbook/assets/v4.3-screen-preferences-dark.png" media="(prefers-color-scheme: dark)"><img src="../.gitbook/assets/v4.3-screen-preferences.png" alt="The preferences tab"></picture><figcaption><p>The preferences tab</p></figcaption></figure>
+<figure><picture><source srcset="../.gitbook/assets/v4.4-screen-preferences-dark.png" media="(prefers-color-scheme: dark)"><img src="../.gitbook/assets/v4.4-screen-preferences.png" alt="The preferences tab"></picture><figcaption><p>The preferences tab</p></figcaption></figure>
 
 Following is the discussion on the many fields that are in this tab.
 
