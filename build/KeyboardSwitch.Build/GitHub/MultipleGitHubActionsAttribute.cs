@@ -16,6 +16,9 @@ namespace KeyboardSwitch.Build.GitHub;
 public sealed class MultipleGitHubActionsAttribute(string fileName, string name, Type targetType)
     : ConfigurationAttributeBase
 {
+    private const string SignPathApiToken = nameof(SignPathApiToken);
+    private const string SignPathOutputDirectory = "signed";
+
     private readonly string name = name;
     private readonly string fileName = fileName.Replace(oldChar: ' ', newChar: '_');
 
@@ -167,23 +170,54 @@ public sealed class MultipleGitHubActionsAttribute(string fileName, string name,
 
             foreach (var artifact in artifacts)
             {
-                var artifactName = artifact.ToString()
+                var artifactSimpleName = artifact.ToString()
                     .TrimStart(artifact.Parent.ToString())
                     .TrimStart('/', '\\')
                     .TrimStart("*.");
 
+                var artifactName = action.ArtifactSuffix.IsNullOrEmpty()
+                    ? artifactSimpleName
+                    : $"{artifactSimpleName}-{action.ArtifactSuffix}";
+
+                var artifactId = action.AddSignPathStep ? artifactSimpleName : String.Empty;
+
                 yield return new GitHubActionsArtifact7Step
                 {
-                    SimpleName = artifactName,
-                    Name = action.ArtifactSuffix.IsNullOrEmpty()
-                        ? artifactName
-                        : $"{artifactName}-{action.ArtifactSuffix}",
+                    SimpleName = artifactSimpleName,
+                    Name = artifactName,
+                    Id = artifactId,
                     Path = this.Build.RootDirectory.GetUnixRelativePathTo(artifact),
                     Condition = action.PublishCondition
                 };
+
+                if (action.AddSignPathStep)
+                {
+                    yield return new GitHubActionsSignPathStep
+                    {
+                        SignPathApiToken = this.GetSecretValue(SignPathApiToken),
+                        SignPathOrganizationId = action.SignPathOrganizationId,
+                        SignPathProjectSlug = action.SignPathProjectSlug,
+                        SignPathSigningPolicySlug = action.SignPathSigningPolicySlug,
+                        SignPathArtifactConfigurationSlug = action.SignPathArtifactConfigurationSlug,
+                        GitHubArtifactId = artifactId,
+                        OutputDirectory = SignPathOutputDirectory,
+                        Condition = action.PublishCondition
+                    };
+
+                    yield return new GitHubActionsArtifact7Step
+                    {
+                        SimpleName = $"signed {artifactSimpleName}",
+                        Name = $"{artifactName}-signed",
+                        Path = $"{SignPathOutputDirectory}/*.*",
+                        Condition = action.PublishCondition
+                    };
+                }
             }
         }
     }
+
+    private string GetSecretValue(string secret) =>
+        $"${{{{ secrets.{secret.SplitCamelHumpsWithKnownWords().JoinUnderscore().ToUpperInvariant()} }}}}";
 
     private IEnumerable<(string Key, string Value)> GetImports(GitHubActionAttribute action)
     {
@@ -192,9 +226,6 @@ public sealed class MultipleGitHubActionsAttribute(string fileName, string name,
             yield return (input, $"${{{{ github.event.inputs.{input} }}}}");
         }
 
-        static string GetSecretValue(string secret) =>
-            $"${{{{ secrets.{secret.SplitCamelHumpsWithKnownWords().JoinUnderscore().ToUpperInvariant()} }}}}";
-
         foreach (var parameter in this.ToTuples(action.Parameters))
         {
             yield return parameter;
@@ -202,12 +233,12 @@ public sealed class MultipleGitHubActionsAttribute(string fileName, string name,
 
         foreach (var secret in action.ImportSecrets)
         {
-            yield return (secret, GetSecretValue(secret));
+            yield return (secret, this.GetSecretValue(secret));
         }
 
         if (action.EnableGitHubToken)
         {
-            yield return ("GITHUB_TOKEN", GetSecretValue("GITHUB_TOKEN"));
+            yield return ("GITHUB_TOKEN", this.GetSecretValue("GITHUB_TOKEN"));
         }
     }
 

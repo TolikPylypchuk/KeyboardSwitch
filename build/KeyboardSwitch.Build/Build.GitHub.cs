@@ -5,6 +5,7 @@ using Nuke.Common.CI.GitHubActions;
     "Build Keyboard Switch",
     typeof(Build),
     OnPushBranches = ["main"],
+    OnPushTags = ["v*.*.*"],
     OnWorkflowDispatch = true)]
 
 [GitHubAction(
@@ -25,6 +26,12 @@ using Nuke.Common.CI.GitHubActions;
     Parameters = [nameof(NukePlatform), PlatformValue, nameof(OutputFileSuffix), WindowsOutputFileSuffix],
     Matrix = [MatrixPlatform, $"[ {Platform.X64Value}, {Platform.Arm64Value} ]"],
     ArtifactSuffix = PlatformValue,
+    AddSignPathStep = true,
+    SignPathOrganizationId = "fe11da6d-c162-47e2-ba61-7ccf7fe89e06",
+    SignPathProjectSlug = nameof(KeyboardSwitch),
+    SignPathSigningPolicySlugTesting = "test-signing",
+    SignPathSigningPolicySlugRelease = "release-signing",
+    SignPathArtifactConfigurationSlug = "zip-archive",
     TimeoutMinutes = GitHubActionsTimeout)]
 
 [GitHubAction(

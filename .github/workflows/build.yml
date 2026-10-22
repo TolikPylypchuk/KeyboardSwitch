@@ -20,6 +20,8 @@ on:
   push:
     branches:
       - main
+    tags:
+      - 'v*.*.*'
   workflow_dispatch:
 
 jobs:
@@ -81,10 +83,27 @@ jobs:
           NukePlatform: ${{ matrix.platform }}
           OutputFileSuffix: win
       - name: 'Publish: msi'
+        id: msi
         uses: actions/upload-artifact@v7
         with:
           name: msi-${{ matrix.platform }}
           path: artifacts/*.msi
+      - name: 'Sign the MSI with SignPath'
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: fe11da6d-c162-47e2-ba61-7ccf7fe89e06
+          project-slug: KeyboardSwitch
+          signing-policy-slug: ${{ github.ref_type == 'tag' && 'release-signing' || 'test-signing' }}
+          artifact-configuration-slug: zip-archive
+          github-artifact-id: msi
+          output-artifact-directory: signed
+          wait-for-completion: true
+      - name: 'Publish: signed msi'
+        uses: actions/upload-artifact@v7
+        with:
+          name: msi-${{ matrix.platform }}-signed
+          path: signed/*.*
   build-pkg:
     name: Build macOS Package
     runs-on: macos-latest

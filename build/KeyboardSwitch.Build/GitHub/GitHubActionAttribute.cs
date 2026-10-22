@@ -21,6 +21,17 @@ public sealed class GitHubActionAttribute(string id, string name, GitHubActionsI
     public string PublishCondition { get; set; } = String.Empty;
     public string ArtifactSuffix { get; set; } = String.Empty;
 
+    public bool AddSignPathStep { get; set; } = false;
+    public string SignPathOrganizationId { get; set; } = String.Empty;
+    public string SignPathProjectSlug { get; set; } = String.Empty;
+    public string SignPathSigningPolicySlugTesting { get; set; } = String.Empty;
+    public string SignPathSigningPolicySlugRelease { get; set; } = String.Empty;
+    public string SignPathArtifactConfigurationSlug { get; set; } = String.Empty;
+
+    public string SignPathSigningPolicySlug =>
+        $"${{{{ github.ref_type == 'tag' && '{SignPathSigningPolicySlugRelease}' || " +
+        $"'{SignPathSigningPolicySlugTesting}' }}}}";
+
     public int TimeoutMinutes { get; set; }
 
     public string JobConcurrencyGroup { get; set; } = String.Empty;
