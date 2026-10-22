@@ -24,7 +24,7 @@
     <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="10.0.13" />
     <PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.13" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.13" />
-    <PackageVersion Include="Microsoft.Windows.CsWin32" Version="0.3.363" />
+    <PackageVersion Include="Microsoft.Windows.CsWin32" Version="0.3.367" />
     <PackageVersion Include="NuGet.Packaging" Version="7.9.0" />
     <PackageVersion Include="Nuke.Common" Version="10.1.0" />
     <PackageVersion Include="ReactiveUI.Avalonia.Reactive" Version="12.1.6" />
@@ -60,8 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageVersion Include="coverlet.collector" Version="10.1.0" />
-    <PackageVersion Include="FsCheck" Version="3.5.0" />
-    <PackageVersion Include="FsCheck.Xunit.v3" Version="3.5.0" />
+    <PackageVersion Include="FsCheck" Version="3.6.0" />
+    <PackageVersion Include="FsCheck.Xunit.v3" Version="3.6.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
     <PackageVersion Include="Microsoft.Reactive.Testing" Version="7.0.0" />
     <PackageVersion Include="NSubstitute" Version="6.2.0" />
