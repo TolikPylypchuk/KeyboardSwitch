@@ -6,6 +6,7 @@
 - The app now marks the text it puts into the clipboard as hidden so that it's not shown in clipboard managers
 - The app now respects the value of `XDG_CONFIG_HOME` on Linux and places its config in
   _$XDG_CONFIG_HOME/keyboard-switch_ instead of ~/.config/keyboard-switch if this environment variable is set
+- Windows installers are now signed with a certificate provided by SignPath
 - The GNOME Shell extension is now installed during installation instead of when opening the settings app for the first
   time, so GNOME should be restarted right after installation instead of after opening the settings app
 - The application has been upgraded to .NET 10 and Avalonia 12

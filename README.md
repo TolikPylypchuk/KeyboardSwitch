@@ -128,6 +128,14 @@ If you want to know more about the Keyboard Switch app and how to use it, check 
 See the [changelog file](https://github.com/TolikPylypchuk/KeyboardSwitch/blob/main/CHANGELOG.md) for the detailed list
 of changes across versions.
 
+## Code Signing Policy
+
+Free code signing provided by [SignPath.io](https://about.signpath.io), certificate by
+[SignPath Foundation](https://signpath.org).
+
+This program will not transfer any information to other networked systems unless specifically requested by the user or
+the person installing or operating it.
+
 ## Icon
 
 Icon made by [Smashicons](https://smashicons.com) from [www.flaticon.com](https://www.flaticon.com).
