@@ -16,6 +16,9 @@ namespace KeyboardSwitch.Build.GitHub;
 public sealed class MultipleGitHubActionsAttribute(string fileName, string name, Type targetType)
     : ConfigurationAttributeBase
 {
+    public const string MatrixPlatform = "platform";
+    public const string PlatformValue = $"${{{{ matrix.{MatrixPlatform} }}}}";
+
     private const string SignPathApiToken = nameof(SignPathApiToken);
     private const string SignPathOutputDirectory = "signed";
 
@@ -198,7 +201,8 @@ public sealed class MultipleGitHubActionsAttribute(string fileName, string name,
                         SignPathOrganizationId = action.SignPathOrganizationId,
                         SignPathProjectSlug = action.SignPathProjectSlug,
                         SignPathSigningPolicySlug = action.SignPathSigningPolicySlug,
-                        SignPathArtifactConfigurationSlug = action.SignPathArtifactConfigurationSlug,
+                        SignPathArtifactConfigurationSlug =
+                            $"{action.SignPathArtifactConfigurationSlug}-{PlatformValue}",
                         GitHubArtifactId = $"${{{{ steps.{artifactId}.outputs.artifact-id }}}}",
                         OutputDirectory = SignPathOutputDirectory,
                         Condition = action.PublishCondition

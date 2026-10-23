@@ -95,7 +95,7 @@ jobs:
           organization-id: fe11da6d-c162-47e2-ba61-7ccf7fe89e06
           project-slug: KeyboardSwitch
           signing-policy-slug: ${{ github.ref_type == 'tag' && 'release-signing' || 'test-signing' }}
-          artifact-configuration-slug: zip-archive
+          artifact-configuration-slug: zip-archive-${{ matrix.platform }}
           github-artifact-id: ${{ steps.msi.outputs.artifact-id }}
           output-artifact-directory: signed
           wait-for-completion: true
