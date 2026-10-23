@@ -38,9 +38,6 @@ public class GitHubActionsSignPathStep : GitHubActionsStep
                 writer.WriteLine($"github-artifact-id: {this.GitHubArtifactId}");
                 writer.WriteLine($"output-artifact-directory: {this.OutputDirectory}");
                 writer.WriteLine("wait-for-completion: true");
-
-                // The default connector URL doesn't work for some reason - this value is taken from the docs
-                writer.WriteLine("connector-url: https://pipelineconnector.connectors.signpath.io/GitHub/GitHubCom");
             }
         }
     }

@@ -199,7 +199,7 @@ public sealed class MultipleGitHubActionsAttribute(string fileName, string name,
                         SignPathProjectSlug = action.SignPathProjectSlug,
                         SignPathSigningPolicySlug = action.SignPathSigningPolicySlug,
                         SignPathArtifactConfigurationSlug = action.SignPathArtifactConfigurationSlug,
-                        GitHubArtifactId = artifactId,
+                        GitHubArtifactId = $"${{{{ steps.{artifactId}.outputs.artifact-id }}}}",
                         OutputDirectory = SignPathOutputDirectory,
                         Condition = action.PublishCondition
                     };

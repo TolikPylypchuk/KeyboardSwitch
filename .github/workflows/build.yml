@@ -96,10 +96,9 @@ jobs:
           project-slug: KeyboardSwitch
           signing-policy-slug: ${{ github.ref_type == 'tag' && 'release-signing' || 'test-signing' }}
           artifact-configuration-slug: zip-archive
-          github-artifact-id: msi
+          github-artifact-id: ${{ steps.msi.outputs.artifact-id }}
           output-artifact-directory: signed
           wait-for-completion: true
-          connector-url: https://pipelineconnector.connectors.signpath.io/GitHub/GitHubCom
       - name: 'Publish: signed msi'
         uses: actions/upload-artifact@v7
         with:
