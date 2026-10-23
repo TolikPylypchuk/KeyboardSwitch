@@ -4,7 +4,7 @@ Keyboard Switch. Version 4.4.0. Created by [Tolik Pylypchuk](https://github.com/
 
 ## Acknowledgements
 
-The UI for the settings app was created using [Avalonia](https://avaloniaui.net) with [ReactiveUI](https://www.reactiveui.net), [FluentAvalonia](https://github.com/amwx/FluentAvalonia), and the [Devolutions macOS theme](https://github.com/Devolutions/avalonia-extensions). The global keyboard hook is implemented using [libuiohook](https://github.com/kwhat/libuiohook). Windows installer is created with [WiX Toolset](https://wixtoolset.org) and signed with [SignPath](https://signpath.io/). Docs are built using [GitBook](https://www.gitbook.com). Icon made by [Smashicons](https://smashicons.com) from [www.flaticon.com](https://www.flaticon.com).
+The UI for the settings app was created using [Avalonia](https://avaloniaui.net) with [ReactiveUI](https://www.reactiveui.net), [FluentAvalonia](https://github.com/amwx/FluentAvalonia), and the [Devolutions macOS theme](https://github.com/Devolutions/avalonia-extensions). The global keyboard hook is implemented using [libuiohook](https://github.com/kwhat/libuiohook). Windows installer is created with [WiX Toolset](https://wixtoolset.org) and signed with [SignPath](https://signpath.org/). Docs are built using [GitBook](https://www.gitbook.com). Icon made by [Smashicons](https://smashicons.com) from [www.flaticon.com](https://www.flaticon.com).
 
 ## Changelog
 
