@@ -14,7 +14,7 @@ internal static class DBusExtensions
             } else if (notification.IsCompletion)
             {
                 handler(
-                    notification.Exception ??
+                    notification.CompletionReason ??
                         new DBusConnectionException($"The D-Bus observer has completed: {notification.Type}"),
                     default!);
             }
