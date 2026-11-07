@@ -51,7 +51,7 @@ If you use the deb or RPM package, then simply install it either by double-click
 After installing the app, open Keyboard Switch Settings – it should appear in the list of your apps.
 
 {% hint style="warning" %}
-If your desktop environment is GNOME, then you should restart it before opening Keyboard Switch Settings. If you're not sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu, Debian, Rocky, Fedora and others (but not Linux Mint). If you're using X11, Press <kbd>Alt</kbd>+<kbd>F2</kbd>, then type <kbd>r</kbd> and press <kbd>Enter</kbd> – this will restart GNOME. If you're using Wayland (which is most probably the case on newer versions of GNOME), then you're have to log out and log back in.
+If your desktop environment is GNOME, then you should restart it before opening Keyboard Switch Settings. If you're not sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu, Debian, Rocky, Fedora and others (but not Linux Mint). If you're using X11, press <kbd>Alt</kbd>+<kbd>F2</kbd>, then type <kbd>r</kbd> and press <kbd>Enter</kbd> – this will restart GNOME. If you're using Wayland (which is most probably the case on newer versions of GNOME), then you're have to log out and log back in.
 {% endhint %}
 
 In the opened app, press _Start_.
