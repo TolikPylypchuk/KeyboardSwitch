@@ -24,7 +24,7 @@
     <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="10.0.14" />
     <PackageVersion Include="Microsoft.Extensions.Options" Version="10.0.14" />
     <PackageVersion Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.14" />
-    <PackageVersion Include="Microsoft.Windows.CsWin32" Version="0.3.367" />
+    <PackageVersion Include="Microsoft.Windows.CsWin32" Version="0.3.369" />
     <PackageVersion Include="NuGet.Packaging" Version="7.9.0" />
     <PackageVersion Include="Nuke.Common" Version="10.1.0" />
     <PackageVersion Include="ReactiveUI.Avalonia.Reactive" Version="12.1.6" />
@@ -43,7 +43,7 @@
     <PackageVersion Include="Splat.Microsoft.Extensions.DependencyInjection" Version="21.0.0" />
     <PackageVersion Include="Splat.Microsoft.Extensions.Logging" Version="21.0.0" />
     <PackageVersion Include="Splat.Serilog" Version="21.0.0" />
-    <PackageVersion Include="System.ClientModel" Version="1.16.0" />
+    <PackageVersion Include="System.ClientModel" Version="1.17.0" />
     <PackageVersion Include="System.CodeDom" Version="10.0.14" />
     <PackageVersion Include="System.Configuration.ConfigurationManager" Version="10.0.14" />
     <PackageVersion Include="System.Formats.Nrbf" Version="10.0.14" />
