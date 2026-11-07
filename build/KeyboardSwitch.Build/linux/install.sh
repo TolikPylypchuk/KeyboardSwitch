@@ -16,7 +16,8 @@ MODULES_LOAD_FILE=/etc/modules-load.d/keyboard-switch.conf
 getent group $GROUP &>/dev/null || sudo groupadd --system $GROUP
 
 sudo chown root:$GROUP $SERVICE_APP
-sudo chmod g+s $SERVICE_APP
+sudo chmod 2755 "$SERVICE_APP" # rwxr-sr-x : setgid + readable/executable by all
+sudo chmod 755 "$SETTINGS_APP"
 
 echo "SUBSYSTEM==\"input\", KERNEL==\"event*\", RUN+=\"/usr/bin/setfacl -m g:$GROUP:rw \$env{DEVNAME}\"
 SUBSYSTEM==\"misc\", KERNEL==\"uinput\", RUN+=\"/usr/bin/setfacl -m g:$GROUP:rw \$env{DEVNAME}\"
