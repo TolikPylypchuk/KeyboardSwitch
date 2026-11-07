@@ -42,8 +42,8 @@ To switch text forward, select the text, and press <kbd>Ctrl</kbd>+<kbd>Shift</k
 
 ## macOS
 
-Download the _.pkg_ file to install the app. If your computer runs on an Intel CPU then you should get the _x86_64_
-package. If your computer runs on an Apple CPU (e.g. M1) then you should get the _arm64_ package.
+Download the _.pkg_ file to install the app. If your computer runs on an Apple CPU (e.g. M1) then you should get the
+_arm64_ package. If your computer runs on an Intel CPU then you should get the _x86_64_ package.
 
 After installing the app, open Keyboard Switch Settings – it should appear in the list of your apps.
 
@@ -69,22 +69,20 @@ To uninstall Keyboard Switch you should run an uninstaller package. You can get 
 The app is available as a deb package (for Debian-based distributions, such as Ubuntu, Mint etc.), an RPM package (for
 RHEL-based distributions, like Rocky Linux or Fedora, as well as SUSE), and a simple _tar.gz_ file.
 
-Note that Keyboard Switch only works on X11 – it won't work on Wayland (even with XWayland).
+Keyboard Switch supports X11 and Wayland (the latter is currently supported only on GNOME and KDE Plasma).
 
 If you use the deb or RPM package, then simply install it either by double-clicking on it, or through the terminal. If
 you use the _tar.gz_ file, then the set-up is not quite as quick, so you can read about it in
 [the installation page](https://docs.keyboardswitch.tolik.io/usage-guides/installation#linux).
 
-Bear in mind that the RPM package may need
-[additional setup](https://docs.keyboardswitch.tolik.io/usage-guides/installation#linux).
+If your desktop environment is GNOME then you should restart it right after opening Keyboard Switch Settings. If you're
+not sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu,
+Debian, Rocky Linux, Fedora and others (but not Linux Mint). If you're using X11, press <kbd>Alt</kbd>+<kbd>F2</kbd>,
+then type <kbd>r</kbd> and press <kbd>Enter</kbd> – this will restart GNOME. If you're using Wayland (which is most
+probably the case on newer versions of GNOME), then you're have to log out and log back in.
 
 After installing the app, open Keyboard Switch Settings – it should appear in the list of your apps (if your desktop
 environment groups your apps, then it will most probably appear under the _Utilities_ or _Accessories_ group).
-
-If your desktop environment is GNOME then you should restart it right after opening Keyboard Switch Settings. If you're
-not sure which desktop environment you're using then it's most probably GNOME since it's the default one on Ubuntu,
-Debian, Rocky Linux, Fedora and others (but not Linux Mint). Press <kbd>Alt</kbd>+<kbd>F2</kbd>, then type <kbd>r</kbd>
-and press <kbd>Enter</kbd>. This will restart GNOME.
 
 In the opened settings app, press _Start_.
 
@@ -121,9 +119,26 @@ be restored.
 
 # Supported Platforms
 
-Keyboard Switch works on Windows 10/11 (version 1607 or later), macOS 10.15 or later, and Linux via X11. Wayland support
-may come in a future version, but there are
-[several prerequisites](https://github.com/TolikPylypchuk/KeyboardSwitch/issues/54).
+## Windows
+
+Keyboard Switch is supported on Windows 11. It most probably works on earlier versions as well, but they are not
+officially supported, and issues that only appear on older versions will not be fixed.
+
+The x64 and Arm64 architectures are both supported.
+
+## macOS
+
+Keyboard Switch requires macOS 10.15 or later, though it is supported only on macOS versions that are currently
+supported by Apple (as of October 2026, it's macOS 15, 26, and 27). It can run on unsupported versions as well, but
+issues that only appear on older versions will not be fixed.
+
+The Arm64 architecture is supported. The x64 version is also available, but issues that only appear on the x64 version
+will not be fixed. It may be completely dropped in a future release, but for now, it stays.
+
+## Linux
+
+Keyboard switch is supported on Linux. X11 is supported, and Wayland is currently supported only on GNOME and KDE
+Plasma.
 
 The x64 and Arm64 architectures are both supported.
 
