@@ -135,6 +135,7 @@ Here are the steps required for installing the app on Debian, Ubuntu, Linux Mint
 sudo apt update
 sudo apt install wl-clipboard # Install wl-clipboard which is required on Wayland
 sudo apt install xsel # Optional, install only if you plan to use the xsel setting on X11
+mkdir /opt/keyboard-switch
 tar -xzf keyboard-switch-4.4.0-x64.tar.gz -C /opt/keyboard-switch
 cd /opt/keyboard-switch
 ./install.sh
@@ -146,6 +147,7 @@ Here are the steps required for installing the app on RHEL, Fedora, or Rocky Lin
 ```bash
 sudo dnf install wl-clipboard # Install wl-clipboard which is required on Wayland
 sudo dnf install xsel # Optional, install only if you plan to use the xsel setting on X11
+mkdir /opt/keyboard-switch
 tar -xzf keyboard-switch-4.4.0-x64.tar.gz -C /opt/keyboard-switch
 cd /opt/keyboard-switch
 ./install.sh
@@ -157,6 +159,7 @@ Here are the steps required for installing the app on SUSE:
 ```bash
 sudo zypper install wl-clipboard # Install wl-clipboard which is required on Wayland
 sudo zypper install xsel # Optional, install only if you plan to use the xsel setting on X11
+mkdir /opt/keyboard-switch
 tar -xzf keyboard-switch-4.4.0-x64.tar.gz -C /opt/keyboard-switch
 cd /opt/keyboard-switch
 ./install.sh
@@ -168,6 +171,7 @@ Here are the steps required for installing the app on Arch Linux:
 ```bash
 sudo pacman -S wl-clipboard # Install wl-clipboard which is required on Wayland
 sudo pacman -S xsel # Optional, install only if you plan to use the xsel setting on X11
+mkdir /opt/keyboard-switch
 tar -xzf keyboard-switch-4.4.0-x64.tar.gz -C /opt/keyboard-switch
 cd /opt/keyboard-switch
 ./install.sh
