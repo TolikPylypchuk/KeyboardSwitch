@@ -14,12 +14,11 @@ This program will not transfer any information to other networked systems unless
 
 ## Changelog
 
-### v4.4.0 (TBD)
+### [v4.4.0](https://github.com/TolikPylypchuk/KeyboardSwitch/releases/tag/v4.4.0) (November 7, 2026)
 
 * Wayland support was added on Linux, but only on GNOME and KDE Plasma
 * The app now marks the text it puts into the clipboard as hidden so that it's not shown in clipboard managers
-* The app now respects the value of `XDG_CONFIG_HOME` on Linux and places its config in _$XDG\_CONFIG\_HOME/keyboard-switch_ instead of _\~/.config/keyboard-switch_ if this environment variable is set
-* Windows installers are now signed with a certificate provided by SignPath
+* The app now respects the value of `$XDG_CONFIG_HOME` on Linux and places its config in _$XDG\_CONFIG\_HOME/keyboard-switch_ instead of _\~/.config/keyboard-switch_ if this environment variable is set
 * The GNOME Shell extension is now installed during installation instead of when opening the settings app for the first time, so GNOME should be restarted right after installation instead of after opening the settings app
 * The application has been upgraded to .NET 10 and Avalonia 12
 
